@@ -159,6 +159,10 @@ footer b{color:#fff}
   </div>
 </div></div>
 
+<div id="warnBar" hidden style="background:var(--crit);color:#fff;padding:.6rem 0;font-size:.9rem;line-height:1.6">
+  <div class="wrap"><b style="font-family:var(--ui)">ต้องแก้ไขด่วน</b> <span id="warnText"></span></div>
+</div>
+
 <main>
 
 <!-- ─── การเชื่อมต่อ ─── -->
@@ -339,6 +343,11 @@ const money = n => (Number(n) || 0).toLocaleString("th-TH", { minimumFractionDig
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;" }[c]));
 function say(el, text, kind){ const m = $(el); m.textContent = text; m.className = "msg show " + (kind || "info"); }
 function hide(el){ $(el).className = "msg"; }
+function showWarning(w){
+  const bar = $("#warnBar");
+  if (w){ $("#warnText").textContent = w; bar.hidden = false; }
+  else bar.hidden = true;
+}
 function setConn(on, text){
   connected = on;
   $("#connDot").className = "dot " + (on ? "on" : "off");
@@ -358,6 +367,7 @@ $("#btnSave").onclick = async () => {
   try {
     const d = await api({ action: "ping" });
     setConn(true);
+    showWarning(d.warning);
     say("#connMsg", "เชื่อมต่อสำเร็จ · ปีบัญชี " + d.year + " · ตารางที่พร้อมใช้ " + d.sheets.join(", "), "ok");
     refresh();
   } catch (e) { setConn(false); say("#connMsg", e.message, "err"); }
@@ -520,6 +530,7 @@ async function loadSummary(){
   if (!connected) return;
   try {
     const s = await api({ action: "summary" });
+    showWarning(s.warning);
     $("#kIn").textContent = money(s.income);
     $("#kOut").textContent = money(s.expense);
     $("#kBal").textContent = money(s.balance);
@@ -536,7 +547,7 @@ $("#btnRefresh").onclick = refresh;
 /* ── เริ่มต้น ── */
 (async () => {
   if (!CFG.url || !CFG.token){ setConn(false, "ยังไม่ตั้งค่า"); $("#conn").hidden = false; return; }
-  try { await api({ action: "ping" }, 20000); setConn(true); refresh(); }
+  try { const d = await api({ action: "ping" }, 20000); setConn(true); showWarning(d.warning); refresh(); }
   catch (e) { setConn(false, "เชื่อมต่อไม่ได้"); $("#conn").hidden = false; say("#connMsg", e.message, "err"); }
 })();
 </script>

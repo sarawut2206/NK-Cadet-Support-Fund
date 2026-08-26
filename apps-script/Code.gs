@@ -8,8 +8,14 @@
 
 /* ═══════════════ ตั้งค่า ═══════════════ */
 
-/** เปลี่ยนรหัสนี้เป็นของตัวเองก่อนใช้งานจริง และต้องตรงกับที่กรอกในหน้าเว็บ */
+/**
+ * รหัสเข้าใช้งาน — ต้องเปลี่ยนเป็นของตัวเองก่อนใช้งานจริง และต้องตรงกับที่กรอกในหน้าเว็บ
+ *
+ * สำคัญ : ห้ามนำรหัสจริงไปใส่ในไฟล์ที่ push ขึ้นคลังโค้ดสาธารณะ
+ * ให้เก็บรหัสจริงไว้ใน Apps Script เท่านั้น ไฟล์ในคลังโค้ดคงค่าตัวอย่างไว้แบบนี้
+ */
 var TOKEN = 'nk-cadet-2569-CHANGE-ME';
+var DEFAULT_TOKEN = 'nk-cadet-2569-CHANGE-ME';
 
 /** ปีการศึกษาปัจจุบัน ใช้ประกอบเลขที่เอกสาร */
 var YEAR = '2569';
@@ -78,7 +84,13 @@ function handle(p) {
   return respond(out, p.callback);
 }
 
-function ok(data) { return { ok: true, data: data }; }
+function ok(data) {
+  if (TOKEN === DEFAULT_TOKEN && data && typeof data === 'object') {
+    data.warning = 'ยังใช้รหัสเข้าใช้งานค่าเริ่มต้นอยู่ ซึ่งเปิดเผยอยู่ในคลังโค้ดสาธารณะ ' +
+                   'กรุณาแก้ตัวแปร TOKEN ใน Apps Script เป็นรหัสของตัวเอง แล้วกดทำให้ใช้งานได้ใหม่';
+  }
+  return { ok: true, data: data };
+}
 
 function respond(obj, callback) {
   var body = JSON.stringify(obj);
@@ -140,7 +152,7 @@ function listRows(table, p) {
   var sh = sheetOf(table);
   var last = sh.getLastRow();
   var head = headers(sh);
-  if (last < 2) return { headers: head, rows: [] };
+  if (last < 2) return { headers: head, total: 0, rows: [] };
   var values = sh.getRange(2, 1, last - 1, head.length).getValues();
   var rows = values.map(function (v) {
     var o = {};
