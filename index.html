@@ -256,7 +256,7 @@ const dot = (v, w) => v ? esc(v) : "…".repeat(w || 22);
 
 /* ═══ shared sheet parts ═══ */
 const letterHead = () => `
-  <div class="org"><b>${esc(S.school)}</b>${esc(S.addr)}<br>โทรศัพท์ ${num(esc(S.tel))}</div>
+  <div class="org"><b>${esc(S.school)}</b>${num(esc(S.addr))}<br>โทรศัพท์ ${num(esc(S.tel))}</div>
   <div class="hr"></div>`;
 
 const memoHead = (no, date, subject, to) => `
