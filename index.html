@@ -53,10 +53,15 @@ button,input,select,textarea{font:inherit;color:inherit}
 .title b{display:block;font-family:var(--ui);font-weight:600;font-size:.98rem;color:#fff}
 .title span{font-size:.76rem;color:#B6C6E0}
 .top .spacer{margin-inline-start:auto}
+.tabs{display:flex;gap:.25rem}
+.tabs a{font-family:var(--ui);font-weight:600;font-size:.83rem;text-decoration:none;color:#C6D4EA;padding:.4rem .85rem;border-radius:3px;border:1px solid transparent}
+.tabs a:hover{background:rgba(255,255,255,.1);color:#fff}
+.tabs a[aria-current]{background:var(--gold);color:var(--navy)}
 .tbtn{font-family:var(--ui);font-weight:600;font-size:.82rem;background:transparent;color:#D7E2F4;border:1px solid rgba(255,255,255,.28);padding:.4rem .8rem;border-radius:3px;cursor:pointer}
 .tbtn:hover{background:rgba(255,255,255,.1);color:#fff}
 .tbtn.gold{background:var(--gold);color:var(--navy);border-color:var(--gold)}
 .tbtn.gold:hover{background:var(--gold-2)}
+@media(min-width:1201px){#btnToggle{display:none}}
 
 /* ── layout ─────────────────────────────── */
 .app{display:grid;grid-template-columns:15rem 21rem 1fr;height:calc(100vh - 3.6rem);min-height:0}
@@ -155,6 +160,10 @@ button,input,select,textarea{font:inherit;color:inherit}
   <span class="mark">นข</span>
   <span class="title"><b>ศูนย์เอกสารแผนเตรียมทหาร</b><span>โรงเรียนมัธยมวัดหนองแขม · แผนการเรียนเตรียมทหาร–ตำรวจ</span></span>
   <span class="spacer"></span>
+  <nav class="tabs">
+    <a href="index.html" aria-current="page">ศูนย์เอกสาร</a>
+    <a href="dashboard.html">แดชบอร์ด</a>
+  </nav>
   <button class="tbtn" id="btnSettings" type="button">ตั้งค่าโรงเรียน</button>
   <button class="tbtn" id="btnToggle" type="button">ดูตัวอย่าง</button>
   <button class="tbtn gold" id="btnPrint" type="button">พิมพ์เอกสาร</button>

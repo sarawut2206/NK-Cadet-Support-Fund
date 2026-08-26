@@ -1,0 +1,404 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>แดชบอร์ดกองทุน | แผนเตรียมทหาร มัธยมวัดหนองแขม</title>
+<meta name="description" content="แดชบอร์ดติดตามสถานะเอกสาร ขั้นตอนดำเนินการ และรอบงานประจำของกองทุนแผนการเรียนเตรียมทหาร–ตำรวจ">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%230E2A56'/><text y='72' x='50' text-anchor='middle' font-size='62' fill='%23FFC72C' font-family='sans-serif' font-weight='bold'>นข</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&family=Bai+Jamjuree:wght@500;600;700&display=swap">
+<style>
+:root{
+  --navy:#0E2A56; --navy-2:#173F7C; --navy-3:#2B579E;
+  --gold:#E8A800; --gold-2:#FFC72C; --gold-ghost:rgba(232,168,0,.12);
+  --ground:#EFF1F5; --surface:#FFFFFF; --surface-2:#E4E8F0;
+  --ink:#111C2E; --ink-2:#41506A; --ink-3:#6E7C93;
+  --rule:#C9D0DE; --rule-2:#9EA9BE;
+  --ok:#1F7A5A; --ok-bg:rgba(31,122,90,.11);
+  --warn:#B45D12; --warn-bg:rgba(180,93,18,.11);
+  --crit:#A32B2B; --crit-bg:rgba(163,43,43,.10);
+  --idle:#6E7C93; --idle-bg:rgba(110,124,147,.10);
+  --ui:'Bai Jamjuree','Sarabun',system-ui,sans-serif;
+  --body:'Sarabun',system-ui,sans-serif;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --ground:#0B1220; --surface:#131C2C; --surface-2:#1C2739;
+    --ink:#E6EBF3; --ink-2:#AFBACC; --ink-3:#8391A6;
+    --rule:#26324A; --rule-2:#3B4A66;
+    --navy:#0A1830; --navy-2:#22508F; --navy-3:#6EA1E8;
+    --gold:#FFC72C; --gold-2:#FFD766; --gold-ghost:rgba(255,199,44,.14);
+    --ok:#5FBF97; --ok-bg:rgba(95,191,151,.14);
+    --warn:#E09550; --warn-bg:rgba(224,149,80,.14);
+    --crit:#E38A8A; --crit-bg:rgba(227,138,138,.14);
+    --idle:#8391A6; --idle-bg:rgba(131,145,166,.13);
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#0B1220; --surface:#131C2C; --surface-2:#1C2739;
+  --ink:#E6EBF3; --ink-2:#AFBACC; --ink-3:#8391A6;
+  --rule:#26324A; --rule-2:#3B4A66;
+  --navy:#0A1830; --navy-2:#22508F; --navy-3:#6EA1E8;
+  --gold:#FFC72C; --gold-2:#FFD766; --gold-ghost:rgba(255,199,44,.14);
+  --ok:#5FBF97; --ok-bg:rgba(95,191,151,.14);
+  --warn:#E09550; --warn-bg:rgba(224,149,80,.14);
+  --crit:#E38A8A; --crit-bg:rgba(227,138,138,.14);
+  --idle:#8391A6; --idle-bg:rgba(131,145,166,.13);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--body);font-size:15.5px;line-height:1.7;-webkit-font-smoothing:antialiased}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--navy-3);outline-offset:2px;border-radius:3px}
+.wrap{max-width:74rem;margin-inline:auto;padding-inline:clamp(.9rem,3vw,2rem)}
+p{margin:0}
+a{color:var(--navy-3)}
+
+/* top */
+.top{background:var(--navy);color:#fff;border-bottom:3px solid var(--gold);position:sticky;top:0;z-index:40}
+.top-in{display:flex;align-items:center;gap:.9rem;padding:.6rem clamp(.8rem,2vw,1.4rem);flex-wrap:wrap}
+.mark{width:2.35rem;height:2.35rem;flex:none;background:var(--gold);color:var(--navy);display:grid;place-items:center;font-family:var(--ui);font-weight:700;font-size:.8rem;clip-path:polygon(50% 0,100% 24%,100% 76%,50% 100%,0 76%,0 24%)}
+.title{line-height:1.25;min-width:0}
+.title b{display:block;font-family:var(--ui);font-weight:600;font-size:.98rem;color:#fff}
+.title span{font-size:.76rem;color:#B6C6E0}
+.top .spacer{margin-inline-start:auto}
+.tabs{display:flex;gap:.25rem}
+.tabs a{font-family:var(--ui);font-weight:600;font-size:.83rem;text-decoration:none;color:#C6D4EA;padding:.4rem .85rem;border-radius:3px;border:1px solid transparent}
+.tabs a:hover{background:rgba(255,255,255,.1);color:#fff}
+.tabs a[aria-current]{background:var(--gold);color:var(--navy)}
+.tbtn{font-family:var(--ui);font-weight:600;font-size:.82rem;background:transparent;color:#D7E2F4;border:1px solid rgba(255,255,255,.28);padding:.4rem .8rem;border-radius:3px;cursor:pointer}
+.tbtn:hover{background:rgba(255,255,255,.1);color:#fff}
+
+/* summary band */
+.band{background:var(--navy);color:#fff;padding:0 0 1.6rem}
+.bandgrid{display:grid;gap:1px;background:rgba(255,255,255,.16);grid-template-columns:repeat(auto-fit,minmax(11rem,1fr));border:1px solid rgba(255,255,255,.16)}
+.kpi{background:var(--navy);padding:.95rem 1.1rem}
+.kpi .l{font-family:var(--ui);font-size:.72rem;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:#93A9CC}
+.kpi .v{font-family:var(--ui);font-weight:700;font-size:1.75rem;line-height:1.15;color:var(--gold-2);font-variant-numeric:tabular-nums;margin-top:.1rem}
+.kpi .s{font-size:.79rem;color:#9DB0CE;line-height:1.5}
+.bar{height:.42rem;background:rgba(255,255,255,.16);margin-top:.5rem;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--gold);transition:width .35s ease}
+@media (prefers-reduced-motion:reduce){.bar i{transition:none}}
+
+section{padding:2.2rem 0}
+section + section{border-top:1px solid var(--rule)}
+.hd{margin-bottom:1.1rem}
+.hd .eb{font-family:var(--ui);font-size:.72rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:.3rem}
+.hd h2{font-family:var(--ui);font-weight:700;font-size:clamp(1.25rem,2.6vw,1.6rem);margin:0 0 .35rem;line-height:1.3}
+.hd p{font-size:.94rem;color:var(--ink-2);max-width:66ch}
+
+/* doc cards */
+.docs{display:grid;gap:.7rem;grid-template-columns:repeat(auto-fit,minmax(20rem,1fr))}
+.doc{background:var(--surface);border:1px solid var(--rule);border-inline-start:4px solid var(--rule-2);padding:.85rem 1rem;display:flex;flex-direction:column;gap:.45rem}
+.doc.st-ok{border-inline-start-color:var(--ok)}
+.doc.st-warn{border-inline-start-color:var(--warn)}
+.doc.st-crit{border-inline-start-color:var(--crit)}
+.doc .top-row{display:flex;align-items:flex-start;gap:.6rem}
+.doc .no{font-family:var(--ui);font-weight:700;font-size:.98rem;color:var(--navy-3);flex:none;min-width:1.5rem}
+.doc h3{font-family:var(--ui);font-weight:600;font-size:.95rem;margin:0;line-height:1.4;flex:1}
+.doc ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:.2rem}
+.doc li{position:relative;padding-inline-start:.9rem;font-size:.85rem;color:var(--ink-2);line-height:1.6}
+.doc li::before{content:"";position:absolute;inset-inline-start:0;top:.68em;width:.3rem;height:.3rem;background:var(--rule-2)}
+.doc .foot{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;margin-top:.15rem;padding-top:.55rem;border-top:1px solid var(--rule)}
+.doc select{background:var(--ground);border:1px solid var(--rule);border-radius:3px;padding:.26rem .45rem;font-size:.82rem;font-family:var(--ui)}
+.pill{display:inline-flex;align-items:center;gap:.35rem;font-family:var(--ui);font-weight:600;font-size:.76rem;padding:.2rem .55rem;border-radius:999px;white-space:nowrap}
+.pill::before{content:"";width:.45rem;height:.45rem;border-radius:50%;background:currentColor}
+.p-ok{color:var(--ok);background:var(--ok-bg)}
+.p-warn{color:var(--warn);background:var(--warn-bg)}
+.p-crit{color:var(--crit);background:var(--crit-bg)}
+.p-idle{color:var(--idle);background:var(--idle-bg)}
+.flag{font-size:.82rem;color:var(--warn);line-height:1.55;background:var(--warn-bg);padding:.4rem .55rem;border-radius:3px}
+.flag b{font-weight:600}
+
+/* steps */
+.steps{display:flex;flex-direction:column;gap:.6rem}
+.step{background:var(--surface);border:1px solid var(--rule);padding:.85rem 1rem}
+.step .sh{display:flex;align-items:center;gap:.7rem;margin-bottom:.5rem}
+.step .sn{width:1.8rem;height:1.8rem;flex:none;background:var(--navy);color:var(--gold-2);display:grid;place-items:center;font-family:var(--ui);font-weight:700;font-size:.86rem;border-radius:50%}
+.step.done .sn{background:var(--ok);color:#fff}
+.step h3{font-family:var(--ui);font-weight:600;font-size:.98rem;margin:0;flex:1}
+.step .cnt{font-family:var(--ui);font-size:.79rem;font-weight:600;color:var(--ink-3);font-variant-numeric:tabular-nums}
+.task{display:flex;align-items:flex-start;gap:.55rem;padding:.28rem 0 .28rem 2.5rem;font-size:.9rem;line-height:1.62;color:var(--ink-2);cursor:pointer}
+.task input{margin:.42rem 0 0;width:1rem;height:1rem;accent-color:var(--ok);flex:none;cursor:pointer}
+.task.on span{color:var(--ink-3);text-decoration:line-through;text-decoration-color:var(--rule-2)}
+
+/* cycle */
+.cycle{display:grid;gap:.6rem;grid-template-columns:repeat(auto-fit,minmax(13rem,1fr))}
+.cy{background:var(--surface);border:1px solid var(--rule);padding:.8rem .95rem;display:flex;flex-direction:column;gap:.3rem}
+.cy .when{font-family:var(--ui);font-weight:700;font-size:1.35rem;color:var(--gold);line-height:1.1;font-variant-numeric:tabular-nums}
+.cy .what{font-family:var(--ui);font-weight:600;font-size:.92rem}
+.cy .why{font-size:.85rem;color:var(--ink-2);line-height:1.6}
+
+/* notes */
+.notes{display:grid;gap:.6rem;grid-template-columns:repeat(auto-fit,minmax(17rem,1fr))}
+.note{background:var(--surface);border:1px solid var(--rule);padding:.8rem .95rem;font-size:.9rem;line-height:1.65;color:var(--ink-2)}
+.note b{color:var(--ink);font-weight:600;display:block;font-family:var(--ui);margin-bottom:.15rem}
+.open{background:var(--surface);border:1px solid var(--rule);border-top:3px solid var(--warn)}
+.open .oh{padding:.8rem 1rem .2rem}
+.open table{border-collapse:collapse;width:100%;min-width:36rem;font-size:.88rem}
+.tblwrap{overflow-x:auto}
+.open th,.open td{padding:.5rem .8rem;text-align:start;border-top:1px solid var(--rule);vertical-align:top}
+.open thead th{font-family:var(--ui);font-weight:600;font-size:.78rem;color:var(--ink-2);background:var(--surface-2);white-space:nowrap}
+
+.mini{font-size:.82rem;color:var(--ink-3);line-height:1.6;margin-top:.8rem}
+.acts{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1rem}
+.btn{font-family:var(--ui);font-weight:600;font-size:.85rem;border:1px solid var(--rule-2);background:transparent;color:var(--navy-3);padding:.42rem .95rem;border-radius:3px;cursor:pointer}
+.btn:hover{background:var(--gold-ghost)}
+footer{background:var(--navy);color:#9DB0CE;padding:1.6rem 0 2.4rem;font-size:.85rem;line-height:1.7;margin-top:1rem}
+footer b{color:#fff}
+
+@media print{
+  @page{size:A4 portrait;margin:12mm}
+  .top,.tbtn,.acts,.doc select{display:none!important}
+  body{background:#fff;color:#000;font-size:10.5pt}
+  .band{background:#fff;color:#000;padding-top:1rem}
+  .kpi{background:#fff}.kpi .v{color:#000}.kpi .l,.kpi .s{color:#333}
+  .bandgrid{border-color:#999;background:#999}
+  .doc,.step,.cy,.note,.open{break-inside:avoid;border-color:#999}
+  footer{background:#fff;color:#333}
+  section{break-inside:auto}
+}
+</style>
+</head>
+<body>
+
+<header class="top"><div class="top-in">
+  <span class="mark">นข</span>
+  <span class="title"><b>แดชบอร์ดกองทุน</b><span>แผนการเรียนเตรียมทหาร–ตำรวจ · โรงเรียนมัธยมวัดหนองแขม</span></span>
+  <span class="spacer"></span>
+  <nav class="tabs">
+    <a href="index.html">ศูนย์เอกสาร</a>
+    <a href="dashboard.html" aria-current="page">แดชบอร์ด</a>
+  </nav>
+  <button class="tbtn" id="btnPrint" type="button">พิมพ์รายงาน</button>
+</div></header>
+
+<div class="band"><div class="wrap">
+  <div class="bandgrid">
+    <div class="kpi"><div class="l">ความคืบหน้าโดยรวม</div><div class="v" id="kOverall">0%</div><div class="bar"><i id="kBar" style="width:0%"></i></div><div class="s" id="kOverallSub">ยังไม่เริ่ม</div></div>
+    <div class="kpi"><div class="l">เอกสารพร้อมใช้</div><div class="v" id="kDocs">0 / 8</div><div class="s">ลงนามแล้วหรือใช้งานจริง</div></div>
+    <div class="kpi"><div class="l">ขั้นตอนที่ทำแล้ว</div><div class="v" id="kSteps">0 / 5</div><div class="s">จากขั้นตอนดำเนินการหลัก</div></div>
+    <div class="kpi"><div class="l">ประเด็นค้าง</div><div class="v" id="kOpen">—</div><div class="s">ต้องตัดสินใจก่อนลงนาม</div></div>
+    <div class="kpi"><div class="l">ปรับปรุงล่าสุด</div><div class="v" id="kDate" style="font-size:1.15rem">—</div><div class="s">บันทึกในเบราว์เซอร์เครื่องนี้</div></div>
+  </div>
+</div></div>
+
+<main>
+
+<section><div class="wrap">
+  <div class="hd">
+    <p class="eb">ส่วนที่ ๑</p>
+    <h2>ชุดเอกสารกองทุน ๘ ฉบับ</h2>
+    <p>เลือกสถานะของแต่ละฉบับจากช่องด้านล่างการ์ด ระบบจะคำนวณความคืบหน้าให้เอง แถบสีด้านซ้ายบอกสถานะโดยดูผ่าน ๆ ได้</p>
+  </div>
+  <div class="docs" id="docs"></div>
+  <div class="acts"><button class="btn" id="btnResetDocs" type="button">ล้างสถานะเอกสารทั้งหมด</button></div>
+</div></section>
+
+<section><div class="wrap">
+  <div class="hd">
+    <p class="eb">ส่วนที่ ๒</p>
+    <h2>ขั้นตอนดำเนินการ ๕ ขั้น</h2>
+    <p>ติ๊กรายการที่ทำเสร็จแล้ว ขั้นตอนจะเปลี่ยนเป็นสีเขียวเมื่อทำครบทุกข้อ</p>
+  </div>
+  <div class="steps" id="steps"></div>
+  <div class="acts"><button class="btn" id="btnResetSteps" type="button">ล้างรายการที่ติ๊กไว้</button></div>
+</div></section>
+
+<section><div class="wrap">
+  <div class="hd">
+    <p class="eb">ส่วนที่ ๓</p>
+    <h2>รอบงานประจำเมื่อรับเงินบริจาค</h2>
+    <p>สี่จังหวะที่ต้องทำทุกครั้งที่มีเงินเข้า ตัวเลขคือกำหนดเวลาเป็นวัน</p>
+  </div>
+  <div class="cycle">
+    <div class="cy"><div class="when">ทันที</div><div class="what">ออกใบเสร็จรับเงิน</div><div class="why">ออกให้ผู้บริจาคทุกครั้งไม่มีข้อยกเว้น ระบุเลขที่ วันที่ ชื่อผู้บริจาค จำนวนเงิน และวัตถุประสงค์</div></div>
+    <div class="cy"><div class="when">วันเดียวกัน</div><div class="what">บันทึกการรับเงิน</div><div class="why">ลงในทะเบียนผู้บริจาค พร้อมระบุวัตถุประสงค์ที่ผู้บริจาคกำหนดไว้</div></div>
+    <div class="cy"><div class="when">ภายใน ๓ วัน</div><div class="what">นำเงินฝากธนาคาร</div><div class="why">ไม่เก็บเงินสดไว้กับตัวเกินกำหนด ทุกยอดต้องมีหลักฐานการนำฝาก</div></div>
+    <div class="cy"><div class="when">ภายใน ๗ วัน</div><div class="what">ส่งหนังสือขอบคุณ</div><div class="why">พิมพ์จากศูนย์เอกสาร แนบใบประกาศเกียรติคุณได้ตามความเหมาะสม</div></div>
+  </div>
+  <p class="mini">พิมพ์เอกสารทั้งสี่จังหวะได้จาก <a href="index.html">ศูนย์เอกสาร</a> · บันทึกยอดรับ–จ่ายได้ในชีต “ทะเบียนผู้บริจาค” และ “ทะเบียนรายจ่าย” ของสมุดงานกลาง</p>
+</div></section>
+
+<section><div class="wrap">
+  <div class="hd">
+    <p class="eb">ส่วนที่ ๔</p>
+    <h2>หมายเหตุทางกฎหมายตามเอกสารชุดนี้</h2>
+    <p>ข้อความในส่วนนี้คัดมาจากคู่มือการดำเนินงานกองทุนฉบับที่ ๘ ตามที่จัดทำไว้</p>
+  </div>
+  <div class="notes">
+    <div class="note"><b>สถานะทางกฎหมาย</b>กองทุนไม่มีสถานะเป็นนิติบุคคล กรรมการจึงต้องรับผิดชอบร่วมกัน</div>
+    <div class="note"><b>สิทธิทางภาษีของผู้บริจาค</b>ผู้บริจาคไม่สามารถลดหย่อนภาษีได้ เนื่องจากกองทุนไม่ได้จดทะเบียนเป็นองค์การสาธารณกุศล</div>
+    <div class="note"><b>การเก็บเอกสาร</b>เก็บเอกสารและหลักฐานทางการเงินไว้เป็นหลักฐานอย่างน้อย ๕ ปี</div>
+    <div class="note"><b>การรายงาน</b>รายงานผลการดำเนินงานต่อผู้สนับสนุนอย่างน้อยปีละ ๑ ครั้ง</div>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <div class="hd">
+    <p class="eb">ส่วนที่ ๕</p>
+    <h2>ประเด็นค้างที่ต้องตัดสินใจก่อนลงนาม</h2>
+    <p>รายการที่ยังไม่ได้ข้อยุติ เมื่อได้ข้อสรุปแล้วให้ปรับสถานะเอกสารในส่วนที่ ๑ ตาม</p>
+  </div>
+  <div class="open"><div class="tblwrap"><table>
+    <thead><tr><th style="width:15rem">ประเด็น</th><th>สาระ</th><th style="width:9rem">ต้องถามใคร</th></tr></thead>
+    <tbody>
+      <tr><td>อำนาจอนุมัติจ่ายเงิน</td><td>เอกสารชุดนี้ให้ประธานกรรมการซึ่งเป็นบุคคลภายนอกอนุมัติจ่ายและร่วมลงนามสั่งจ่ายบัญชี ขณะที่ระเบียบกระทรวงการคลัง พ.ศ. ๒๕๒๖ ข้อ ๙ กำหนดให้อำนาจอนุมัติจ่ายเป็นของหัวหน้าส่วนราชการ</td><td>ผู้อำนวยการ · เจ้าหน้าที่การเงิน</td></tr>
+      <tr><td>บัญชีธนาคารในชื่อกองทุน</td><td>กองทุนไม่เป็นนิติบุคคล จึงเปิดบัญชีในชื่อกองทุนไม่ได้ ต้องเปิดในชื่อบุคคล ซึ่งทำให้เงินตกอยู่ในความรับผิดส่วนตัวของผู้ถือบัญชี</td><td>ธนาคาร · เจ้าหน้าที่การเงิน</td></tr>
+      <tr><td>สิทธิลดหย่อนภาษี ๒ เท่า</td><td>บริจาคผ่านโรงเรียนในฐานะสถานศึกษาของรัฐ ผู้บริจาคใช้สิทธิลดหย่อนได้ ๒ เท่าผ่านระบบ e-Donation แต่บริจาคเข้ากองทุนเอกชนไม่ได้สิทธินี้ ซึ่งกระทบต่อการระดมทุนโดยตรง</td><td>สรรพากรพื้นที่</td></tr>
+      <tr><td>การใช้ชื่อโรงเรียนระดมทุน</td><td>เอกสารฉบับที่ ๓ ให้โรงเรียนยินยอมให้ใช้ชื่อระดมทุนโดยโรงเรียนไม่รับผิดชอบทางการเงิน ควรตรวจสอบกับระเบียบว่าด้วยการเรี่ยไรของหน่วยงานของรัฐก่อน</td><td>ผู้อำนวยการ · สพม.กท.</td></tr>
+      <tr><td>ปี พ.ศ. ของระเบียบที่อ้างอิง</td><td>คู่มืออ้างระเบียบกระทรวงศึกษาธิการ ว่าด้วยการรับเงินหรือทรัพย์สินที่มีผู้บริจาคให้แก่สถานศึกษา พ.ศ. ๒๕๕๐ ให้ยืนยันฉบับที่ใช้บังคับอยู่ปัจจุบันก่อนพิมพ์</td><td>เจ้าหน้าที่การเงิน</td></tr>
+      <tr><td>การอ้างมาตราในประมวลกฎหมายแพ่งฯ</td><td>คู่มือระบุมาตรา ๑๑๐ ว่าด้วยสมาคม และมาตรา ๑๖๕ ว่าด้วยนิติบุคคล ให้ตรวจทานเลขมาตราอีกครั้งก่อนนำไปอ้างในเอกสารที่ต้องลงนาม</td><td>นิติกร สพม.กท.</td></tr>
+    </tbody>
+  </table></div></div>
+</div></section>
+
+</main>
+
+<footer><div class="wrap">
+  <p><b>แดชบอร์ดกองทุน · แผนการเรียนเตรียมทหาร–ตำรวจ</b><br>
+  โรงเรียนมัธยมวัดหนองแขม · ๔๔๓ ถนนเลียบคลองภาษีเจริญฝั่งใต้ แขวงหนองแขม เขตหนองแขม กรุงเทพมหานคร ๑๐๑๖๐ · โทรศัพท์ ๐๒-๔๒๙-๓๔๐๒</p>
+  <p style="margin-top:.8rem">สถานะทั้งหมดบันทึกไว้ในเบราว์เซอร์เครื่องนี้เท่านั้น ไม่มีการส่งข้อมูลออกไปยังเซิร์ฟเวอร์ใด ๆ หากเปลี่ยนเครื่องหรือล้างข้อมูลเบราว์เซอร์ สถานะจะกลับเป็นค่าเริ่มต้น</p>
+</div></footer>
+
+<script>
+"use strict";
+const TH_D = "๐๑๒๓๔๕๖๗๘๙";
+const thNum = s => String(s ?? "").replace(/[0-9]/g, d => TH_D[+d]);
+const $ = s => document.querySelector(s);
+
+const DOCS = [
+  { n:"๑", t:"บันทึกข้อตกลงจัดตั้งกองทุนเอกชนเพื่อสนับสนุนการศึกษา",
+    b:["บันทึกข้อตกลงระหว่างผู้ร่วมก่อตั้งกองทุน ๔ ฝ่าย","ระบุชื่อ วัตถุประสงค์ โครงสร้าง การรับเงิน การเบิกจ่าย การรายงานผล","มีผลผูกพันทางกฎหมายระหว่างคู่สัญญา"],
+    flag:"ตรวจสอบอำนาจอนุมัติจ่ายกับระเบียบกระทรวงการคลังก่อนลงนาม" },
+  { n:"๒", t:"ข้อบังคับกองทุนส่งเสริมศักยภาพนักเรียนเตรียมทหารและสายอาชีพความมั่นคง",
+    b:["ข้อบังคับ ๗ หมวด ๒๕ ข้อ","ครอบคลุมทุกด้านของการบริหารจัดการกองทุน","ใช้เป็นแนวทางปฏิบัติอย่างเป็นทางการ"],
+    flag:"มีฉบับแก้ไข ๗ หมวด ๓๑ ข้อ ที่ปรับให้ผู้อำนวยการเป็นผู้อนุมัติจ่ายแล้ว ต้องเลือกว่าจะใช้ฉบับใด" },
+  { n:"๓", t:"บันทึกข้อตกลงความร่วมมือกับโรงเรียนมัธยมวัดหนองแขม",
+    b:["บันทึกความร่วมมือระหว่างกองทุนกับโรงเรียน","โรงเรียนยินยอมให้ใช้ชื่อในการระดมทุน","โรงเรียนไม่ต้องรับผิดชอบทางการเงิน"],
+    flag:"ตรวจสอบกับระเบียบว่าด้วยการเรี่ยไรของหน่วยงานของรัฐก่อนลงนาม" },
+  { n:"๔", t:"แบบฟอร์มใบเสร็จรับเงินกองทุน",
+    b:["ใบเสร็จรับเงิน ๒ รูปแบบ ธรรมดาและแบบมีรายละเอียด","แบบบันทึกการรับเงินรายวัน","ระบุชัดเจนว่าไม่สามารถลดหย่อนภาษีได้"],
+    flag:"หากรับเงินผ่านโรงเรียน ต้องใช้ใบเสร็จของทางราชการที่มีเลขที่ควบคุมแทน" },
+  { n:"๕", t:"แบบฟอร์มการขอรับทุนจากกองทุน",
+    b:["แบบคำร้องขอรับทุนรายบุคคลสำหรับนักเรียน","แบบคำร้องขอรับทุนรายกิจกรรมสำหรับครู","แบบรับเงินทุน พร้อมส่วนอนุมัติจากคณะกรรมการ"],
+    flag:"เพิ่มช่องลงนามผู้ปกครองในแบบรับเงินทุน เนื่องจากผู้รับทุนเป็นผู้เยาว์" },
+  { n:"๖", t:"แบบฟอร์มบันทึกการใช้จ่ายเงินกองทุน",
+    b:["แบบบันทึกการใช้จ่ายเงินรายครั้ง","แบบสรุปการใช้จ่ายเงินรายเดือน","แบบรายงานสถานะทางการเงินรายภาคเรียน","มีระบบตรวจสอบและอนุมัติตามวงเงิน"], flag:"" },
+  { n:"๗", t:"หนังสือขอบคุณผู้บริจาค",
+    b:["หนังสือขอบคุณทั่วไป","หนังสือขอบคุณพร้อมประกาศเกียรติคุณ","ใบประกาศเกียรติคุณ","แบบบันทึกการส่งหนังสือขอบคุณ"], flag:"" },
+  { n:"๘", t:"คู่มือการดำเนินงานกองทุนฉบับสมบูรณ์",
+    b:["คู่มือ ๑๒ บท ครบทุกขั้นตอน","ตั้งแต่จัดตั้ง รับเงิน เบิกจ่าย ให้ทุน จนถึงรายงานผล","รวมกฎหมายที่เกี่ยวข้องและคำถามที่พบบ่อย"],
+    flag:"ตรวจทานปี พ.ศ. ของระเบียบและเลขมาตราที่อ้างอิงก่อนเผยแพร่" }
+];
+
+const STATUS = [
+  { v:"idle",   l:"ยังไม่เริ่ม",   cls:"p-idle", st:"" },
+  { v:"draft",  l:"ร่างแล้ว",      cls:"p-warn", st:"st-warn" },
+  { v:"review", l:"รอทบทวน",      cls:"p-crit", st:"st-crit" },
+  { v:"signed", l:"ลงนามแล้ว",    cls:"p-ok",   st:"st-ok" },
+  { v:"live",   l:"ใช้งานจริง",   cls:"p-ok",   st:"st-ok" }
+];
+
+const STEPS = [
+  { t:"พิมพ์และลงนามเอกสารจัดตั้ง", tasks:[
+    "บันทึกข้อตกลงจัดตั้งกองทุน — ผู้ร่วมก่อตั้ง ๔ ฝ่ายลงนาม",
+    "ข้อบังคับกองทุน — ประธานและกรรมการลงนาม",
+    "บันทึกข้อตกลงความร่วมมือกับโรงเรียน — ผู้อำนวยการและประธานกองทุนลงนาม" ] },
+  { t:"เปิดบัญชีธนาคาร", tasks:[
+    "รวบรวมเอกสารข้อ ๑ ถึง ๓ ประกอบการเปิดบัญชี",
+    "ยืนยันกับธนาคารว่าเปิดบัญชีในชื่อใดได้บ้าง",
+    "กำหนดผู้มีอำนาจสั่งจ่ายเป็นลายลักษณ์อักษร" ] },
+  { t:"พิมพ์แบบฟอร์มใช้งาน", tasks:[
+    "ใบเสร็จรับเงิน พิมพ์เป็นเล่มพร้อมเลขที่ควบคุม",
+    "แบบฟอร์มขอรับทุน",
+    "แบบฟอร์มบันทึกการใช้จ่าย" ] },
+  { t:"เริ่มรับเงินบริจาค", tasks:[
+    "ออกใบเสร็จรับเงินทุกครั้งที่รับเงิน",
+    "ส่งหนังสือขอบคุณภายใน ๗ วัน",
+    "นำเงินฝากธนาคารภายใน ๓ วัน" ] },
+  { t:"เริ่มให้ทุนและสนับสนุนกิจกรรม", tasks:[
+    "รับคำร้องขอรับทุนจากนักเรียนและครู",
+    "พิจารณาอนุมัติตามวงเงินที่กำหนด",
+    "บันทึกการใช้จ่ายและติดตามผลการใช้ทุน" ] }
+];
+
+const KEY_D = "nk_dash_docs", KEY_S = "nk_dash_steps", KEY_T = "nk_dash_time";
+let sd = JSON.parse(localStorage.getItem(KEY_D) || "{}");
+let ss = JSON.parse(localStorage.getItem(KEY_S) || "{}");
+
+function stamp(){
+  const d = new Date();
+  const t = `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear() + 543}`;
+  localStorage.setItem(KEY_T, t);
+  $("#kDate").textContent = thNum(t);
+}
+
+function renderDocs(){
+  $("#docs").innerHTML = DOCS.map((d, i) => {
+    const s = STATUS.find(x => x.v === (sd[i] || "idle"));
+    return `<article class="doc ${s.st}">
+      <div class="top-row"><span class="no">${d.n}</span><h3>${d.t}</h3></div>
+      <ul>${d.b.map(x => `<li>${x}</li>`).join("")}</ul>
+      ${d.flag ? `<div class="flag"><b>ต้องตรวจก่อน:</b> ${d.flag}</div>` : ""}
+      <div class="foot">
+        <span class="pill ${s.cls}">${s.l}</span>
+        <select data-i="${i}" aria-label="สถานะเอกสารฉบับที่ ${d.n}">
+          ${STATUS.map(x => `<option value="${x.v}"${x.v === s.v ? " selected" : ""}>${x.l}</option>`).join("")}
+        </select>
+      </div>
+    </article>`;
+  }).join("");
+  $("#docs").querySelectorAll("select").forEach(el => el.addEventListener("change", e => {
+    sd[e.target.dataset.i] = e.target.value;
+    localStorage.setItem(KEY_D, JSON.stringify(sd));
+    stamp(); renderDocs(); renderKPI();
+  }));
+}
+
+function renderSteps(){
+  $("#steps").innerHTML = STEPS.map((s, i) => {
+    const done = s.tasks.filter((_, j) => ss[i + "_" + j]).length;
+    return `<article class="step ${done === s.tasks.length ? "done" : ""}">
+      <div class="sh"><span class="sn">${thNum(i + 1)}</span><h3>${s.t}</h3>
+      <span class="cnt">${thNum(done)} / ${thNum(s.tasks.length)}</span></div>
+      ${s.tasks.map((t, j) => `<label class="task ${ss[i + "_" + j] ? "on" : ""}">
+        <input type="checkbox" data-k="${i}_${j}"${ss[i + "_" + j] ? " checked" : ""}><span>${t}</span></label>`).join("")}
+    </article>`;
+  }).join("");
+  $("#steps").querySelectorAll("input").forEach(el => el.addEventListener("change", e => {
+    ss[e.target.dataset.k] = e.target.checked;
+    localStorage.setItem(KEY_S, JSON.stringify(ss));
+    stamp(); renderSteps(); renderKPI();
+  }));
+}
+
+function renderKPI(){
+  const ready = DOCS.filter((_, i) => ["signed", "live"].includes(sd[i])).length;
+  const started = DOCS.filter((_, i) => sd[i] && sd[i] !== "idle").length;
+  const totalTasks = STEPS.reduce((a, s) => a + s.tasks.length, 0);
+  const doneTasks = STEPS.reduce((a, s, i) => a + s.tasks.filter((_, j) => ss[i + "_" + j]).length, 0);
+  const fullSteps = STEPS.filter((s, i) => s.tasks.every((_, j) => ss[i + "_" + j])).length;
+  const pct = Math.round(((ready / DOCS.length) * 0.5 + (doneTasks / totalTasks) * 0.5) * 100);
+  $("#kOverall").textContent = thNum(pct) + "%";
+  $("#kBar").style.width = pct + "%";
+  $("#kOverallSub").textContent = pct === 0 ? "ยังไม่เริ่ม"
+    : pct < 40 ? "อยู่ระหว่างจัดเตรียมเอกสาร"
+    : pct < 80 ? "เดินหน้าแล้วครึ่งทาง" : "ใกล้เดินระบบได้เต็มรูป";
+  $("#kDocs").textContent = thNum(ready) + " / " + thNum(DOCS.length);
+  $("#kSteps").textContent = thNum(fullSteps) + " / " + thNum(STEPS.length);
+  document.querySelector("#kDocs").nextElementSibling.textContent =
+    started > ready ? `กำลังดำเนินการอีก ${thNum(started - ready)} ฉบับ` : "ลงนามแล้วหรือใช้งานจริง";
+  $("#kOpen").textContent = thNum(document.querySelectorAll(".open tbody tr").length);
+}
+
+$("#btnPrint").onclick = () => window.print();
+$("#btnResetDocs").onclick = () => { if (confirm("ล้างสถานะเอกสารทั้ง ๘ ฉบับ?")){ sd = {}; localStorage.setItem(KEY_D, "{}"); renderDocs(); renderKPI(); } };
+$("#btnResetSteps").onclick = () => { if (confirm("ล้างรายการที่ติ๊กไว้ทั้งหมด?")){ ss = {}; localStorage.setItem(KEY_S, "{}"); renderSteps(); renderKPI(); } };
+
+$("#kDate").textContent = thNum(localStorage.getItem(KEY_T) || "—");
+renderDocs(); renderSteps(); renderKPI();
+</script>
+</body>
+</html>
