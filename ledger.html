@@ -1,0 +1,544 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ทะเบียนกลาง | แผนเตรียมทหาร มัธยมวัดหนองแขม</title>
+<meta name="description" content="ฐานข้อมูลกลางของกองทุน — ทะเบียนหนังสือเข้า–ออก และบัญชีรับ–จ่าย เชื่อมกับ Google Sheets">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%2310305F'/><text y='72' x='50' text-anchor='middle' font-size='62' fill='%23F5B722' font-family='sans-serif' font-weight='bold'>นข</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&family=Bai+Jamjuree:wght@500;600;700&display=swap">
+<style>
+:root{
+  --navy:#10305F; --navy-2:#1B4A8F; --navy-3:#2C63B0;
+  --gold:#F5B722; --gold-2:#FFD152; --gold-ink:#8A6410; --gold-ghost:rgba(245,183,34,.15);
+  --ground:#EDF4FD; --surface:#FFFFFF; --surface-2:#DCE9F9;
+  --ink:#0F2140; --ink-2:#3D5375; --ink-3:#5F7492;
+  --rule:#C7DCF3; --rule-2:#9CBADF;
+  --ok:#1F7A5A; --ok-bg:rgba(31,122,90,.11);
+  --warn:#B45D12; --warn-bg:rgba(180,93,18,.11);
+  --crit:#A32B2B; --crit-bg:rgba(163,43,43,.10);
+  --ui:'Bai Jamjuree','Sarabun',system-ui,sans-serif;
+  --body:'Sarabun',system-ui,sans-serif;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --ground:#0A1526; --surface:#132034; --surface-2:#1C2B42;
+    --ink:#E6EBF3; --ink-2:#AFBACC; --ink-3:#8391A6;
+    --rule:#26344E; --rule-2:#3E506F;
+    --navy:#0A1830; --navy-2:#22508F; --navy-3:#6EA1E8;
+    --gold:#FFC72C; --gold-2:#FFD766; --gold-ink:#FFC72C; --gold-ghost:rgba(255,199,44,.14);
+    --ok:#5FBF97; --ok-bg:rgba(95,191,151,.14);
+    --warn:#E09550; --warn-bg:rgba(224,149,80,.14);
+    --crit:#E38A8A; --crit-bg:rgba(227,138,138,.14);
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#0A1526; --surface:#132034; --surface-2:#1C2B42;
+  --ink:#E6EBF3; --ink-2:#AFBACC; --ink-3:#8391A6;
+  --rule:#26344E; --rule-2:#3E506F;
+  --navy:#0A1830; --navy-2:#22508F; --navy-3:#6EA1E8;
+  --gold:#FFC72C; --gold-2:#FFD766; --gold-ink:#FFC72C; --gold-ghost:rgba(255,199,44,.14);
+  --ok:#5FBF97; --ok-bg:rgba(95,191,151,.14);
+  --warn:#E09550; --warn-bg:rgba(224,149,80,.14);
+  --crit:#E38A8A; --crit-bg:rgba(227,138,138,.14);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--body);font-size:15.5px;line-height:1.7;-webkit-font-smoothing:antialiased}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--navy-3);outline-offset:2px;border-radius:5px}
+.wrap{max-width:78rem;margin-inline:auto;padding-inline:clamp(.9rem,3vw,2rem)}
+p{margin:0}
+a{color:var(--navy-3)}
+
+.top{background:var(--navy);color:#fff;border-bottom:3px solid var(--gold);position:sticky;top:0;z-index:40}
+.top-in{display:flex;align-items:center;gap:.9rem;padding:.6rem clamp(.8rem,2vw,1.4rem);flex-wrap:wrap}
+.mark{width:2.35rem;height:2.35rem;flex:none;background:var(--gold);color:var(--navy);display:grid;place-items:center;font-family:var(--ui);font-weight:700;font-size:.8rem;clip-path:polygon(50% 0,100% 24%,100% 76%,50% 100%,0 76%,0 24%)}
+.title{line-height:1.25;min-width:0}
+.title b{display:block;font-family:var(--ui);font-weight:600;font-size:.98rem;color:#fff}
+.title span{font-size:.76rem;color:#B6C6E0}
+.top .spacer{margin-inline-start:auto}
+.tabs{display:flex;gap:.25rem}
+.tabs a{font-family:var(--ui);font-weight:600;font-size:.83rem;text-decoration:none;color:#C6D4EA;padding:.4rem .85rem;border-radius:5px;border:1px solid transparent}
+.tabs a:hover{background:rgba(255,255,255,.1);color:#fff}
+.tabs a[aria-current]{background:var(--gold);color:var(--navy)}
+.tbtn{font-family:var(--ui);font-weight:600;font-size:.82rem;background:transparent;color:#D7E2F4;border:1px solid rgba(255,255,255,.28);padding:.4rem .8rem;border-radius:5px;cursor:pointer}
+.tbtn:hover{background:rgba(255,255,255,.1);color:#fff}
+.dot{width:.5rem;height:.5rem;border-radius:50%;display:inline-block;margin-inline-end:.35rem;background:#7C8DA8}
+.dot.on{background:#4ED08D}.dot.off{background:#E5736B}
+
+.band{background:var(--navy);color:#fff;padding:0 0 1.6rem}
+.bandgrid{display:grid;gap:1px;background:rgba(255,255,255,.16);grid-template-columns:repeat(auto-fit,minmax(10.5rem,1fr));border:1px solid rgba(255,255,255,.16);border-radius:10px;overflow:hidden}
+.kpi{background:var(--navy);padding:.9rem 1.05rem}
+.kpi .l{font-family:var(--ui);font-size:.72rem;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:#93A9CC}
+.kpi .v{font-family:var(--ui);font-weight:700;font-size:1.6rem;line-height:1.15;color:var(--gold-2);font-variant-numeric:tabular-nums;margin-top:.1rem}
+.kpi .s{font-size:.78rem;color:#9DB0CE;line-height:1.5}
+.kpi.warnv .v{color:#FF9E8A}
+
+section{padding:1.8rem 0}
+section + section{border-top:1px solid var(--rule)}
+.hd{margin-bottom:1rem}
+.hd .eb{font-family:var(--ui);font-size:.72rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--gold-ink);margin-bottom:.3rem}
+.hd h2{font-family:var(--ui);font-weight:700;font-size:clamp(1.2rem,2.5vw,1.5rem);margin:0 0 .3rem;line-height:1.3}
+.hd p{font-size:.92rem;color:var(--ink-2);max-width:70ch}
+
+.panel{background:var(--surface);border:1px solid var(--rule);border-radius:10px;padding:1rem 1.1rem;box-shadow:0 1px 3px rgba(16,48,95,.07)}
+.grid2{display:grid;gap:.7rem;grid-template-columns:repeat(auto-fit,minmax(13rem,1fr))}
+.field{display:flex;flex-direction:column;gap:.2rem}
+.field label{font-family:var(--ui);font-size:.78rem;font-weight:500;color:var(--ink-2)}
+.field input,.field select,.field textarea{background:var(--ground);border:1px solid var(--rule);border-radius:5px;padding:.42rem .55rem;font-size:.88rem;width:100%}
+.field textarea{min-height:3.4rem;resize:vertical}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--navy-3);background:var(--surface)}
+.field .hint{font-size:.73rem;color:var(--ink-3);line-height:1.5}
+.acts{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.9rem;align-items:center}
+.btn{font-family:var(--ui);font-weight:600;font-size:.85rem;border:1px solid var(--navy-2);background:var(--navy-2);color:#fff;padding:.45rem 1rem;border-radius:5px;cursor:pointer}
+.btn:hover{background:var(--navy-3);border-color:var(--navy-3)}
+.btn.sec{background:transparent;color:var(--navy-3);border-color:var(--rule-2)}
+.btn.sec:hover{background:var(--gold-ghost)}
+.btn.gold{background:var(--gold);border-color:var(--gold);color:var(--navy)}
+.btn.gold:hover{background:var(--gold-2)}
+.btn[disabled]{opacity:.5;cursor:not-allowed}
+.msg{font-size:.85rem;line-height:1.6;padding:.5rem .7rem;border-radius:5px;margin-top:.7rem;display:none}
+.msg.show{display:block}
+.msg.ok{background:var(--ok-bg);color:var(--ok)}
+.msg.err{background:var(--crit-bg);color:var(--crit)}
+.msg.info{background:var(--gold-ghost);color:var(--gold-ink)}
+
+.subtabs{display:flex;gap:.3rem;flex-wrap:wrap;margin-bottom:1rem}
+.subtabs button{font-family:var(--ui);font-weight:600;font-size:.85rem;background:var(--surface);border:1px solid var(--rule);color:var(--ink-2);padding:.42rem .95rem;border-radius:999px;cursor:pointer}
+.subtabs button[aria-selected="true"]{background:var(--navy);border-color:var(--navy);color:#fff}
+
+.tblwrap{overflow-x:auto;border:1px solid var(--rule);border-radius:10px;background:var(--surface);margin-top:.9rem}
+table{border-collapse:collapse;width:100%;min-width:52rem;font-size:.86rem}
+th,td{padding:.48rem .7rem;text-align:start;border-bottom:1px solid var(--rule);vertical-align:top;white-space:nowrap}
+td.wrap{white-space:normal;min-width:16rem}
+thead th{font-family:var(--ui);font-weight:600;font-size:.77rem;color:var(--ink-2);background:var(--surface-2);position:sticky;top:0}
+tbody tr:last-child td{border-bottom:none}
+tbody tr:hover{background:var(--gold-ghost)}
+td.n{text-align:end;font-variant-numeric:tabular-nums}
+.pill{display:inline-flex;align-items:center;gap:.3rem;font-family:var(--ui);font-weight:600;font-size:.74rem;padding:.12rem .5rem;border-radius:999px;white-space:nowrap}
+.p-in{color:var(--ok);background:var(--ok-bg)}
+.p-out{color:var(--crit);background:var(--crit-bg)}
+.p-wait{color:var(--warn);background:var(--warn-bg)}
+.p-done{color:var(--ok);background:var(--ok-bg)}
+.p-void{color:var(--ink-3);background:rgba(120,135,160,.13);text-decoration:line-through}
+.rowbtn{font-family:var(--ui);font-size:.76rem;font-weight:600;background:none;border:1px solid var(--rule-2);color:var(--ink-2);border-radius:5px;padding:.15rem .5rem;cursor:pointer}
+.rowbtn:hover{border-color:var(--crit);color:var(--crit)}
+.empty{padding:1.6rem;text-align:center;color:var(--ink-3);font-size:.9rem}
+.note{background:var(--gold-ghost);border-inline-start:4px solid var(--gold);border-radius:0 8px 8px 0;padding:.7rem .85rem;font-size:.87rem;line-height:1.65;color:var(--ink-2);margin-top:1rem}
+.note b{color:var(--ink);font-weight:600}
+.note.risk{background:var(--crit-bg);border-color:var(--crit)}
+footer{background:var(--navy);color:#9DB0CE;padding:1.5rem 0 2.2rem;font-size:.85rem;line-height:1.7;margin-top:1rem}
+footer b{color:#fff}
+</style>
+</head>
+<body>
+
+<header class="top"><div class="top-in">
+  <span class="mark">นข</span>
+  <span class="title"><b>ทะเบียนกลาง</b><span>ฐานข้อมูลหนังสือและบัญชีของกองทุน</span></span>
+  <span class="spacer"></span>
+  <nav class="tabs">
+    <a href="index.html">ศูนย์เอกสาร</a>
+    <a href="dashboard.html">แดชบอร์ด</a>
+    <a href="ledger.html" aria-current="page">ทะเบียนกลาง</a>
+  </nav>
+  <button class="tbtn" id="btnConn" type="button"><span class="dot" id="connDot"></span><span id="connTxt">ยังไม่เชื่อมต่อ</span></button>
+  <button class="tbtn" id="btnRefresh" type="button">รีเฟรช</button>
+</div></header>
+
+<div class="band"><div class="wrap">
+  <div class="bandgrid">
+    <div class="kpi"><div class="l">รายรับรวม</div><div class="v" id="kIn">—</div><div class="s">บาท</div></div>
+    <div class="kpi"><div class="l">รายจ่ายรวม</div><div class="v" id="kOut">—</div><div class="s">บาท</div></div>
+    <div class="kpi"><div class="l">คงเหลือ</div><div class="v" id="kBal">—</div><div class="s">บาท</div></div>
+    <div class="kpi"><div class="l">หนังสือทั้งหมด</div><div class="v" id="kDoc">—</div><div class="s" id="kDocSub">ฉบับ</div></div>
+    <div class="kpi warnv"><div class="l">รายจ่ายไม่มีหลักฐาน</div><div class="v" id="kNoEv">—</div><div class="s">ต้องเป็น ๐</div></div>
+    <div class="kpi warnv"><div class="l">เงินสดยังไม่นำฝาก</div><div class="v" id="kNoDep">—</div><div class="s">รายการ</div></div>
+  </div>
+</div></div>
+
+<main>
+
+<!-- ─── การเชื่อมต่อ ─── -->
+<section id="conn" hidden><div class="wrap">
+  <div class="hd">
+    <p class="eb">ตั้งค่า</p>
+    <h2>เชื่อมต่อฐานข้อมูล Google Sheets</h2>
+    <p>กรอกครั้งเดียว เก็บไว้ในเบราว์เซอร์เครื่องนี้ · วิธีติดตั้งฝั่ง Google อยู่ในไฟล์ <code>apps-script/README.md</code> ในคลังโค้ด</p>
+  </div>
+  <div class="panel">
+    <div class="grid2">
+      <div class="field" style="grid-column:1/-1"><label for="cfgUrl">URL ของ Web App (ลงท้ายด้วย /exec)</label>
+        <input id="cfgUrl" type="url" placeholder="https://script.google.com/macros/s/..../exec"></div>
+      <div class="field"><label for="cfgToken">รหัสเข้าใช้งาน (ต้องตรงกับ TOKEN ในสคริปต์)</label>
+        <input id="cfgToken" type="text" placeholder="nk-cadet-2569-..."></div>
+      <div class="field"><label for="cfgUser">ชื่อผู้บันทึก</label>
+        <input id="cfgUser" type="text" placeholder="ชื่อ–สกุล หรือชื่อเล่น"></div>
+    </div>
+    <div class="acts">
+      <button class="btn" id="btnSave" type="button">บันทึกและทดสอบการเชื่อมต่อ</button>
+      <button class="btn sec" id="btnSetup" type="button">สร้าง / ซ่อมตารางฐานข้อมูล</button>
+    </div>
+    <div class="msg" id="connMsg"></div>
+    <div class="note risk">
+      <b>ข้อควรระวังเรื่องข้อมูลส่วนบุคคล</b><br>
+      Web App นี้เปิดให้เรียกได้จากอินเทอร์เน็ตโดยใช้รหัสเข้าใช้งานที่ฝังอยู่ในหน้าเว็บ จึงกันคนทั่วไปได้ระดับหนึ่ง แต่ไม่ใช่ระบบล็อกอินที่แท้จริง
+      <b>อย่าบันทึกข้อมูลสุขภาพนักเรียน เลขบัตรประชาชน หรือข้อมูลฐานะทางเศรษฐกิจรายบุคคลลงในฐานข้อมูลนี้</b>
+      ข้อมูลเหล่านั้นให้เก็บไว้ในสมุดบัญชีและแฟ้มออฟไลน์เท่านั้น สำหรับทุนนักเรียนให้บันทึกในช่องคู่กรณีเป็นรหัสหรืออักษรย่อ
+    </div>
+  </div>
+</div></section>
+
+<!-- ─── ทะเบียน ─── -->
+<section><div class="wrap">
+  <div class="subtabs" role="tablist">
+    <button role="tab" aria-selected="true"  data-view="doc">ทะเบียนหนังสือเข้า–ออก</button>
+    <button role="tab" aria-selected="false" data-view="acc">บัญชีรับ–จ่าย</button>
+  </div>
+
+  <!-- ทะเบียนหนังสือ -->
+  <div id="viewDoc">
+    <div class="hd">
+      <p class="eb">ทะเบียนหนังสือ</p>
+      <h2>บันทึกหนังสือเข้า หนังสือออก และเอกสารทุกฉบับของกองทุน</h2>
+      <p>ทุกฉบับที่พิมพ์จากศูนย์เอกสาร ควรบันทึกลงที่นี่ด้วย เพื่อให้มีทะเบียนกลางที่ค้นย้อนหลังได้</p>
+    </div>
+    <div class="panel">
+      <div class="grid2">
+        <div class="field"><label for="dType">ประเภท</label><select id="dType">
+          <option>หนังสือเข้า</option><option>หนังสือออก</option><option>บันทึกภายใน</option>
+          <option>ใบเสร็จรับเงิน</option><option>ใบสำคัญจ่ายเงิน</option><option>หนังสือขอบคุณ</option>
+          <option>ใบประกาศเกียรติคุณ</option><option>แบบฟอร์มนักเรียน</option><option>รายงานการเงิน</option>
+        </select></div>
+        <div class="field"><label for="dNo">เลขที่</label>
+          <input id="dNo" type="text" placeholder="กดปุ่มขอเลขที่ หรือพิมพ์เอง"></div>
+        <div class="field"><label for="dDate">วันที่</label><input id="dDate" type="date"></div>
+        <div class="field"><label for="dCat">หมวดงาน</label><select id="dCat">
+          <option>งานกองทุน</option><option>งานบัญชี</option><option>งานนักเรียน</option>
+          <option>งานประชาสัมพันธ์</option><option>งานธุรการทั่วไป</option>
+        </select></div>
+        <div class="field" style="grid-column:1/-1"><label for="dSubj">เรื่อง</label>
+          <input id="dSubj" type="text" placeholder="เช่น ขออนุมัติใช้เงินกองทุนเพื่อค่าเดินทางไปเรียนว่ายน้ำ"></div>
+        <div class="field"><label for="dParty">จาก / ถึง</label>
+          <input id="dParty" type="text" placeholder="ชื่อหน่วยงานหรือบุคคล"></div>
+        <div class="field"><label for="dOwner">ผู้รับผิดชอบ</label><input id="dOwner" type="text"></div>
+        <div class="field"><label for="dStatus">สถานะ</label><select id="dStatus">
+          <option>รอดำเนินการ</option><option>รอลงนาม</option><option>ดำเนินการแล้ว</option><option>จัดเก็บเข้าแฟ้ม</option>
+        </select></div>
+        <div class="field"><label for="dAmt">จำนวนเงินที่เกี่ยวข้อง (ถ้ามี)</label>
+          <input id="dAmt" type="number" step="0.01" placeholder="0.00"></div>
+        <div class="field"><label for="dLink">ลิงก์ไฟล์ใน Google Drive (ถ้ามี)</label><input id="dLink" type="url"></div>
+        <div class="field"><label for="dRef">อ้างถึง</label><input id="dRef" type="text" placeholder="เลขที่หนังสือฉบับก่อน"></div>
+        <div class="field" style="grid-column:1/-1"><label for="dNote">หมายเหตุ</label><input id="dNote" type="text"></div>
+      </div>
+      <div class="acts">
+        <button class="btn gold" id="dGetNo" type="button">ขอเลขที่อัตโนมัติ</button>
+        <button class="btn" id="dAdd" type="button">บันทึกลงทะเบียน</button>
+        <button class="btn sec" id="dClear" type="button">ล้างฟอร์ม</button>
+      </div>
+      <div class="msg" id="dMsg"></div>
+    </div>
+    <div class="acts">
+      <div class="field" style="flex:1;min-width:14rem"><input id="dSearch" type="search" placeholder="ค้นหาในทะเบียนหนังสือ…"></div>
+      <button class="btn sec" id="dFind" type="button">ค้นหา</button>
+    </div>
+    <div class="tblwrap"><table id="dTable"><thead><tr>
+      <th>เลขที่</th><th>ประเภท</th><th>วันที่</th><th>เรื่อง</th><th>จาก / ถึง</th>
+      <th>ผู้รับผิดชอบ</th><th>สถานะ</th><th class="n">จำนวนเงิน</th><th>ไฟล์</th><th></th>
+    </tr></thead><tbody></tbody></table><div class="empty" id="dEmpty">ยังไม่ได้เชื่อมต่อฐานข้อมูล</div></div>
+  </div>
+
+  <!-- บัญชี -->
+  <div id="viewAcc" hidden>
+    <div class="hd">
+      <p class="eb">บัญชีรับ–จ่าย</p>
+      <h2>บันทึกรายรับและรายจ่ายของกองทุน</h2>
+      <p>ยอดคงเหลือคำนวณจากรายการทั้งหมดในฐานข้อมูล · รายการที่ยกเลิกจะไม่ถูกนับ แต่ยังเก็บไว้ให้ตรวจสอบย้อนหลังได้</p>
+    </div>
+    <div class="panel">
+      <div class="grid2">
+        <div class="field"><label for="aType">ประเภท</label><select id="aType">
+          <option value="รับ">รับเงิน</option><option value="จ่าย">จ่ายเงิน</option></select></div>
+        <div class="field"><label for="aDate">วันที่</label><input id="aDate" type="date"></div>
+        <div class="field"><label for="aNo">เลขที่เอกสาร</label>
+          <input id="aNo" type="text" placeholder="เลขที่ใบเสร็จ หรือใบสำคัญจ่าย"></div>
+        <div class="field"><label for="aCat">หมวด</label><select id="aCat"></select></div>
+        <div class="field"><label for="aParty">คู่กรณี (ผู้บริจาค / ผู้รับเงิน)</label>
+          <input id="aParty" type="text" placeholder="ชื่อผู้บริจาคหรือร้านค้า"></div>
+        <div class="field"><label for="aAmt">จำนวนเงิน (บาท)</label>
+          <input id="aAmt" type="number" step="0.01" placeholder="0.00"></div>
+        <div class="field"><label for="aWay">วิธีรับ–จ่าย</label><select id="aWay">
+          <option>เงินสด</option><option>โอนเข้าบัญชี</option><option>เช็ค</option><option>สิ่งของ</option></select></div>
+        <div class="field"><label for="aEvid">เลขที่หลักฐาน</label>
+          <input id="aEvid" type="text" placeholder="ใบเสร็จร้านค้า / เลขอ้างอิงการโอน"></div>
+        <div class="field"><label for="aDep">วันที่นำฝาก (เฉพาะรับเป็นเงินสด)</label><input id="aDep" type="date"></div>
+        <div class="field" style="grid-column:1/-1"><label for="aDesc">รายละเอียด</label>
+          <input id="aDesc" type="text" placeholder="เช่น ค่าเช่ารถตู้ไป–กลับ ม.มหิดล 4 ครั้ง"></div>
+      </div>
+      <div class="acts">
+        <button class="btn" id="aAdd" type="button">บันทึกรายการ</button>
+        <button class="btn sec" id="aClear" type="button">ล้างฟอร์ม</button>
+        <span class="field hint" id="aWarn"></span>
+      </div>
+      <div class="msg" id="aMsg"></div>
+    </div>
+    <div class="acts">
+      <div class="field" style="flex:1;min-width:14rem"><input id="aSearch" type="search" placeholder="ค้นหาในบัญชี…"></div>
+      <button class="btn sec" id="aFind" type="button">ค้นหา</button>
+    </div>
+    <div class="tblwrap"><table id="aTable"><thead><tr>
+      <th>วันที่</th><th>ประเภท</th><th>เลขที่เอกสาร</th><th>หมวด</th><th>รายละเอียด</th><th>คู่กรณี</th>
+      <th class="n">จำนวนเงิน</th><th>วิธี</th><th>หลักฐาน</th><th></th>
+    </tr></thead><tbody></tbody></table><div class="empty" id="aEmpty">ยังไม่ได้เชื่อมต่อฐานข้อมูล</div></div>
+  </div>
+</div></section>
+
+</main>
+
+<footer><div class="wrap">
+  <p><b>ทะเบียนกลาง · กองทุนส่งเสริมศักยภาพนักเรียนเตรียมทหารและสายอาชีพความมั่นคง</b><br>
+  โรงเรียนมัธยมวัดหนองแขม · ๔๔๓ ถนนเลียบคลองภาษีเจริญฝั่งใต้ แขวงหนองแขม เขตหนองแขม กรุงเทพมหานคร ๑๐๑๖๐ · โทรศัพท์ ๐๒-๔๒๙-๓๔๐๒</p>
+  <p style="margin-top:.7rem">ข้อมูลทั้งหมดเก็บอยู่ใน Google Sheets ของโรงเรียน หน้าเว็บนี้เป็นเพียงหน้าจอสำหรับกรอกและค้นหา ไม่ได้เก็บข้อมูลไว้เอง · สำรองสเปรดชีตทุกสิ้นเดือน</p>
+</div></footer>
+
+<script>
+"use strict";
+const $ = s => document.querySelector(s);
+const CATS = {
+  "รับ": ["เงินบริจาคจากบุคคลธรรมดา","เงินบริจาคจากนิติบุคคล","เงินบริจาคจากหน่วยงานราชการ","เงินบริจาคจากศิษย์เก่า",
+          "เงินสนับสนุนจากองค์กรสาธารณกุศล","รายได้จากกิจกรรมระดมทุน","ดอกผลเงินฝากธนาคาร","ทุนประเดิม","รายรับอื่น"],
+  "จ่าย": ["ค่าเดินทางไปสระว่ายน้ำ","ค่าสระและครูสอนว่ายน้ำ","อุปกรณ์ฝึกสถานี","เอกสารและสำเนาข้อสอบ",
+           "ค่าสมัครสอบและเดินทางไปสนามสอบ","ทุนช่วยเหลือนักเรียนขาดแคลน","ทุนส่งเสริมความเป็นเลิศ",
+           "ประกันอุบัติเหตุและเวชภัณฑ์","กระเป๋าและชุดวอร์ม","ค่าวิทยากรและค่าตอบแทน","ค่าธรรมเนียมธนาคาร",
+           "ค่าใช้จ่ายในการบริหารกองทุน","รายจ่ายอื่น"]
+};
+let CFG = JSON.parse(localStorage.getItem("nk_api") || "{}");
+let connected = false;
+
+/* ── API ผ่าน JSONP (ไม่ติดปัญหา CORS) ── */
+function api(params, timeoutMs = 30000){
+  return new Promise((resolve, reject) => {
+    if (!CFG.url || !CFG.token) return reject(new Error("ยังไม่ได้ตั้งค่า URL หรือรหัสเข้าใช้งาน"));
+    const cb = "nkcb" + Math.random().toString(36).slice(2);
+    const qs = new URLSearchParams(Object.assign({}, params, { token: CFG.token, callback: cb }));
+    const url = CFG.url + (CFG.url.includes("?") ? "&" : "?") + qs.toString();
+    if (url.length > 7500) return reject(new Error("ข้อมูลยาวเกินไป กรุณาย่อรายละเอียดให้สั้นลง"));
+    const s = document.createElement("script");
+    const timer = setTimeout(() => { done(); reject(new Error("หมดเวลารอการตอบกลับ ตรวจสอบว่า Deploy เป็น Web App และตั้ง Who has access เป็น Anyone แล้ว")); }, timeoutMs);
+    function done(){ clearTimeout(timer); delete window[cb]; s.remove(); }
+    window[cb] = r => { done(); r && r.ok ? resolve(r.data) : reject(new Error(r && r.error ? r.error : "เกิดข้อผิดพลาดที่เซิร์ฟเวอร์")); };
+    s.onerror = () => { done(); reject(new Error("เรียก URL ไม่สำเร็จ ตรวจสอบว่า URL ลงท้ายด้วย /exec และ Deploy แล้ว")); };
+    s.src = url;
+    document.body.appendChild(s);
+  });
+}
+
+const money = n => (Number(n) || 0).toLocaleString("th-TH", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;" }[c]));
+function say(el, text, kind){ const m = $(el); m.textContent = text; m.className = "msg show " + (kind || "info"); }
+function hide(el){ $(el).className = "msg"; }
+function setConn(on, text){
+  connected = on;
+  $("#connDot").className = "dot " + (on ? "on" : "off");
+  $("#connTxt").textContent = text || (on ? "เชื่อมต่อแล้ว" : "ยังไม่เชื่อมต่อ");
+}
+
+/* ── ตั้งค่า ── */
+$("#cfgUrl").value = CFG.url || "";
+$("#cfgToken").value = CFG.token || "";
+$("#cfgUser").value = CFG.user || "";
+$("#btnConn").onclick = () => { const s = $("#conn"); s.hidden = !s.hidden; if (!s.hidden) s.scrollIntoView({ behavior: "smooth" }); };
+
+$("#btnSave").onclick = async () => {
+  CFG = { url: $("#cfgUrl").value.trim(), token: $("#cfgToken").value.trim(), user: $("#cfgUser").value.trim() };
+  localStorage.setItem("nk_api", JSON.stringify(CFG));
+  say("#connMsg", "กำลังทดสอบการเชื่อมต่อ…", "info");
+  try {
+    const d = await api({ action: "ping" });
+    setConn(true);
+    say("#connMsg", "เชื่อมต่อสำเร็จ · ปีบัญชี " + d.year + " · ตารางที่พร้อมใช้ " + d.sheets.join(", "), "ok");
+    refresh();
+  } catch (e) { setConn(false); say("#connMsg", e.message, "err"); }
+};
+
+$("#btnSetup").onclick = async () => {
+  say("#connMsg", "กำลังสร้างตาราง…", "info");
+  try { const d = await api({ action: "setup" }); say("#connMsg", "เรียบร้อย — " + d.sheets.join(" · "), "ok"); refresh(); }
+  catch (e) { say("#connMsg", e.message, "err"); }
+};
+
+/* ── แถบมุมมอง ── */
+document.querySelectorAll(".subtabs button").forEach(b => b.onclick = () => {
+  document.querySelectorAll(".subtabs button").forEach(x => x.setAttribute("aria-selected", x === b));
+  $("#viewDoc").hidden = b.dataset.view !== "doc";
+  $("#viewAcc").hidden = b.dataset.view !== "acc";
+});
+
+/* ── หมวดบัญชีตามประเภท ── */
+function fillCats(){
+  const t = $("#aType").value;
+  $("#aCat").innerHTML = CATS[t].map(c => `<option>${esc(c)}</option>`).join("");
+  $("#aDep").closest(".field").style.opacity = t === "รับ" ? 1 : .45;
+}
+$("#aType").onchange = () => { fillCats(); checkWarn(); };
+function checkWarn(){
+  const t = $("#aType").value, amt = Number($("#aAmt").value) || 0, way = $("#aWay").value;
+  let w = "";
+  if (t === "จ่าย" && amt > 10000 && way === "เงินสด") w = "รายการนี้เกินหนึ่งหมื่นบาทแต่จ่ายเป็นเงินสด ข้อ ๑๔ (๓) ให้จ่ายโดยการโอนเป็นหลัก";
+  else if (t === "จ่าย" && amt > 50000) w = "วงเงินนี้ต้องผ่านมติคณะกรรมการไม่น้อยกว่าสองในสาม";
+  else if (t === "จ่าย" && amt > 10000) w = "วงเงินนี้ต้องผ่านมติคณะกรรมการไม่น้อยกว่ากึ่งหนึ่ง";
+  $("#aWarn").textContent = w;
+  $("#aWarn").style.color = w ? "var(--warn)" : "";
+}
+$("#aAmt").oninput = checkWarn;
+$("#aWay").onchange = checkWarn;
+fillCats();
+
+const today = () => new Date().toISOString().slice(0, 10);
+$("#dDate").value = today();
+$("#aDate").value = today();
+
+/* ── ทะเบียนหนังสือ ── */
+$("#dGetNo").onclick = async () => {
+  try { const d = await api({ action: "nextNo", type: $("#dType").value }); $("#dNo").value = d.no; say("#dMsg", "ได้เลขที่ " + d.no, "ok"); }
+  catch (e) { say("#dMsg", e.message, "err"); }
+};
+$("#dAdd").onclick = async () => {
+  if (!$("#dSubj").value.trim()) return say("#dMsg", "กรุณากรอกเรื่อง", "err");
+  const row = {
+    "เลขที่": $("#dNo").value.trim(), "ประเภท": $("#dType").value, "หมวดงาน": $("#dCat").value,
+    "วันที่": $("#dDate").value, "เรื่อง": $("#dSubj").value.trim(), "จาก / ถึง": $("#dParty").value.trim(),
+    "ผู้รับผิดชอบ": $("#dOwner").value.trim() || CFG.user || "", "สถานะ": $("#dStatus").value,
+    "จำนวนเงินที่เกี่ยวข้อง": Number($("#dAmt").value) || "", "ลิงก์ไฟล์": $("#dLink").value.trim(),
+    "อ้างถึง": $("#dRef").value.trim(), "หมายเหตุ": $("#dNote").value.trim()
+  };
+  $("#dAdd").disabled = true;
+  try {
+    await api({ action: "add", table: "ทะเบียนหนังสือ", row: JSON.stringify(row), user: CFG.user || "" });
+    say("#dMsg", "บันทึกลงทะเบียนแล้ว", "ok");
+    ["dNo","dSubj","dParty","dRef","dNote","dAmt","dLink"].forEach(k => $("#" + k).value = "");
+    loadDocs(); loadSummary();
+  } catch (e) { say("#dMsg", e.message, "err"); }
+  finally { $("#dAdd").disabled = false; }
+};
+$("#dClear").onclick = () => { ["dNo","dSubj","dParty","dRef","dNote","dAmt","dLink","dOwner"].forEach(k => $("#" + k).value = ""); hide("#dMsg"); };
+$("#dFind").onclick = () => loadDocs($("#dSearch").value.trim());
+$("#dSearch").onkeydown = e => { if (e.key === "Enter") loadDocs($("#dSearch").value.trim()); };
+
+const statusPill = s => {
+  const c = s === "ยกเลิก" ? "p-void" : (s === "ดำเนินการแล้ว" || s === "จัดเก็บเข้าแฟ้ม") ? "p-done" : "p-wait";
+  return `<span class="pill ${c}">${esc(s || "-")}</span>`;
+};
+
+async function loadDocs(q){
+  if (!connected) return;
+  try {
+    const d = await api(Object.assign({ action: "list", table: "ทะเบียนหนังสือ", limit: 200 }, q ? { q } : {}));
+    const tb = $("#dTable tbody");
+    tb.innerHTML = d.rows.map(r => `<tr>
+      <td>${esc(r["เลขที่"])}</td>
+      <td><span class="pill ${r["ประเภท"] === "หนังสือเข้า" ? "p-in" : "p-out"}">${esc(r["ประเภท"])}</span></td>
+      <td>${esc(r["วันที่"])}</td>
+      <td class="wrap">${esc(r["เรื่อง"])}</td>
+      <td>${esc(r["จาก / ถึง"])}</td>
+      <td>${esc(r["ผู้รับผิดชอบ"])}</td>
+      <td>${statusPill(r["สถานะ"])}</td>
+      <td class="n">${r["จำนวนเงินที่เกี่ยวข้อง"] ? money(r["จำนวนเงินที่เกี่ยวข้อง"]) : ""}</td>
+      <td>${r["ลิงก์ไฟล์"] ? `<a href="${esc(r["ลิงก์ไฟล์"])}" target="_blank" rel="noopener">เปิด</a>` : ""}</td>
+      <td>${r["สถานะ"] === "ยกเลิก" ? "" : `<button class="rowbtn" data-void="ทะเบียนหนังสือ" data-id="${esc(r.id)}">ยกเลิก</button>`}</td>
+    </tr>`).join("");
+    $("#dEmpty").style.display = d.rows.length ? "none" : "block";
+    $("#dEmpty").textContent = d.rows.length ? "" : (q ? "ไม่พบรายการที่ค้นหา" : "ยังไม่มีรายการในทะเบียน");
+  } catch (e) { say("#dMsg", e.message, "err"); }
+}
+
+/* ── บัญชี ── */
+$("#aAdd").onclick = async () => {
+  const amt = Number($("#aAmt").value);
+  if (!amt) return say("#aMsg", "กรุณากรอกจำนวนเงิน", "err");
+  if (!$("#aDesc").value.trim()) return say("#aMsg", "กรุณากรอกรายละเอียด", "err");
+  const row = {
+    "วันที่": $("#aDate").value, "ประเภท": $("#aType").value, "เลขที่เอกสาร": $("#aNo").value.trim(),
+    "หมวด": $("#aCat").value, "รายละเอียด": $("#aDesc").value.trim(), "คู่กรณี": $("#aParty").value.trim(),
+    "จำนวนเงิน": amt, "วิธีรับ–จ่าย": $("#aWay").value, "เลขที่หลักฐาน": $("#aEvid").value.trim(),
+    "วันที่นำฝาก": $("#aType").value === "รับ" ? $("#aDep").value : "", "สถานะ": "ปกติ", "หมายเหตุ": ""
+  };
+  $("#aAdd").disabled = true;
+  try {
+    await api({ action: "add", table: "บัญชี", row: JSON.stringify(row), user: CFG.user || "" });
+    say("#aMsg", "บันทึกรายการแล้ว", "ok");
+    ["aNo","aDesc","aParty","aAmt","aEvid","aDep"].forEach(k => $("#" + k).value = "");
+    checkWarn(); loadAcc(); loadSummary();
+  } catch (e) { say("#aMsg", e.message, "err"); }
+  finally { $("#aAdd").disabled = false; }
+};
+$("#aClear").onclick = () => { ["aNo","aDesc","aParty","aAmt","aEvid","aDep"].forEach(k => $("#" + k).value = ""); hide("#aMsg"); checkWarn(); };
+$("#aFind").onclick = () => loadAcc($("#aSearch").value.trim());
+$("#aSearch").onkeydown = e => { if (e.key === "Enter") loadAcc($("#aSearch").value.trim()); };
+
+async function loadAcc(q){
+  if (!connected) return;
+  try {
+    const d = await api(Object.assign({ action: "list", table: "บัญชี", limit: 200 }, q ? { q } : {}));
+    const tb = $("#aTable tbody");
+    tb.innerHTML = d.rows.map(r => {
+      const voided = r["สถานะ"] === "ยกเลิก";
+      const needDep = r["ประเภท"] === "รับ" && r["วิธีรับ–จ่าย"] === "เงินสด" && !r["วันที่นำฝาก"];
+      return `<tr${voided ? ' style="opacity:.55"' : ""}>
+        <td>${esc(r["วันที่"])}</td>
+        <td><span class="pill ${voided ? "p-void" : r["ประเภท"] === "รับ" ? "p-in" : "p-out"}">${esc(r["ประเภท"])}</span></td>
+        <td>${esc(r["เลขที่เอกสาร"])}</td>
+        <td>${esc(r["หมวด"])}</td>
+        <td class="wrap">${esc(r["รายละเอียด"])}</td>
+        <td>${esc(r["คู่กรณี"])}</td>
+        <td class="n">${money(r["จำนวนเงิน"])}</td>
+        <td>${esc(r["วิธีรับ–จ่าย"])}${needDep ? ' <span class="pill p-wait">ยังไม่นำฝาก</span>' : ""}</td>
+        <td>${r["เลขที่หลักฐาน"] ? esc(r["เลขที่หลักฐาน"]) : (r["ประเภท"] === "จ่าย" ? '<span class="pill p-wait">ไม่มีหลักฐาน</span>' : "")}</td>
+        <td>${voided ? "" : `<button class="rowbtn" data-void="บัญชี" data-id="${esc(r.id)}">ยกเลิก</button>`}</td>
+      </tr>`;
+    }).join("");
+    $("#aEmpty").style.display = d.rows.length ? "none" : "block";
+    $("#aEmpty").textContent = d.rows.length ? "" : (q ? "ไม่พบรายการที่ค้นหา" : "ยังไม่มีรายการในบัญชี");
+  } catch (e) { say("#aMsg", e.message, "err"); }
+}
+
+/* ── ยกเลิกรายการ ── */
+document.addEventListener("click", async e => {
+  const b = e.target.closest("[data-void]");
+  if (!b) return;
+  if (!confirm("ยกเลิกรายการนี้?\n\nระบบจะไม่ลบทิ้ง แต่จะทำเครื่องหมายยกเลิกและตัดยอดเป็นศูนย์ เพื่อให้ตรวจสอบย้อนหลังได้")) return;
+  try {
+    await api({ action: "delete", table: b.dataset.void, id: b.dataset.id, user: CFG.user || "" });
+    loadDocs(); loadAcc(); loadSummary();
+  } catch (err) { alert(err.message); }
+});
+
+/* ── สรุปยอด ── */
+async function loadSummary(){
+  if (!connected) return;
+  try {
+    const s = await api({ action: "summary" });
+    $("#kIn").textContent = money(s.income);
+    $("#kOut").textContent = money(s.expense);
+    $("#kBal").textContent = money(s.balance);
+    $("#kDoc").textContent = s.documents.toLocaleString("th-TH");
+    $("#kDocSub").textContent = "รอดำเนินการ " + s.pendingDocuments + " ฉบับ";
+    $("#kNoEv").textContent = s.noEvidence;
+    $("#kNoDep").textContent = s.notDeposited;
+  } catch (e) { /* เงียบไว้ ไม่รบกวนการกรอก */ }
+}
+
+function refresh(){ loadSummary(); loadDocs(); loadAcc(); }
+$("#btnRefresh").onclick = refresh;
+
+/* ── เริ่มต้น ── */
+(async () => {
+  if (!CFG.url || !CFG.token){ setConn(false, "ยังไม่ตั้งค่า"); $("#conn").hidden = false; return; }
+  try { await api({ action: "ping" }, 20000); setConn(true); refresh(); }
+  catch (e) { setConn(false, "เชื่อมต่อไม่ได้"); $("#conn").hidden = false; say("#connMsg", e.message, "err"); }
+})();
+</script>
+</body>
+</html>
