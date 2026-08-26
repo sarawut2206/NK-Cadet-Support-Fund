@@ -1,0 +1,719 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ศูนย์เอกสารแผนเตรียมทหาร | โรงเรียนมัธยมวัดหนองแขม</title>
+<meta name="description" content="ศูนย์กลางจัดทำและพิมพ์เอกสารของแผนการเรียนเตรียมทหาร–ตำรวจ โรงเรียนมัธยมวัดหนองแขม">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%230E2A56'/><text y='72' x='50' text-anchor='middle' font-size='62' fill='%23FFC72C' font-family='sans-serif' font-weight='bold'>นข</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&family=Bai+Jamjuree:wght@500;600;700&display=swap">
+<style>
+:root{
+  --navy:#0E2A56; --navy-2:#173F7C; --navy-3:#2B579E;
+  --gold:#E8A800; --gold-2:#FFC72C; --gold-ghost:rgba(232,168,0,.12);
+  --ground:#EFF1F5; --surface:#FFFFFF; --surface-2:#E4E8F0;
+  --ink:#111C2E; --ink-2:#41506A; --ink-3:#6E7C93;
+  --rule:#C9D0DE; --rule-2:#9EA9BE;
+  --ok:#2E6B4F; --warn:#9A6B00; --bad:#9B2C2C;
+  --ui:'Bai Jamjuree','Sarabun',system-ui,sans-serif;
+  --doc:'TH SarabunPSK','TH Sarabun New','Sarabun',system-ui,serif;
+  --body:'Sarabun',system-ui,sans-serif;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --ground:#0B1220; --surface:#131C2C; --surface-2:#1C2739;
+    --ink:#E6EBF3; --ink-2:#AFBACC; --ink-3:#8391A6;
+    --rule:#26324A; --rule-2:#3B4A66;
+    --navy:#0A1830; --navy-2:#22508F; --navy-3:#4B82D8;
+    --gold:#FFC72C; --gold-2:#FFD766; --gold-ghost:rgba(255,199,44,.14);
+    --ok:#6FBF95; --warn:#E0B34D; --bad:#E08A8A;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#0B1220; --surface:#131C2C; --surface-2:#1C2739;
+  --ink:#E6EBF3; --ink-2:#AFBACC; --ink-3:#8391A6;
+  --rule:#26324A; --rule-2:#3B4A66;
+  --navy:#0A1830; --navy-2:#22508F; --navy-3:#4B82D8;
+  --gold:#FFC72C; --gold-2:#FFD766; --gold-ghost:rgba(255,199,44,.14);
+  --ok:#6FBF95; --warn:#E0B34D; --bad:#E08A8A;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--navy-3);outline-offset:2px;border-radius:3px}
+
+/* ── top bar ─────────────────────────────── */
+.top{background:var(--navy);color:#fff;border-bottom:3px solid var(--gold);position:sticky;top:0;z-index:40}
+.top-in{display:flex;align-items:center;gap:.9rem;padding:.6rem clamp(.8rem,2vw,1.4rem);flex-wrap:wrap}
+.mark{width:2.35rem;height:2.35rem;flex:none;background:var(--gold);color:var(--navy);display:grid;place-items:center;font-family:var(--ui);font-weight:700;font-size:.8rem;clip-path:polygon(50% 0,100% 24%,100% 76%,50% 100%,0 76%,0 24%)}
+.title{line-height:1.25;min-width:0}
+.title b{display:block;font-family:var(--ui);font-weight:600;font-size:.98rem;color:#fff}
+.title span{font-size:.76rem;color:#B6C6E0}
+.top .spacer{margin-inline-start:auto}
+.tbtn{font-family:var(--ui);font-weight:600;font-size:.82rem;background:transparent;color:#D7E2F4;border:1px solid rgba(255,255,255,.28);padding:.4rem .8rem;border-radius:3px;cursor:pointer}
+.tbtn:hover{background:rgba(255,255,255,.1);color:#fff}
+.tbtn.gold{background:var(--gold);color:var(--navy);border-color:var(--gold)}
+.tbtn.gold:hover{background:var(--gold-2)}
+
+/* ── layout ─────────────────────────────── */
+.app{display:grid;grid-template-columns:15rem 21rem 1fr;height:calc(100vh - 3.6rem);min-height:0}
+@media(max-width:1200px){.app{grid-template-columns:14rem 1fr;}.pane-preview{display:none}.app.showprev .pane-edit{display:none}.app.showprev .pane-preview{display:block}}
+@media(max-width:760px){.app{grid-template-columns:1fr;height:auto}.pane-list{border-inline-end:none;border-bottom:1px solid var(--rule)}}
+.pane{overflow-y:auto;min-height:0}
+.pane-list{background:var(--surface);border-inline-end:1px solid var(--rule)}
+.pane-edit{background:var(--surface);border-inline-end:1px solid var(--rule);padding:1rem 1.05rem 4rem}
+.pane-preview{background:var(--surface-2);padding:1.2rem;display:flex;justify-content:center;align-items:flex-start}
+
+.grp{font-family:var(--ui);font-size:.7rem;font-weight:600;letter-spacing:.11em;text-transform:uppercase;color:var(--ink-3);padding:1rem .95rem .35rem}
+.item{display:block;width:100%;text-align:start;background:none;border:none;border-inline-start:3px solid transparent;padding:.5rem .95rem;cursor:pointer;line-height:1.35}
+.item b{display:block;font-family:var(--ui);font-weight:500;font-size:.87rem;color:var(--ink)}
+.item span{font-size:.75rem;color:var(--ink-3)}
+.item:hover{background:var(--gold-ghost)}
+.item[aria-current="true"]{background:var(--gold-ghost);border-inline-start-color:var(--gold)}
+.item[aria-current="true"] b{color:var(--navy-3);font-weight:600}
+
+.fh{font-family:var(--ui);font-weight:600;font-size:1rem;color:var(--ink);margin:0 0 .15rem}
+.fsub{font-size:.82rem;color:var(--ink-3);margin:0 0 1rem;line-height:1.55}
+.field{margin-bottom:.7rem}
+.field label{display:block;font-family:var(--ui);font-size:.78rem;font-weight:500;color:var(--ink-2);margin-bottom:.22rem}
+.field input,.field select,.field textarea{width:100%;background:var(--ground);border:1px solid var(--rule);border-radius:3px;padding:.42rem .55rem;font-size:.88rem}
+.field textarea{min-height:5rem;resize:vertical;line-height:1.6}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--navy-3);background:var(--surface)}
+.field .hint{font-size:.73rem;color:var(--ink-3);margin-top:.2rem;line-height:1.5}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:.6rem}
+.acts{display:flex;gap:.5rem;flex-wrap:wrap;margin:1.1rem 0 .4rem}
+.btn{font-family:var(--ui);font-weight:600;font-size:.85rem;border:1px solid var(--navy-2);background:var(--navy-2);color:#fff;padding:.48rem 1rem;border-radius:3px;cursor:pointer}
+.btn:hover{background:var(--navy-3);border-color:var(--navy-3)}
+.btn.sec{background:transparent;color:var(--navy-3);border-color:var(--rule-2)}
+.btn.sec:hover{background:var(--gold-ghost);color:var(--navy-3)}
+.tip{background:var(--gold-ghost);border-inline-start:3px solid var(--gold);padding:.6rem .75rem;font-size:.8rem;color:var(--ink-2);line-height:1.6;margin-top:1rem}
+.tip b{color:var(--ink)}
+
+/* ── A4 sheet ─────────────────────────────── */
+.sheet-wrap{transform-origin:top center}
+.sheet{width:210mm;min-height:297mm;background:#fff;color:#000;padding:15mm 16mm 13mm;box-shadow:0 2px 14px rgba(6,18,40,.22);font-family:var(--doc);font-size:16pt;line-height:1.36}
+.sheet.land{width:297mm;min-height:210mm;padding:14mm 16mm}
+.sheet.tight{line-height:1.26}
+.sheet.tight small{font-size:12.5pt}
+.sheet.tight .box{padding:2mm 2.6mm;margin-top:2.2mm}
+.sheet.tight .rw{margin-bottom:1.1mm}
+.sheet.tight p{margin-bottom:1.4mm}
+.sheet *{box-sizing:border-box}
+.sheet .ctr{text-align:center}
+.sheet .rt{text-align:right}
+.sheet h1{font-size:22pt;font-weight:700;text-align:center;margin:0 0 2mm;line-height:1.25}
+.sheet h2{font-size:18pt;font-weight:700;text-align:center;margin:0 0 3mm}
+.sheet .org{text-align:center;font-size:15pt;line-height:1.35;margin-bottom:4mm}
+.sheet .org b{display:block;font-size:17pt;font-weight:700}
+.sheet .hr{border-bottom:1.2px solid #000;margin:3mm 0 4mm}
+.sheet p{margin:0 0 2mm;text-indent:0}
+.sheet p.ind{text-indent:15mm;text-align:justify}
+.sheet .meta{display:flex;justify-content:space-between;gap:6mm;font-size:15pt;margin-bottom:2mm}
+.sheet table{width:100%;border-collapse:collapse;font-size:15pt;margin:2.4mm 0}
+.sheet th,.sheet td{border:1px solid #000;padding:1.4mm 2mm;vertical-align:top}
+.sheet th{background:#EDEFF3;font-weight:700;text-align:center}
+.sheet td.n{text-align:right;white-space:nowrap}
+.sheet td.c{text-align:center;white-space:nowrap}
+.sheet .rows{margin:3mm 0}
+.sheet .rw{display:flex;gap:2mm;margin-bottom:1.6mm;align-items:baseline}
+.sheet .rw .lb{white-space:nowrap}
+.sheet .rw .vl{flex:1;border-bottom:1px dotted #444;padding-inline-start:2mm;min-height:1.4em}
+.sheet .sig{display:grid;grid-template-columns:1fr 1fr;gap:6mm 10mm;margin-top:7mm;text-align:center;font-size:15pt}
+.sheet .sig.one{grid-template-columns:1fr;max-width:80mm;margin-inline-start:auto}
+.sheet .sig div>span{display:block;line-height:1.5}
+.sheet .box{border:1.2px solid #000;padding:2.4mm 3mm;margin-top:2.8mm}
+.sheet .box .bt{font-weight:700;margin-bottom:1.5mm}
+.sheet small{font-size:13pt;line-height:1.4;display:block}
+.sheet .chk{display:inline-block;width:4.2mm;height:4.2mm;border:1.1px solid #000;margin-inline-end:1.6mm;vertical-align:-.5mm}
+.sheet .cert{border:3px double #0E2A56;padding:12mm;min-height:180mm;display:flex;flex-direction:column;justify-content:center;text-align:center}
+.sheet .cert .cn{font-size:30pt;font-weight:700;color:#0E2A56;margin-bottom:3mm}
+.sheet .cert .who{font-size:26pt;font-weight:700;margin:5mm 0;border-bottom:1px dotted #666;padding-bottom:2mm;display:inline-block;min-width:120mm}
+
+@media(max-width:1500px){.sheet-wrap{transform:scale(.78)}}
+@media(max-width:1340px){.sheet-wrap{transform:scale(.66)}}
+
+/* ── print ─────────────────────────────── */
+@media print{
+  @page{size:A4 portrait;margin:0}
+  body{background:#fff}
+  .top,.pane-list,.pane-edit,.noprint{display:none!important}
+  .app{display:block;height:auto}
+  .pane-preview{display:block!important;padding:0;background:#fff;overflow:visible}
+  .sheet-wrap{transform:none!important}
+  .sheet{box-shadow:none;width:210mm;min-height:0;margin:0;padding:14mm 16mm}
+  .sheet.land{width:297mm}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+
+<header class="top"><div class="top-in">
+  <span class="mark">นข</span>
+  <span class="title"><b>ศูนย์เอกสารแผนเตรียมทหาร</b><span>โรงเรียนมัธยมวัดหนองแขม · แผนการเรียนเตรียมทหาร–ตำรวจ</span></span>
+  <span class="spacer"></span>
+  <button class="tbtn" id="btnSettings" type="button">ตั้งค่าโรงเรียน</button>
+  <button class="tbtn" id="btnToggle" type="button">ดูตัวอย่าง</button>
+  <button class="tbtn gold" id="btnPrint" type="button">พิมพ์เอกสาร</button>
+</div></header>
+
+<div class="app" id="app">
+  <aside class="pane pane-list" id="list"></aside>
+  <section class="pane pane-edit" id="edit"></section>
+  <section class="pane pane-preview"><div class="sheet-wrap"><div class="sheet" id="sheet"></div></div></section>
+</div>
+
+<script>
+"use strict";
+
+/* ═══ helpers ═══ */
+const TH_D = "๐๑๒๓๔๕๖๗๘๙";
+const THMON = ["มกราคม","กุมภาพันธ์","มีนาคม","เมษายน","พฤษภาคม","มิถุนายน","กรกฎาคม","สิงหาคม","กันยายน","ตุลาคม","พฤศจิกายน","ธันวาคม"];
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;" }[c]));
+const thNum = s => String(s ?? "").replace(/[0-9]/g, d => TH_D[+d]);
+const money = n => (Number(n) || 0).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+function thDate(iso){
+  if(!iso) return "";
+  const d = new Date(iso + "T00:00:00");
+  if (isNaN(d)) return "";
+  return `${d.getDate()} ${THMON[d.getMonth()]} ${d.getFullYear() + 543}`;
+}
+function bahtText(num){
+  const n = Number(num);
+  if (!isFinite(n)) return "";
+  const N = ["ศูนย์","หนึ่ง","สอง","สาม","สี่","ห้า","หก","เจ็ด","แปด","เก้า"];
+  const P = ["","สิบ","ร้อย","พัน","หมื่น","แสน","ล้าน"];
+  function readInt(s){
+    s = String(s).replace(/^0+/, "");
+    if (!s) return "";
+    if (s.length > 7) return readInt(s.slice(0, s.length - 6)) + "ล้าน" + readInt(s.slice(s.length - 6));
+    let out = "";
+    for (let i = 0; i < s.length; i++){
+      const d = +s[i], pos = s.length - i - 1;
+      if (!d) continue;
+      if (pos === 0 && d === 1 && s.length > 1) out += "เอ็ด";
+      else if (pos === 1 && d === 1) out += "";
+      else if (pos === 1 && d === 2) out += "ยี่";
+      else out += N[d];
+      out += P[pos];
+    }
+    return out;
+  }
+  const [i, f] = Math.abs(n).toFixed(2).split(".");
+  let t = (readInt(i) || "ศูนย์") + "บาท";
+  t += (f === "00") ? "ถ้วน" : readInt(f) + "สตางค์";
+  return (n < 0 ? "ลบ" : "") + t;
+}
+/** "รายการ|จำนวน" ต่อบรรทัด → [{name, amt}] */
+function parseItems(txt){
+  return String(txt || "").split("\n").map(l => l.trim()).filter(Boolean).map(l => {
+    const p = l.split("|");
+    return { name: (p[0] || "").trim(), amt: Number(String(p[1] || "").replace(/[, ]/g, "")) || 0 };
+  });
+}
+function approvalStep(total){
+  if (total <= 10000) return "เสนอผู้อำนวยการอนุมัติ และรายงานให้คณะกรรมการกองทุนทราบในการประชุมคราวถัดไป";
+  if (total <= 50000) return "ผ่านความเห็นชอบของคณะกรรมการกองทุนไม่น้อยกว่ากึ่งหนึ่งของกรรมการที่มาประชุม แล้วเสนอผู้อำนวยการอนุมัติ";
+  return "ผ่านความเห็นชอบของคณะกรรมการกองทุนไม่น้อยกว่าสองในสามของกรรมการทั้งหมดเท่าที่มีอยู่ รายงานคณะกรรมการสถานศึกษา แล้วเสนอผู้อำนวยการอนุมัติ";
+}
+
+/* ═══ school settings ═══ */
+const DEF_S = {
+  school: "โรงเรียนมัธยมวัดหนองแขม",
+  area: "สำนักงานเขตพื้นที่การศึกษามัธยมศึกษากรุงเทพมหานคร",
+  addr: "443 ถนนเลียบคลองภาษีเจริญฝั่งใต้ แขวงหนองแขม เขตหนองแขม กรุงเทพมหานคร 10160",
+  tel: "02-429-3402",
+  plan: "แผนการเรียนเตรียมทหาร–ตำรวจ",
+  fund: "กองทุนส่งเสริมศักยภาพนักเรียนเตรียมทหารและสายอาชีพความมั่นคง",
+  director: "",
+  head: "",
+  year: "2569",
+  thaiDigits: "1"
+};
+const SET_FIELDS = [
+  { k:"school", l:"ชื่อโรงเรียน" }, { k:"area", l:"สังกัด" },
+  { k:"addr", l:"ที่อยู่", t:"textarea" }, { k:"tel", l:"โทรศัพท์" },
+  { k:"plan", l:"ชื่อแผนการเรียน" }, { k:"fund", l:"ชื่อกองทุน" },
+  { k:"director", l:"ชื่อผู้อำนวยการ", h:"เว้นว่างไว้ได้ เอกสารจะพิมพ์เป็นจุดไข่ปลาให้เขียนเอง" },
+  { k:"head", l:"ชื่อหัวหน้าแผนการเรียน", h:"เว้นว่างไว้ได้" },
+  { k:"year", l:"ปีการศึกษา (พ.ศ.)" },
+  { k:"thaiDigits", l:"ใช้เลขไทยในเอกสาร", t:"select", o:[["1","ใช้เลขไทย ๐–๙"],["0","ใช้เลขอารบิก 0–9"]] }
+];
+
+let S = Object.assign({}, DEF_S, JSON.parse(localStorage.getItem("nk_settings") || "{}"));
+let V = JSON.parse(localStorage.getItem("nk_values") || "{}");
+let cur = localStorage.getItem("nk_doc") || "memo";
+
+const saveS = () => localStorage.setItem("nk_settings", JSON.stringify(S));
+const saveV = () => localStorage.setItem("nk_values", JSON.stringify(V));
+const num = s => S.thaiDigits === "1" ? thNum(s) : String(s ?? "");
+const val = (k, d) => (V[cur] && V[cur][k] != null && V[cur][k] !== "") ? V[cur][k] : (d ?? "");
+const dot = (v, w) => v ? esc(v) : "…".repeat(w || 22);
+
+/* ═══ shared sheet parts ═══ */
+const letterHead = () => `
+  <div class="org"><b>${esc(S.school)}</b>${esc(S.addr)}<br>โทรศัพท์ ${num(esc(S.tel))}</div>
+  <div class="hr"></div>`;
+
+const memoHead = (no, date, subject, to) => `
+  <h1>บันทึกข้อความ</h1>
+  <div class="rw"><span class="lb"><b>ส่วนราชการ</b></span><span class="vl">${esc(S.school)} ${esc(S.plan)} โทร. ${num(esc(S.tel))}</span></div>
+  <div class="meta">
+    <div style="flex:1"><b>ที่</b> ${dot(no, 14)}</div>
+    <div style="flex:1"><b>วันที่</b> ${dot(num(thDate(date)), 20)}</div>
+  </div>
+  <div class="rw"><span class="lb"><b>เรื่อง</b></span><span class="vl">${esc(subject)}</span></div>
+  <div class="hr"></div>
+  <p><b>เรียน</b>&nbsp;&nbsp;${esc(to)}</p>`;
+
+const sig = (blocks) => `<div class="sig${blocks.length === 1 ? " one" : ""}">` + blocks.map(b => `
+  <div>
+    <span>ลงชื่อ ………………………………………………</span>
+    <span>( ${b.name ? esc(b.name) : "………………………………………………"} )</span>
+    <span>${esc(b.role)}</span>
+    ${b.sub ? `<span>${esc(b.sub)}</span>` : ""}
+    ${b.date ? `<span>วันที่ ……… / ……… / …………</span>` : ""}
+  </div>`).join("") + `</div>`;
+
+const itemsTable = (items) => {
+  const total = items.reduce((a, b) => a + b.amt, 0);
+  return { total, html: `
+  <table>
+    <thead><tr><th style="width:14mm">ที่</th><th>รายการ</th><th style="width:34mm">จำนวนเงิน (บาท)</th></tr></thead>
+    <tbody>${items.length ? items.map((it, i) => `
+      <tr><td class="c">${num(i + 1)}</td><td>${esc(it.name)}</td><td class="n">${num(money(it.amt))}</td></tr>`).join("")
+      : `<tr><td class="c">&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>`}
+      <tr><td colspan="2" style="text-align:right;font-weight:700">รวมทั้งสิ้น</td><td class="n" style="font-weight:700">${num(money(total))}</td></tr>
+      <tr><td colspan="3" style="text-align:center">(${bahtText(total)})</td></tr>
+    </tbody>
+  </table>` };
+};
+
+/* ═══ documents ═══ */
+const DOCS = {
+
+/* ---------- 1 บันทึกข้อความขออนุมัติใช้เงิน ---------- */
+memo: {
+  g: "งานกองทุน", n: "บันทึกข้อความ ขออนุมัติใช้เงินกองทุน", d: "เสนอ ผอ. อนุมัติ พร้อมคำนวณขั้นการอนุมัติให้อัตโนมัติ",
+  f: [
+    { k:"no", l:"เลขที่หนังสือ", ph:"เช่น ตท. 012/2569", w:1 },
+    { k:"date", l:"วันที่", t:"date", w:1 },
+    { k:"subject", l:"เรื่อง", d:"ขออนุมัติใช้เงินกองทุนส่งเสริมศักยภาพนักเรียนเตรียมทหารและสายอาชีพความมั่นคง" },
+    { k:"reason", l:"เหตุผลและความจำเป็น", t:"textarea", ph:"ด้วยแผนการเรียนเตรียมทหารมีกำหนดนำนักเรียนไปเรียนว่ายน้ำ ณ …" },
+    { k:"items", l:"รายการค่าใช้จ่าย", t:"textarea", ph:"ค่าเช่ารถตู้ไป–กลับ 4 ครั้ง|8000\nค่าธรรมเนียมสระว่ายน้ำ|3500", hint:"หนึ่งรายการต่อบรรทัด คั่นชื่อกับจำนวนเงินด้วยเครื่องหมาย |" },
+    { k:"src", l:"แหล่งเงิน", t:"select", o:[["เงินกองทุนฯ ที่รับบริจาคโดยระบุวัตถุประสงค์","เงินกองทุนฯ (เงินบริจาคระบุวัตถุประสงค์)"],["เงินรายได้สถานศึกษา","เงินรายได้สถานศึกษา"],["เงินอุดหนุนกิจกรรมพัฒนาผู้เรียน","เงินอุดหนุนกิจกรรมพัฒนาผู้เรียน"]] }
+  ],
+  r(v){
+    const it = itemsTable(parseItems(v.items));
+    return memoHead(v.no, v.date, v.subject || "ขออนุมัติใช้เงินกองทุนฯ", "ผู้อำนวยการ" + S.school) + `
+      <p class="ind">${esc(v.reason) || "…………………………………………………………………………………………………………………………………………………"}</p>
+      <p class="ind">ในการนี้ ${esc(S.plan)} จึงขออนุมัติใช้เงิน${esc(v.src || "กองทุนฯ")} เพื่อเป็นค่าใช้จ่ายตามรายการดังต่อไปนี้</p>
+      ${it.html}
+      <div class="box">
+        <div class="bt">ขั้นการอนุมัติที่ต้องใช้ ตามข้อ ๑๖ ของข้อบังคับกองทุน</div>
+        ${esc(approvalStep(it.total))}
+      </div>
+      <p class="ind" style="margin-top:4mm">จึงเรียนมาเพื่อโปรดพิจารณาอนุมัติ</p>
+      ${sig([{ role:"หัวหน้าแผนการเรียนเตรียมทหาร", sub:"กรรมการและเลขานุการกองทุน", name:S.head },
+             { role:"ผู้อำนวยการ" + S.school, sub:"ประธานกรรมการกองทุน · ผู้อนุมัติ", name:S.director, date:1 }])}`;
+  }
+},
+
+/* ---------- 2 แบบคำขอรับการสนับสนุน ---------- */
+request: {
+  g: "งานกองทุน", n: "แบบคำขอรับการสนับสนุนจากกองทุน", d: "สำหรับนักเรียนหรือครูยื่นขอรับทุน/ขอสนับสนุนกิจกรรม", tight: true,
+  f: [
+    { k:"date", l:"วันที่ยื่นคำขอ", t:"date", w:1 },
+    { k:"type", l:"ประเภทคำขอ", t:"select", w:1, o:[["ทุนช่วยเหลือนักเรียนขาดแคลนทุนทรัพย์","ทุนขาดแคลนทุนทรัพย์"],["ทุนส่งเสริมความเป็นเลิศ","ทุนส่งเสริมความเป็นเลิศ"],["การสนับสนุนกิจกรรมของแผนการเรียน","สนับสนุนกิจกรรม"],["ค่าสมัครสอบและค่าเดินทางไปสนามสอบ","ค่าสมัครสอบ/เดินทาง"]] },
+    { k:"name", l:"ชื่อ–สกุลผู้ยื่นคำขอ", w:1 },
+    { k:"cls", l:"ชั้น / ตำแหน่ง", ph:"ม.4/1 เลขที่ 12", w:1 },
+    { k:"guard", l:"ชื่อผู้ปกครอง (กรณีผู้ยื่นเป็นนักเรียน)", w:1 },
+    { k:"tel", l:"เบอร์ติดต่อ", w:1 },
+    { k:"purpose", l:"เรื่องที่ขอรับการสนับสนุน", ph:"ขอรับการสนับสนุนค่าสมัครสอบและค่าเดินทางไปสนามสอบ" },
+    { k:"reason", l:"เหตุผลและความจำเป็น", t:"textarea" },
+    { k:"items", l:"รายการและวงเงินที่ขอ", t:"textarea", ph:"ค่าสมัครสอบ|600\nค่าเดินทางไป–กลับสนามสอบ|800", hint:"หนึ่งรายการต่อบรรทัด คั่นด้วย |" }
+  ],
+  r(v){
+    const it = itemsTable(parseItems(v.items));
+    return letterHead() + `
+      <h2>แบบคำขอรับการสนับสนุนจากกองทุน</h2>
+      <p class="ctr" style="font-size:15pt">${esc(S.fund)}<br>${esc(S.school)} · ปีการศึกษา ${num(S.year)}</p>
+      <div class="rows" style="margin-top:5mm">
+        <div class="rw"><span class="lb">วันที่ยื่นคำขอ</span><span class="vl">${dot(num(thDate(v.date)), 18)}</span></div>
+        <div class="rw"><span class="lb">ประเภทคำขอ</span><span class="vl">${dot(v.type, 26)}</span></div>
+        <div class="rw"><span class="lb">ชื่อ–สกุลผู้ยื่นคำขอ</span><span class="vl">${dot(v.name, 24)}</span><span class="lb">ชั้น/ตำแหน่ง</span><span class="vl" style="max-width:38mm">${dot(v.cls, 10)}</span></div>
+        <div class="rw"><span class="lb">ชื่อผู้ปกครอง</span><span class="vl">${dot(v.guard, 24)}</span><span class="lb">โทร.</span><span class="vl" style="max-width:34mm">${dot(num(v.tel), 9)}</span></div>
+        <div class="rw"><span class="lb">เรื่องที่ขอ</span><span class="vl">${dot(v.purpose, 34)}</span></div>
+      </div>
+      <p style="margin-top:3mm"><b>เหตุผลและความจำเป็น</b></p>
+      <p class="ind">${esc(v.reason) || "…………………………………………………………………………………………………………………………………………………………………………"}</p>
+      <p style="margin-top:2mm"><b>รายการและวงเงินที่ขอรับการสนับสนุน</b></p>
+      ${it.html}
+      <div class="box"><div class="bt">ความเห็นของหัวหน้าแผนการเรียน</div>
+        <small>…………………………………………………………………………………………………………………………………………………………………</small>
+        <small style="margin-top:3mm">ลงชื่อ ……………………………………… หัวหน้าแผนการเรียน  วันที่ ……… / ……… / …………</small>
+      </div>
+      <div class="box"><div class="bt">มติคณะกรรมการกองทุน</div>
+        <small><span class="chk"></span>เห็นชอบตามที่เสนอ &nbsp;&nbsp; <span class="chk"></span>เห็นชอบบางส่วน จำนวน …………………… บาท &nbsp;&nbsp; <span class="chk"></span>ไม่เห็นชอบ</small>
+        <small style="margin-top:2mm">การประชุมครั้งที่ ………/………… เมื่อวันที่ ……… / ……… / …………</small>
+      </div>
+      <div class="box"><div class="bt">คำสั่งผู้อำนวยการ</div>
+        <small><span class="chk"></span>อนุมัติ &nbsp;&nbsp; <span class="chk"></span>ไม่อนุมัติ &nbsp;&nbsp; เหตุผล ………………………………………………………………………</small>
+        <small style="margin-top:3mm">ลงชื่อ ……………………………………… ผู้อำนวยการ${esc(S.school)}  วันที่ ……… / ……… / …………</small>
+      </div>`;
+  }
+},
+
+/* ---------- 3 ใบสำคัญรับเงินทุน ---------- */
+receipt: {
+  g: "งานกองทุน", n: "ใบสำคัญรับเงินทุนการศึกษา", d: "มีช่องลงนามผู้ปกครองร่วม เพราะผู้รับทุนเป็นผู้เยาว์",
+  f: [
+    { k:"no", l:"เลขที่", w:1 }, { k:"date", l:"วันที่จ่ายเงิน", t:"date", w:1 },
+    { k:"name", l:"ชื่อ–สกุลผู้รับทุน", w:1 }, { k:"cls", l:"ชั้น / เลขที่", w:1 },
+    { k:"amount", l:"จำนวนเงิน (บาท)", t:"number", w:1 },
+    { k:"type", l:"ประเภททุน", t:"select", w:1, o:[["ทุนช่วยเหลือนักเรียนขาดแคลนทุนทรัพย์","ขาดแคลนทุนทรัพย์"],["ทุนส่งเสริมความเป็นเลิศ","ส่งเสริมความเป็นเลิศ"],["ค่าสมัครสอบและค่าเดินทางไปสนามสอบ","ค่าสมัครสอบ/เดินทาง"],["ค่ากิจกรรมพัฒนาสมรรถภาพ","ค่ากิจกรรมสมรรถภาพ"]] },
+    { k:"guard", l:"ชื่อ–สกุลผู้ปกครอง" },
+    { k:"note", l:"วัตถุประสงค์การใช้เงิน", t:"textarea", ph:"เพื่อเป็นค่าสมัครสอบคัดเลือกและค่าเดินทางไปสนามสอบ" }
+  ],
+  r(v){
+    const a = Number(v.amount) || 0;
+    return letterHead() + `
+      <h2>ใบสำคัญรับเงินทุนการศึกษา</h2>
+      <p class="ctr" style="font-size:15pt">${esc(S.fund)}</p>
+      <div class="meta" style="margin-top:4mm"><div>เลขที่ ${dot(num(v.no), 10)}</div><div>วันที่ ${dot(num(thDate(v.date)), 16)}</div></div>
+      <div class="rows">
+        <div class="rw"><span class="lb">ข้าพเจ้า</span><span class="vl">${dot(v.name, 30)}</span><span class="lb">ชั้น</span><span class="vl" style="max-width:40mm">${dot(num(v.cls), 10)}</span></div>
+        <div class="rw"><span class="lb">ได้รับเงินทุนประเภท</span><span class="vl">${dot(v.type, 30)}</span></div>
+        <div class="rw"><span class="lb">จำนวนเงิน</span><span class="vl" style="max-width:52mm;text-align:center">${a ? num(money(a)) : "…………………"} บาท</span><span class="lb">(ตัวอักษร)</span><span class="vl">${a ? esc(bahtText(a)) : "……………………………………………"}</span></div>
+        <div class="rw"><span class="lb">เพื่อ</span><span class="vl">${dot(v.note, 40)}</span></div>
+      </div>
+      <p class="ind" style="margin-top:3mm">ข้าพเจ้าขอรับรองว่าได้รับเงินตามจำนวนดังกล่าวไว้ถูกต้องครบถ้วนแล้ว และจะใช้เงินทุนนี้ตามวัตถุประสงค์ที่กำหนดไว้ทุกประการ</p>
+      ${sig([{ role:"ผู้รับทุน", name:v.name },
+             { role:"ผู้ปกครองผู้รับทุน", sub:"ลงนามร่วมตามข้อ ๒๒ (๔) ของข้อบังคับ", name:v.guard },
+             { role:"ผู้จ่ายเงิน", sub:"เจ้าหน้าที่การเงิน" + S.school },
+             { role:"ผู้อนุมัติ", sub:"ผู้อำนวยการ" + S.school, name:S.director }])}
+      <p style="margin-top:6mm;font-size:13pt">หมายเหตุ : เอกสารฉบับนี้เป็นใบสำคัญรับเงินสำหรับแนบหลักฐานการจ่าย มิใช่ใบเสร็จรับเงินบริจาค</p>`;
+  }
+},
+
+/* ---------- 4 หนังสือขอบคุณผู้บริจาค ---------- */
+thanks: {
+  g: "งานกองทุน", n: "หนังสือขอบคุณผู้บริจาค", d: "ส่งภายใน ๗ วันนับจากวันรับเงิน",
+  f: [
+    { k:"no", l:"เลขที่หนังสือ", w:1 }, { k:"date", l:"วันที่", t:"date", w:1 },
+    { k:"donor", l:"ชื่อผู้บริจาค (พร้อมคำนำหน้า/ยศ)", ph:"ร้อยโท มงคล อ่วมนุช" },
+    { k:"amount", l:"จำนวนเงิน (บาท)", t:"number", w:1 },
+    { k:"kind", l:"หรือสิ่งของที่บริจาค", ph:"เว้นว่างถ้าบริจาคเป็นเงิน", w:1 },
+    { k:"use", l:"นำไปใช้เพื่อ", t:"textarea", ph:"สนับสนุนการฝึกสมรรถภาพและค่าเดินทางไปเรียนว่ายน้ำของนักเรียนแผนการเรียนเตรียมทหาร" }
+  ],
+  r(v){
+    const a = Number(v.amount) || 0;
+    const what = v.kind ? `สิ่งของ ${esc(v.kind)}` : (a ? `เงินจำนวน ${num(money(a))} บาท (${bahtText(a)})` : "…………………………………………………");
+    return letterHead() + `
+      <div class="meta" style="margin-top:2mm"><div>ที่ ${dot(num(v.no), 12)}</div><div>วันที่ ${dot(num(thDate(v.date)), 16)}</div></div>
+      <p style="margin-top:3mm"><b>เรื่อง</b>&nbsp;&nbsp;ขอขอบคุณในการสนับสนุน${esc(S.plan)}</p>
+      <p><b>เรียน</b>&nbsp;&nbsp;${dot(v.donor, 26)}</p>
+      <p class="ind" style="margin-top:3mm">ตามที่ท่านได้กรุณาบริจาค${what} ให้แก่${esc(S.school)} เพื่อ${esc(v.use) || "สนับสนุนการดำเนินงานของ" + S.plan} นั้น</p>
+      <p class="ind">${esc(S.school)} ขอขอบคุณในความอนุเคราะห์ของท่านเป็นอย่างสูง การสนับสนุนดังกล่าวนับเป็นกำลังสำคัญในการพัฒนานักเรียนให้มีความพร้อมทั้งด้านวิชาการ สมรรถภาพทางร่างกาย และระเบียบวินัย อันจะเป็นประโยชน์ต่อการสร้างโอกาสทางการศึกษาและเส้นทางอาชีพที่มั่นคงให้แก่นักเรียนสืบไป</p>
+      <p class="ind">ทั้งนี้ โรงเรียนจะดำเนินการใช้จ่ายเงินและทรัพย์สินที่ได้รับบริจาคให้เป็นไปตามวัตถุประสงค์ของท่านทุกประการ และจะรายงานผลการดำเนินงานพร้อมสรุปการใช้จ่ายให้ท่านทราบภาคเรียนละหนึ่งครั้ง</p>
+      <p class="ind">จึงเรียนมาเพื่อทราบ และขอขอบคุณมา ณ โอกาสนี้</p>
+      <p class="ctr" style="margin-top:6mm">ขอแสดงความนับถือ</p>
+      ${sig([{ role:"ผู้อำนวยการ" + S.school, name:S.director }])}
+      <p style="margin-top:8mm;font-size:13pt">${esc(S.plan)} &nbsp; โทรศัพท์ ${num(esc(S.tel))}</p>`;
+  }
+},
+
+/* ---------- 5 ใบประกาศเกียรติคุณ ---------- */
+cert: {
+  g: "งานกองทุน", n: "ใบประกาศเกียรติคุณผู้บริจาค", d: "พิมพ์แนวนอน สำหรับมอบในพิธีของแผนการเรียน", land: true,
+  f: [
+    { k:"donor", l:"ชื่อผู้ได้รับประกาศเกียรติคุณ", ph:"ร้อยโท มงคล อ่วมนุช" },
+    { k:"reason", l:"ข้อความเชิดชู", d:"ผู้ให้การสนับสนุนแผนการเรียนเตรียมทหาร–ตำรวจ ด้วยความเสียสละและมีจิตสาธารณะ" },
+    { k:"date", l:"ให้ไว้ ณ วันที่", t:"date" }
+  ],
+  r(v){
+    return `<div class="cert">
+      <div style="font-size:17pt">${esc(S.school)}</div>
+      <div class="cn">ประกาศเกียรติคุณ</div>
+      <div style="font-size:18pt">ขอมอบประกาศเกียรติคุณฉบับนี้ไว้เพื่อแสดงว่า</div>
+      <div><span class="who">${v.donor ? esc(v.donor) : "&nbsp;"}</span></div>
+      <div style="font-size:18pt;max-width:190mm;margin:0 auto;line-height:1.5">${esc(v.reason) || ""}</div>
+      <div style="font-size:17pt;margin-top:6mm">ขอให้ประสบแต่ความสุข ความเจริญ สืบไป</div>
+      <div style="font-size:16pt;margin-top:5mm">ให้ไว้ ณ วันที่ ${v.date ? num(thDate(v.date)) : "……………………………………"}</div>
+      <div style="margin-top:10mm;font-size:16pt;line-height:1.6">
+        ลงชื่อ ………………………………………………<br>
+        ( ${S.director ? esc(S.director) : "………………………………………………"} )<br>
+        ผู้อำนวยการ${esc(S.school)}
+      </div>
+    </div>`;
+  }
+},
+
+/* ---------- 6 บันทึกผลทดสอบสมรรถภาพ ---------- */
+fitness: {
+  g: "งานนักเรียน", n: "แบบบันทึกผลทดสอบสมรรถภาพ ๘ สถานี", d: "รายบุคคล ตรวจผ่าน/ไม่ผ่านให้อัตโนมัติ",
+  f: [
+    { k:"name", l:"ชื่อ–สกุลนักเรียน", w:1 }, { k:"cls", l:"ชั้น / เลขที่", w:1 },
+    { k:"round", l:"รอบที่", t:"select", w:1, o:[["๑ ฐาน (สิงหาคม)","รอบ 1 ฐาน"],["๒ (ตุลาคม)","รอบ 2"],["๓ (ธันวาคม)","รอบ 3"],["๔ (กุมภาพันธ์)","รอบ 4"]] },
+    { k:"date", l:"วันที่ทดสอบ", t:"date", w:1 },
+    { k:"s1", l:"ดึงข้อ (ครั้ง)", t:"number", w:1 }, { k:"s2", l:"ลุกนั่ง 30 วิ. (ครั้ง)", t:"number", w:1 },
+    { k:"s3", l:"ดันพื้น (ครั้ง)", t:"number", w:1 }, { k:"s4", l:"นั่งงอตัว (ซม.)", t:"number", w:1 },
+    { k:"s5", l:"ยืนกระโดดไกล (ซม.)", t:"number", w:1 }, { k:"s6", l:"วิ่งเก็บของ (วินาที)", t:"number", w:1 },
+    { k:"s7", l:"ว่ายน้ำ 50 ม. (วินาที)", t:"number", w:1 }, { k:"s8", l:"วิ่ง 1,000 ม. (วินาที)", t:"number", w:1, hint:"3 นาที 22 วิ. = 202" },
+    { k:"tester", l:"ผู้ควบคุมการทดสอบ" }
+  ],
+  r(v){
+    const ST = [
+      ["ดึงข้อราวเดี่ยว", "๒๐ ครั้ง", v.s1, "ครั้ง", x => x >= 20],
+      ["ลุกนั่ง ๓๐ วินาที", "๓๐ ครั้ง", v.s2, "ครั้ง", x => x >= 30],
+      ["ดันพื้น", "ตามเกณฑ์เหล่า", v.s3, "ครั้ง", null],
+      ["นั่งงอตัว", "๒๐ ซม.", v.s4, "ซม.", x => x >= 20],
+      ["ยืนกระโดดไกล", "๒๔๐ ซม.", v.s5, "ซม.", x => x >= 240],
+      ["วิ่งเก็บของ ๒ รอบ", "ไม่เกิน ๑๐ วินาที", v.s6, "วินาที", x => x <= 10],
+      ["ว่ายน้ำ ๕๐ เมตร", "๓๕ วินาที", v.s7, "วินาที", x => x <= 35],
+      ["วิ่ง ๑,๐๐๐ เมตร", "๓ นาที ๒๒ วินาที", v.s8, "วินาที", x => x <= 202]
+    ];
+    let pass = 0, done = 0;
+    const rows = ST.map(([n, c, raw, u, f], i) => {
+      const has = raw !== "" && raw != null && !isNaN(Number(raw));
+      const x = Number(raw);
+      let mark = "";
+      if (has && f){ done++; if (f(x)){ pass++; mark = "ผ่าน"; } else mark = "ยังไม่ผ่าน"; }
+      else if (has) { done++; mark = "บันทึกแล้ว"; }
+      return `<tr><td class="c">${num(i + 1)}</td><td>${n}</td><td class="c">${c}</td>
+        <td class="c">${has ? num(String(raw)) + " " + u : ""}</td><td class="c">${mark}</td></tr>`;
+    }).join("");
+    return letterHead() + `
+      <h2>แบบบันทึกผลทดสอบสมรรถภาพ ๘ สถานี</h2>
+      <p class="ctr" style="font-size:15pt">${esc(S.plan)} · ปีการศึกษา ${num(S.year)}</p>
+      <div class="rows" style="margin-top:4mm">
+        <div class="rw"><span class="lb">ชื่อ–สกุล</span><span class="vl">${dot(v.name, 26)}</span><span class="lb">ชั้น/เลขที่</span><span class="vl" style="max-width:40mm">${dot(num(v.cls), 10)}</span></div>
+        <div class="rw"><span class="lb">รอบที่</span><span class="vl" style="max-width:60mm">${dot(v.round, 14)}</span><span class="lb">วันที่ทดสอบ</span><span class="vl">${dot(num(thDate(v.date)), 16)}</span></div>
+      </div>
+      <table>
+        <thead><tr><th style="width:12mm">ที่</th><th>สถานี</th><th style="width:38mm">เกณฑ์เป้าหมาย</th><th style="width:30mm">ผลที่ทำได้</th><th style="width:26mm">สรุป</th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+      <div class="box"><div class="bt">สรุปผล</div>
+        <small>ผ่านเกณฑ์เป้าหมาย ${num(pass)} สถานี จาก ${num(8)} สถานี &nbsp;·&nbsp; บันทึกผลแล้ว ${num(done)} สถานี</small>
+        <small style="margin-top:2mm">ข้อสังเกตและแนวทางพัฒนา ………………………………………………………………………………………………………………………</small>
+        <small>………………………………………………………………………………………………………………………………………………………………</small>
+      </div>
+      ${sig([{ role:"ผู้ควบคุมการทดสอบ", name:v.tester }, { role:"หัวหน้าแผนการเรียนเตรียมทหาร", name:S.head }])}
+      <p style="margin-top:5mm;font-size:13pt">หมายเหตุ : เกณฑ์ในตารางเป็นเกณฑ์เป้าหมายของแผนการเรียน เกณฑ์ผ่านจริงให้ยึดระเบียบการของแต่ละเหล่าในปีที่สอบ</p>`;
+  }
+},
+
+/* ---------- 7 แบบคัดกรองสุขภาพ ---------- */
+health: {
+  g: "งานนักเรียน", n: "แบบคัดกรองสุขภาพและความยินยอมของผู้ปกครอง", d: "ทำให้ครบทุกคนภายในภาคเรียนแรก", tight: true,
+  f: [
+    { k:"name", l:"ชื่อ–สกุลนักเรียน", w:1 }, { k:"cls", l:"ชั้น / เลขที่", w:1 },
+    { k:"date", l:"วันที่ตรวจ", t:"date", w:1 }, { k:"bd", l:"วัน/เดือน/ปีเกิด", t:"date", w:1 },
+    { k:"h", l:"ส่วนสูง (ซม.)", t:"number", w:1 }, { k:"w", l:"น้ำหนัก (กก.)", t:"number", w:1 },
+    { k:"chest", l:"ขยายอก (ซม.)", t:"number", w:1 }, { k:"guard", l:"ชื่อผู้ปกครอง", w:1 },
+    { k:"disease", l:"โรคประจำตัว / ยาที่ใช้ประจำ", t:"textarea", ph:"ไม่มี" }
+  ],
+  r(v){
+    const bmi = (Number(v.h) && Number(v.w)) ? (Number(v.w) / Math.pow(Number(v.h) / 100, 2)).toFixed(1) : "";
+    const chk = (t) => `<small><span class="chk"></span>ปกติ &nbsp;&nbsp;<span class="chk"></span>ผิดปกติ &nbsp;&nbsp;<span class="chk"></span>ยังไม่ได้ตรวจ &nbsp;&nbsp; ${t}</small>`;
+    return letterHead() + `
+      <h2>แบบคัดกรองสุขภาพและความยินยอมของผู้ปกครอง</h2>
+      <p class="ctr" style="font-size:15pt">${esc(S.plan)} · ปีการศึกษา ${num(S.year)}</p>
+      <p style="margin-top:4mm"><b>ส่วนที่ ๑ ข้อมูลนักเรียน</b></p>
+      <div class="rows">
+        <div class="rw"><span class="lb">ชื่อ–สกุล</span><span class="vl">${dot(v.name, 26)}</span><span class="lb">ชั้น/เลขที่</span><span class="vl" style="max-width:38mm">${dot(num(v.cls), 10)}</span></div>
+        <div class="rw"><span class="lb">วันเกิด</span><span class="vl" style="max-width:60mm">${dot(num(thDate(v.bd)), 14)}</span><span class="lb">วันที่ตรวจ</span><span class="vl">${dot(num(thDate(v.date)), 14)}</span></div>
+        <div class="rw"><span class="lb">ส่วนสูง</span><span class="vl" style="max-width:26mm;text-align:center">${v.h ? num(v.h) : "………"}</span><span class="lb">ซม. น้ำหนัก</span><span class="vl" style="max-width:26mm;text-align:center">${v.w ? num(v.w) : "………"}</span><span class="lb">กก. ขยายอก</span><span class="vl" style="max-width:26mm;text-align:center">${v.chest ? num(v.chest) : "………"}</span><span class="lb">ซม. BMI</span><span class="vl" style="max-width:24mm;text-align:center">${bmi ? num(bmi) : "………"}</span></div>
+        <div class="rw"><span class="lb">โรคประจำตัว/ยาประจำ</span><span class="vl">${dot(v.disease, 30)}</span></div>
+      </div>
+      <p style="margin-top:3mm"><b>ส่วนที่ ๒ ผลการคัดกรอง</b></p>
+      <div class="box">
+        ${chk("ตาบอดสี (แผ่นทดสอบอิชิฮาระ)")}
+        ${chk("สายตาสั้น–เอียง")}
+        ${chk("ประวัติโรคหัวใจ")}
+        ${chk("ประวัติลมชัก")}
+        ${chk("ประวัติหอบหืด")}
+        ${chk("ภาวะเท้าผิดรูป")}
+        ${chk("ภาวะกระดูกสันหลังคด")}
+        ${chk("ความดันโลหิต")}
+      </div>
+      <p style="margin-top:3mm"><b>ส่วนที่ ๓ ความยินยอมของผู้ปกครอง</b></p>
+      <p class="ind">ข้าพเจ้า ${dot(v.guard, 22)} ผู้ปกครองของนักเรียนข้างต้น รับทราบและยินยอมให้บุตรหลานเข้ารับการคัดกรองสุขภาพและเข้าร่วมการฝึกสมรรถภาพร่างกายตามตารางของแผนการเรียน โดยรับทราบว่าโรงเรียนจัดให้มีครูควบคุมการฝึกทุกครั้ง มีวันพัก และไม่มีการลงโทษทางกายทุกรูปแบบ</p>
+      <p class="ind">ข้าพเจ้ารับทราบว่าผลการคัดกรองนี้ใช้เพื่อวางเป้าหมายรายบุคคลให้เหมาะสม มิใช่เพื่อคัดนักเรียนออกจากแผนการเรียน และเป็นข้อมูลอ่อนไหวที่โรงเรียนจะเก็บรักษาตามพระราชบัญญัติคุ้มครองข้อมูลส่วนบุคคล พ.ศ. ๒๕๖๒ โดยจำกัดสิทธิการเข้าถึงเฉพาะผู้ปฏิบัติหน้าที่ที่เกี่ยวข้อง</p>
+      ${sig([{ role:"ผู้ปกครอง", name:v.guard, date:1 }, { role:"ผู้คัดกรอง", sub:"ครูอนามัย / ครูพลศึกษา", date:1 }])}`;
+  }
+},
+
+/* ---------- 8 หนังสือยินยอม PDPA ---------- */
+consent: {
+  g: "งานนักเรียน", n: "หนังสือยินยอมการเก็บและเผยแพร่ข้อมูลและภาพ", d: "ต้องมีก่อนลงภาพนักเรียนบนเพจหรือเว็บไซต์",
+  f: [
+    { k:"name", l:"ชื่อ–สกุลนักเรียน", w:1 }, { k:"cls", l:"ชั้น / เลขที่", w:1 },
+    { k:"guard", l:"ชื่อ–สกุลผู้ปกครอง", w:1 }, { k:"rel", l:"เกี่ยวข้องเป็น", ph:"บิดา / มารดา / ผู้ปกครองตามกฎหมาย", w:1 },
+    { k:"tel", l:"เบอร์ติดต่อผู้ปกครอง", w:1 }, { k:"date", l:"วันที่", t:"date", w:1 }
+  ],
+  r(v){
+    const line = (t) => `<small style="margin-bottom:1.5mm"><span class="chk"></span>ยินยอม &nbsp;&nbsp;<span class="chk"></span>ไม่ยินยอม &nbsp;&nbsp; ${t}</small>`;
+    return letterHead() + `
+      <h2>หนังสือยินยอมการเก็บรวบรวม ใช้ และเปิดเผยข้อมูลส่วนบุคคล</h2>
+      <p class="ctr" style="font-size:15pt">${esc(S.plan)} · ${esc(S.school)}</p>
+      <div class="rows" style="margin-top:4mm">
+        <div class="rw"><span class="lb">ข้าพเจ้า</span><span class="vl">${dot(v.guard, 26)}</span><span class="lb">เกี่ยวข้องเป็น</span><span class="vl" style="max-width:44mm">${dot(v.rel, 12)}</span></div>
+        <div class="rw"><span class="lb">ของเด็กชาย/เด็กหญิง/นาย/นางสาว</span><span class="vl">${dot(v.name, 22)}</span><span class="lb">ชั้น</span><span class="vl" style="max-width:34mm">${dot(num(v.cls), 8)}</span></div>
+        <div class="rw"><span class="lb">โทรศัพท์ติดต่อ</span><span class="vl" style="max-width:60mm">${dot(num(v.tel), 14)}</span><span class="lb">วันที่</span><span class="vl">${dot(num(thDate(v.date)), 14)}</span></div>
+      </div>
+      <p class="ind" style="margin-top:3mm">ข้าพเจ้าให้ความยินยอมแก่${esc(S.school)} ในการเก็บรวบรวม ใช้ และเปิดเผยข้อมูลส่วนบุคคลของนักเรียนข้างต้น เพื่อการดำเนินงานและการประชาสัมพันธ์ของ${esc(S.plan)} ตามรายการที่ระบุไว้ด้านล่างนี้</p>
+      <div class="box">
+        <div class="bt">รายการที่ขอความยินยอม (โปรดทำเครื่องหมายทุกข้อ)</div>
+        ${line("เผยแพร่ภาพนิ่งของนักเรียนบนเพจ เว็บไซต์ และสื่อประชาสัมพันธ์ของโรงเรียน")}
+        ${line("เผยแพร่ภาพเคลื่อนไหวหรือวีดิทัศน์ของนักเรียน")}
+        ${line("เผยแพร่ชื่อ–สกุลของนักเรียนประกอบผลงานหรือความสำเร็จ")}
+        ${line("เผยแพร่ผลการแข่งขัน ผลการสอบ หรือสถิติสมรรถภาพของนักเรียน")}
+        ${line("ส่งต่อข้อมูลให้ผู้สนับสนุนกองทุน เพื่อประกอบรายงานผลการดำเนินงาน")}
+      </div>
+      <p class="ind" style="margin-top:3mm">ข้าพเจ้ารับทราบว่า ข้อมูลสุขภาพและข้อมูลฐานะทางเศรษฐกิจของนักเรียนเป็นข้อมูลอ่อนไหว ซึ่งโรงเรียนจะไม่เปิดเผยต่อสาธารณะไม่ว่ากรณีใด และจะจำกัดสิทธิการเข้าถึงไว้เฉพาะผู้ปฏิบัติหน้าที่ที่เกี่ยวข้องเท่านั้น</p>
+      <p class="ind">ข้าพเจ้ารับทราบว่ามีสิทธิถอนความยินยอมนี้เมื่อใดก็ได้ โดยแจ้งเป็นหนังสือต่อโรงเรียน และการถอนความยินยอมจะไม่มีผลกระทบใด ๆ ต่อสิทธิของนักเรียนในการเรียนและการเข้าร่วมกิจกรรมของแผนการเรียน</p>
+      ${sig([{ role:"ผู้ปกครอง / ผู้ให้ความยินยอม", name:v.guard, date:1 }, { role:"เจ้าหน้าที่ผู้รับหนังสือยินยอม", date:1 }])}
+      <p style="margin-top:5mm;font-size:13pt">ตามพระราชบัญญัติคุ้มครองข้อมูลส่วนบุคคล พ.ศ. ๒๕๖๒ · ติดต่อสอบถาม ${num(esc(S.tel))}</p>`;
+  }
+},
+
+/* ---------- 9 วิเคราะห์ผลสอบเสมือน ---------- */
+mock: {
+  g: "งานนักเรียน", n: "แบบวิเคราะห์ผลสอบเสมือนรายบุคคล", d: "คืนผลภายใน ๕ วันทำการ พร้อมงานซ่อม",
+  f: [
+    { k:"name", l:"ชื่อ–สกุลนักเรียน", w:1 }, { k:"cls", l:"ชั้น / เลขที่", w:1 },
+    { k:"round", l:"สอบเสมือนครั้งที่", w:1 }, { k:"date", l:"วันที่สอบ", t:"date", w:1 },
+    { k:"m1", l:"คณิตศาสตร์ (เต็ม 220)", t:"number", w:1 }, { k:"m2", l:"วิทยาศาสตร์ (เต็ม 220)", t:"number", w:1 },
+    { k:"m3", l:"ภาษาอังกฤษ (เต็ม 140)", t:"number", w:1 }, { k:"m4", l:"ภาษาไทย (เต็ม 60)", t:"number", w:1 },
+    { k:"m5", l:"สังคมศึกษา (เต็ม 60)", t:"number", w:1 },
+    { k:"weak", l:"บทที่พลาดซ้ำ ๓ อันดับแรก", t:"textarea" },
+    { k:"fix", l:"งานซ่อมที่มอบหมาย", t:"textarea" }
+  ],
+  r(v){
+    const F = [["คณิตศาสตร์", 220, v.m1], ["วิทยาศาสตร์", 220, v.m2], ["ภาษาอังกฤษ", 140, v.m3], ["ภาษาไทย", 60, v.m4], ["สังคมศึกษา", 60, v.m5]];
+    let got = 0, full = 0;
+    const rows = F.map(([n, f, raw]) => {
+      const has = raw !== "" && raw != null && !isNaN(Number(raw));
+      const x = has ? Number(raw) : 0;
+      if (has){ got += x; full += f; }
+      return `<tr><td>${n}</td><td class="c">${num(f)}</td><td class="c">${has ? num(x) : ""}</td><td class="c">${has ? num((x / f * 100).toFixed(1)) + "%" : ""}</td></tr>`;
+    }).join("");
+    const pct = full ? (got / full * 100) : 0;
+    const grp = !full ? "" : pct >= 70 ? "A · พร้อมสอบ" : pct >= 55 ? "B · ใกล้เกณฑ์" : pct >= 40 ? "C · ต้องเร่ง" : "D · ซ่อมพื้นฐาน";
+    return letterHead() + `
+      <h2>แบบวิเคราะห์ผลสอบเสมือนรายบุคคล</h2>
+      <p class="ctr" style="font-size:15pt">${esc(S.plan)} · ปีการศึกษา ${num(S.year)}</p>
+      <div class="rows" style="margin-top:4mm">
+        <div class="rw"><span class="lb">ชื่อ–สกุล</span><span class="vl">${dot(v.name, 26)}</span><span class="lb">ชั้น/เลขที่</span><span class="vl" style="max-width:38mm">${dot(num(v.cls), 10)}</span></div>
+        <div class="rw"><span class="lb">สอบเสมือนครั้งที่</span><span class="vl" style="max-width:40mm">${dot(num(v.round), 8)}</span><span class="lb">วันที่สอบ</span><span class="vl">${dot(num(thDate(v.date)), 16)}</span></div>
+      </div>
+      <table>
+        <thead><tr><th>วิชา</th><th style="width:26mm">คะแนนเต็ม</th><th style="width:30mm">คะแนนที่ได้</th><th style="width:26mm">ร้อยละ</th></tr></thead>
+        <tbody>${rows}
+          <tr><td style="font-weight:700">รวม</td><td class="c" style="font-weight:700">${num(full || 700)}</td><td class="c" style="font-weight:700">${full ? num(got) : ""}</td><td class="c" style="font-weight:700">${full ? num(pct.toFixed(1)) + "%" : ""}</td></tr>
+        </tbody>
+      </table>
+      <div class="box"><div class="bt">กลุ่มติวรอบถัดไป</div><small>${grp || "………………………………"} &nbsp;&nbsp;(เกณฑ์ A ≥ ๗๐% · B ≥ ๕๕% · C ≥ ๔๐% · D < ๔๐%)</small></div>
+      <div class="box"><div class="bt">บทที่พลาดซ้ำ ๓ อันดับแรก</div><small>${esc(v.weak) || "……………………………………………………………………………………………………………………………………"}</small></div>
+      <div class="box"><div class="bt">งานซ่อมที่มอบหมาย · กำหนดส่ง ……… / ……… / …………</div><small>${esc(v.fix) || "……………………………………………………………………………………………………………………………………"}</small></div>
+      ${sig([{ role:"ครูผู้วิเคราะห์ผล", name:S.head }, { role:"ผู้ปกครอง (ลงนามรับทราบ)", date:1 }])}
+      <p style="margin-top:5mm;font-size:13pt">หมายเหตุ : โครงสร้างคะแนนอ้างอิงสัดส่วนที่ใช้มาต่อเนื่อง ให้ตรวจสอบระเบียบการของแต่ละเหล่าในปีที่สอบทุกครั้ง</p>`;
+  }
+}
+};
+
+/* ═══ render ═══ */
+const $ = s => document.querySelector(s);
+const listEl = $("#list"), editEl = $("#edit"), sheetEl = $("#sheet");
+let settingsOpen = false;
+
+function renderList(){
+  const groups = {};
+  for (const [id, d] of Object.entries(DOCS)) (groups[d.g] ||= []).push([id, d]);
+  listEl.innerHTML = Object.entries(groups).map(([g, arr]) => `
+    <div class="grp">${g}</div>
+    ${arr.map(([id, d]) => `<button class="item" type="button" data-id="${id}" aria-current="${id === cur && !settingsOpen}">
+      <b>${d.n}</b><span>${d.d}</span></button>`).join("")}`).join("");
+}
+
+function fieldHTML(f, v){
+  const id = "f_" + f.k;
+  const value = v[f.k] ?? f.d ?? "";
+  let inp;
+  if (f.t === "textarea") inp = `<textarea id="${id}" data-k="${f.k}" placeholder="${esc(f.ph || "")}">${esc(value)}</textarea>`;
+  else if (f.t === "select") inp = `<select id="${id}" data-k="${f.k}">` + (f.o || []).map(([val2, lab]) => `<option value="${esc(val2)}"${val2 === value ? " selected" : ""}>${esc(lab)}</option>`).join("") + `</select>`;
+  else inp = `<input id="${id}" data-k="${f.k}" type="${f.t || "text"}" value="${esc(value)}" placeholder="${esc(f.ph || "")}">`;
+  return `<div class="field"><label for="${id}">${esc(f.l)}</label>${inp}${f.hint ? `<div class="hint">${esc(f.hint)}</div>` : ""}</div>`;
+}
+
+function renderEdit(){
+  if (settingsOpen){
+    editEl.innerHTML = `<p class="fh">ตั้งค่าโรงเรียน</p>
+      <p class="fsub">กรอกครั้งเดียว ใช้กับเอกสารทุกฉบับ ข้อมูลเก็บไว้ในเบราว์เซอร์เครื่องนี้เท่านั้น ไม่ส่งออกไปที่ใด</p>
+      ${SET_FIELDS.map(f => fieldHTML({ k: f.k, l: f.l, t: f.t, o: f.o, hint: f.h }, S)).join("")}
+      <div class="acts"><button class="btn" id="btnCloseSet" type="button">เสร็จแล้ว</button>
+      <button class="btn sec" id="btnReset" type="button">คืนค่าเริ่มต้น</button></div>`;
+    editEl.querySelectorAll("[data-k]").forEach(el => el.addEventListener("input", e => {
+      S[e.target.dataset.k] = e.target.value; saveS(); renderSheet();
+    }));
+    $("#btnCloseSet").onclick = () => { settingsOpen = false; renderAll(); };
+    $("#btnReset").onclick = () => { if (confirm("คืนค่าตั้งค่าโรงเรียนทั้งหมดเป็นค่าเริ่มต้น?")){ S = Object.assign({}, DEF_S); saveS(); renderAll(); } };
+    return;
+  }
+  const d = DOCS[cur], v = V[cur] ||= {};
+  const wide = d.f.filter(f => !f.w), pairs = d.f.filter(f => f.w);
+  let html = `<p class="fh">${esc(d.n)}</p><p class="fsub">${esc(d.d)}</p>`;
+  let buf = [];
+  d.f.forEach(f => {
+    if (f.w){ buf.push(f); if (buf.length === 2){ html += `<div class="two-col">${buf.map(x => fieldHTML(x, v)).join("")}</div>`; buf = []; } }
+    else { if (buf.length){ html += `<div class="two-col">${buf.map(x => fieldHTML(x, v)).join("")}</div>`; buf = []; } html += fieldHTML(f, v); }
+  });
+  if (buf.length) html += `<div class="two-col">${buf.map(x => fieldHTML(x, v)).join("")}</div>`;
+  html += `<div class="acts">
+      <button class="btn" id="btnPrint2" type="button">พิมพ์เอกสาร</button>
+      <button class="btn sec" id="btnClear" type="button">ล้างข้อมูลในฟอร์มนี้</button></div>
+    <div class="tip"><b>เคล็ดลับการพิมพ์</b><br>กด <b>พิมพ์เอกสาร</b> แล้วในหน้าต่างพิมพ์ให้ตั้ง “ขนาดกระดาษ A4” และปิด “หัวกระดาษและท้ายกระดาษ” จะได้เอกสารเต็มหน้าพอดี · เลือก “บันทึกเป็น PDF” เพื่อเก็บไฟล์ได้</div>`;
+  editEl.innerHTML = html;
+  editEl.querySelectorAll("[data-k]").forEach(el => el.addEventListener("input", e => {
+    V[cur][e.target.dataset.k] = e.target.value; saveV(); renderSheet();
+  }));
+  $("#btnPrint2").onclick = doPrint;
+  $("#btnClear").onclick = () => { if (confirm("ล้างข้อมูลที่กรอกไว้ในฟอร์มนี้?")){ V[cur] = {}; saveV(); renderAll(); } };
+}
+
+function renderSheet(){
+  const d = DOCS[cur];
+  const v = Object.assign({}, Object.fromEntries(d.f.map(f => [f.k, f.d ?? ""])), V[cur] || {});
+  sheetEl.className = "sheet" + (d.land ? " land" : "") + (d.tight ? " tight" : "");
+  sheetEl.innerHTML = d.r(v);
+  let st = document.getElementById("pagerule");
+  if (!st){ st = document.createElement("style"); st.id = "pagerule"; document.head.appendChild(st); }
+  st.textContent = `@media print{@page{size:A4 ${d.land ? "landscape" : "portrait"};margin:0}}`;
+}
+
+function renderAll(){ renderList(); renderEdit(); renderSheet(); }
+function doPrint(){ window.print(); }
+
+listEl.addEventListener("click", e => {
+  const b = e.target.closest(".item");
+  if (!b) return;
+  cur = b.dataset.id; settingsOpen = false;
+  localStorage.setItem("nk_doc", cur);
+  renderAll();
+  if (window.innerWidth <= 760) editEl.scrollIntoView({ behavior: "smooth", block: "start" });
+});
+$("#btnSettings").onclick = () => { settingsOpen = !settingsOpen; renderAll(); };
+$("#btnPrint").onclick = doPrint;
+$("#btnToggle").onclick = () => $("#app").classList.toggle("showprev");
+
+if (!DOCS[cur]) cur = "memo";
+renderAll();
+</script>
+</body>
+</html>
