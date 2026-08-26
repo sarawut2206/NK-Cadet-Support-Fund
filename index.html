@@ -106,6 +106,10 @@ button,input,select,textarea{font:inherit;color:inherit}
 .sheet.tight .box{padding:2mm 2.6mm;margin-top:2.2mm}
 .sheet.tight .rw{margin-bottom:1.1mm}
 .sheet.tight p{margin-bottom:1.4mm}
+.sheet.tight .org{margin-bottom:2.5mm}
+.sheet.tight h2{margin-bottom:2mm}
+.sheet.tight table{margin:1.8mm 0}
+.sheet.tight th,.sheet.tight td{padding:1mm 2mm}
 .sheet *{box-sizing:border-box}
 .sheet .ctr{text-align:center}
 .sheet .rt{text-align:right}
@@ -150,6 +154,10 @@ button,input,select,textarea{font:inherit;color:inherit}
   .sheet-wrap{transform:none!important}
   .sheet{box-shadow:none;width:210mm;min-height:0;margin:0;padding:14mm 16mm}
   .sheet.land{width:297mm}
+  .sheet table{break-inside:auto}
+  .sheet tr,.sheet .box,.sheet .rw{break-inside:avoid}
+  .sheet thead{display:table-header-group}
+  .sheet .sig{break-inside:avoid;break-before:auto}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
@@ -633,6 +641,158 @@ mock: {
       <div class="box"><div class="bt">งานซ่อมที่มอบหมาย · กำหนดส่ง ……… / ……… / …………</div><small>${esc(v.fix) || "……………………………………………………………………………………………………………………………………"}</small></div>
       ${sig([{ role:"ครูผู้วิเคราะห์ผล", name:S.head }, { role:"ผู้ปกครอง (ลงนามรับทราบ)", date:1 }])}
       <p style="margin-top:5mm;font-size:13pt">หมายเหตุ : โครงสร้างคะแนนอ้างอิงสัดส่วนที่ใช้มาต่อเนื่อง ให้ตรวจสอบระเบียบการของแต่ละเหล่าในปีที่สอบทุกครั้ง</p>`;
+  }
+},
+
+/* ---------- ใบเสร็จรับเงินกองทุน ---------- */
+donorreceipt: {
+  g: "งานบัญชี", n: "ใบเสร็จรับเงินกองทุน", d: "ออกให้ผู้บริจาคทุกครั้ง · เลขที่ต้องเรียงต่อเนื่องตามทะเบียนคุมใบเสร็จ",
+  f: [
+    { k:"book", l:"เล่มที่", w:1 }, { k:"no", l:"เลขที่ใบเสร็จ", ph:"001/2569", w:1 },
+    { k:"date", l:"วันที่รับเงิน", t:"date", w:1 },
+    { k:"channel", l:"ช่องทางรับ", t:"select", w:1, o:[["เงินสด","เงินสด"],["โอนเข้าบัญชีธนาคาร","โอนเข้าบัญชี"],["เช็ค","เช็ค"],["สิ่งของ","สิ่งของ"]] },
+    { k:"donor", l:"ชื่อผู้บริจาค (พร้อมคำนำหน้า/ยศ)" },
+    { k:"addr", l:"ที่อยู่ผู้บริจาค", t:"textarea" },
+    { k:"amount", l:"จำนวนเงิน (บาท)", t:"number", w:1 },
+    { k:"kind", l:"หรือสิ่งของที่บริจาค", ph:"เว้นว่างถ้าบริจาคเป็นเงิน", w:1 },
+    { k:"purpose", l:"วัตถุประสงค์ที่ผู้บริจาคระบุ", d:"เพื่อสนับสนุนแผนการเรียนเตรียมทหาร–ตำรวจ" }
+  ],
+  r(v){
+    const a = Number(v.amount) || 0;
+    return `
+      <div class="org"><b>${esc(S.fund)}</b>สำนักงาน ${num(esc(S.addr))}<br>โทรศัพท์ ${num(esc(S.tel))}</div>
+      <div class="hr"></div>
+      <h2>ใบเสร็จรับเงิน</h2>
+      <div class="meta" style="margin-top:3mm">
+        <div>เล่มที่ ${dot(num(v.book), 8)}&nbsp;&nbsp;&nbsp;เลขที่ ${dot(num(v.no), 10)}</div>
+        <div>วันที่ ${dot(num(thDate(v.date)), 16)}</div>
+      </div>
+      <div class="rows">
+        <div class="rw"><span class="lb">ได้รับเงินจาก</span><span class="vl">${dot(v.donor, 34)}</span></div>
+        <div class="rw"><span class="lb">ที่อยู่</span><span class="vl">${dot(v.addr, 40)}</span></div>
+        <div class="rw"><span class="lb">ช่องทางรับ</span><span class="vl">${dot(v.channel, 22)}</span></div>
+        <div class="rw"><span class="lb">เพื่อ</span><span class="vl">${dot(v.purpose, 40)}</span></div>
+      </div>
+      ${v.kind ? `<p style="margin-top:3mm"><b>สิ่งของที่บริจาค</b> ${esc(v.kind)}</p>` : ""}
+      <table style="margin-top:3mm">
+        <thead><tr><th>รายการ</th><th style="width:44mm">จำนวนเงิน (บาท)</th></tr></thead>
+        <tbody>
+          <tr><td>${esc(v.purpose) || "เงินบริจาคสนับสนุนแผนการเรียนเตรียมทหาร–ตำรวจ"}</td><td class="n">${a ? num(money(a)) : ""}</td></tr>
+          <tr><td style="text-align:right;font-weight:700">รวมทั้งสิ้น</td><td class="n" style="font-weight:700">${a ? num(money(a)) : ""}</td></tr>
+          <tr><td colspan="2" style="text-align:center">(${a ? bahtText(a) : "……………………………………………………………"})</td></tr>
+        </tbody>
+      </table>
+      <div class="box" style="margin-top:3mm">
+        <small><b>ข้อความสำคัญตามข้อ ๑๒ (๒) ของข้อบังคับกองทุน</b></small>
+        <small>กองทุนนี้มิได้จดทะเบียนเป็นองค์การหรือสถานสาธารณกุศล ผู้บริจาคไม่สามารถนำใบเสร็จรับเงินฉบับนี้ไปใช้สิทธิลดหย่อนภาษีได้</small>
+      </div>
+      ${sig([{ role:"ผู้รับเงิน", sub:"กรรมการและเลขานุการกองทุน" },
+             { role:"ผู้บริจาค", name:v.donor }])}
+      <p style="margin-top:4mm;font-size:13pt">ใบเสร็จฉบับนี้สมบูรณ์เมื่อลงลายมือชื่อผู้รับเงินแล้ว · บันทึกลงสมุดรายวันรับในวันที่รับเงิน และนำฝากธนาคารภายใน ๓ วันทำการ</p>`;
+  }
+},
+
+/* ---------- ใบสำคัญจ่ายเงิน ---------- */
+voucher: {
+  g: "งานบัญชี", n: "ใบสำคัญจ่ายเงิน", d: "แนบกับหลักฐานการจ่ายทุกครั้ง · บอกขั้นการอนุมัติให้อัตโนมัติ", tight: true,
+  f: [
+    { k:"no", l:"เลขที่ใบสำคัญจ่าย", ph:"จ001/2569", w:1 },
+    { k:"date", l:"วันที่จ่าย", t:"date", w:1 },
+    { k:"payee", l:"จ่ายให้ (ชื่อผู้รับเงิน/ร้านค้า)" },
+    { k:"cat", l:"หมวดรายจ่าย", t:"select", o:[
+      ["ค่าเดินทางไปสระว่ายน้ำ","ค่าเดินทางไปสระว่ายน้ำ"],["ค่าสระและครูสอนว่ายน้ำ","ค่าสระและครูสอนว่ายน้ำ"],
+      ["อุปกรณ์ฝึกสถานี","อุปกรณ์ฝึกสถานี"],["เอกสารและสำเนาข้อสอบ","เอกสารและสำเนาข้อสอบ"],
+      ["ค่าสมัครสอบและเดินทางไปสนามสอบ","ค่าสมัครสอบและเดินทางไปสนามสอบ"],
+      ["ทุนช่วยเหลือนักเรียนขาดแคลน","ทุนช่วยเหลือนักเรียนขาดแคลน"],["ทุนส่งเสริมความเป็นเลิศ","ทุนส่งเสริมความเป็นเลิศ"],
+      ["ประกันอุบัติเหตุและเวชภัณฑ์","ประกันอุบัติเหตุและเวชภัณฑ์"],["กระเป๋าและชุดวอร์ม","กระเป๋าและชุดวอร์ม"],
+      ["ค่าวิทยากรและค่าตอบแทน","ค่าวิทยากรและค่าตอบแทน"],["ค่าใช้จ่ายในการบริหารกองทุน","ค่าใช้จ่ายในการบริหารกองทุน"],
+      ["รายจ่ายอื่น","รายจ่ายอื่น"]] },
+    { k:"items", l:"รายการที่จ่าย", t:"textarea", ph:"ค่าเช่ารถตู้ไป–กลับ 4 ครั้ง|8000\nค่าน้ำมันเชื้อเพลิง|1200", hint:"หนึ่งรายการต่อบรรทัด คั่นชื่อกับจำนวนเงินด้วย |" },
+    { k:"method", l:"วิธีจ่าย", t:"select", w:1, o:[["เงินสด","เงินสด"],["โอนเข้าบัญชี","โอนเข้าบัญชี"],["เช็ค","เช็ค"]] },
+    { k:"ref", l:"เลขที่หลักฐานการจ่าย", ph:"เลขที่ใบเสร็จของร้าน/สลิปโอน", w:1 },
+    { k:"meeting", l:"มติที่ประชุมครั้งที่ (ถ้ามี)", ph:"1/2569 เมื่อ 15 ก.ย. 2569" }
+  ],
+  r(v){
+    const it = itemsTable(parseItems(v.items));
+    const step = it.total <= 10000 ? "ประธานกรรมการอนุมัติ และรายงานให้คณะกรรมการทราบในการประชุมคราวถัดไป"
+      : it.total <= 50000 ? "มติคณะกรรมการไม่น้อยกว่ากึ่งหนึ่งของกรรมการทั้งหมดเท่าที่มีอยู่"
+      : "มติคณะกรรมการไม่น้อยกว่าสองในสามของกรรมการทั้งหมดเท่าที่มีอยู่";
+    const cash = v.method === "เงินสด" && it.total > 10000;
+    return `
+      <div class="org"><b>${esc(S.fund)}</b>สำนักงาน ${num(esc(S.addr))}</div>
+      <div class="hr"></div>
+      <h2>ใบสำคัญจ่ายเงิน</h2>
+      <div class="meta" style="margin-top:3mm">
+        <div>เลขที่ ${dot(num(v.no), 12)}</div>
+        <div>วันที่ ${dot(num(thDate(v.date)), 16)}</div>
+      </div>
+      <div class="rows">
+        <div class="rw"><span class="lb">จ่ายให้</span><span class="vl">${dot(v.payee, 34)}</span></div>
+        <div class="rw"><span class="lb">หมวดรายจ่าย</span><span class="vl">${dot(v.cat, 30)}</span></div>
+        <div class="rw"><span class="lb">วิธีจ่าย</span><span class="vl" style="max-width:44mm">${dot(v.method, 12)}</span><span class="lb">เลขที่หลักฐาน</span><span class="vl">${dot(num(v.ref), 16)}</span></div>
+      </div>
+      ${it.html}
+      <div class="box">
+        <div class="bt">ขั้นการอนุมัติที่ต้องใช้ ตามข้อ ๑๔ ของข้อบังคับกองทุน</div>
+        <small>${esc(step)}</small>
+        ${v.meeting ? `<small style="margin-top:1.5mm">อ้างมติที่ประชุมครั้งที่ ${esc(v.meeting)}</small>` : ""}
+        ${cash ? `<small style="margin-top:1.5mm"><b>ข้อสังเกต</b> รายการนี้เกินหนึ่งหมื่นบาทแต่จ่ายเป็นเงินสด ข้อ ๑๔ (๓) กำหนดให้จ่ายโดยการโอนเข้าบัญชีเป็นหลัก</small>` : ""}
+      </div>
+      ${sig([{ role:"ผู้รับเงิน", name:v.payee },
+             { role:"ผู้จ่ายเงิน", sub:"กรรมการและเลขานุการกองทุน" },
+             { role:"ผู้ตรวจสอบหลักฐาน", sub:"กรรมการผู้ได้รับมอบหมาย" },
+             { role:"ผู้อนุมัติ", sub:"ประธานกรรมการกองทุน", date:1 }])}
+      <p style="margin-top:4mm;font-size:13pt">แนบใบเสร็จรับเงินของผู้ขายหรือหลักฐานการโอนไว้กับใบสำคัญฉบับนี้เสมอ · กรณีจ่ายเป็นทุนแก่นักเรียน ให้ผู้ปกครองลงนามร่วมในใบสำคัญรับเงินทุนด้วย</p>`;
+  }
+},
+
+/* ---------- รายงานการเงินรายภาคเรียน ---------- */
+finreport: {
+  g: "งานบัญชี", n: "รายงานการเงินรายภาคเรียน", d: "เสนอคณะกรรมการและผู้บริจาคภาคเรียนละ ๑ ครั้ง · ยาว ๑–๒ หน้าตามจำนวนหมวด", tight: true,
+  f: [
+    { k:"term", l:"ภาคเรียนที่ / ปีการศึกษา", d:"๑ / ๒๕๖๙", w:1 },
+    { k:"asof", l:"ข้อมูล ณ วันที่", t:"date", w:1 },
+    { k:"open", l:"ยอดยกมาต้นงวด (บาท)", t:"number", w:1 },
+    { k:"cash", l:"เงินสดในมือ ณ วันสิ้นงวด (บาท)", t:"number", w:1 },
+    { k:"inc", l:"รายรับแยกตามหมวด", t:"textarea", ph:"เงินบริจาคจากบุคคลธรรมดา|12000\nเงินบริจาคจากนิติบุคคล|5000", hint:"หนึ่งหมวดต่อบรรทัด คั่นด้วย |" },
+    { k:"exp", l:"รายจ่ายแยกตามหมวด", t:"textarea", ph:"ค่าเดินทางไปสระว่ายน้ำ|8000\nอุปกรณ์ฝึกสถานี|4500", hint:"หนึ่งหมวดต่อบรรทัด คั่นด้วย |" },
+    { k:"note", l:"หมายเหตุและข้อสังเกต", t:"textarea" }
+  ],
+  r(v){
+    const inc = parseItems(v.inc), exp = parseItems(v.exp);
+    const ti = inc.reduce((a, b) => a + b.amt, 0), te = exp.reduce((a, b) => a + b.amt, 0);
+    const op = Number(v.open) || 0, close = op + ti - te;
+    const bank = close - (Number(v.cash) || 0);
+    const rows = (arr) => arr.length ? arr.map(x => `<tr><td>${esc(x.name)}</td><td class="n">${num(money(x.amt))}</td></tr>`).join("")
+      : `<tr><td>&nbsp;</td><td>&nbsp;</td></tr>`;
+    return `
+      <div class="org"><b>${esc(S.fund)}</b>${num(esc(S.addr))}</div>
+      <div class="hr"></div>
+      <h2>รายงานการเงินรายภาคเรียน</h2>
+      <p class="ctr" style="font-size:15pt">ภาคเรียนที่ ${esc(v.term)} · ข้อมูล ณ วันที่ ${v.asof ? num(thDate(v.asof)) : "……………………………"}</p>
+      <table style="margin-top:4mm">
+        <thead><tr><th>รายการ</th><th style="width:44mm">จำนวนเงิน (บาท)</th></tr></thead>
+        <tbody>
+          <tr><td style="font-weight:700">ยอดยกมาต้นงวด</td><td class="n" style="font-weight:700">${num(money(op))}</td></tr>
+          <tr><td colspan="2" style="font-weight:700;background:#EDEFF3">รายรับระหว่างงวด</td></tr>
+          ${rows(inc)}
+          <tr><td style="text-align:right;font-weight:700">รวมรายรับ</td><td class="n" style="font-weight:700">${num(money(ti))}</td></tr>
+          <tr><td colspan="2" style="font-weight:700;background:#EDEFF3">รายจ่ายระหว่างงวด</td></tr>
+          ${rows(exp)}
+          <tr><td style="text-align:right;font-weight:700">รวมรายจ่าย</td><td class="n" style="font-weight:700">${num(money(te))}</td></tr>
+          <tr><td style="font-weight:700">ยอดคงเหลือยกไป</td><td class="n" style="font-weight:700">${num(money(close))}</td></tr>
+          <tr><td colspan="2" style="text-align:center">(${bahtText(close)})</td></tr>
+          <tr><td colspan="2" style="font-weight:700;background:#EDEFF3">ยอดคงเหลือแยกตามที่เก็บรักษา</td></tr>
+          <tr><td>เงินสดในมือ</td><td class="n">${num(money(Number(v.cash) || 0))}</td></tr>
+          <tr><td>เงินฝากธนาคาร</td><td class="n">${num(money(bank))}</td></tr>
+        </tbody>
+      </table>
+
+      ${v.note ? `<div class="box"><div class="bt">หมายเหตุและข้อสังเกต</div><small>${esc(v.note)}</small></div>` : ""}
+      ${sig([{ role:"ผู้จัดทำ", sub:"กรรมการและเลขานุการกองทุน" },
+             { role:"ผู้ตรวจสอบบัญชี", sub:"ตามข้อ ๒๐ ของข้อบังคับ" },
+             { role:"ประธานกรรมการกองทุน", date:1 }])}
+      <p style="margin-top:4mm;font-size:13pt">ผู้บริจาคมีสิทธิขอตรวจดูบัญชีและหลักฐานการรับจ่ายได้ ตามข้อ ๒๐ (๓) ของข้อบังคับกองทุน โดยแจ้งความประสงค์ล่วงหน้าไม่น้อยกว่าเจ็ดวัน</p>`;
   }
 }
 };
