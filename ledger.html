@@ -137,12 +137,13 @@ footer b{color:#fff}
 
 <header class="top"><div class="top-in">
   <span class="mark">นข</span>
-  <span class="title"><b>ทะเบียนกลาง</b><span>ฐานข้อมูลหนังสือและบัญชีของกองทุน</span></span>
+  <span class="title"><b>ทะเบียนกลาง</b><span>ฐานข้อมูลหนังสือและบัญชีของกองทุน · โรงเรียนมัธยมวัดหนองแขม</span></span>
   <span class="spacer"></span>
   <nav class="tabs">
     <a href="index.html">ศูนย์เอกสาร</a>
     <a href="dashboard.html">แดชบอร์ด</a>
     <a href="ledger.html" aria-current="page">ทะเบียนกลาง</a>
+    <a href="tutoring.html">ตารางติว</a>
   </nav>
   <button class="tbtn" id="btnConn" type="button"><span class="dot" id="connDot"></span><span id="connTxt">ยังไม่เชื่อมต่อ</span></button>
   <button class="tbtn" id="btnRefresh" type="button">รีเฟรช</button>
@@ -213,14 +214,17 @@ footer b{color:#fff}
       <div class="grid2">
         <div class="field"><label for="dType">ประเภท</label><select id="dType">
           <option>หนังสือเข้า</option><option>หนังสือออก</option><option>บันทึกภายใน</option>
-          <option>ใบเสร็จรับเงิน</option><option>ใบสำคัญจ่ายเงิน</option><option>หนังสือขอบคุณ</option>
+          <option>คำสั่งโรงเรียน</option><option>บันทึกข้อตกลง</option><option>รายงานการประชุม</option>
+          <option>แบบแจ้งความประสงค์บริจาค</option><option>ใบเสร็จรับเงินของโรงเรียน</option>
+          <option>หนังสือรับรองการบริจาค</option><option>ใบสำคัญจ่ายเงิน</option><option>หนังสือขอบคุณ</option>
           <option>ใบประกาศเกียรติคุณ</option><option>แบบฟอร์มนักเรียน</option><option>รายงานการเงิน</option>
+          <option>รายงานประจำปี</option>
         </select></div>
         <div class="field"><label for="dNo">เลขที่</label>
           <input id="dNo" type="text" placeholder="กดปุ่มขอเลขที่ หรือพิมพ์เอง"></div>
         <div class="field"><label for="dDate">วันที่</label><input id="dDate" type="date"></div>
         <div class="field"><label for="dCat">หมวดงาน</label><select id="dCat">
-          <option>งานกองทุน</option><option>งานบัญชี</option><option>งานนักเรียน</option>
+          <option>งานจัดตั้งกองทุน</option><option>งานกองทุน</option><option>งานบัญชี</option><option>งานนักเรียน</option>
           <option>งานประชาสัมพันธ์</option><option>งานธุรการทั่วไป</option>
         </select></div>
         <div class="field" style="grid-column:1/-1"><label for="dSubj">เรื่อง</label>
@@ -260,6 +264,7 @@ footer b{color:#fff}
       <p class="eb">บัญชีรับ–จ่าย</p>
       <h2>บันทึกรายรับและรายจ่ายของกองทุน</h2>
       <p>ยอดคงเหลือคำนวณจากรายการทั้งหมดในฐานข้อมูล · รายการที่ยกเลิกจะไม่ถูกนับ แต่ยังเก็บไว้ให้ตรวจสอบย้อนหลังได้</p>
+      <p>ทะเบียนนี้เป็นบัญชีคุมของกองทุนเพื่อการติดตามและรายงาน <b>มิใช่บัญชีทางการเงินของโรงเรียน</b> บัญชีที่ถือเป็นหลักฐานทางราชการคือบัญชีและใบเสร็จของงานการเงินโรงเรียน ให้กระทบยอดกันทุกสิ้นเดือน</p>
     </div>
     <div class="panel">
       <div class="grid2">
@@ -267,7 +272,7 @@ footer b{color:#fff}
           <option value="รับ">รับเงิน</option><option value="จ่าย">จ่ายเงิน</option></select></div>
         <div class="field"><label for="aDate">วันที่</label><input id="aDate" type="date"></div>
         <div class="field"><label for="aNo">เลขที่เอกสาร</label>
-          <input id="aNo" type="text" placeholder="เลขที่ใบเสร็จ หรือใบสำคัญจ่าย"></div>
+          <input id="aNo" type="text" placeholder="เลขที่ใบเสร็จของโรงเรียน หรือใบสำคัญจ่าย"></div>
         <div class="field"><label for="aCat">หมวด</label><select id="aCat"></select></div>
         <div class="field"><label for="aParty">คู่กรณี (ผู้บริจาค / ผู้รับเงิน)</label>
           <input id="aParty" type="text" placeholder="ชื่อผู้บริจาคหรือร้านค้า"></div>
@@ -277,7 +282,7 @@ footer b{color:#fff}
           <option>เงินสด</option><option>โอนเข้าบัญชี</option><option>เช็ค</option><option>สิ่งของ</option></select></div>
         <div class="field"><label for="aEvid">เลขที่หลักฐาน</label>
           <input id="aEvid" type="text" placeholder="ใบเสร็จร้านค้า / เลขอ้างอิงการโอน"></div>
-        <div class="field"><label for="aDep">วันที่นำฝาก (เฉพาะรับเป็นเงินสด)</label><input id="aDep" type="date"></div>
+        <div class="field"><label for="aDep">วันที่นำเข้าบัญชีโรงเรียน (เฉพาะรับเป็นเงินสด)</label><input id="aDep" type="date"></div>
         <div class="field" style="grid-column:1/-1"><label for="aDesc">รายละเอียด</label>
           <input id="aDesc" type="text" placeholder="เช่น ค่าเช่ารถตู้ไป–กลับ ม.มหิดล 4 ครั้ง"></div>
       </div>
@@ -302,7 +307,7 @@ footer b{color:#fff}
 </main>
 
 <footer><div class="wrap">
-  <p><b>ทะเบียนกลาง · กองทุนส่งเสริมศักยภาพนักเรียนเตรียมทหารและสายอาชีพความมั่นคง</b><br>
+  <p><b>ทะเบียนกลาง · กองทุนสนับสนุนการจัดการเรียนการสอน แผนการเรียนเตรียมทหาร ตำรวจ โรงเรียนมัธยมวัดหนองแขม</b><br>
   โรงเรียนมัธยมวัดหนองแขม · ๔๔๓ ถนนเลียบคลองภาษีเจริญฝั่งใต้ แขวงหนองแขม เขตหนองแขม กรุงเทพมหานคร ๑๐๑๖๐ · โทรศัพท์ ๐๒-๔๒๙-๓๔๐๒</p>
   <p style="margin-top:.7rem">ข้อมูลทั้งหมดเก็บอยู่ใน Google Sheets ของโรงเรียน หน้าเว็บนี้เป็นเพียงหน้าจอสำหรับกรอกและค้นหา ไม่ได้เก็บข้อมูลไว้เอง · สำรองสเปรดชีตทุกสิ้นเดือน</p>
 </div></footer>
@@ -312,11 +317,12 @@ footer b{color:#fff}
 const $ = s => document.querySelector(s);
 const CATS = {
   "รับ": ["เงินบริจาคจากบุคคลธรรมดา","เงินบริจาคจากนิติบุคคล","เงินบริจาคจากหน่วยงานราชการ","เงินบริจาคจากศิษย์เก่า",
-          "เงินสนับสนุนจากองค์กรสาธารณกุศล","รายได้จากกิจกรรมระดมทุน","ดอกผลเงินฝากธนาคาร","ทุนประเดิม","รายรับอื่น"],
-  "จ่าย": ["ค่าเดินทางไปสระว่ายน้ำ","ค่าสระและครูสอนว่ายน้ำ","อุปกรณ์ฝึกสถานี","เอกสารและสำเนาข้อสอบ",
-           "ค่าสมัครสอบและเดินทางไปสนามสอบ","ทุนช่วยเหลือนักเรียนขาดแคลน","ทุนส่งเสริมความเป็นเลิศ",
-           "ประกันอุบัติเหตุและเวชภัณฑ์","กระเป๋าและชุดวอร์ม","ค่าวิทยากรและค่าตอบแทน","ค่าธรรมเนียมธนาคาร",
-           "ค่าใช้จ่ายในการบริหารกองทุน","รายจ่ายอื่น"]
+          "เงินบริจาคจากผู้ปกครอง","เงินสนับสนุนจากองค์กรสาธารณกุศล","รายได้จากกิจกรรมระดมทุน","เงินบริจาคเป็นสิ่งของ (ตีมูลค่า)",
+          "ดอกผลเงินฝากธนาคาร","ทุนประเดิม","รายรับอื่น"],
+  "จ่าย": ["ค่าเดินทางไปสระว่ายน้ำ","ค่าสระและครูสอนว่ายน้ำ","อุปกรณ์ฝึกสถานี","สื่อการเรียนรู้และเอกสารประกอบการสอน",
+           "เอกสารและสำเนาข้อสอบ","ค่าสมัครสอบและเดินทางไปสนามสอบ","ทุนช่วยเหลือนักเรียนขาดแคลน","ทุนส่งเสริมความเป็นเลิศ",
+           "ค่าฝึกอบรมและกิจกรรมพัฒนาผู้เรียน","ประกันอุบัติเหตุและเวชภัณฑ์","กระเป๋าและชุดวอร์ม",
+           "ค่าวิทยากรและค่าตอบแทน","ค่าธรรมเนียมธนาคาร","ค่าใช้จ่ายในการบริหารกองทุน","รายจ่ายอื่น"]
 };
 let CFG = JSON.parse(localStorage.getItem("nk_api") || "{}");
 let connected = false;
