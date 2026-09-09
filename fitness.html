@@ -1,0 +1,824 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ทดสอบสมรรถภาพ | แผนเตรียมทหาร มัธยมวัดหนองแขม</title>
+<meta name="description" content="แดชบอร์ดติดตามผลทดสอบสมรรถภาพรายสัปดาห์ของนักเรียนแผนการเรียนเตรียมทหาร–ตำรวจ โรงเรียนมัธยมวัดหนองแขม">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%230E2A56'/><text y='72' x='50' text-anchor='middle' font-size='62' fill='%23FFC72C' font-family='sans-serif' font-weight='bold'>นข</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&family=Bai+Jamjuree:wght@500;600;700&display=swap">
+<style>
+:root{
+  --navy:#10305F; --navy-2:#1B4A8F; --navy-3:#2C63B0;
+  --gold:#F5B722; --gold-2:#FFD152; --gold-ink:#8A6410; --gold-ghost:rgba(245,183,34,.15);
+  --ground:#EDF4FD; --surface:#FFFFFF; --surface-2:#DCE9F9;
+  --ink:#0F2140; --ink-2:#3D5375; --ink-3:#5F7492;
+  --rule:#C7DCF3; --rule-2:#9CBADF;
+  --ok:#1F7A5A; --ok-bg:rgba(31,122,90,.12);
+  --warn:#B45D12; --warn-bg:rgba(180,93,18,.12);
+  --crit:#A32B2B; --crit-bg:rgba(163,43,43,.11);
+  --idle:#6E7C93; --idle-bg:rgba(110,124,147,.10);
+  --ui:'Bai Jamjuree','Sarabun',system-ui,sans-serif;
+  --body:'Sarabun',system-ui,sans-serif;
+  --doc:'TH SarabunPSK','TH Sarabun New','Sarabun',system-ui,serif;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --ground:#0A1526; --surface:#132034; --surface-2:#1C2B42;
+    --ink:#E6EBF3; --ink-2:#AFBACC; --ink-3:#8391A6;
+    --rule:#26344E; --rule-2:#3E506F;
+    --navy:#0A1830; --navy-2:#22508F; --navy-3:#6EA1E8;
+    --gold:#FFC72C; --gold-2:#FFD766; --gold-ink:#FFC72C; --gold-ghost:rgba(255,199,44,.14);
+    --ok:#5FBF97; --ok-bg:rgba(95,191,151,.16);
+    --warn:#E09550; --warn-bg:rgba(224,149,80,.16);
+    --crit:#E38A8A; --crit-bg:rgba(227,138,138,.16);
+    --idle:#8391A6; --idle-bg:rgba(131,145,166,.13);
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#0A1526; --surface:#132034; --surface-2:#1C2B42;
+  --ink:#E6EBF3; --ink-2:#AFBACC; --ink-3:#8391A6;
+  --rule:#26344E; --rule-2:#3E506F;
+  --navy:#0A1830; --navy-2:#22508F; --navy-3:#6EA1E8;
+  --gold:#FFC72C; --gold-2:#FFD766; --gold-ink:#FFC72C; --gold-ghost:rgba(255,199,44,.14);
+  --ok:#5FBF97; --ok-bg:rgba(95,191,151,.16);
+  --warn:#E09550; --warn-bg:rgba(224,149,80,.16);
+  --crit:#E38A8A; --crit-bg:rgba(227,138,138,.16);
+  --idle:#8391A6; --idle-bg:rgba(131,145,166,.13);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--body);font-size:15.5px;line-height:1.7;-webkit-font-smoothing:antialiased}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--navy-3);outline-offset:2px;border-radius:5px}
+.wrap{max-width:84rem;margin-inline:auto;padding-inline:clamp(.9rem,3vw,2rem)}
+p{margin:0}
+a{color:var(--navy-3)}
+
+.top{background:var(--navy);color:#fff;border-bottom:3px solid var(--gold);position:sticky;top:0;z-index:40}
+.top-in{display:flex;align-items:center;gap:.9rem;padding:.6rem clamp(.8rem,2vw,1.4rem);flex-wrap:wrap}
+.mark{width:2.35rem;height:2.35rem;flex:none;background:var(--gold);color:var(--navy);display:grid;place-items:center;font-family:var(--ui);font-weight:700;font-size:.8rem;clip-path:polygon(50% 0,100% 24%,100% 76%,50% 100%,0 76%,0 24%)}
+.title{line-height:1.25;min-width:0}
+.title b{display:block;font-family:var(--ui);font-weight:600;font-size:.98rem;color:#fff}
+.title span{font-size:.76rem;color:#B6C6E0}
+.top .spacer{margin-inline-start:auto}
+.tabs{display:flex;gap:.25rem;flex-wrap:wrap}
+.tabs a{font-family:var(--ui);font-weight:600;font-size:.83rem;text-decoration:none;color:#C6D4EA;padding:.4rem .8rem;border-radius:5px;border:1px solid transparent}
+.tabs a:hover{background:rgba(255,255,255,.1);color:#fff}
+.tabs a[aria-current]{background:var(--gold);color:var(--navy)}
+
+.band{background:var(--navy);color:#fff;padding:0 0 1.6rem}
+.bandgrid{display:grid;gap:1px;background:rgba(255,255,255,.16);grid-template-columns:repeat(auto-fit,minmax(10rem,1fr));border:1px solid rgba(255,255,255,.16);border-radius:10px;overflow:hidden}
+.kpi{background:var(--navy);padding:.9rem 1.05rem}
+.kpi .l{font-family:var(--ui);font-size:.71rem;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:#93A9CC}
+.kpi .v{font-family:var(--ui);font-weight:700;font-size:1.55rem;line-height:1.15;color:var(--gold-2);font-variant-numeric:tabular-nums;margin-top:.1rem}
+.kpi .v.bad{color:#FFB4B4} .kpi .v.good{color:#9FE3C4}
+.kpi .s{font-size:.78rem;color:#9DB0CE;line-height:1.5}
+
+section{padding:1.9rem 0}
+section + section{border-top:1px solid var(--rule)}
+.hd{margin-bottom:1rem}
+.hd .eb{font-family:var(--ui);font-size:.72rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--gold-ink);margin-bottom:.3rem}
+.hd h2{font-family:var(--ui);font-weight:700;font-size:clamp(1.2rem,2.6vw,1.55rem);margin:0 0 .35rem;line-height:1.3}
+.hd p{font-size:.93rem;color:var(--ink-2);max-width:76ch}
+
+.panel{background:var(--surface);border:1px solid var(--rule);border-radius:10px;padding:1rem 1.1rem;box-shadow:0 1px 3px rgba(16,48,95,.07)}
+.grid3{display:grid;gap:.65rem .85rem;grid-template-columns:repeat(auto-fit,minmax(12.5rem,1fr))}
+.field label{display:block;font-family:var(--ui);font-weight:600;font-size:.77rem;color:var(--ink-2);margin-bottom:.18rem}
+.field input,.field select,.field textarea{width:100%;background:var(--ground);border:1px solid var(--rule);border-radius:5px;padding:.38rem .5rem;font-size:.88rem}
+.field textarea{min-height:8rem;resize:vertical;line-height:1.6}
+.field .hint{font-size:.75rem;color:var(--ink-3);margin-top:.15rem;line-height:1.5}
+.acts{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.9rem;align-items:center}
+.btn{font-family:var(--ui);font-weight:600;font-size:.85rem;border:1px solid var(--rule-2);background:transparent;color:var(--navy-3);padding:.4rem .9rem;border-radius:5px;cursor:pointer}
+.btn:hover{background:var(--gold-ghost)}
+.btn.gold{background:var(--gold);border-color:var(--gold);color:#10305F}
+.btn.gold:hover{background:var(--gold-2)}
+.btn.xs{font-size:.75rem;padding:.2rem .55rem}
+.btn.danger{color:var(--crit);border-color:var(--crit)}
+.note{font-size:.84rem;line-height:1.6;color:var(--ink-2);background:var(--warn-bg);border:1px solid var(--rule);border-inline-start:4px solid var(--warn);border-radius:8px;padding:.6rem .85rem;margin-top:.8rem}
+.note b{color:var(--ink)}
+
+/* แถบรอบทดสอบ */
+.rounds{display:flex;gap:.4rem;flex-wrap:wrap;align-items:center}
+.rd{font-family:var(--ui);font-weight:600;font-size:.82rem;border:1px solid var(--rule-2);background:var(--surface);color:var(--ink-2);
+    padding:.3rem .7rem;border-radius:999px;cursor:pointer;white-space:nowrap}
+.rd.on{background:var(--navy);border-color:var(--navy);color:#fff}
+.rd small{display:block;font-size:.7rem;font-weight:400;opacity:.8}
+
+/* ตารางกรอกผล */
+.tblwrap{overflow-x:auto;background:var(--surface);border:1px solid var(--rule);border-radius:10px;box-shadow:0 1px 3px rgba(16,48,95,.07)}
+table.grid{border-collapse:separate;border-spacing:0;width:100%;font-size:.85rem;min-width:70rem}
+.grid th,.grid td{border-bottom:1px solid var(--rule);padding:.3rem .4rem;text-align:center;vertical-align:middle}
+.grid thead th{font-family:var(--ui);font-weight:600;font-size:.75rem;background:var(--surface-2);color:var(--ink-2);position:sticky;top:0;z-index:2;line-height:1.35}
+.grid thead th small{display:block;font-weight:400;font-size:.68rem;color:var(--ink-3)}
+.grid td.nm,.grid th.nm{text-align:start;position:sticky;inset-inline-start:0;background:var(--surface);z-index:1;min-width:11rem}
+.grid thead th.nm{z-index:3;background:var(--surface-2)}
+.grid td.no,.grid th.no{width:2.6rem;position:sticky;inset-inline-start:0;background:var(--surface);z-index:1}
+.grid thead th.no{z-index:3;background:var(--surface-2)}
+.grid td.nm{inset-inline-start:2.6rem}
+.grid thead th.nm{inset-inline-start:2.6rem}
+.grid input{width:100%;background:var(--ground);border:1px solid var(--rule);border-radius:5px;padding:.22rem .3rem;font-size:.82rem;text-align:center;font-variant-numeric:tabular-nums}
+.grid input.nameinp{text-align:start;font-size:.85rem}
+.grid td.pass{background:var(--ok-bg)} .grid td.fail{background:var(--crit-bg)}
+.grid td.sc{font-family:var(--ui);font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap}
+.grid .g{color:var(--ok)} .grid .r{color:var(--crit)} .grid .w{color:var(--warn)} .grid .i{color:var(--idle)}
+.grid tbody tr:hover td{background:var(--gold-ghost)}
+.grid tbody tr:hover td.nm,.grid tbody tr:hover td.no{background:var(--gold-ghost)}
+.sep{border-inline-start:2px solid var(--rule-2)}
+
+/* สรุปแนวโน้ม */
+.cards{display:grid;gap:.6rem;grid-template-columns:repeat(auto-fit,minmax(16rem,1fr))}
+.card{background:var(--surface);border:1px solid var(--rule);border-radius:10px;padding:.7rem .85rem;box-shadow:0 1px 3px rgba(16,48,95,.07)}
+.card .ch{display:flex;align-items:baseline;gap:.5rem;margin-bottom:.35rem}
+.card .ch b{font-family:var(--ui);font-weight:600;font-size:.92rem;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.card .ch .sc{font-family:var(--ui);font-weight:700;font-size:1rem;font-variant-numeric:tabular-nums}
+.card .items{display:flex;flex-direction:column;gap:.12rem}
+.card .it{display:flex;gap:.4rem;font-size:.79rem;line-height:1.5;align-items:baseline}
+.card .it span:first-child{flex:1;color:var(--ink-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.card .it .val{font-variant-numeric:tabular-nums;font-weight:600;white-space:nowrap}
+.card .it .tr{width:4.6rem;text-align:end;font-size:.75rem;white-space:nowrap;font-variant-numeric:tabular-nums}
+.up{color:var(--ok)} .down{color:var(--crit)} .flat{color:var(--idle)}
+.card .cmt{width:100%;margin-top:.4rem;background:var(--ground);border:1px solid var(--rule);border-radius:5px;
+  padding:.3rem .45rem;font-size:.79rem;min-height:2.6rem;resize:vertical;line-height:1.5}
+
+.mini{font-size:.81rem;color:var(--ink-3);line-height:1.6;margin-top:.75rem}
+footer{background:var(--navy);color:#9DB0CE;padding:1.6rem 0 2.4rem;font-size:.85rem;line-height:1.7;margin-top:1rem}
+footer b{color:#fff}
+
+/* กระดาษพิมพ์ */
+#sheetWrap{display:none}
+@media print{
+  @page{size:A4 portrait;margin:0}
+  body > *:not(#sheetWrap){display:none!important}
+  #sheetWrap{display:block}
+  body{background:#fff}
+}
+.sheet{font-family:var(--doc);color:#000;background:#fff;width:210mm;padding:10mm 14mm 9mm;margin:0 auto;font-size:14pt;line-height:1.4}
+.page{min-height:276mm;break-after:page;page-break-after:always}
+.page:last-child{break-after:auto;page-break-after:auto;min-height:0}
+.sheet h1{font-size:19pt;font-weight:700;text-align:center;margin:0 0 1mm}
+.sheet .sub{text-align:center;font-size:13.5pt;margin:0 0 1mm}
+.sheet .org{text-align:center;line-height:1.3;margin-bottom:2mm}
+.sheet .org b{display:block;font-size:17pt}
+.sheet .org small{font-size:12pt}
+.sheet .hr{border-top:1.6pt solid #000;margin:2mm 0 3mm}
+.sheet table{border-collapse:collapse;width:100%;font-size:12pt;margin:1.8mm 0}
+.sheet th,.sheet td{border:.5pt solid #000;padding:1mm 1.6mm;vertical-align:top}
+.sheet thead th{background:#E9E9E9;font-weight:700;text-align:center}
+.sheet td.c,.sheet th.c{text-align:center}
+.sheet .box{border:.6pt solid #000;padding:1.6mm 3mm;margin-top:2mm;font-size:12.5pt;line-height:1.4}
+.sheet .box .bt{font-weight:700}
+.sheet .sig{display:flex;justify-content:space-around;gap:4mm;margin-top:5mm;text-align:center;font-size:12.5pt}
+.sheet .sig > div{display:flex;flex-direction:column;gap:1.2mm;min-width:42mm}
+.sheet .foot{font-size:10.5pt;margin-top:2.5mm;line-height:1.35}
+.sheet .P{font-weight:700}
+/* แนวนอน สำหรับตารางกว้าง */
+.sheet.land{width:297mm}
+.sheet.land .page{min-height:189mm}
+.sheet.land table{font-size:10.5pt}
+.sheet.land th,.sheet.land td{padding:.7mm 1.2mm}
+.sheet thead{display:table-header-group}   /* หัวตารางซ้ำเมื่อขึ้นหน้าใหม่ */
+.sheet tr{break-inside:avoid;page-break-inside:avoid}
+.sheet.land .org b{font-size:15pt}
+.sheet.land .org{margin-bottom:1.2mm}
+.sheet.land h1{font-size:17pt}
+.sheet .fieldtbl{font-size:11pt}
+.sheet .fieldtbl tbody td{height:6.2mm;padding:.4mm 1.2mm}
+.sheet .lines{border:.6pt solid #000;padding:1.6mm 3mm;margin-top:2mm;min-height:15mm;font-size:12.5pt}
+</style>
+</head>
+<body>
+
+<header class="top"><div class="top-in">
+  <span class="mark">นข</span>
+  <span class="title"><b>ทดสอบสมรรถภาพนักเรียน</b><span>แผนการเรียนเตรียมทหาร–ตำรวจ · โรงเรียนมัธยมวัดหนองแขม</span></span>
+  <span class="spacer"></span>
+  <nav class="tabs">
+    <a href="index.html">ศูนย์เอกสาร</a>
+    <a href="dashboard.html">แดชบอร์ด</a>
+    <a href="ledger.html">ทะเบียนกลาง</a>
+    <a href="tutoring.html">ตารางติว</a>
+    <a href="fitness.html" aria-current="page">สมรรถภาพ</a>
+  </nav>
+</div></header>
+
+<div class="band"><div class="wrap">
+  <div class="bandgrid">
+    <div class="kpi"><div class="l">นักเรียน</div><div class="v" id="kStu">—</div><div class="s" id="kStuSub">คน</div></div>
+    <div class="kpi"><div class="l">รอบทดสอบ</div><div class="v" id="kRound">—</div><div class="s" id="kRoundSub">ครั้ง</div></div>
+    <div class="kpi"><div class="l">ผ่านครบ ๕ รายการ</div><div class="v good" id="kFull">—</div><div class="s" id="kFullSub">คน · รอบล่าสุด</div></div>
+    <div class="kpi"><div class="l">ผ่านเฉลี่ย</div><div class="v" id="kAvg">—</div><div class="s">รายการ จาก ๕ · รอบล่าสุด</div></div>
+    <div class="kpi"><div class="l">พัฒนาการดีขึ้น</div><div class="v good" id="kUp">—</div><div class="s">คน เทียบรอบก่อนหน้า</div></div>
+    <div class="kpi"><div class="l">ต้องเร่งพัฒนา</div><div class="v bad" id="kLow">—</div><div class="s">คน · ผ่านไม่ถึง ๒ รายการ</div></div>
+  </div>
+</div></div>
+
+<main>
+
+<!-- ═══ ๑ รายชื่อนักเรียน ═══ -->
+<section><div class="wrap">
+  <div class="hd">
+    <p class="eb">ขั้นที่ ๑</p>
+    <h2>รายชื่อนักเรียน</h2>
+    <p>กรอกชื่อในตารางขั้นที่ ๓ ได้โดยตรง หรือวางรายชื่อทั้งชุดทีเดียวในช่องด้านล่าง — หนึ่งคนต่อบรรทัด ใส่ห้องต่อท้ายด้วยเครื่องหมาย <b>|</b> ได้ เช่น <code>เด็กชายสมชาย ใจดี|ม.๔/๑</code></p>
+  </div>
+  <div class="panel">
+    <div class="grid3">
+      <div class="field" style="grid-column:1/-1"><label for="paste">วางรายชื่อนักเรียน (หนึ่งคนต่อบรรทัด)</label>
+        <textarea id="paste" placeholder="เด็กชายสมชาย ใจดี|ม.๔/๑&#10;เด็กชายสมศักดิ์ ตั้งใจ|ม.๔/๑&#10;…"></textarea></div>
+    </div>
+    <div class="acts">
+      <button class="btn gold" id="btnPaste" type="button">นำรายชื่อเข้าตาราง</button>
+      <button class="btn" id="btnAddStu" type="button">+ เพิ่มนักเรียน ๑ คน</button>
+      <button class="btn" id="btnLoadNames" type="button">ดึงรายชื่อที่มีอยู่มาแก้ไข</button>
+      <span class="field hint">การนำเข้าจะแทนที่เฉพาะ “ชื่อ” ตามลำดับเลขที่ ผลทดสอบที่บันทึกไว้ยังอยู่ครบ</span>
+    </div>
+    <div class="note">
+      <b>ข้อมูลส่วนบุคคล</b> ชื่อนักเรียนและผลทดสอบเก็บอยู่ใน <code>localStorage</code> ของเบราว์เซอร์เครื่องนี้เท่านั้น
+      ไม่ถูกส่งขึ้นเว็บและไม่อยู่ในคลังโค้ดสาธารณะ · หากใช้เครื่องส่วนกลางให้กด “ส่งออกข้อมูล” เก็บไฟล์ไว้แล้วล้างข้อมูลออกจากเครื่องนั้น
+    </div>
+    <div class="acts">
+      <button class="btn" id="btnExport" type="button">ส่งออกข้อมูล (ไฟล์สำรอง)</button>
+      <button class="btn" id="btnImport" type="button">นำเข้าไฟล์สำรอง</button>
+      <input type="file" id="fileIn" accept="application/json" hidden>
+      <button class="btn danger" id="btnWipe" type="button">ล้างข้อมูลทั้งหมดในเครื่องนี้</button>
+    </div>
+  </div>
+</div></section>
+
+<!-- ═══ ๒ รอบทดสอบ ═══ -->
+<section><div class="wrap">
+  <div class="hd">
+    <p class="eb">ขั้นที่ ๒</p>
+    <h2>รอบทดสอบรายสัปดาห์</h2>
+    <p>กดปุ่มเพิ่มรอบทุกครั้งที่ทดสอบ ระบบตั้งวันที่ให้ห่างจากรอบก่อน ๗ วันโดยอัตโนมัติ แก้วันที่ได้ · คลิกที่ชิปรอบเพื่อสลับไปกรอกหรือดูผลของรอบนั้น</p>
+  </div>
+  <div class="panel">
+    <div class="rounds" id="rounds"></div>
+    <div class="acts">
+      <button class="btn gold" id="btnAddRound" type="button">+ เพิ่มรอบทดสอบ</button>
+      <div class="field" style="min-width:11rem"><label for="rDate">วันที่ของรอบที่เลือก</label><input id="rDate" type="date"></div>
+      <div class="field" style="flex:1;min-width:14rem"><label for="rNote">หมายเหตุของรอบ</label><input id="rNote" type="text" placeholder="เช่น สนามกีฬาโรงเรียน อากาศร้อน"></div>
+      <button class="btn danger" id="btnDelRound" type="button">ลบรอบที่เลือก</button>
+    </div>
+  </div>
+</div></section>
+
+<!-- ═══ ๓ กรอกผล ═══ -->
+<section><div class="wrap">
+  <div class="hd">
+    <p class="eb">ขั้นที่ ๓</p>
+    <h2>บันทึกผลทดสอบ <span id="curRound" style="font-weight:400;color:var(--ink-2)"></span></h2>
+    <p>ท่าดันพื้น ดึงข้อ และลุก–นั่ง กรอกได้ทั้ง <b>จำนวนครั้งที่ทำได้</b> และ <b>เวลาที่ทำครบตามเกณฑ์</b> (ถ้าทำครบ) · เวลาพิมพ์เป็น นาที:วินาที เช่น <code>3:20</code> · วิ่ง ๕๐ เมตร พิมพ์เป็นวินาที เช่น <code>7.8</code> · ช่องที่ผ่านเกณฑ์จะเป็นสีเขียว ไม่ผ่านเป็นสีแดง</p>
+  </div>
+  <div class="tblwrap"><table class="grid" id="grid"></table></div>
+  <p class="mini" id="critLine"></p>
+</div></section>
+
+<!-- ═══ ๔ แนวโน้ม ═══ -->
+<section><div class="wrap">
+  <div class="hd">
+    <p class="eb">ขั้นที่ ๔</p>
+    <h2>พัฒนาการรายบุคคล</h2>
+    <p>เทียบผลรอบที่เลือกกับรอบก่อนหน้า — <span class="up">▲ ดีขึ้น</span> · <span class="flat">▬ คงที่</span> · <span class="down">▼ ลดลง</span> · ตัวเลขในวงเล็บคือส่วนต่างจากรอบก่อน</p>
+  </div>
+  <div class="cards" id="cards"></div>
+</div></section>
+
+<!-- ═══ ๕ พิมพ์ ═══ -->
+<section><div class="wrap">
+  <div class="hd">
+    <p class="eb">ขั้นที่ ๕</p>
+    <h2>พิมพ์เอกสาร</h2>
+    <p>หัวเอกสารดึงชื่อโรงเรียน ผู้อำนวยการ และหัวหน้าแผนจากหน้าตั้งค่าโรงเรียนในศูนย์เอกสาร · ตั้งกระดาษ A4 และปิดหัวกระดาษ–ท้ายกระดาษก่อนพิมพ์</p>
+  </div>
+  <div class="acts" style="margin-top:0">
+    <button class="btn gold" id="prAll" type="button">รายงานถึงผู้ปกครอง — ทุกคน</button>
+    <select id="selStu" style="background:var(--ground);border:1px solid var(--rule);border-radius:5px;padding:.38rem .5rem;font-size:.85rem;font-family:var(--ui)"></select>
+    <button class="btn" id="prOne" type="button">รายงานรายบุคคล</button>
+    <button class="btn" id="prClass" type="button">สรุปผลทั้งห้อง (รอบที่เลือก)</button>
+    <button class="btn" id="prBlank" type="button">ใบบันทึกภาคสนาม (เปล่า)</button>
+  </div>
+  <p class="mini">รายงานถึงผู้ปกครองจะพิมพ์คนละ ๑ หน้า เรียงตามเลขที่ พร้อมตารางผลทุกรอบ แนวโน้มพัฒนาการ ข้อเสนอแนะของครู และช่องลงนามผู้ปกครองรับทราบ</p>
+</div></section>
+
+</main>
+
+<footer><div class="wrap">
+  <p><b>ทดสอบสมรรถภาพนักเรียน · แผนการเรียนเตรียมทหาร–ตำรวจ</b><br>
+  โรงเรียนมัธยมวัดหนองแขม · เกณฑ์ในระบบนี้เป็นเกณฑ์เป้าหมายของแผนการเรียน สำหรับการสอบจริงให้ยึดระเบียบการฉบับทางการของแต่ละเหล่าในปีที่สอบเสมอ</p>
+  <p style="margin-top:.7rem">ข้อมูลนักเรียนและผลทดสอบเก็บอยู่ในเบราว์เซอร์เครื่องนี้เท่านั้น ไม่มีการส่งข้อมูลออกไปยังเซิร์ฟเวอร์ใด ๆ</p>
+</div></footer>
+
+<div id="sheetWrap"><div class="sheet" id="sheet"></div></div>
+
+<script>
+"use strict";
+
+/* ═══════════ ตัวช่วย ═══════════ */
+const TH_D = "๐๑๒๓๔๕๖๗๘๙";
+const THMON = ["มกราคม","กุมภาพันธ์","มีนาคม","เมษายน","พฤษภาคม","มิถุนายน","กรกฎาคม","สิงหาคม","กันยายน","ตุลาคม","พฤศจิกายน","ธันวาคม"];
+const THMONA = ["ม.ค.","ก.พ.","มี.ค.","เม.ย.","พ.ค.","มิ.ย.","ก.ค.","ส.ค.","ก.ย.","ต.ค.","พ.ย.","ธ.ค."];
+const THDAY = ["อาทิตย์","จันทร์","อังคาร","พุธ","พฤหัสบดี","ศุกร์","เสาร์"];
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;" }[c]));
+const thNum = s => String(s ?? "").replace(/[0-9]/g, d => TH_D[+d]);
+const dObj = k => new Date(k + "T00:00:00");
+const iso = d => d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
+const thDate = d => `${d.getDate()} ${THMON[d.getMonth()]} ${d.getFullYear() + 543}`;
+const thDateA = d => `${d.getDate()} ${THMONA[d.getMonth()]} ${String(d.getFullYear() + 543).slice(-2)}`;
+
+/* ตั้งค่าโรงเรียนจากศูนย์เอกสาร */
+const SCHOOL_DEF = {
+  school:"โรงเรียนมัธยมวัดหนองแขม",
+  addr:"443 ถนนเลียบคลองภาษีเจริญฝั่งใต้ แขวงหนองแขม เขตหนองแขม กรุงเทพมหานคร 10160",
+  tel:"02-429-3402", plan:"แผนการเรียนเตรียมทหาร–ตำรวจ",
+  director:"", head:"", year:"2569", thaiDigits:"1"
+};
+const S = Object.assign({}, SCHOOL_DEF, JSON.parse(localStorage.getItem("nk_settings") || "{}"));
+const num = s => S.thaiDigits === "1" ? thNum(s) : String(s ?? "");
+
+/* ═══════════ รายการทดสอบ ═══════════ */
+const TESTS = [
+  { k:"pu", n:"ท่าดันพื้น",        sn:"ดันพื้น",   type:"reps", target:100, limit:240, unit:"ครั้ง" },
+  { k:"pl", n:"ท่าดึงข้อ",         sn:"ดึงข้อ",    type:"reps", target:20,  limit:240, unit:"ครั้ง" },
+  { k:"su", n:"ท่าลุก–นั่ง",       sn:"ลุก–นั่ง",  type:"reps", target:100, limit:240, unit:"ครั้ง" },
+  { k:"rl", n:"วิ่ง ๑,๐๐๐ เมตร",   sn:"วิ่ง ๑,๐๐๐ ม.", type:"ms", limit:360, unit:"" },
+  { k:"rs", n:"วิ่ง ๕๐ เมตร",      sn:"วิ่ง ๕๐ ม.",   type:"sec", limit:8,  unit:"วินาที" }
+];
+const TB = Object.fromEntries(TESTS.map(t => [t.k, t]));
+
+/* เวลา : "3:20" หรือ "3.20" → 200 วินาที */
+function parseMS(s){
+  s = String(s ?? "").trim();
+  if (!s) return null;
+  const m = s.match(/^(\d{1,3})[:.](\d{1,2})$/);
+  if (m){ const mm = +m[1], ss = +m[2]; return ss > 59 ? null : mm * 60 + ss; }
+  if (/^\d{1,4}$/.test(s)) return +s;      // ใส่เป็นวินาทีล้วนก็ได้
+  return null;
+}
+const fmtMS = v => v == null ? "" : `${Math.floor(v / 60)}:${String(Math.round(v % 60)).padStart(2, "0")}`;
+function parseSec(s){
+  s = String(s ?? "").trim();
+  if (!s) return null;
+  const v = Number(s.replace(",", "."));
+  return isFinite(v) && v > 0 ? v : null;
+}
+const fmtSec = v => v == null ? "" : (Math.round(v * 10) / 10).toFixed(1);
+const parseInt0 = s => { const v = parseInt(String(s ?? "").trim(), 10); return isFinite(v) && v >= 0 ? v : null; };
+
+/** ข้อความเกณฑ์ */
+const critText = t => t.type === "reps" ? `${num(t.target)} ${t.unit} ภายใน ${num(fmtMS(t.limit))} นาที`
+  : t.type === "ms" ? `ภายใน ${num(fmtMS(t.limit))} นาที`
+  : `ภายใน ${num(t.limit)} วินาที`;
+
+/** ผ่านหรือไม่ · null = ยังไม่มีข้อมูล */
+function passOf(t, v){
+  if (!v) return null;
+  if (t.type === "reps"){
+    if (v.r == null && v.t == null) return null;
+    if (v.t != null && v.r == null) return v.t <= t.limit;          // ระบุเฉพาะเวลาที่ทำครบ
+    if (v.r == null) return null;
+    return v.r >= t.target && (v.t == null || v.t <= t.limit);
+  }
+  if (v.t == null) return null;
+  return v.t <= t.limit;
+}
+/** ค่าที่ใช้เทียบแนวโน้ม + ทิศทางที่ดี */
+function trendVal(t, v){
+  if (!v) return null;
+  if (t.type === "reps") return v.r != null ? v.r : null;
+  return v.t != null ? v.t : null;
+}
+const higherBetter = t => t.type === "reps";
+/** แสดงผลเป็นข้อความ */
+function showVal(t, v){
+  if (!v) return "";
+  if (t.type === "reps"){
+    const a = v.r != null ? num(v.r) + " " + t.unit : "";
+    const b = v.t != null ? num(fmtMS(v.t)) + " น." : "";
+    return [a, b].filter(Boolean).join(" · ");
+  }
+  if (t.type === "ms") return v.t != null ? num(fmtMS(v.t)) + " น." : "";
+  return v.t != null ? num(fmtSec(v.t)) + " วิ." : "";
+}
+
+/* ═══════════ ข้อมูล ═══════════ */
+const KEY = "nk_fit_v1";
+const newId = p => p + Math.random().toString(36).slice(2, 8);
+function defData(){
+  const students = Array.from({ length: 15 }, (_, i) => ({ id: "s" + (i + 1), name: "", cls: "" }));
+  const r0 = { id: "r" + Date.now().toString(36), date: iso(new Date()), note: "" };
+  return { students, rounds: [r0], cur: r0.id, res: {}, cmt: {} };
+}
+let F = (() => {
+  const raw = JSON.parse(localStorage.getItem(KEY) || "null");
+  if (!raw) return defData();
+  const d = Object.assign(defData(), raw);
+  if (!Array.isArray(d.students) || !d.students.length) d.students = defData().students;
+  if (!Array.isArray(d.rounds) || !d.rounds.length) { const x = defData(); d.rounds = x.rounds; d.cur = x.cur; }
+  if (!d.rounds.some(r => r.id === d.cur)) d.cur = d.rounds[0].id;
+  d.res ||= {}; d.cmt ||= {};
+  return d;
+})();
+const save = () => localStorage.setItem(KEY, JSON.stringify(F));
+const rk = (r, s) => r + "|" + s;
+const getRes = (r, s) => F.res[rk(r, s)] || null;
+function setRes(r, s, tk, field, val){
+  const key = rk(r, s);
+  const o = F.res[key] ||= {};
+  const c = o[tk] ||= {};
+  c[field] = val;
+  if (c.r == null && c.t == null) delete o[tk];
+  if (!Object.keys(o).length) delete F.res[key];
+  save();
+}
+const roundIdx = id => F.rounds.findIndex(r => r.id === id);
+const curRound = () => F.rounds[roundIdx(F.cur)] || F.rounds[0];
+const prevRound = () => { const i = roundIdx(F.cur); return i > 0 ? F.rounds[i - 1] : null; };
+/** รอบเรียงตามวันที่ */
+function sortRounds(){
+  F.rounds.sort((a, b) => (a.date || "").localeCompare(b.date || ""));
+}
+/** จำนวนรายการที่ผ่านของนักเรียนในรอบหนึ่ง */
+function scoreOf(rid, sid){
+  const v = getRes(rid, sid);
+  let p = 0, done = 0;
+  TESTS.forEach(t => { const r = passOf(t, v && v[t.k]); if (r !== null){ done++; if (r) p++; } });
+  return { pass: p, done };
+}
+
+/* ═══════════ วาดหน้าจอ ═══════════ */
+function renderRounds(){
+  $("#rounds").innerHTML = F.rounds.map((r, i) => {
+    const d = r.date ? dObj(r.date) : null;
+    return `<button class="rd ${r.id === F.cur ? "on" : ""}" data-r="${r.id}" type="button">ครั้งที่ ${num(i + 1)}
+      <small>${d && !isNaN(d) ? num(thDateA(d)) : "ยังไม่ระบุวันที่"}</small></button>`;
+  }).join("");
+  $("#rounds").querySelectorAll(".rd").forEach(b => b.onclick = () => { F.cur = b.dataset.r; save(); renderAll(); });
+  const c = curRound();
+  $("#rDate").value = c.date || "";
+  $("#rNote").value = c.note || "";
+  const d = c.date ? dObj(c.date) : null;
+  $("#curRound").textContent = `— ครั้งที่ ${num(roundIdx(F.cur) + 1)}` + (d && !isNaN(d) ? ` · วัน${THDAY[d.getDay()]} ${num(thDate(d))}` : "");
+}
+
+function renderGrid(){
+  const rid = F.cur;
+  const head = `<thead><tr>
+    <th class="no">ที่</th><th class="nm">ชื่อ–สกุล / ห้อง</th>
+    ${TESTS.map((t, i) => t.type === "reps"
+      ? `<th class="${i ? "sep" : "sep"}">${esc(t.sn)}<small>${num(t.target)} ${t.unit}</small></th><th>เวลาที่ทำครบ<small>ไม่เกิน ${num(fmtMS(t.limit))} น.</small></th>`
+      : `<th class="sep">${esc(t.sn)}<small>${t.type === "ms" ? "ไม่เกิน " + num(fmtMS(t.limit)) + " น." : "ไม่เกิน " + num(t.limit) + " วิ."}</small></th>`).join("")}
+    <th class="sep">ผ่าน</th></tr></thead>`;
+  const body = F.students.map((s, i) => {
+    const v = getRes(rid, s.id) || {};
+    const cells = TESTS.map(t => {
+      const cur = v[t.k] || {};
+      const p = passOf(t, v[t.k]);
+      const cls = p === true ? "pass" : p === false ? "fail" : "";
+      if (t.type === "reps"){
+        return `<td class="sep ${cls}"><input data-s="${s.id}" data-t="${t.k}" data-f="r" type="text" inputmode="numeric" value="${cur.r != null ? cur.r : ""}" placeholder="ครั้ง" aria-label="${esc(t.sn)} จำนวนครั้ง ${esc(s.name || "เลขที่ " + (i + 1))}"></td>
+                <td class="${cls}"><input data-s="${s.id}" data-t="${t.k}" data-f="t" type="text" inputmode="text" value="${cur.t != null ? fmtMS(cur.t) : ""}" placeholder="ม:วิ" aria-label="${esc(t.sn)} เวลาที่ทำครบ"></td>`;
+      }
+      const val = cur.t != null ? (t.type === "ms" ? fmtMS(cur.t) : fmtSec(cur.t)) : "";
+      return `<td class="sep ${cls}"><input data-s="${s.id}" data-t="${t.k}" data-f="t" type="text" value="${val}" placeholder="${t.type === "ms" ? "ม:วิ" : "วินาที"}" aria-label="${esc(t.n)}"></td>`;
+    }).join("");
+    const sc = scoreOf(rid, s.id);
+    const scCls = sc.done === 0 ? "i" : sc.pass === TESTS.length ? "g" : sc.pass >= 3 ? "w" : "r";
+    return `<tr>
+      <td class="no">${num(i + 1)}</td>
+      <td class="nm"><input class="nameinp" data-s="${s.id}" data-f="name" type="text" value="${esc(s.name)}" placeholder="ชื่อ–สกุล" aria-label="ชื่อนักเรียนเลขที่ ${i + 1}">
+        <input class="nameinp" data-s="${s.id}" data-f="cls" type="text" value="${esc(s.cls)}" placeholder="ห้อง" style="margin-top:.15rem;font-size:.76rem" aria-label="ห้อง"></td>
+      ${cells}
+      <td class="sc sep ${scCls}">${sc.done ? num(sc.pass) + " / " + num(TESTS.length) : "—"}</td></tr>`;
+  }).join("");
+  $("#grid").innerHTML = head + `<tbody>${body}</tbody>`;
+  $("#critLine").innerHTML = "เกณฑ์ผ่าน — " + TESTS.map(t => `<b>${esc(t.n)}</b> ${critText(t)}`).join(" · ");
+
+  $("#grid").querySelectorAll("input").forEach(el => el.addEventListener("change", e => {
+    const { s, t, f } = e.target.dataset;
+    if (f === "name" || f === "cls"){
+      const st = F.students.find(x => x.id === s);
+      if (st){ st[f] = e.target.value; save(); renderAll(); }
+      return;
+    }
+    const T = TB[t];
+    let val;
+    if (f === "r") val = parseInt0(e.target.value);
+    else val = T.type === "sec" ? parseSec(e.target.value) : parseMS(e.target.value);
+    setRes(F.cur, s, t, f, val);
+    renderAll();
+  }));
+}
+
+function renderCards(){
+  const rid = F.cur, prev = prevRound();
+  $("#cards").innerHTML = F.students.map((s, i) => {
+    const v = getRes(rid, s.id), pv = prev ? getRes(prev.id, s.id) : null;
+    const sc = scoreOf(rid, s.id);
+    const scCls = sc.done === 0 ? "flat" : sc.pass === TESTS.length ? "up" : sc.pass >= 3 ? "" : "down";
+    const items = TESTS.map(t => {
+      const now = trendVal(t, v && v[t.k]), old = pv ? trendVal(t, pv[t.k]) : null;
+      let tr = `<span class="tr flat">—</span>`;
+      if (now != null && old != null){
+        const d = now - old;
+        const better = higherBetter(t) ? d > 0 : d < 0;
+        const same = Math.abs(d) < (t.type === "sec" ? 0.05 : 0.5);
+        const txt = t.type === "ms" ? fmtMS(Math.abs(d)) : t.type === "sec" ? fmtSec(Math.abs(d)) : String(Math.abs(Math.round(d)));
+        tr = same ? `<span class="tr flat">▬ คงที่</span>`
+          : `<span class="tr ${better ? "up" : "down"}">${better ? "▲" : "▼"} ${num(txt)}</span>`;
+      }
+      const p = passOf(t, v && v[t.k]);
+      return `<div class="it"><span>${esc(t.sn)}</span>
+        <span class="val ${p === true ? "up" : p === false ? "down" : "flat"}">${showVal(t, v && v[t.k]) || "—"}</span>${tr}</div>`;
+    }).join("");
+    return `<article class="card">
+      <div class="ch"><b>${num(i + 1)}. ${esc(s.name || "— ยังไม่ระบุชื่อ —")}</b>
+        <span class="sc ${scCls}">${sc.done ? num(sc.pass) + "/" + num(TESTS.length) : "—"}</span></div>
+      <div class="items">${items}</div>
+      <textarea class="cmt" data-cmt="${s.id}" placeholder="ความเห็นของครูผู้ฝึก (จะไปปรากฏในรายงานถึงผู้ปกครอง)">${esc(F.cmt[s.id] || "")}</textarea></article>`;
+  }).join("");
+  $("#cards").querySelectorAll("[data-cmt]").forEach(el => el.addEventListener("change", e => {
+    const id = e.target.dataset.cmt;
+    if (e.target.value.trim()) F.cmt[id] = e.target.value.trim(); else delete F.cmt[id];
+    save();
+  }));
+}
+
+function renderKPI(){
+  const rid = F.cur, prev = prevRound();
+  const named = F.students.filter(s => s.name.trim()).length;
+  $("#kStu").textContent = num(F.students.length);
+  $("#kStuSub").textContent = named === F.students.length ? "คน · กรอกชื่อครบแล้ว" : `คน · ยังไม่ได้กรอกชื่อ ${num(F.students.length - named)} คน`;
+  $("#kRound").textContent = num(F.rounds.length);
+  const c = curRound(), d = c.date ? dObj(c.date) : null;
+  $("#kRoundSub").textContent = d && !isNaN(d) ? `ครั้ง · ดูครั้งที่ ${num(roundIdx(F.cur) + 1)} (${num(thDateA(d))})` : "ครั้ง";
+  const scores = F.students.map(s => scoreOf(rid, s.id)).filter(x => x.done > 0);
+  const full = scores.filter(x => x.pass === TESTS.length).length;
+  const low = scores.filter(x => x.pass < 2).length;
+  $("#kFull").textContent = scores.length ? num(full) : "—";
+  $("#kFullSub").textContent = scores.length ? `คน · จากที่ทดสอบแล้ว ${num(scores.length)} คน` : "คน · ยังไม่มีผล";
+  $("#kAvg").textContent = scores.length ? num((scores.reduce((a, x) => a + x.pass, 0) / scores.length).toFixed(1)) : "—";
+  let up = 0;
+  if (prev) F.students.forEach(s => {
+    const a = scoreOf(prev.id, s.id), b = scoreOf(rid, s.id);
+    if (a.done && b.done && b.pass > a.pass) up++;
+  });
+  $("#kUp").textContent = prev ? num(up) : "—";
+  $("#kLow").textContent = scores.length ? num(low) : "—";
+  $("#selStu").innerHTML = F.students.map((s, i) => `<option value="${s.id}">${num(i + 1)}. ${esc(s.name || "— ยังไม่ระบุชื่อ —")}</option>`).join("");
+}
+
+function renderAll(){ sortRounds(); renderRounds(); renderGrid(); renderCards(); renderKPI(); }
+
+/* ═══════════ อีเวนต์ ═══════════ */
+$("#btnPaste").onclick = () => {
+  const lines = $("#paste").value.split("\n").map(x => x.trim()).filter(Boolean);
+  if (!lines.length) return alert("ยังไม่ได้วางรายชื่อ");
+  if (!confirm(`นำเข้า ${lines.length} รายชื่อ แทนที่ชื่อเดิมตามลำดับเลขที่?\nผลทดสอบที่บันทึกไว้จะยังอยู่ครบ`)) return;
+  lines.forEach((ln, i) => {
+    const [nm, cl] = ln.split("|").map(x => (x || "").trim());
+    if (!F.students[i]) F.students.push({ id: newId("s"), name: "", cls: "" });
+    F.students[i].name = nm;
+    if (cl) F.students[i].cls = cl;
+  });
+  save(); renderAll();
+  $("#paste").value = "";
+};
+$("#btnLoadNames").onclick = () => {
+  $("#paste").value = F.students.map(s => s.name + (s.cls ? "|" + s.cls : "")).join("\n");
+  $("#paste").focus();
+};
+$("#btnAddStu").onclick = () => { F.students.push({ id: newId("s"), name: "", cls: "" }); save(); renderAll(); };
+$("#btnAddRound").onclick = () => {
+  const last = F.rounds[F.rounds.length - 1];
+  let d = new Date();
+  if (last && last.date){ d = dObj(last.date); d.setDate(d.getDate() + 7); }
+  const r = { id: newId("r"), date: iso(d), note: "" };
+  F.rounds.push(r); F.cur = r.id; save(); renderAll();
+};
+$("#btnDelRound").onclick = () => {
+  if (F.rounds.length <= 1) return alert("ต้องมีรอบทดสอบอย่างน้อย ๑ รอบ");
+  const i = roundIdx(F.cur);
+  if (!confirm(`ลบรอบครั้งที่ ${i + 1} พร้อมผลทดสอบทั้งหมดของรอบนี้?`)) return;
+  const id = F.cur;
+  F.students.forEach(s => delete F.res[rk(id, s.id)]);
+  F.rounds.splice(i, 1);
+  F.cur = F.rounds[Math.max(0, i - 1)].id;
+  save(); renderAll();
+};
+$("#rDate").onchange = e => { curRound().date = e.target.value; save(); renderAll(); };
+$("#rNote").onchange = e => { curRound().note = e.target.value; save(); };
+
+$("#btnExport").onclick = () => {
+  const blob = new Blob([JSON.stringify(F, null, 2)], { type: "application/json" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = `ผลสมรรถภาพ_แผนเตรียมทหาร_${iso(new Date())}.json`;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+};
+$("#btnImport").onclick = () => $("#fileIn").click();
+$("#fileIn").onchange = e => {
+  const f = e.target.files[0]; if (!f) return;
+  const rd = new FileReader();
+  rd.onload = () => {
+    try {
+      const o = JSON.parse(rd.result);
+      if (!o.students || !o.rounds) throw new Error("รูปแบบไฟล์ไม่ถูกต้อง");
+      if (!confirm("นำเข้าข้อมูลจากไฟล์ แทนที่ข้อมูลทั้งหมดในเครื่องนี้?")) return;
+      F = Object.assign(defData(), o);
+      if (!F.rounds.some(r => r.id === F.cur)) F.cur = F.rounds[0].id;
+      save(); renderAll();
+      alert("นำเข้าเรียบร้อย");
+    } catch (err){ alert("นำเข้าไม่สำเร็จ: " + err.message); }
+  };
+  rd.readAsText(f);
+  e.target.value = "";
+};
+$("#btnWipe").onclick = () => {
+  if (!confirm("ล้างรายชื่อนักเรียนและผลทดสอบทั้งหมดในเครื่องนี้?\nการกระทำนี้ย้อนกลับไม่ได้ — ควรกดส่งออกข้อมูลเก็บไว้ก่อน")) return;
+  if (!confirm("ยืนยันอีกครั้ง — ข้อมูลทั้งหมดจะถูกลบถาวร")) return;
+  localStorage.removeItem(KEY); F = defData(); save(); renderAll();
+};
+
+/* ═══════════ เอกสารพิมพ์ ═══════════ */
+const sheetEl = $("#sheet");
+const orgHead = () => `
+  <div class="org"><b>${esc(S.school)}</b><small>${esc(S.plan)}<br>${num(esc(S.addr))} · โทรศัพท์ ${num(esc(S.tel))}</small></div>
+  <div class="hr"></div>`;
+const sig = blocks => `<div class="sig">` + blocks.map(b => `
+  <div><span>ลงชื่อ ………………………………………</span><span>( ${b.name ? esc(b.name) : "………………………………………"} )</span><span>${esc(b.role)}</span>${b.sub ? `<span>${esc(b.sub)}</span>` : ""}</div>`).join("") + `</div>`;
+const critTable = () => `<table style="width:72%"><thead><tr><th>รายการทดสอบ</th><th style="width:52mm">เกณฑ์ผ่าน</th></tr></thead>
+  <tbody>${TESTS.map(t => `<tr><td>${esc(t.n)}</td><td class="c">${critText(t)}</td></tr>`).join("")}</tbody></table>`;
+/** ตั้งแนวกระดาษก่อนพิมพ์ — portrait หรือ landscape */
+function doPrint(orient){
+  orient = orient || "portrait";
+  let st = document.getElementById("pagerule");
+  if (!st){ st = document.createElement("style"); st.id = "pagerule"; document.head.appendChild(st); }
+  st.textContent = `@media print{@page{size:A4 ${orient};margin:0}}`;
+  sheetEl.classList.toggle("land", orient === "landscape");
+  window.print();
+}
+
+/** รายงานพัฒนาการรายบุคคล ๑ หน้า */
+function pageFor(s, i){
+  const rows = F.rounds.map((r, ri) => {
+    const v = getRes(r.id, s.id);
+    const d = r.date ? dObj(r.date) : null;
+    const prev = ri > 0 ? getRes(F.rounds[ri - 1].id, s.id) : null;
+    const cells = TESTS.map(t => {
+      const txt = showVal(t, v && v[t.k]);
+      const p = passOf(t, v && v[t.k]);
+      let arrow = "";
+      const now = trendVal(t, v && v[t.k]), old = prev ? trendVal(t, prev[t.k]) : null;
+      if (now != null && old != null){
+        const dd = now - old;
+        const same = Math.abs(dd) < (t.type === "sec" ? 0.05 : 0.5);
+        arrow = same ? " ▬" : ((higherBetter(t) ? dd > 0 : dd < 0) ? " ▲" : " ▼");
+      }
+      return `<td class="c">${txt ? (p ? "<span class='P'>" + txt + "</span>" : txt) + arrow : "—"}</td>`;
+    }).join("");
+    const sc = scoreOf(r.id, s.id);
+    return `<tr><td class="c">ครั้งที่ ${num(ri + 1)}<br>${d && !isNaN(d) ? num(thDateA(d)) : ""}</td>${cells}
+      <td class="c">${sc.done ? num(sc.pass) + "/" + num(TESTS.length) : "—"}</td></tr>`;
+  }).join("");
+
+  // สรุปพัฒนาการ — เทียบเฉพาะรอบที่นักเรียนคนนี้มีผลจริง
+  const done = F.rounds.filter(r => { const v = getRes(r.id, s.id); return v && Object.keys(v).length; });
+  const first = done[0] || F.rounds[0];
+  const last  = done[done.length - 1] || F.rounds[0];
+  const fi = F.rounds.findIndex(r => r.id === first.id) + 1;
+  const li = F.rounds.findIndex(r => r.id === last.id) + 1;
+  const devs = TESTS.map(t => {
+    const a = done.length ? trendVal(t, getRes(first.id, s.id)?.[t.k]) : null;
+    const b = done.length ? trendVal(t, getRes(last.id, s.id)?.[t.k]) : null;
+    if (a == null || b == null || done.length < 2)
+      return `<tr><td>${esc(t.n)}</td><td class="c">${a != null ? num(t.type === "ms" ? fmtMS(a) : t.type === "sec" ? fmtSec(a) : String(Math.round(a))) : "—"}</td>
+        <td class="c">${b != null ? num(t.type === "ms" ? fmtMS(b) : t.type === "sec" ? fmtSec(b) : String(Math.round(b))) : "—"}</td>
+        <td class="c">${done.length < 2 ? "ต้องมีผลอย่างน้อย ๒ รอบ" : "ยังไม่มีข้อมูลรายการนี้"}</td></tr>`;
+    const d = b - a, better = higherBetter(t) ? d > 0 : d < 0;
+    const same = Math.abs(d) < (t.type === "sec" ? 0.05 : 0.5);
+    const fmt = x => t.type === "ms" ? fmtMS(x) : t.type === "sec" ? fmtSec(x) : String(Math.round(x));
+    return `<tr><td>${esc(t.n)}</td><td class="c">${num(fmt(a))}</td><td class="c">${num(fmt(b))}</td>
+      <td class="c">${same ? "คงที่" : (better ? "ดีขึ้น " : "ลดลง ") + num(fmt(Math.abs(d)))}</td></tr>`;
+  }).join("");
+
+  const scL = scoreOf(last.id, s.id);
+  const devHead = done.length >= 2 ? `จากครั้งที่ ${num(fi)} ถึงครั้งที่ ${num(li)}`
+    : done.length === 1 ? `มีผลเพียงครั้งที่ ${num(li)} รอบเดียว` : "ยังไม่มีผลทดสอบ";
+  const verdict = !scL.done ? "ยังไม่มีผลทดสอบ"
+    : scL.pass === TESTS.length ? "ผ่านเกณฑ์ครบทุกรายการ อยู่ในระดับพร้อมสอบ"
+    : scL.pass >= 3 ? "ผ่านเกณฑ์เป็นส่วนใหญ่ ควรเน้นรายการที่ยังไม่ผ่านเป็นพิเศษ"
+    : "ยังผ่านเกณฑ์น้อยกว่าครึ่ง ต้องเพิ่มความถี่ในการฝึกและติดตามอย่างใกล้ชิด";
+
+  return `<div class="page">
+    ${orgHead()}
+    <h1>รายงานผลการทดสอบสมรรถภาพร่างกาย</h1>
+    <p class="sub">แจ้งผู้ปกครองเพื่อทราบ · ปีการศึกษา ${num(S.year)}</p>
+    <p style="margin-top:2mm"><b>ชื่อ–สกุลนักเรียน</b>&nbsp; ${esc(s.name || "…………………………………………………")}
+      &nbsp;&nbsp;<b>เลขที่</b> ${num(i + 1)} &nbsp;&nbsp;<b>ชั้น</b> ${esc(s.cls || "…………")}</p>
+    <p style="margin-top:2mm"><b>ผลการทดสอบแต่ละรอบ</b> (▲ ดีขึ้น · ▬ คงที่ · ▼ ลดลง เทียบรอบก่อนหน้า · ตัวหนา = ผ่านเกณฑ์)</p>
+    <table><thead><tr><th style="width:24mm">รอบ / วันที่</th>
+      ${TESTS.map(t => `<th>${esc(t.sn)}</th>`).join("")}<th style="width:16mm">ผ่าน</th></tr></thead>
+      <tbody>${rows}</tbody></table>
+    <p style="margin-top:2mm"><b>สรุปพัฒนาการ</b> ${esc(devHead)}</p>
+    <table><thead><tr><th>รายการทดสอบ</th><th style="width:26mm">ครั้งที่ ${num(fi)}</th><th style="width:26mm">ครั้งที่ ${num(li)}</th><th style="width:38mm">พัฒนาการ</th></tr></thead>
+      <tbody>${devs}</tbody></table>
+    <div class="box"><div class="bt">ความเห็นของครูผู้ฝึก</div>
+      ${esc(F.cmt[s.id] || "") || "…………………………………………………………………………………………………………………………………………………………"}
+      <div style="margin-top:1.5mm">ผลครั้งที่ ${num(li)} ผ่าน ${scL.done ? num(scL.pass) + " จาก " + num(TESTS.length) : "—"} รายการ · ${verdict}</div>
+    </div>
+    <div class="lines"><b>ความเห็นของผู้ปกครอง</b><br>…………………………………………………………………………………………………………………………<br>…………………………………………………………………………………………………………………………</div>
+    ${sig([{ role:"ครูผู้ควบคุมการทดสอบ" },
+           { role:"หัวหน้าแผนการเรียนเตรียมทหาร–ตำรวจ", name:S.head },
+           { role:"ผู้ปกครอง", sub:"ลงนามรับทราบ" }])}
+    <p class="foot">เกณฑ์ในรายงานนี้เป็นเกณฑ์เป้าหมายของแผนการเรียน สำหรับการสอบคัดเลือกจริงให้ยึดระเบียบการฉบับทางการของแต่ละเหล่าในปีที่สอบ · ข้อมูลสุขภาพและสมรรถภาพเป็นข้อมูลส่วนบุคคล โรงเรียนเปิดเผยเฉพาะต่อผู้ปกครองของนักเรียนผู้นั้น</p>
+  </div>`;
+}
+
+$("#prOne").onclick = () => {
+  const id = $("#selStu").value;
+  const i = F.students.findIndex(s => s.id === id);
+  if (i < 0) return alert("เลือกนักเรียนก่อน");
+  sheetEl.innerHTML = pageFor(F.students[i], i);
+  doPrint();
+};
+$("#prAll").onclick = () => {
+  const list = F.students.filter(s => s.name.trim());
+  if (!list.length) return alert("ยังไม่ได้กรอกชื่อนักเรียน — กรอกในขั้นที่ ๑ หรือขั้นที่ ๓ ก่อน");
+  sheetEl.innerHTML = F.students.map((s, i) => s.name.trim() ? pageFor(s, i) : "").join("");
+  doPrint();
+};
+$("#prClass").onclick = () => {
+  const r = curRound(), d = r.date ? dObj(r.date) : null, prev = prevRound();
+  const rows = F.students.map((s, i) => {
+    const v = getRes(r.id, s.id), sc = scoreOf(r.id, s.id);
+    const cells = TESTS.map(t => {
+      const p = passOf(t, v && v[t.k]), txt = showVal(t, v && v[t.k]);
+      return `<td class="c">${txt ? (p ? "<span class='P'>" + txt + "</span>" : txt) : "—"}</td>`;
+    }).join("");
+    let tr = "—";
+    if (prev){
+      const a = scoreOf(prev.id, s.id);
+      if (a.done && sc.done) tr = sc.pass > a.pass ? "▲ ดีขึ้น" : sc.pass < a.pass ? "▼ ลดลง" : "▬ คงที่";
+    }
+    return `<tr><td class="c">${num(i + 1)}</td><td>${esc(s.name || "")}</td><td class="c">${esc(s.cls || "")}</td>
+      ${cells}<td class="c">${sc.done ? num(sc.pass) + "/" + num(TESTS.length) : "—"}</td><td class="c">${tr}</td></tr>`;
+  }).join("");
+  const scores = F.students.map(s => scoreOf(r.id, s.id)).filter(x => x.done > 0);
+  const perTest = TESTS.map(t => {
+    let p = 0, dn = 0;
+    F.students.forEach(s => { const x = passOf(t, getRes(r.id, s.id)?.[t.k]); if (x !== null){ dn++; if (x) p++; } });
+    return `<tr><td>${esc(t.n)}</td><td class="c">${critText(t)}</td><td class="c">${num(p)} / ${num(dn || 0)}</td>
+      <td class="c">${dn ? num(Math.round(p / dn * 100)) + "%" : "—"}</td></tr>`;
+  }).join("");
+  sheetEl.innerHTML = `<div class="page">${orgHead()}
+    <h1>สรุปผลการทดสอบสมรรถภาพร่างกาย</h1>
+    <p class="sub">ครั้งที่ ${num(roundIdx(F.cur) + 1)}${d && !isNaN(d) ? ` · วัน${THDAY[d.getDay()]}ที่ ${num(thDate(d))}` : ""} · นักเรียน ${num(F.students.length)} คน</p>
+    ${r.note ? `<p class="sub">หมายเหตุ ${esc(r.note)}</p>` : ""}
+    <table><thead><tr><th style="width:10mm">ที่</th><th>ชื่อ–สกุล</th><th style="width:16mm">ห้อง</th>
+      ${TESTS.map(t => `<th>${esc(t.sn)}</th>`).join("")}<th style="width:14mm">ผ่าน</th><th style="width:18mm">แนวโน้ม</th></tr></thead>
+      <tbody>${rows}</tbody></table>
+    <p style="margin-top:2mm"><b>สรุปรายรายการ</b></p>
+    <table><thead><tr><th>รายการทดสอบ</th><th style="width:50mm">เกณฑ์ผ่าน</th><th style="width:24mm">ผ่าน / ทดสอบ</th><th style="width:20mm">ร้อยละ</th></tr></thead>
+      <tbody>${perTest}</tbody></table>
+    <div class="box"><div class="bt">ภาพรวม</div>
+      ทดสอบแล้ว ${num(scores.length)} คน · ผ่านครบทุกรายการ ${num(scores.filter(x => x.pass === TESTS.length).length)} คน ·
+      ผ่านเฉลี่ย ${scores.length ? num((scores.reduce((a, x) => a + x.pass, 0) / scores.length).toFixed(1)) : "—"} จาก ${num(TESTS.length)} รายการ ·
+      ต้องเร่งพัฒนา (ผ่านน้อยกว่า ๒ รายการ) ${num(scores.filter(x => x.pass < 2).length)} คน
+    </div>
+    ${sig([{ role:"ครูผู้ควบคุมการทดสอบ" },
+           { role:"หัวหน้าแผนการเรียนเตรียมทหาร–ตำรวจ", name:S.head },
+           { role:"ผู้อำนวยการ" + S.school, name:S.director }])}
+  </div>`;
+  doPrint("landscape");
+};
+$("#prBlank").onclick = () => {
+  const r = curRound(), d = r.date ? dObj(r.date) : null;
+  const rows = F.students.map((s, i) => `<tr><td class="c">${num(i + 1)}</td><td>${esc(s.name || "")}</td><td class="c">${esc(s.cls || "")}</td>
+    ${TESTS.map(t => t.type === "reps" ? `<td></td><td></td>` : `<td></td>`).join("")}<td></td></tr>`).join("");
+  sheetEl.innerHTML = `<div class="page">${orgHead()}
+    <h1>ใบบันทึกผลทดสอบสมรรถภาพภาคสนาม</h1>
+    <p class="sub">ครั้งที่ ${num(roundIdx(F.cur) + 1)} · วันที่ ${d && !isNaN(d) ? num(thDate(d)) : "……… / ……… / …………"} · สถานที่ …………………………………………</p>
+    <table class="fieldtbl"><thead>
+      <tr><th rowspan="2" style="width:9mm">ที่</th><th rowspan="2">ชื่อ–สกุล</th><th rowspan="2" style="width:14mm">ห้อง</th>
+        ${TESTS.map(t => t.type === "reps"
+          ? `<th colspan="2">${esc(t.sn)} <span style="font-weight:400">(${num(t.target)} ${t.unit} / ${num(fmtMS(t.limit))} น.)</span></th>`
+          : `<th rowspan="2">${esc(t.sn)}<br><span style="font-weight:400">${t.type === "ms" ? "≤ " + num(fmtMS(t.limit)) + " น." : "≤ " + num(t.limit) + " วิ."}</span></th>`).join("")}
+        <th rowspan="2" style="width:12mm">ผ่าน</th></tr>
+      <tr>${TESTS.filter(t => t.type === "reps").map(() => `<th style="width:14mm">ครั้ง</th><th style="width:16mm">เวลา</th>`).join("")}</tr>
+    </thead><tbody>${rows}</tbody></table>
+    <p class="foot">ท่าดันพื้น ดึงข้อ และลุก–นั่ง ให้บันทึกจำนวนครั้งที่ทำได้ หากทำครบตามเกณฑ์ก่อนหมดเวลาให้บันทึกเวลาที่ทำครบไว้ด้วย · นักเรียนที่มีข้อจำกัดด้านสุขภาพให้งดทดสอบและบันทึกเหตุผลไว้</p>
+    ${sig([{ role:"ครูผู้ควบคุมการทดสอบ" }, { role:"ครูผู้บันทึกผล" }])}
+  </div>`;
+  doPrint("landscape");
+};
+
+/* ═══════════ เริ่มต้น ═══════════ */
+renderAll();
+</script>
+</body>
+</html>
