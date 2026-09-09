@@ -96,18 +96,32 @@ section + section{border-top:1px solid var(--rule)}
 .btn.xs{font-size:.75rem;padding:.2rem .55rem}
 .btn.danger{color:var(--crit);border-color:var(--crit)}
 
-/* โควตา */
-.quota{display:grid;gap:.5rem;grid-template-columns:repeat(auto-fit,minmax(11.5rem,1fr))}
-.q{background:var(--surface);border:1px solid var(--rule);border-radius:9px;padding:.55rem .75rem;box-shadow:0 1px 3px rgba(16,48,95,.07)}
-.q .qn{display:flex;justify-content:space-between;align-items:baseline;gap:.4rem}
-.q .qn b{font-family:var(--ui);font-weight:600;font-size:.86rem}
-.q .qc{font-family:var(--ui);font-weight:700;font-size:.92rem;font-variant-numeric:tabular-nums}
-.q .qbar{height:.35rem;background:var(--surface-2);border-radius:99px;margin-top:.3rem;overflow:hidden}
-.q .qbar i{display:block;height:100%;border-radius:99px}
-.q.ok .qc{color:var(--ok)}    .q.ok .qbar i{background:var(--ok)}
-.q.part .qc{color:var(--warn)} .q.part .qbar i{background:var(--warn)}
-.q.over .qc{color:var(--crit)} .q.over .qbar i{background:var(--crit)}
-.q .qt{font-size:.74rem;color:var(--ink-3);margin-top:.15rem;line-height:1.45}
+/* โควตา — แถบลอยตามหน้าจอ */
+.qsticky{position:sticky;top:var(--topH,3.4rem);z-index:30;background:var(--ground);
+  padding:.5rem 0 .55rem;border-bottom:1px solid var(--rule);box-shadow:0 6px 10px -8px rgba(16,48,95,.35)}
+.qhead{display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;margin-bottom:.45rem}
+.qhead b{font-family:var(--ui);font-weight:700;font-size:.9rem}
+.qhead .qsum{font-size:.83rem;color:var(--ink-2);font-variant-numeric:tabular-nums}
+.qhead .qsum i{font-style:normal;font-weight:700;color:var(--warn)}
+.qhead .qsum i.done{color:var(--ok)}
+.qhead .spacer{margin-inline-start:auto}
+.quota{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(8.6rem,1fr);gap:.4rem;overflow-x:auto;padding-bottom:.15rem}
+.qsticky.mini .quota{display:none}
+.q{background:var(--surface);border:1px solid var(--rule);border-radius:9px;padding:.4rem .6rem;box-shadow:0 1px 3px rgba(16,48,95,.07);min-width:0}
+.q .qn{display:flex;justify-content:space-between;align-items:baseline;gap:.35rem}
+.q .qn b{font-family:var(--ui);font-weight:600;font-size:.82rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.q .qc{font-family:var(--ui);font-weight:700;font-size:.88rem;font-variant-numeric:tabular-nums;white-space:nowrap}
+.q .qbar{height:.32rem;background:var(--surface-2);border-radius:99px;margin:.25rem 0 .2rem;overflow:hidden}
+.q .qbar i{display:block;height:100%;border-radius:99px;transition:width .25s ease}
+.q .qt,.q .qd,.q .qw{font-size:.72rem;line-height:1.4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.q .qt{font-weight:600}
+.q .qd,.q .qw{color:var(--ink-3)}
+.q.ok   .qc,.q.ok   .qt{color:var(--ok)}    .q.ok   .qbar i{background:var(--ok)}
+.q.part .qc,.q.part .qt{color:var(--warn)}  .q.part .qbar i{background:var(--warn)}
+.q.over .qc,.q.over .qt{color:var(--crit)}  .q.over .qbar i{background:var(--crit)}
+.q.none{border-style:dashed}
+.q.none .qc,.q.none .qt{color:var(--idle)}  .q.none .qbar i{background:var(--idle)}
+@media (prefers-reduced-motion:reduce){.q .qbar i{transition:none}}
 
 /* การ์ดรายวัน */
 .days{display:flex;flex-direction:column;gap:.75rem}
@@ -246,30 +260,40 @@ footer b{color:#fff}
   </div>
 </div></section>
 
-<!-- ═══ ๒ ครูและโควตา ═══ -->
+<!-- ═══ ๒ ครูประจำวิชา ═══ -->
 <section><div class="wrap">
   <div class="hd">
     <p class="eb">ขั้นที่ ๒</p>
-    <h2>ครูประจำวิชาและโควตาคาบ</h2>
-    <p>กรอกชื่อครูครั้งเดียว เลือกวิชาในตารางแล้วชื่อครูจะเติมให้เอง แถบสีบอกว่าลงครบโควตาหรือยัง — เขียว ครบ · ส้ม ยังขาด · แดง เกิน</p>
+    <h2>ครูประจำวิชา</h2>
+    <p>กรอกชื่อครูครั้งเดียว เลือกวิชาในตารางแล้วชื่อครูจะเติมให้เอง ถ้าเปลี่ยนชื่อครูภายหลัง คาบที่ลงชื่อครูคนเดิมไว้จะเปลี่ยนตามให้ทั้งหมด</p>
   </div>
-  <div class="panel" style="margin-bottom:.9rem"><div class="grid3" id="teacherFields"></div></div>
-  <div class="quota" id="quota"></div>
-  <div class="acts">
-    <button class="btn gold" id="btnFill" type="button">เติมวิชาลงคาบว่างตามโควตา</button>
-    <button class="btn" id="btnClearSub" type="button">ล้างเฉพาะวิชาที่ลงไว้</button>
-  </div>
+  <div class="panel"><div class="grid3" id="teacherFields"></div></div>
 </div></section>
 
 <!-- ═══ ๓ ตารางรายวัน ═══ -->
-<section><div class="wrap">
-  <div class="hd">
-    <p class="eb">ขั้นที่ ๓</p>
-    <h2>ลงตารางรายวัน</h2>
-    <p>ทุกแถวแก้ได้หมด เปลี่ยนเวลา เปลี่ยนประเภท เพิ่มคาบ ลบคาบ หรือใช้ช่อง <b>ย้ายไป</b> เพื่อโยกคาบข้ามวัน · ถ้าเวลาในวันเดียวกันคาบเกยกัน แถวนั้นจะขึ้นสีแดงเตือนทันที · เอาเครื่องหมายถูกหน้าวันออก = ไม่จัดติววันนั้น</p>
+<section>
+  <div class="wrap">
+    <div class="hd">
+      <p class="eb">ขั้นที่ ๓</p>
+      <h2>ลงตารางรายวัน</h2>
+      <p>ทุกแถวแก้ได้หมด เปลี่ยนเวลา เปลี่ยนประเภท เพิ่มคาบ ลบคาบ หรือใช้ช่อง <b>ย้ายไป</b> เพื่อโยกคาบข้ามวัน · ถ้าเวลาในวันเดียวกันคาบเกยกัน แถวนั้นจะขึ้นสีแดงเตือนทันที · เอาเครื่องหมายถูกหน้าวันออก = ไม่จัดติววันนั้น</p>
+    </div>
   </div>
-  <div class="days" id="days"></div>
-</div></section>
+
+  <div class="qsticky" id="qsticky"><div class="wrap">
+    <div class="qhead">
+      <b>โควตาคาบเรียน</b>
+      <span class="qsum" id="qsum"></span>
+      <span class="spacer"></span>
+      <button class="btn xs gold" id="btnFill" type="button">เติมวิชาตามโควตา</button>
+      <button class="btn xs" id="btnClearSub" type="button">ล้างวิชา</button>
+      <button class="btn xs" id="qToggle" type="button">ย่อแถบ</button>
+    </div>
+    <div class="quota" id="quota"></div>
+  </div></div>
+
+  <div class="wrap"><div class="days" id="days"></div></div>
+</section>
 
 <!-- ═══ ๔ สรุปครู ═══ -->
 <section><div class="wrap">
@@ -387,7 +411,7 @@ const SUBJ = [
   { k:"phy",  n:"ฟิสิกส์",           q:3 },
   { k:"che",  n:"เคมี",              q:2 },
   { k:"bio",  n:"ชีววิทยา",          q:2 },
-  { k:"sci",  n:"วิทยาศาสตร์ทั่วไป", q:1 }
+  { k:"sci",  n:"วิทยาศาสตร์ทั่วไป", sn:"วิทย์ทั่วไป", q:1 }
 ];
 const SB = Object.fromEntries(SUBJ.map(s => [s.k, s]));
 const QUOTA_TOTAL = SUBJ.reduce((a, s) => a + s.q, 0);
@@ -488,6 +512,14 @@ function overlaps(rows){
   return bad;
 }
 const clashCount = () => activeKeys().reduce((a, k) => a + overlaps(T.days[k].rows).size, 0);
+/** วิชาไหนถูกลงไว้ในวันที่เท่าไรบ้าง → { math:[1,2,4], ... } */
+function subjDays(){
+  const m = Object.fromEntries(SUBJ.map(s => [s.k, []]));
+  activeKeys().forEach((k, di) => T.days[k].rows.forEach(r => {
+    if (r.k === "sub" && r.s && m[r.s]) m[r.s].push(di + 1);
+  }));
+  return m;
+}
 const evAmt = r => (r.a === -1 || r.a == null || r.a === "") ? (Number(T.lecRate) || 0) : (Number(r.a) || 0);
 
 function stats(){
@@ -531,15 +563,31 @@ function renderSettings(){
 }
 
 function renderQuota(){
-  const { c } = counts();
+  const { c, filled } = counts();
+  const sd = subjDays();
   $("#quota").innerHTML = SUBJ.map(s => {
-    const got = c[s.k], cls = got === s.q ? "ok" : got > s.q ? "over" : "part";
+    const got = c[s.k];
+    const cls = got === s.q ? "ok" : got > s.q ? "over" : got === 0 ? "none" : "part";
     const w = Math.min(100, s.q ? got / s.q * 100 : 0);
-    const t = got === s.q ? "ครบโควตา" : got > s.q ? "เกิน " + num(got - s.q) + " คาบ" : "ขาดอีก " + num(s.q - got) + " คาบ";
-    return `<div class="q ${cls}"><div class="qn"><b>${esc(s.n)}</b><span class="qc">${num(got)} / ${num(s.q)}</span></div>
+    const st = got === s.q ? "✓ ครบโควตา"
+      : got > s.q ? "เกิน " + num(got - s.q) + " คาบ"
+      : got === 0 ? "ยังไม่ได้ลง " + num(s.q) + " คาบ"
+      : "ขาดอีก " + num(s.q - got) + " คาบ";
+    const days = sd[s.k].length ? "ลงแล้ว วันที่ " + num(sd[s.k].join(", ")) : "ยังไม่ได้ลงวันใด";
+    const tea = T.teachers[s.k] || "— ยังไม่ระบุครู —";
+    return `<div class="q ${cls}" title="${esc(s.n)} · ${st} · ${esc(days)} · ครู ${esc(tea)}">
+      <div class="qn"><b>${esc(s.sn || s.n)}</b><span class="qc">${num(got)} / ${num(s.q)}</span></div>
       <div class="qbar"><i style="width:${w}%"></i></div>
-      <div class="qt">${t} · ${esc(T.teachers[s.k] || "ยังไม่ระบุครู")}</div></div>`;
+      <div class="qt">${st}</div>
+      <div class="qd">${esc(days)}</div>
+      <div class="qw">${esc(tea)}</div></div>`;
   }).join("");
+  const left = QUOTA_TOTAL - filled;
+  $("#qsum").innerHTML = left === 0
+    ? `ลงครบแล้ว <i class="done">${num(QUOTA_TOTAL)} / ${num(QUOTA_TOTAL)}</i> คาบ`
+    : left > 0
+    ? `ลงแล้ว <i>${num(filled)}</i> / ${num(QUOTA_TOTAL)} คาบ · ยังขาด <i>${num(left)}</i> คาบ`
+    : `ลงแล้ว <i>${num(filled)}</i> / ${num(QUOTA_TOTAL)} คาบ · เกินโควตา <i>${num(-left)}</i> คาบ`;
 }
 
 const KINDS = [["sub","คาบเรียน"], ["ev","กิจกรรม"], ["fit","ฝึกสมรรถภาพ"], ["br","พัก"]];
@@ -612,7 +660,7 @@ function renderTeachers(){
       <td class="n">${o.events ? num(o.events) : "—"}</td>
       <td class="n"><b>${num(money(o.pay))}</b></td>
       <td><button class="btn xs" data-pr="${esc(n)}" type="button">พิมพ์กำหนดการ</button></td></tr>`;
-  }).join("") : `<tr><td colspan="8" style="color:var(--ink-3)">ยังไม่ได้ลงตาราง — เริ่มที่ปุ่ม “เติมวิชาลงคาบว่างตามโควตา” ในขั้นที่ ๒</td></tr>`;
+  }).join("") : `<tr><td colspan="8" style="color:var(--ink-3)">ยังไม่ได้ลงตาราง — เริ่มที่ปุ่ม “เติมวิชาตามโควตา” บนแถบโควตาในขั้นที่ ๓</td></tr>`;
   $("#teaBody").querySelectorAll("[data-pr]").forEach(b => b.onclick = () => printTeacher(b.dataset.pr));
   $("#selTea").innerHTML = `<option value="">— เลือกผู้ปฏิบัติงาน —</option>` + names.map(n => `<option>${esc(n)}</option>`).join("");
 }
@@ -894,10 +942,30 @@ $("#prSign").onclick = () => {
   doPrint();
 };
 
+/* ย่อ/ขยายแถบโควตา — จำสถานะไว้ */
+const QK = "nk_tutor_qmini";
+function applyMini(){
+  const on = localStorage.getItem(QK) === "1";
+  $("#qsticky").classList.toggle("mini", on);
+  $("#qToggle").textContent = on ? "ขยายแถบ" : "ย่อแถบ";
+}
+$("#qToggle").onclick = () => {
+  localStorage.setItem(QK, localStorage.getItem(QK) === "1" ? "0" : "1");
+  applyMini();
+};
+/* วางแถบโควตาให้ลอยพอดีใต้แถบเมนูด้านบน */
+function syncTopH(){
+  const h = document.querySelector(".top").getBoundingClientRect().height;
+  document.documentElement.style.setProperty("--topH", Math.round(h) + "px");
+}
+addEventListener("resize", syncTopH);
+
 /* ═══════════ เริ่มต้น ═══════════ */
 if (!Object.keys(T.days).length) rebuildAll();
 renderSettings();
 renderAll();
+applyMini();
+syncTopH();
 </script>
 </body>
 </html>
