@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>ตารางติว | แผนเตรียมทหาร มัธยมวัดหนองแขม</title>
-<meta name="description" content="โปรแกรมจัดตารางสอนติวเข้มปิดภาคเรียนและกำหนดการครูผู้สอน แผนการเรียนเตรียมทหาร–ตำรวจ โรงเรียนมัธยมวัดหนองแขม">
+<meta name="description" content="โปรแกรมลงตารางสอนติวเข้มปิดภาคเรียนและกำหนดการครูผู้สอน แผนการเรียนเตรียมทหาร–ตำรวจ โรงเรียนมัธยมวัดหนองแขม">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%230E2A56'/><text y='72' x='50' text-anchor='middle' font-size='62' fill='%23FFC72C' font-family='sans-serif' font-weight='bold'>นข</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -52,11 +52,10 @@
 body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--body);font-size:15.5px;line-height:1.7;-webkit-font-smoothing:antialiased}
 button,input,select,textarea{font:inherit;color:inherit}
 :focus-visible{outline:2px solid var(--navy-3);outline-offset:2px;border-radius:5px}
-.wrap{max-width:78rem;margin-inline:auto;padding-inline:clamp(.9rem,3vw,2rem)}
+.wrap{max-width:80rem;margin-inline:auto;padding-inline:clamp(.9rem,3vw,2rem)}
 p{margin:0}
 a{color:var(--navy-3)}
 
-/* top */
 .top{background:var(--navy);color:#fff;border-bottom:3px solid var(--gold);position:sticky;top:0;z-index:40}
 .top-in{display:flex;align-items:center;gap:.9rem;padding:.6rem clamp(.8rem,2vw,1.4rem);flex-wrap:wrap}
 .mark{width:2.35rem;height:2.35rem;flex:none;background:var(--gold);color:var(--navy);display:grid;place-items:center;font-family:var(--ui);font-weight:700;font-size:.8rem;clip-path:polygon(50% 0,100% 24%,100% 76%,50% 100%,0 76%,0 24%)}
@@ -64,73 +63,104 @@ a{color:var(--navy-3)}
 .title b{display:block;font-family:var(--ui);font-weight:600;font-size:.98rem;color:#fff}
 .title span{font-size:.76rem;color:#B6C6E0}
 .top .spacer{margin-inline-start:auto}
-.tabs{display:flex;gap:.25rem}
+.tabs{display:flex;gap:.25rem;flex-wrap:wrap}
 .tabs a{font-family:var(--ui);font-weight:600;font-size:.83rem;text-decoration:none;color:#C6D4EA;padding:.4rem .85rem;border-radius:5px;border:1px solid transparent}
 .tabs a:hover{background:rgba(255,255,255,.1);color:#fff}
 .tabs a[aria-current]{background:var(--gold);color:var(--navy)}
 
-/* band */
 .band{background:var(--navy);color:#fff;padding:0 0 1.6rem}
-.bandgrid{display:grid;gap:1px;background:rgba(255,255,255,.16);grid-template-columns:repeat(auto-fit,minmax(10.5rem,1fr));border:1px solid rgba(255,255,255,.16);border-radius:10px;overflow:hidden}
-.kpi{background:var(--navy);padding:.95rem 1.1rem}
-.kpi .l{font-family:var(--ui);font-size:.72rem;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:#93A9CC}
-.kpi .v{font-family:var(--ui);font-weight:700;font-size:1.65rem;line-height:1.15;color:var(--gold-2);font-variant-numeric:tabular-nums;margin-top:.1rem}
-.kpi .s{font-size:.79rem;color:#9DB0CE;line-height:1.5}
+.bandgrid{display:grid;gap:1px;background:rgba(255,255,255,.16);grid-template-columns:repeat(auto-fit,minmax(10rem,1fr));border:1px solid rgba(255,255,255,.16);border-radius:10px;overflow:hidden}
+.kpi{background:var(--navy);padding:.9rem 1.05rem}
+.kpi .l{font-family:var(--ui);font-size:.71rem;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:#93A9CC}
+.kpi .v{font-family:var(--ui);font-weight:700;font-size:1.55rem;line-height:1.15;color:var(--gold-2);font-variant-numeric:tabular-nums;margin-top:.1rem}
+.kpi .v.bad{color:#FFB4B4}
+.kpi .s{font-size:.78rem;color:#9DB0CE;line-height:1.5}
 
-section{padding:2rem 0}
+section{padding:1.9rem 0}
 section + section{border-top:1px solid var(--rule)}
 .hd{margin-bottom:1rem}
 .hd .eb{font-family:var(--ui);font-size:.72rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--gold-ink);margin-bottom:.3rem}
-.hd h2{font-family:var(--ui);font-weight:700;font-size:clamp(1.25rem,2.6vw,1.6rem);margin:0 0 .35rem;line-height:1.3}
-.hd p{font-size:.94rem;color:var(--ink-2);max-width:70ch}
+.hd h2{font-family:var(--ui);font-weight:700;font-size:clamp(1.2rem,2.6vw,1.55rem);margin:0 0 .35rem;line-height:1.3}
+.hd p{font-size:.93rem;color:var(--ink-2);max-width:74ch}
 
 .panel{background:var(--surface);border:1px solid var(--rule);border-radius:10px;padding:1rem 1.1rem;box-shadow:0 1px 3px rgba(16,48,95,.07)}
-.grid3{display:grid;gap:.7rem .9rem;grid-template-columns:repeat(auto-fit,minmax(13rem,1fr))}
-.field label{display:block;font-family:var(--ui);font-weight:600;font-size:.78rem;color:var(--ink-2);margin-bottom:.2rem}
-.field input,.field select{width:100%;background:var(--ground);border:1px solid var(--rule);border-radius:5px;padding:.4rem .55rem;font-size:.9rem}
+.grid3{display:grid;gap:.65rem .85rem;grid-template-columns:repeat(auto-fit,minmax(12.5rem,1fr))}
+.field label{display:block;font-family:var(--ui);font-weight:600;font-size:.77rem;color:var(--ink-2);margin-bottom:.18rem}
+.field input,.field select{width:100%;background:var(--ground);border:1px solid var(--rule);border-radius:5px;padding:.38rem .5rem;font-size:.88rem}
 .field .hint{font-size:.75rem;color:var(--ink-3);margin-top:.15rem;line-height:1.5}
-.acts{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1rem;align-items:center}
-.btn{font-family:var(--ui);font-weight:600;font-size:.85rem;border:1px solid var(--rule-2);background:transparent;color:var(--navy-3);padding:.42rem .95rem;border-radius:5px;cursor:pointer}
+.acts{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.9rem;align-items:center}
+.btn{font-family:var(--ui);font-weight:600;font-size:.85rem;border:1px solid var(--rule-2);background:transparent;color:var(--navy-3);padding:.4rem .9rem;border-radius:5px;cursor:pointer}
 .btn:hover{background:var(--gold-ghost)}
 .btn.gold{background:var(--gold);border-color:var(--gold);color:#10305F}
 .btn.gold:hover{background:var(--gold-2)}
+.btn.xs{font-size:.75rem;padding:.2rem .55rem}
+.btn.danger{color:var(--crit);border-color:var(--crit)}
 
-/* quota chips */
-.quota{display:grid;gap:.55rem;grid-template-columns:repeat(auto-fit,minmax(12rem,1fr))}
-.q{background:var(--surface);border:1px solid var(--rule);border-radius:10px;padding:.6rem .8rem;box-shadow:0 1px 3px rgba(16,48,95,.07)}
-.q .qn{display:flex;justify-content:space-between;align-items:baseline;gap:.5rem}
-.q .qn b{font-family:var(--ui);font-weight:600;font-size:.88rem}
-.q .qc{font-family:var(--ui);font-weight:700;font-size:.95rem;font-variant-numeric:tabular-nums}
-.q .qbar{height:.4rem;background:var(--surface-2);border-radius:99px;margin-top:.35rem;overflow:hidden}
+/* โควตา */
+.quota{display:grid;gap:.5rem;grid-template-columns:repeat(auto-fit,minmax(11.5rem,1fr))}
+.q{background:var(--surface);border:1px solid var(--rule);border-radius:9px;padding:.55rem .75rem;box-shadow:0 1px 3px rgba(16,48,95,.07)}
+.q .qn{display:flex;justify-content:space-between;align-items:baseline;gap:.4rem}
+.q .qn b{font-family:var(--ui);font-weight:600;font-size:.86rem}
+.q .qc{font-family:var(--ui);font-weight:700;font-size:.92rem;font-variant-numeric:tabular-nums}
+.q .qbar{height:.35rem;background:var(--surface-2);border-radius:99px;margin-top:.3rem;overflow:hidden}
 .q .qbar i{display:block;height:100%;border-radius:99px}
-.q.ok .qc{color:var(--ok)}   .q.ok .qbar i{background:var(--ok)}
+.q.ok .qc{color:var(--ok)}    .q.ok .qbar i{background:var(--ok)}
 .q.part .qc{color:var(--warn)} .q.part .qbar i{background:var(--warn)}
 .q.over .qc{color:var(--crit)} .q.over .qbar i{background:var(--crit)}
-.q .qt{font-size:.76rem;color:var(--ink-3);margin-top:.2rem}
+.q .qt{font-size:.74rem;color:var(--ink-3);margin-top:.15rem;line-height:1.45}
 
-/* schedule grid */
+/* การ์ดรายวัน */
+.days{display:flex;flex-direction:column;gap:.75rem}
+.daycard{background:var(--surface);border:1px solid var(--rule);border-radius:10px;overflow:hidden;box-shadow:0 1px 3px rgba(16,48,95,.07)}
+.daycard.off{opacity:.5}
+.daycard.first{border-inline-start:5px solid var(--gold)}
+.dh{display:flex;align-items:center;gap:.6rem;padding:.5rem .8rem;background:var(--surface-2);flex-wrap:wrap}
+.dh .dn{line-height:1.25;min-width:9rem}
+.dh .dn b{display:block;font-family:var(--ui);font-weight:700;font-size:.92rem}
+.dh .dn span{font-size:.76rem;color:var(--ink-3)}
+.dh .dsum{font-size:.76rem;color:var(--ink-3);font-variant-numeric:tabular-nums}
+.dh .spacer{margin-inline-start:auto}
+.dh input[type=checkbox]{width:1.05rem;height:1.05rem;accent-color:var(--ok);cursor:pointer}
+
+.rw{display:grid;grid-template-columns:9.4rem 7.4rem minmax(8rem,1fr) 10.5rem 16.5rem;
+    gap:.35rem;align-items:center;padding:.34rem .8rem;border-top:1px solid var(--rule)}
+.rw .ops{display:flex;gap:.3rem;align-items:center}
+.rw .ops .amt{width:5.4rem;flex:none}
+.rw .ops select{flex:1;min-width:0}
+.rw.bad{background:var(--crit-bg)}
+.rw.brk{background:var(--idle-bg)}
+.rw input,.rw select{width:100%;background:var(--ground);border:1px solid var(--rule);border-radius:5px;padding:.24rem .38rem;font-size:.82rem}
+.rw .tm{display:flex;flex-direction:column;gap:.05rem}
+.rw .tmrow{display:flex;align-items:center;gap:.18rem}
+.rw .tmrow input{text-align:center;padding:.22rem .1rem;font-variant-numeric:tabular-nums}
+.rw .tmrow > span{color:var(--ink-3);font-size:.8rem}
+.rw .dur{font-size:.71rem;color:var(--ink-3);text-align:center;font-variant-numeric:tabular-nums;line-height:1.3}
+.rw .dur.err{color:var(--crit)}
+.rw .x{background:transparent;border:1px solid var(--rule);border-radius:5px;color:var(--ink-3);cursor:pointer;padding:.1rem .3rem;font-size:.85rem;line-height:1.2}
+.rw .x:hover{color:var(--crit);border-color:var(--crit)}
+.rw .lockmsg{grid-column:3/-1;font-size:.8rem;color:var(--ink-3)}
+@media (max-width:1080px){
+  .rw{grid-template-columns:9.4rem 7.4rem minmax(8rem,1fr)}
+  .rw > *:nth-child(n+4){grid-column:1/-1}
+}
+@media (max-width:640px){
+  .rw{grid-template-columns:9.4rem 1fr}
+  .rw > *:nth-child(n+3){grid-column:1/-1}
+}
+.dwarn{padding:.35rem .8rem;font-size:.8rem;color:var(--crit);background:var(--crit-bg);border-top:1px solid var(--rule)}
+
+/* ตารางสรุปครู */
 .tblwrap{overflow-x:auto;background:var(--surface);border:1px solid var(--rule);border-radius:10px;box-shadow:0 1px 3px rgba(16,48,95,.07)}
-table.sked{border-collapse:collapse;width:100%;min-width:62rem;font-size:.85rem}
-.sked th,.sked td{border-top:1px solid var(--rule);padding:.45rem .5rem;vertical-align:top;text-align:start}
-.sked thead th{font-family:var(--ui);font-weight:600;font-size:.78rem;background:var(--surface-2);color:var(--ink-2);border-top:none;white-space:nowrap}
-.sked .day{white-space:nowrap;font-family:var(--ui)}
-.sked .day b{font-weight:600;font-size:.85rem;display:block}
-.sked .day span{font-size:.75rem;color:var(--ink-3)}
-.cell select,.cell input{width:100%;background:var(--ground);border:1px solid var(--rule);border-radius:5px;padding:.28rem .4rem;font-size:.82rem}
-.cell input{margin-top:.25rem}
-.cell.filled select{border-color:var(--rule-2);font-weight:600}
-.mini{font-size:.82rem;color:var(--ink-3);line-height:1.6;margin-top:.8rem}
-
-/* teacher summary */
-.tsum{border-collapse:collapse;width:100%;font-size:.88rem}
-.tsum th,.tsum td{border-top:1px solid var(--rule);padding:.5rem .7rem;text-align:start;vertical-align:top}
-.tsum thead th{font-family:var(--ui);font-weight:600;font-size:.78rem;background:var(--surface-2);color:var(--ink-2);border-top:none;white-space:nowrap}
+table.tsum{border-collapse:collapse;width:100%;font-size:.87rem;min-width:44rem}
+.tsum th,.tsum td{border-top:1px solid var(--rule);padding:.45rem .7rem;text-align:start;vertical-align:top}
+.tsum thead th{font-family:var(--ui);font-weight:600;font-size:.77rem;background:var(--surface-2);color:var(--ink-2);border-top:none;white-space:nowrap}
 .tsum td.n,.tsum th.n{text-align:end;font-variant-numeric:tabular-nums;white-space:nowrap}
+.mini{font-size:.81rem;color:var(--ink-3);line-height:1.6;margin-top:.75rem}
 
 footer{background:var(--navy);color:#9DB0CE;padding:1.6rem 0 2.4rem;font-size:.85rem;line-height:1.7;margin-top:1rem}
 footer b{color:#fff}
 
-/* ── printable sheet ───────────────────────── */
+/* กระดาษพิมพ์ */
 #sheetWrap{display:none}
 @media print{
   @page{size:A4 portrait;margin:0}
@@ -138,25 +168,24 @@ footer b{color:#fff}
   #sheetWrap{display:block}
   body{background:#fff}
 }
-.sheet{font-family:var(--doc);color:#000;background:#fff;width:210mm;min-height:296mm;padding:14mm 16mm 12mm;margin:0 auto;font-size:14.5pt;line-height:1.5}
+.sheet{font-family:var(--doc);color:#000;background:#fff;width:210mm;min-height:296mm;padding:13mm 15mm 11mm;margin:0 auto;font-size:14.5pt;line-height:1.45}
 .sheet h1{font-size:19pt;font-weight:700;text-align:center;margin:0 0 1mm}
-.sheet .sub{text-align:center;font-size:14pt;margin:0 0 2mm}
-.sheet .org{text-align:center;line-height:1.35;margin-bottom:2mm}
+.sheet .sub{text-align:center;font-size:13.5pt;margin:0 0 1mm}
+.sheet .org{text-align:center;line-height:1.3;margin-bottom:2mm}
 .sheet .org b{display:block;font-size:17pt}
-.sheet .org small{font-size:12.5pt}
+.sheet .org small{font-size:12pt}
 .sheet .hr{border-top:1.6pt solid #000;margin:2mm 0 3mm}
 .sheet table{border-collapse:collapse;width:100%;font-size:12.5pt;margin:2mm 0}
-.sheet th,.sheet td{border:.5pt solid #000;padding:1.2mm 1.8mm;vertical-align:top}
+.sheet th,.sheet td{border:.5pt solid #000;padding:1mm 1.6mm;vertical-align:top}
 .sheet thead th{background:#E9E9E9;font-weight:700;text-align:center}
 .sheet td.c,.sheet th.c{text-align:center}
 .sheet td.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
-.sheet .box{border:.6pt solid #000;padding:2mm 3mm;margin-top:2.5mm;font-size:12.5pt;line-height:1.5}
+.sheet .box{border:.6pt solid #000;padding:2mm 3mm;margin-top:2.5mm;font-size:12.5pt;line-height:1.45}
 .sheet .box .bt{font-weight:700}
 .sheet .sig{display:flex;justify-content:space-around;gap:4mm;margin-top:8mm;text-align:center;font-size:13pt}
-.sheet .sig > div{display:flex;flex-direction:column;gap:1.2mm;min-width:44mm}
-.sheet .foot{font-size:11.5pt;margin-top:4mm;line-height:1.45}
-.sheet .subcell b{font-weight:700}
-.sheet .subcell span{display:block;font-size:11pt;line-height:1.3}
+.sheet .sig > div{display:flex;flex-direction:column;gap:1.2mm;min-width:42mm}
+.sheet .foot{font-size:11.5pt;margin-top:3mm;line-height:1.4}
+.sheet .ev{font-weight:700}
 </style>
 </head>
 <body>
@@ -175,99 +204,102 @@ footer b{color:#fff}
 
 <div class="band"><div class="wrap">
   <div class="bandgrid">
-    <div class="kpi"><div class="l">คาบวิชาการที่จัดแล้ว</div><div class="v" id="kSlot">0 / 30</div><div class="s" id="kSlotSub">เป้าหมาย 45 ชั่วโมง</div></div>
-    <div class="kpi"><div class="l">ครูผู้สอน</div><div class="v" id="kTea">—</div><div class="s">คน (รวมครูฝึกสมรรถภาพ)</div></div>
-    <div class="kpi"><div class="l">ค่าตอบแทนวิชาการ</div><div class="v" id="kAcad">—</div><div class="s">บาท · ตามคาบที่จัดจริง</div></div>
-    <div class="kpi"><div class="l">ค่าฝึกสมรรถภาพ</div><div class="v" id="kFit">—</div><div class="s">บาท · ตามวันที่มีครูฝึก</div></div>
-    <div class="kpi"><div class="l">งบรวมโครงการ</div><div class="v" id="kTotal">—</div><div class="s" id="kAvg">บาท</div></div>
+    <div class="kpi"><div class="l">วันที่จัดติว</div><div class="v" id="kDays">—</div><div class="s" id="kDaysSub">วัน</div></div>
+    <div class="kpi"><div class="l">คาบเรียนที่ลงแล้ว</div><div class="v" id="kSlot">—</div><div class="s" id="kSlotSub">เทียบโควตา ๓๐ คาบ</div></div>
+    <div class="kpi"><div class="l">ชั่วโมงวิชาการ</div><div class="v" id="kHours">—</div><div class="s">ชั่วโมง (จากเวลาจริง)</div></div>
+    <div class="kpi"><div class="l">ผู้ปฏิบัติงาน</div><div class="v" id="kTea">—</div><div class="s">คน (ครู + วิทยากร)</div></div>
+    <div class="kpi"><div class="l">ค่าตอบแทนรวม</div><div class="v" id="kPay">—</div><div class="s" id="kPaySub">บาท</div></div>
+    <div class="kpi"><div class="l">เวลาชนกัน</div><div class="v" id="kClash">—</div><div class="s">รายการ · ต้องเป็น ๐</div></div>
   </div>
 </div></div>
 
 <main>
 
-<!-- ── ตั้งค่า ── -->
+<!-- ═══ ๑ ตั้งค่า ═══ -->
 <section><div class="wrap">
   <div class="hd">
     <p class="eb">ขั้นที่ ๑</p>
-    <h2>ตั้งค่าโครงการและครูประจำวิชา</h2>
-    <p>กรอกครั้งเดียว ระบบจะสร้างวันที่ให้ ๑๐ วันจากวันเริ่มโครงการ และเติมชื่อครูให้อัตโนมัติเมื่อเลือกวิชาในตาราง ข้อมูลเก็บในเบราว์เซอร์เครื่องนี้เท่านั้น</p>
+    <h2>ตั้งค่าโครงการ</h2>
+    <p>กำหนดช่วงวันและอัตราค่าตอบแทน ระบบจะสร้างการ์ดรายวันให้อัตโนมัติ วันแรกจะได้แม่แบบพิธีเปิด ส่วนวันอื่นได้แม่แบบ ๓ คาบ + ฝึกสมรรถภาพ · ข้อมูลเก็บในเบราว์เซอร์เครื่องนี้เท่านั้น</p>
   </div>
   <div class="panel">
     <div class="grid3">
       <div class="field" style="grid-column:1/-1"><label for="cTitle">ชื่อโครงการ</label><input id="cTitle" data-k="title" type="text"></div>
       <div class="field"><label for="cStart">วันเริ่มโครงการ</label><input id="cStart" data-k="start" type="date"></div>
-      <div class="field"><label for="cSkip">วันอาทิตย์</label><select id="cSkip" data-k="skipSun"><option value="1">ข้ามวันอาทิตย์ (หยุด)</option><option value="0">ติวต่อเนื่องทุกวัน</option></select></div>
+      <div class="field"><label for="cEnd">วันสิ้นสุดโครงการ</label><input id="cEnd" data-k="end" type="date"></div>
+      <div class="field"><label for="cMode">วันที่นับเป็นวันติว</label><select id="cMode" data-k="mode">
+        <option value="weekday">จันทร์–ศุกร์ (เว้นเสาร์–อาทิตย์)</option>
+        <option value="skipsun">ทุกวัน เว้นวันอาทิตย์</option>
+        <option value="all">ทุกวันไม่เว้น</option></select></div>
       <div class="field"><label for="cStu">จำนวนนักเรียน (คน)</label><input id="cStu" data-k="students" type="number" min="1"></div>
-      <div class="field"><label for="cRoom">สถานที่</label><input id="cRoom" data-k="room" type="text"></div>
-      <div class="field"><label for="cRate">อัตราค่าสอน (บาท/คาบ)</label><input id="cRate" data-k="rate" type="number" min="0"></div>
-      <div class="field"><label for="cFitRate">อัตราครูฝึกสมรรถภาพ (บาท/วัน)</label><input id="cFitRate" data-k="fitRate" type="number" min="0"></div>
-      <div class="field"><label for="cT1">คาบ ๑ (เวลา)</label><input id="cT1" data-k="p1t" type="text"></div>
-      <div class="field"><label for="cT2">คาบ ๒ (เวลา)</label><input id="cT2" data-k="p2t" type="text"></div>
-      <div class="field"><label for="cT3">คาบ ๓ (เวลา)</label><input id="cT3" data-k="p3t" type="text"></div>
-      <div class="field"><label for="cTF">ฝึกสมรรถภาพ (เวลา)</label><input id="cTF" data-k="fitT" type="text"></div>
+      <div class="field" style="grid-column:span 2"><label for="cRoom">สถานที่</label><input id="cRoom" data-k="room" type="text"></div>
+      <div class="field"><label for="cRate">ค่าสอน (บาท/คาบ)</label><input id="cRate" data-k="rate" type="number" min="0"></div>
+      <div class="field"><label for="cFitRate">ค่าครูฝึกสมรรถภาพ (บาท/วัน)</label><input id="cFitRate" data-k="fitRate" type="number" min="0"></div>
+      <div class="field"><label for="cLecRate">ค่าตอบแทนวิทยากร (บาท/ครั้ง)</label><input id="cLecRate" data-k="lecRate" type="number" min="0" ></div>
+      <div class="field"><label for="cCoach">ครูฝึกสมรรถภาพประจำ</label><input id="cCoach" data-k="coach" type="text" placeholder="ชื่อครูฝึก"></div>
     </div>
-    <div class="grid3" style="margin-top:.9rem" id="teacherFields"></div>
-    <div class="field" style="margin-top:.7rem;max-width:26rem"><label for="cCoach">ครูฝึกสมรรถภาพ (ค่าเริ่มต้นทุกวัน)</label><input id="cCoach" data-k="fitCoach" type="text" placeholder="ชื่อครูฝึก / วิทยากร"></div>
     <div class="acts">
-      <button class="btn" id="btnApplyCoach" type="button">เติมครูฝึกลงทุกวัน</button>
-      <span class="field hint">แก้รายวันได้ในตารางขั้นที่ ๒ · เว้นว่างวันไหน วันนั้นไม่คิดค่าฝึก</span>
+      <button class="btn" id="btnCoach" type="button">เติมชื่อครูฝึกลงทุกวัน</button>
+      <button class="btn" id="btnRebuild" type="button">สร้างแม่แบบตารางใหม่ทั้งหมด</button>
+      <span class="field hint">“สร้างแม่แบบใหม่” จะล้างสิ่งที่ลงไว้แล้วทั้งหมด แล้ววางแม่แบบเริ่มต้นให้ใหม่</span>
     </div>
   </div>
 </div></section>
 
-<!-- ── ตาราง ── -->
+<!-- ═══ ๒ ครูและโควตา ═══ -->
 <section><div class="wrap">
   <div class="hd">
     <p class="eb">ขั้นที่ ๒</p>
-    <h2>จัดตารางติว ๑๐ วัน × ๓ คาบ</h2>
-    <p>เลือกวิชาในแต่ละคาบ ระบบจะเติมชื่อครูประจำวิชาให้และนับโควตาให้ทันที กดปุ่มจัดตารางอัตโนมัติเพื่อวางแผนตามโควตา ๓๐ คาบได้ในคลิกเดียว แล้วค่อยสลับปรับเอง</p>
+    <h2>ครูประจำวิชาและโควตาคาบ</h2>
+    <p>กรอกชื่อครูครั้งเดียว เลือกวิชาในตารางแล้วชื่อครูจะเติมให้เอง แถบสีบอกว่าลงครบโควตาหรือยัง — เขียว ครบ · ส้ม ยังขาด · แดง เกิน</p>
   </div>
+  <div class="panel" style="margin-bottom:.9rem"><div class="grid3" id="teacherFields"></div></div>
   <div class="quota" id="quota"></div>
-  <div class="acts" style="margin:.9rem 0">
-    <button class="btn gold" id="btnAuto" type="button">จัดตารางอัตโนมัติตามโควตา</button>
-    <button class="btn" id="btnClear" type="button">ล้างตารางทั้งหมด</button>
+  <div class="acts">
+    <button class="btn gold" id="btnFill" type="button">เติมวิชาลงคาบว่างตามโควตา</button>
+    <button class="btn" id="btnClearSub" type="button">ล้างเฉพาะวิชาที่ลงไว้</button>
   </div>
-  <div class="tblwrap"><table class="sked">
-    <thead><tr>
-      <th style="width:9.5rem">วัน / วันที่</th>
-      <th>คาบ ๑ <span id="h1"></span></th>
-      <th>คาบ ๒ <span id="h2"></span></th>
-      <th>คาบ ๓ <span id="h3"></span></th>
-      <th style="width:11rem">ฝึกสมรรถภาพ <span id="hf"></span></th>
-    </tr></thead>
-    <tbody id="gridBody"></tbody>
-  </table></div>
-  <p class="mini">แต่ละคาบยาว ๑ ชั่วโมง ๓๐ นาที · วิชาวิทยาศาสตร์แยกครูผู้เชี่ยวชาญเฉพาะด้าน ฟิสิกส์ เคมี ชีววิทยา วิทยาศาสตร์ทั่วไป · ช่องครูแก้ชื่อรายคาบได้ เช่น กรณีเชิญวิทยากรภายนอก</p>
 </div></section>
 
-<!-- ── สรุปครู ── -->
+<!-- ═══ ๓ ตารางรายวัน ═══ -->
 <section><div class="wrap">
   <div class="hd">
     <p class="eb">ขั้นที่ ๓</p>
-    <h2>ภาระงานและค่าตอบแทนครูรายคน</h2>
-    <p>คำนวณจากตารางที่จัดจริง อัตราค่าสอนตามตั้งค่าในขั้นที่ ๑ ใช้ตรวจก่อนพิมพ์กำหนดการและใบสรุปเบิกจ่าย</p>
+    <h2>ลงตารางรายวัน</h2>
+    <p>ทุกแถวแก้ได้หมด เปลี่ยนเวลา เปลี่ยนประเภท เพิ่มคาบ ลบคาบ หรือใช้ช่อง <b>ย้ายไป</b> เพื่อโยกคาบข้ามวัน · ถ้าเวลาในวันเดียวกันคาบเกยกัน แถวนั้นจะขึ้นสีแดงเตือนทันที · เอาเครื่องหมายถูกหน้าวันออก = ไม่จัดติววันนั้น</p>
   </div>
-  <div class="tblwrap" style="border-radius:10px"><table class="tsum">
-    <thead><tr><th>ครูผู้สอน</th><th>วิชา / หน้าที่</th><th class="n">คาบ</th><th class="n">ชั่วโมง</th><th class="n">วันฝึก</th><th class="n">ค่าตอบแทน (บาท)</th><th></th></tr></thead>
+  <div class="days" id="days"></div>
+</div></section>
+
+<!-- ═══ ๔ สรุปครู ═══ -->
+<section><div class="wrap">
+  <div class="hd">
+    <p class="eb">ขั้นที่ ๔</p>
+    <h2>ภาระงานและค่าตอบแทนรายคน</h2>
+    <p>คำนวณจากตารางที่ลงจริง ใช้ตรวจก่อนพิมพ์กำหนดการและใบสรุปเบิกจ่าย</p>
+  </div>
+  <div class="tblwrap"><table class="tsum">
+    <thead><tr><th>ชื่อ–สกุล</th><th>วิชา / หน้าที่</th><th class="n">คาบ</th><th class="n">ชั่วโมง</th><th class="n">วันฝึก</th><th class="n">กิจกรรม</th><th class="n">ค่าตอบแทน (บาท)</th><th></th></tr></thead>
     <tbody id="teaBody"></tbody>
   </table></div>
 </div></section>
 
-<!-- ── พิมพ์ ── -->
+<!-- ═══ ๕ พิมพ์ ═══ -->
 <section><div class="wrap">
   <div class="hd">
-    <p class="eb">ขั้นที่ ๔</p>
-    <h2>พิมพ์เอกสารของโครงการ</h2>
-    <p>หัวเอกสารดึงชื่อโรงเรียน ผู้อำนวยการ หัวหน้าแผน และชื่อกองทุนจากหน้าตั้งค่าโรงเรียนในศูนย์เอกสารโดยอัตโนมัติ · ตั้งกระดาษ A4 และปิดหัวกระดาษ–ท้ายกระดาษก่อนพิมพ์</p>
+    <p class="eb">ขั้นที่ ๕</p>
+    <h2>พิมพ์เอกสาร</h2>
+    <p>หัวเอกสารดึงชื่อโรงเรียน ผู้อำนวยการ หัวหน้าแผน และชื่อกองทุนจากหน้าตั้งค่าโรงเรียนในศูนย์เอกสาร · ตั้งกระดาษ A4 และปิดหัวกระดาษ–ท้ายกระดาษก่อนพิมพ์</p>
   </div>
   <div class="acts" style="margin-top:0">
-    <button class="btn gold" id="btnPrGrid" type="button">พิมพ์ตารางติวรวม ๑๐ วัน</button>
-    <select id="selTeacher" style="background:var(--ground);border:1px solid var(--rule);border-radius:5px;padding:.4rem .55rem;font-size:.85rem;font-family:var(--ui)"></select>
-    <button class="btn" id="btnPrTeacher" type="button">พิมพ์กำหนดการรายครู</button>
-    <button class="btn" id="btnPrPay" type="button">พิมพ์ใบสรุปค่าตอบแทน (เบิกจ่ายกองทุน)</button>
-    <button class="btn" id="btnPrSign" type="button">พิมพ์ใบลงเวลาปฏิบัติงาน</button>
+    <button class="btn gold" id="prGrid" type="button">ตารางติวรวมทุกวัน</button>
+    <button class="btn" id="prOpen" type="button">กำหนดการวันพิธีเปิด</button>
+    <select id="selTea" style="background:var(--ground);border:1px solid var(--rule);border-radius:5px;padding:.38rem .5rem;font-size:.85rem;font-family:var(--ui)"></select>
+    <button class="btn" id="prTea" type="button">กำหนดการรายคน</button>
+    <button class="btn" id="prPay" type="button">ใบสรุปค่าตอบแทน</button>
+    <button class="btn" id="prSign" type="button">ใบลงเวลาปฏิบัติงาน</button>
   </div>
-  <p class="mini">ใบสรุปค่าตอบแทนมีช่องลงนามครบตามขั้นการอนุมัติของกองทุน: เลขานุการกองทุนผู้จัดทำ → ประธานกรรมการบริหารกองทุนเห็นชอบ → ผู้อำนวยการอนุมัติ ตามข้อ ๑๘ ของข้อบังคับกองทุน</p>
+  <p class="mini">ใบสรุปค่าตอบแทนจะระบุขั้นการอนุมัติตามวงเงินให้อัตโนมัติ ตามข้อ ๑๘ ของข้อบังคับกองทุน — คณะกรรมการกองทุนให้ความเห็นชอบ แล้วผู้อำนวยการเป็นผู้อนุมัติ</p>
 </div></section>
 
 </main>
@@ -283,14 +315,16 @@ footer b{color:#fff}
 <script>
 "use strict";
 
-/* ═══ helpers (ชุดเดียวกับศูนย์เอกสาร) ═══ */
+/* ═══════════ ตัวช่วย ═══════════ */
 const TH_D = "๐๑๒๓๔๕๖๗๘๙";
 const THMON = ["มกราคม","กุมภาพันธ์","มีนาคม","เมษายน","พฤษภาคม","มิถุนายน","กรกฎาคม","สิงหาคม","กันยายน","ตุลาคม","พฤศจิกายน","ธันวาคม"];
+const THMONA = ["ม.ค.","ก.พ.","มี.ค.","เม.ย.","พ.ค.","มิ.ย.","ก.ค.","ส.ค.","ก.ย.","ต.ค.","พ.ย.","ธ.ค."];
 const THDAY = ["อาทิตย์","จันทร์","อังคาร","พุธ","พฤหัสบดี","ศุกร์","เสาร์"];
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;" }[c]));
 const thNum = s => String(s ?? "").replace(/[0-9]/g, d => TH_D[+d]);
 const money = n => (Number(n) || 0).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const money0 = n => (Number(n) || 0).toLocaleString("en-US");
 
 function bahtText(num){
   const n = Number(num);
@@ -319,7 +353,19 @@ function bahtText(num){
   return (n < 0 ? "ลบ" : "") + t;
 }
 
-/* ═══ ค่าจากตั้งค่าโรงเรียน (ศูนย์เอกสาร) ═══ */
+/* เวลา "08.00" ⇄ นาที */
+const tmin = s => { const m = String(s || "").match(/^\s*(\d{1,2})[.:](\d{2})\s*$/); if (!m) return null;
+                    const h = +m[1], mm = +m[2]; return (h > 23 || mm > 59) ? null : h * 60 + mm; };
+const tstr = m => String(Math.floor(m / 60)).padStart(2, "0") + "." + String(m % 60).padStart(2, "0");
+function dur(r){ const a = tmin(r.t1), b = tmin(r.t2); return (a == null || b == null || b <= a) ? 0 : (b - a) / 60; }
+const hFmt = h => Number.isInteger(h) ? String(h) : h.toFixed(2).replace(/0$/, "");
+
+const iso = d => d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
+const dObj = k => new Date(k + "T00:00:00");
+const thDate = d => `${d.getDate()} ${THMON[d.getMonth()]} ${d.getFullYear() + 543}`;
+const thDateA = d => `${d.getDate()} ${THMONA[d.getMonth()]} ${String(d.getFullYear() + 543).slice(-2)}`;
+
+/* ═══════════ ตั้งค่าโรงเรียน (จากศูนย์เอกสาร) ═══════════ */
 const SCHOOL_DEF = {
   school: "โรงเรียนมัธยมวัดหนองแขม",
   addr: "443 ถนนเลียบคลองภาษีเจริญฝั่งใต้ แขวงหนองแขม เขตหนองแขม กรุงเทพมหานคร 10160",
@@ -331,105 +377,157 @@ const SCHOOL_DEF = {
 };
 const S = Object.assign({}, SCHOOL_DEF, JSON.parse(localStorage.getItem("nk_settings") || "{}"));
 const num = s => S.thaiDigits === "1" ? thNum(s) : String(s ?? "");
-const dotName = v => v ? esc(v) : "………………………………………………";
 
-function thDate(d){
-  if (!(d instanceof Date) || isNaN(d)) return "";
-  return `${d.getDate()} ${THMON[d.getMonth()]} ${d.getFullYear() + 543}`;
-}
-
-/* ═══ วิชาและโควตา (ตามอินโฟกราฟิกโครงการ) ═══ */
+/* ═══════════ วิชาและโควตา ═══════════ */
 const SUBJ = [
-  { k:"math", n:"คณิตศาสตร์",        q:8 },
-  { k:"eng",  n:"ภาษาอังกฤษ",        q:6 },
-  { k:"tha",  n:"ภาษาไทย",           q:4 },
-  { k:"soc",  n:"สังคมศึกษา",         q:4 },
-  { k:"phy",  n:"ฟิสิกส์",            q:3 },
-  { k:"che",  n:"เคมี",               q:2 },
-  { k:"bio",  n:"ชีววิทยา",           q:2 },
-  { k:"sci",  n:"วิทยาศาสตร์ทั่วไป",  q:1 }
+  { k:"math", n:"คณิตศาสตร์",       q:8 },
+  { k:"eng",  n:"ภาษาอังกฤษ",       q:6 },
+  { k:"tha",  n:"ภาษาไทย",          q:4 },
+  { k:"soc",  n:"สังคมศึกษา",        q:4 },
+  { k:"phy",  n:"ฟิสิกส์",           q:3 },
+  { k:"che",  n:"เคมี",              q:2 },
+  { k:"bio",  n:"ชีววิทยา",          q:2 },
+  { k:"sci",  n:"วิทยาศาสตร์ทั่วไป", q:1 }
 ];
-const SUBJ_BY = Object.fromEntries(SUBJ.map(s => [s.k, s]));
-const DAYS = 10, PERIODS = ["p1", "p2", "p3"], HOURS_PER = 1.5;
+const SB = Object.fromEntries(SUBJ.map(s => [s.k, s]));
+const QUOTA_TOTAL = SUBJ.reduce((a, s) => a + s.q, 0);
 
-/* แบบแผนจัดอัตโนมัติ — กระจายให้ครบโควตา ๓๐ คาบ คณิตเกือบทุกวัน */
-const AUTO = [
-  ["math","eng","tha"], ["math","phy","soc"], ["math","eng","che"], ["math","tha","bio"],
-  ["eng","phy","soc"],  ["math","eng","tha"], ["math","che","soc"], ["math","eng","bio"],
-  ["phy","tha","soc"],  ["math","eng","sci"]
-];
+/* ═══════════ แม่แบบแถว ═══════════ */
+const stdRows = () => ([
+  { k:"sub", t1:"08.00", t2:"09.30", s:"", w:"" },
+  { k:"sub", t1:"09.30", t2:"11.00", s:"", w:"" },
+  { k:"sub", t1:"11.00", t2:"12.30", s:"", w:"" },
+  { k:"br",  t1:"12.30", t2:"13.30", l:"พักกลางวัน / เตรียมเรียนพละ" },
+  { k:"fit", t1:"13.30", t2:"15.00", l:"ฝึกสมรรถภาพร่างกาย", w:"" }
+]);
+const openRows = () => ([
+  { k:"ev",  t1:"08.00", t2:"09.30", l:"พิธีเปิดโครงการ", w:"", a:0 },
+  { k:"ev",  t1:"09.30", t2:"10.30", l:"บรรยายพิเศษจากวิทยากร", w:"", a:-1 },
+  { k:"sub", t1:"10.30", t2:"12.00", s:"", w:"" },
+  { k:"br",  t1:"12.00", t2:"13.30", l:"พักกลางวัน / เตรียมเรียนพละ" },
+  { k:"fit", t1:"13.30", t2:"15.00", l:"ฝึกสมรรถภาพร่างกาย", w:"" }
+]);
 
-/* ═══ ข้อมูลโครงการ ═══ */
+/* ═══════════ ข้อมูลโครงการ ═══════════ */
 const DEF_T = {
   title: "โครงการติวเข้มปิดภาคเรียน แผนการเรียนเตรียมทหาร–ตำรวจ ปีการศึกษา " + (S.year || "2569"),
-  start: "", skipSun: "1", students: "15",
-  room: "ห้องดอกแขม (ห้องปรับอากาศ พร้อม Smart Display)",
-  rate: "600", fitRate: "600",
-  p1t: "08:30–10:00", p2t: "10:20–11:50", p3t: "13:00–14:30", fitT: "14:45–16:15",
-  teachers: {}, fitCoach: "",
-  grid: Array.from({ length: DAYS }, () => ({ p1:{sub:"",tea:""}, p2:{sub:"",tea:""}, p3:{sub:"",tea:""}, fit:"" }))
+  start: "2026-09-28",
+  end: "2026-10-09",
+  mode: "weekday",
+  students: "15",
+  room: "ห้องดอกแขม (ห้องปรับอากาศ พร้อมหน้าจออัจฉริยะ Smart Display)",
+  rate: "600", fitRate: "600", lecRate: "1000",
+  coach: "", teachers: {}, days: {}
 };
+const KEY = "nk_tutor_v2";
 let T = (() => {
-  const saved = JSON.parse(localStorage.getItem("nk_tutor") || "null");
-  if (!saved) return JSON.parse(JSON.stringify(DEF_T));
-  const t = Object.assign(JSON.parse(JSON.stringify(DEF_T)), saved);
-  if (!Array.isArray(t.grid) || t.grid.length !== DAYS) t.grid = JSON.parse(JSON.stringify(DEF_T.grid));
+  const saved = JSON.parse(localStorage.getItem(KEY) || "null");
+  const t = Object.assign(JSON.parse(JSON.stringify(DEF_T)), saved || {});
+  if (!t.days || typeof t.days !== "object") t.days = {};
+  if (!t.teachers || typeof t.teachers !== "object") t.teachers = {};
   return t;
 })();
-const save = () => localStorage.setItem("nk_tutor", JSON.stringify(T));
+const save = () => localStorage.setItem(KEY, JSON.stringify(T));
 
-/* วันที่ของแต่ละวันติว */
-function dates(){
+/* วันที่ทั้งหมดในช่วง ตามโหมด */
+function dayKeys(){
   const out = [];
-  if (!T.start) { for (let i = 0; i < DAYS; i++) out.push(null); return out; }
-  let d = new Date(T.start + "T00:00:00");
-  if (isNaN(d)) { for (let i = 0; i < DAYS; i++) out.push(null); return out; }
-  while (out.length < DAYS){
-    if (!(T.skipSun === "1" && d.getDay() === 0)) out.push(new Date(d));
-    d.setDate(d.getDate() + 1);
+  const a = dObj(T.start), b = dObj(T.end);
+  if (isNaN(a) || isNaN(b) || b < a) return out;
+  for (let d = new Date(a); d <= b && out.length < 90; d.setDate(d.getDate() + 1)){
+    const wd = d.getDay();
+    if (T.mode === "weekday" && (wd === 0 || wd === 6)) continue;
+    if (T.mode === "skipsun" && wd === 0) continue;
+    out.push(iso(d));
   }
   return out;
 }
+/** สร้างการ์ดของวันที่ยังไม่มีข้อมูล (คงข้อมูลเดิมไว้เสมอ) */
+function syncDays(){
+  const keys = dayKeys();
+  keys.forEach((k, i) => {
+    if (!T.days[k]) T.days[k] = { on:true, rows: (i === 0 ? openRows() : stdRows()) };
+    if (!Array.isArray(T.days[k].rows)) T.days[k].rows = stdRows();
+  });
+  save();
+  return keys;
+}
+function rebuildAll(){
+  T.days = {};
+  const keys = dayKeys();
+  keys.forEach((k, i) => { T.days[k] = { on:true, rows: (i === 0 ? openRows() : stdRows()) }; });
+  if (T.coach) keys.forEach(k => T.days[k].rows.forEach(r => { if (r.k === "fit") r.w = T.coach; }));
+  save();
+}
 
-/* ═══ คำนวณ ═══ */
+/* ═══════════ คำนวณ ═══════════ */
+const activeKeys = () => dayKeys().filter(k => T.days[k] && T.days[k].on);
+function allRows(){
+  const out = [];
+  activeKeys().forEach((k, di) => T.days[k].rows.forEach((r, ri) =>
+    out.push({ dk:k, di, ri, r, date: dObj(k) })));
+  return out;
+}
 function counts(){
   const c = Object.fromEntries(SUBJ.map(s => [s.k, 0]));
-  let filled = 0;
-  T.grid.forEach(g => PERIODS.forEach(p => { const s = g[p].sub; if (s && c[s] != null){ c[s]++; filled++; } }));
-  return { c, filled };
+  let filled = 0, slots = 0, hrs = 0;
+  allRows().forEach(({ r }) => {
+    if (r.k !== "sub") return;
+    slots++;
+    if (r.s && c[r.s] != null){ c[r.s]++; filled++; hrs += dur(r); }
+  });
+  return { c, filled, slots, hrs };
 }
-function teacherStats(){
+/** ดัชนีแถวที่เวลาเกยกันภายในวันเดียว */
+function overlaps(rows){
+  const bad = new Set();
+  const iv = rows.map((r, i) => ({ i, a: tmin(r.t1), b: tmin(r.t2) })).filter(x => x.a != null && x.b != null && x.b > x.a);
+  for (let x = 0; x < iv.length; x++)
+    for (let y = x + 1; y < iv.length; y++)
+      if (iv[x].a < iv[y].b && iv[y].a < iv[x].b){ bad.add(iv[x].i); bad.add(iv[y].i); }
+  return bad;
+}
+const clashCount = () => activeKeys().reduce((a, k) => a + overlaps(T.days[k].rows).size, 0);
+const evAmt = r => (r.a === -1 || r.a == null || r.a === "") ? (Number(T.lecRate) || 0) : (Number(r.a) || 0);
+
+function stats(){
   const map = {};
-  const ds = dates();
-  T.grid.forEach((g, i) => {
-    PERIODS.forEach((p, pi) => {
-      const cell = g[p];
-      if (!cell.sub) return;
-      const name = (cell.tea || "").trim() || "(ยังไม่ระบุครู)";
-      (map[name] ||= { subs: new Set(), rows: [], periods: 0, fitDays: 0 });
-      map[name].subs.add(SUBJ_BY[cell.sub]?.n || cell.sub);
-      map[name].periods++;
-      map[name].rows.push({ day: i, date: ds[i], period: pi, sub: SUBJ_BY[cell.sub]?.n || cell.sub });
+  const get = n => (map[n] ||= { roles:new Set(), periods:0, hours:0, fitDays:0, events:0, pay:0, rows:[] });
+  activeKeys().forEach((k, di) => {
+    const date = dObj(k);
+    T.days[k].rows.forEach(r => {
+      const who = (r.w || "").trim();
+      if (r.k === "sub"){
+        if (!r.s) return;
+        const o = get(who || "(ยังไม่ระบุครู)");
+        o.roles.add(SB[r.s].n); o.periods++; o.hours += dur(r);
+        o.pay += Number(T.rate) || 0;
+        o.rows.push({ di, date, t1:r.t1, t2:r.t2, what: SB[r.s].n });
+      } else if (r.k === "fit"){
+        if (!who) return;
+        const o = get(who);
+        o.roles.add("ฝึกสมรรถภาพร่างกาย"); o.fitDays++; o.hours += dur(r);
+        o.pay += Number(T.fitRate) || 0;
+        o.rows.push({ di, date, t1:r.t1, t2:r.t2, what: r.l || "ฝึกสมรรถภาพร่างกาย" });
+      } else if (r.k === "ev"){
+        if (!who) return;
+        const o = get(who);
+        o.roles.add(r.l || "กิจกรรมพิเศษ"); o.events++; o.hours += dur(r);
+        o.pay += evAmt(r);
+        o.rows.push({ di, date, t1:r.t1, t2:r.t2, what: r.l || "กิจกรรมพิเศษ" });
+      }
     });
-    const fc = (g.fit || "").trim();
-    if (fc){
-      (map[fc] ||= { subs: new Set(), rows: [], periods: 0, fitDays: 0 });
-      map[fc].subs.add("ฝึกสมรรถภาพร่างกาย");
-      map[fc].fitDays++;
-      map[fc].rows.push({ day: i, date: ds[i], period: 3, sub: "ฝึกสมรรถภาพร่างกาย" });
-    }
   });
   return map;
 }
-const pay = st => st.periods * (Number(T.rate) || 0) + st.fitDays * (Number(T.fitRate) || 0);
+const totalPay = () => Object.values(stats()).reduce((a, o) => a + o.pay, 0);
 
-/* ═══ วาดหน้าจอ ═══ */
+/* ═══════════ วาดหน้าจอ ═══════════ */
 function renderSettings(){
   document.querySelectorAll("[data-k]").forEach(el => { el.value = T[el.dataset.k] ?? ""; });
   $("#teacherFields").innerHTML = SUBJ.map(s => `
     <div class="field"><label for="tf_${s.k}">ครู${esc(s.n)} <span style="color:var(--ink-3)">(${num(s.q)} คาบ)</span></label>
     <input id="tf_${s.k}" data-tk="${s.k}" type="text" value="${esc(T.teachers[s.k] || "")}" placeholder="ชื่อ–สกุลครูผู้สอน"></div>`).join("");
-  $("#h1").textContent = T.p1t; $("#h2").textContent = T.p2t; $("#h3").textContent = T.p3t; $("#hf").textContent = T.fitT;
 }
 
 function renderQuota(){
@@ -437,240 +535,367 @@ function renderQuota(){
   $("#quota").innerHTML = SUBJ.map(s => {
     const got = c[s.k], cls = got === s.q ? "ok" : got > s.q ? "over" : "part";
     const w = Math.min(100, s.q ? got / s.q * 100 : 0);
+    const t = got === s.q ? "ครบโควตา" : got > s.q ? "เกิน " + num(got - s.q) + " คาบ" : "ขาดอีก " + num(s.q - got) + " คาบ";
     return `<div class="q ${cls}"><div class="qn"><b>${esc(s.n)}</b><span class="qc">${num(got)} / ${num(s.q)}</span></div>
       <div class="qbar"><i style="width:${w}%"></i></div>
-      <div class="qt">${got === s.q ? "ครบโควตา" : got > s.q ? "เกินโควตา " + num(got - s.q) + " คาบ" : "ขาดอีก " + num(s.q - got) + " คาบ"} · ${esc((T.teachers[s.k] || "ยังไม่ระบุครู"))}</div></div>`;
+      <div class="qt">${t} · ${esc(T.teachers[s.k] || "ยังไม่ระบุครู")}</div></div>`;
   }).join("");
 }
 
-function renderGrid(){
-  const ds = dates();
-  $("#gridBody").innerHTML = T.grid.map((g, i) => {
-    const d = ds[i];
-    const cells = PERIODS.map(p => {
-      const cell = g[p];
-      return `<td class="cell ${cell.sub ? "filled" : ""}">
-        <select data-g="${i}" data-p="${p}" data-f="sub" aria-label="วิชา วันที่ ${i + 1} ${p}">
-          <option value="">— ว่าง —</option>
-          ${SUBJ.map(s => `<option value="${s.k}"${s.k === cell.sub ? " selected" : ""}>${esc(s.n)}</option>`).join("")}
-        </select>
-        <input data-g="${i}" data-p="${p}" data-f="tea" type="text" value="${esc(cell.tea)}" placeholder="ครูผู้สอน" ${cell.sub ? "" : "disabled"}>
-      </td>`;
-    }).join("");
-    return `<tr>
-      <td class="day"><b>วันที่ ${num(i + 1)}</b><span>${d ? "วัน" + THDAY[d.getDay()] + " " + num(thDate(d)) : "กำหนดวันเริ่มก่อน"}</span></td>
-      ${cells}
-      <td class="cell"><input data-g="${i}" data-f="fit" type="text" value="${esc(g.fit)}" placeholder="ครูฝึก / เว้นว่าง = ไม่ฝึก"></td>
-    </tr>`;
-  }).join("");
+const KINDS = [["sub","คาบเรียน"], ["ev","กิจกรรม"], ["fit","ฝึกสมรรถภาพ"], ["br","พัก"]];
 
-  $("#gridBody").querySelectorAll("select,input").forEach(el => el.addEventListener("change", e => {
-    const { g, p, f } = e.target.dataset;
-    if (f === "fit") T.grid[g].fit = e.target.value;
-    else {
-      T.grid[g][p][f] = e.target.value;
-      if (f === "sub") T.grid[g][p].tea = e.target.value ? (T.teachers[e.target.value] || "") : "";
-    }
-    save(); renderAll();
-  }));
+function rowHTML(dk, ri, r, bad, keys){
+  const d = dur(r);
+  let mid;
+  if (r.k === "sub"){
+    mid = `<select data-a="sub" data-d="${dk}" data-r="${ri}" aria-label="วิชา">
+      <option value="">— เลือกวิชา —</option>
+      ${SUBJ.map(s => `<option value="${s.k}"${s.k === r.s ? " selected" : ""}>${esc(s.n)}</option>`).join("")}</select>`;
+  } else {
+    const ph = r.k === "ev" ? "ชื่อกิจกรรม เช่น พิธีเปิดโครงการ" : r.k === "fit" ? "ฝึกสมรรถภาพร่างกาย" : "พักกลางวัน";
+    mid = `<input data-a="label" data-d="${dk}" data-r="${ri}" type="text" value="${esc(r.l || "")}" placeholder="${ph}" aria-label="รายละเอียด">`;
+  }
+  const who = r.k === "br" ? `<span class="dur">—</span>`
+    : `<input data-a="who" data-d="${dk}" data-r="${ri}" type="text" value="${esc(r.w || "")}" placeholder="${r.k === "fit" ? "ครูฝึก" : r.k === "ev" ? "ผู้รับผิดชอบ / วิทยากร" : "ครูผู้สอน"}" aria-label="ผู้รับผิดชอบ">`;
+  const amt = r.k === "ev"
+    ? `<input class="amt" data-a="amt" data-d="${dk}" data-r="${ri}" type="number" min="0" value="${r.a === -1 || r.a == null ? "" : r.a}" placeholder="${num(T.lecRate)}" title="ค่าตอบแทนครั้งนี้ (บาท)" aria-label="ค่าตอบแทน">`
+    : `<span class="dur amt" title="ค่าตอบแทน (บาท)">${r.k === "sub" ? num(money0(Number(T.rate) || 0)) : r.k === "fit" ? num(money0(Number(T.fitRate) || 0)) : "—"}</span>`;
+  return `<div class="rw ${bad ? "bad" : ""} ${r.k === "br" ? "brk" : ""}">
+    <span class="tm">
+      <span class="tmrow"><input data-a="t1" data-d="${dk}" data-r="${ri}" type="text" value="${esc(r.t1)}" aria-label="เวลาเริ่ม"><span>–</span><input data-a="t2" data-d="${dk}" data-r="${ri}" type="text" value="${esc(r.t2)}" aria-label="เวลาสิ้นสุด"></span>
+      <span class="dur ${d ? "" : "err"}">${d ? num(hFmt(d)) + " ชม." : "เวลาไม่ถูกต้อง"}</span>
+    </span>
+    <select data-a="kind" data-d="${dk}" data-r="${ri}" aria-label="ประเภท">${KINDS.map(([v, l]) => `<option value="${v}"${v === r.k ? " selected" : ""}>${l}</option>`).join("")}</select>
+    ${mid}${who}
+    <span class="ops">${amt}
+      <select data-a="move" data-d="${dk}" data-r="${ri}" aria-label="ย้ายไปวันอื่น">
+        <option value="">ย้ายไป…</option>
+        ${keys.map((k2, j) => k2 === dk ? "" : `<option value="${k2}">วันที่ ${num(j + 1)} · ${num(thDateA(dObj(k2)))}</option>`).join("")}</select>
+      <button class="x" data-a="del" data-d="${dk}" data-r="${ri}" type="button" title="ลบแถวนี้" aria-label="ลบแถว">✕</button>
+    </span>
+  </div>`;
+}
+
+function renderDays(){
+  const keys = syncDays();
+  $("#days").innerHTML = keys.map((dk, di) => {
+    const D = T.days[dk], dt = dObj(dk), bad = overlaps(D.rows);
+    const nSub = D.rows.filter(r => r.k === "sub").length;
+    const nDone = D.rows.filter(r => r.k === "sub" && r.s).length;
+    const h = D.rows.filter(r => r.k === "sub").reduce((a, r) => a + dur(r), 0);
+    return `<article class="daycard ${D.on ? "" : "off"} ${di === 0 ? "first" : ""}">
+      <div class="dh">
+        <input type="checkbox" data-a="onoff" data-d="${dk}" ${D.on ? "checked" : ""} aria-label="จัดติววันนี้">
+        <span class="dn"><b>วันที่ ${num(di + 1)}${di === 0 ? " · วันเปิดโครงการ" : ""}</b><span>วัน${THDAY[dt.getDay()]} ${num(thDate(dt))}</span></span>
+        <span class="dsum">คาบเรียน ${num(nDone)}/${num(nSub)} · ${num(hFmt(h))} ชม.</span>
+        <span class="spacer"></span>
+        <button class="btn xs" data-a="addsub" data-d="${dk}" type="button">+ คาบเรียน</button>
+        <button class="btn xs" data-a="addev" data-d="${dk}" type="button">+ กิจกรรม</button>
+        <button class="btn xs" data-a="sortday" data-d="${dk}" type="button">เรียงเวลา</button>
+        <button class="btn xs" data-a="resetday" data-d="${dk}" type="button">คืนแม่แบบ</button>
+      </div>
+      ${D.rows.map((r, ri) => rowHTML(dk, ri, r, bad.has(ri), keys)).join("")}
+      ${bad.size ? `<div class="dwarn">เวลาในวันนี้เกยกัน ${num(bad.size)} แถว — แก้เวลาหรือย้ายคาบไปวันอื่น</div>` : ""}
+    </article>`;
+  }).join("");
 }
 
 function renderTeachers(){
-  const map = teacherStats();
+  const map = stats();
   const names = Object.keys(map).sort((a, b) => a.localeCompare(b, "th"));
   $("#teaBody").innerHTML = names.length ? names.map(n => {
-    const st = map[n];
-    return `<tr><td>${esc(n)}</td><td>${[...st.subs].map(esc).join(" · ")}</td>
-      <td class="n">${num(st.periods)}</td><td class="n">${num((st.periods * HOURS_PER).toLocaleString("en-US"))}</td>
-      <td class="n">${st.fitDays ? num(st.fitDays) : "—"}</td><td class="n"><b>${num(money(pay(st)))}</b></td>
-      <td><button class="btn" style="padding:.15rem .6rem;font-size:.76rem" data-pr="${esc(n)}" type="button">พิมพ์กำหนดการ</button></td></tr>`;
-  }).join("") : `<tr><td colspan="7" style="color:var(--ink-3)">ยังไม่มีการจัดคาบ — เริ่มที่ปุ่ม “จัดตารางอัตโนมัติตามโควตา”</td></tr>`;
+    const o = map[n];
+    return `<tr><td>${esc(n)}</td><td>${[...o.roles].map(esc).join(" · ")}</td>
+      <td class="n">${o.periods ? num(o.periods) : "—"}</td>
+      <td class="n">${num(hFmt(o.hours))}</td>
+      <td class="n">${o.fitDays ? num(o.fitDays) : "—"}</td>
+      <td class="n">${o.events ? num(o.events) : "—"}</td>
+      <td class="n"><b>${num(money(o.pay))}</b></td>
+      <td><button class="btn xs" data-pr="${esc(n)}" type="button">พิมพ์กำหนดการ</button></td></tr>`;
+  }).join("") : `<tr><td colspan="8" style="color:var(--ink-3)">ยังไม่ได้ลงตาราง — เริ่มที่ปุ่ม “เติมวิชาลงคาบว่างตามโควตา” ในขั้นที่ ๒</td></tr>`;
   $("#teaBody").querySelectorAll("[data-pr]").forEach(b => b.onclick = () => printTeacher(b.dataset.pr));
-
-  $("#selTeacher").innerHTML = `<option value="">— เลือกครู —</option>` + names.map(n => `<option>${esc(n)}</option>`).join("");
+  $("#selTea").innerHTML = `<option value="">— เลือกผู้ปฏิบัติงาน —</option>` + names.map(n => `<option>${esc(n)}</option>`).join("");
 }
 
 function renderKPI(){
-  const { filled } = counts();
-  const map = teacherStats();
-  const acad = filled * (Number(T.rate) || 0);
-  const fitDays = T.grid.filter(g => (g.fit || "").trim()).length;
-  const fit = fitDays * (Number(T.fitRate) || 0);
-  const total = acad + fit;
+  const keys = dayKeys(), act = activeKeys();
+  const { filled, slots, hrs } = counts();
+  const map = stats(), pay = totalPay(), clash = clashCount();
   const stu = Number(T.students) || 0;
-  $("#kSlot").textContent = num(filled) + " / " + num(30);
-  $("#kSlotSub").textContent = "คิดเป็น " + num((filled * HOURS_PER).toLocaleString("en-US")) + " ชั่วโมงวิชาการ";
+  $("#kDays").textContent = num(act.length);
+  $("#kDaysSub").textContent = keys.length === act.length ? "วัน · จัดครบทุกวันในช่วง" : `วัน · จาก ${num(keys.length)} วันในช่วง`;
+  $("#kSlot").textContent = num(filled) + " / " + num(QUOTA_TOTAL);
+  const el = $("#kSlot"); el.classList.toggle("bad", filled > QUOTA_TOTAL);
+  $("#kSlotSub").textContent = slots < QUOTA_TOTAL
+    ? `มีช่องคาบ ${num(slots)} ช่อง — ยังขาด ${num(QUOTA_TOTAL - slots)} ช่อง กด “+ คาบเรียน” เพิ่มในวันที่ต้องการ`
+    : `มีช่องคาบ ${num(slots)} ช่อง · ลงแล้ว ${num(filled)}`;
+  $("#kHours").textContent = num(hFmt(hrs));
   $("#kTea").textContent = num(Object.keys(map).length || "—");
-  $("#kAcad").textContent = num(money(acad));
-  $("#kFit").textContent = num(money(fit));
-  $("#kTotal").textContent = num(money(total));
-  $("#kAvg").textContent = stu ? "เฉลี่ย " + num(money(total / stu / DAYS)) + " บาท/คน/วัน · " + num(stu) + " คน" : "บาท";
+  $("#kPay").textContent = num(money(pay));
+  $("#kPaySub").textContent = stu && act.length ? `บาท · เฉลี่ย ${num(money(pay / stu / act.length))} บาท/คน/วัน` : "บาท";
+  $("#kClash").textContent = num(clash);
+  $("#kClash").classList.toggle("bad", clash > 0);
 }
 
-function renderAll(){ renderQuota(); renderGrid(); renderTeachers(); renderKPI(); }
+function renderAll(){ renderQuota(); renderDays(); renderTeachers(); renderKPI(); }
 
-/* ═══ อีเวนต์ตั้งค่า ═══ */
+/* ═══════════ อีเวนต์ ═══════════ */
 document.querySelectorAll("[data-k]").forEach(el => el.addEventListener("change", e => {
-  T[e.target.dataset.k] = e.target.value; save();
-  renderSettings(); renderAll();
+  T[e.target.dataset.k] = e.target.value; save(); renderAll();
 }));
 document.addEventListener("change", e => {
-  if (e.target.dataset && e.target.dataset.tk){
-    const k = e.target.dataset.tk, old = T.teachers[k] || "";
-    T.teachers[k] = e.target.value;
-    T.grid.forEach(g => PERIODS.forEach(p => {
-      if (g[p].sub === k && (g[p].tea === old || !g[p].tea)) g[p].tea = e.target.value;
-    }));
-    save(); renderAll();
-  }
+  const tk = e.target.dataset && e.target.dataset.tk;
+  if (!tk) return;
+  const old = T.teachers[tk] || "";
+  T.teachers[tk] = e.target.value;
+  dayKeys().forEach(k => T.days[k] && T.days[k].rows.forEach(r => {
+    if (r.k === "sub" && r.s === tk && (!r.w || r.w === old)) r.w = e.target.value;
+  }));
+  save(); renderAll();
 });
-$("#btnApplyCoach").onclick = () => { T.grid.forEach(g => g.fit = T.fitCoach || ""); save(); renderAll(); };
-$("#btnAuto").onclick = () => {
-  if (counts().filled && !confirm("จัดตารางใหม่ตามแบบแผนโควตา ๓๐ คาบ ทับตารางเดิมทั้งหมด?")) return;
-  T.grid.forEach((g, i) => {
-    PERIODS.forEach((p, pi) => { const k = AUTO[i][pi]; g[p] = { sub: k, tea: T.teachers[k] || "" }; });
-    if (!g.fit) g.fit = T.fitCoach || "";
-  });
+
+$("#days").addEventListener("change", handleRow);
+$("#days").addEventListener("click", handleRow);
+function handleRow(e){
+  const el = e.target, a = el.dataset && el.dataset.a;
+  if (!a) return;
+  const dk = el.dataset.d, ri = el.dataset.r != null ? +el.dataset.r : null;
+  const D = T.days[dk];
+  if (!D) return;
+  const CLICKS = ["del", "addsub", "addev", "resetday", "sortday"];
+  if (e.type === "click" && !CLICKS.includes(a)) return;
+  if (e.type === "change" && CLICKS.includes(a)) return;
+
+  if (a === "onoff") D.on = el.checked;
+  else if (a === "t1" || a === "t2") D.rows[ri][a] = el.value.trim().replace(":", ".");
+  else if (a === "kind"){
+    const r = D.rows[ri]; r.k = el.value;
+    if (r.k === "sub") { r.l = undefined; delete r.a; }
+    if (r.k === "fit" && !r.l) r.l = "ฝึกสมรรถภาพร่างกาย";
+    if (r.k === "br"){ r.w = ""; if (!r.l) r.l = "พักกลางวัน / เตรียมเรียนพละ"; }
+    if (r.k === "ev" && r.a == null) r.a = -1;
+  }
+  else if (a === "sub"){ D.rows[ri].s = el.value; D.rows[ri].w = el.value ? (T.teachers[el.value] || "") : ""; }
+  else if (a === "label") D.rows[ri].l = el.value;
+  else if (a === "who")   D.rows[ri].w = el.value;
+  else if (a === "amt")   D.rows[ri].a = el.value === "" ? -1 : Number(el.value);
+  else if (a === "del")   D.rows.splice(ri, 1);
+  else if (a === "addsub"){
+    const last = D.rows.reduce((m, r) => Math.max(m, tmin(r.t2) ?? 0), 0) || 480;
+    D.rows.push({ k:"sub", t1: tstr(last + 15), t2: tstr(last + 105), s:"", w:"" });
+  }
+  else if (a === "addev"){
+    const last = D.rows.reduce((m, r) => Math.max(m, tmin(r.t2) ?? 0), 0) || 480;
+    D.rows.push({ k:"ev", t1: tstr(last + 15), t2: tstr(last + 75), l:"", w:"", a:-1 });
+  }
+  else if (a === "resetday"){
+    if (!confirm("คืนแม่แบบของวันนี้ ข้อมูลที่ลงไว้ในวันนี้จะหายทั้งหมด?")) return;
+    D.rows = (dayKeys()[0] === dk ? openRows() : stdRows());
+    if (T.coach) D.rows.forEach(r => { if (r.k === "fit") r.w = T.coach; });
+  }
+  else if (a === "move"){
+    const to = el.value;
+    if (!to || !T.days[to]) { renderAll(); return; }
+    const [row] = D.rows.splice(ri, 1);
+    const tgt = T.days[to].rows;
+    const len = Math.max(30, ((tmin(row.t2) ?? 0) - (tmin(row.t1) ?? 0)) || 90);
+    let at = tgt.length;
+    for (let i = tgt.length - 1; i >= 0; i--) if (tgt[i].k === "sub"){ at = i + 1; break; }
+    const prev = tgt[at - 1];
+    const hits = st => tgt.some(r2 => { const a2 = tmin(r2.t1), b2 = tmin(r2.t2);
+      return a2 != null && b2 != null && st < b2 && a2 < st + len; });
+    let start = (prev && tmin(prev.t2) != null) ? tmin(prev.t2) : null;
+    if (start == null || hits(start)){          // เวลาต่อท้ายคาบเดิมชนกับแถวอื่น → ต่อท้ายทั้งวันแทน
+      start = tgt.reduce((m, r2) => Math.max(m, tmin(r2.t2) ?? 0), 0) + 15;
+      at = tgt.length;
+    }
+    row.t1 = tstr(start); row.t2 = tstr(start + len);
+    tgt.splice(at, 0, row);
+  }
+  else if (a === "sortday") D.rows.sort((x, y) => (tmin(x.t1) ?? 9999) - (tmin(y.t1) ?? 9999));
+  save(); renderAll();
+}
+
+$("#btnCoach").onclick = () => {
+  dayKeys().forEach(k => T.days[k] && T.days[k].rows.forEach(r => { if (r.k === "fit") r.w = T.coach || ""; }));
   save(); renderAll();
 };
-$("#btnClear").onclick = () => {
-  if (!confirm("ล้างตารางทั้ง ๑๐ วัน?")) return;
-  T.grid = JSON.parse(JSON.stringify(DEF_T.grid));
+$("#btnRebuild").onclick = () => {
+  if (!confirm("สร้างแม่แบบตารางใหม่ทั้งหมด?\nสิ่งที่ลงไว้ในทุกวันจะถูกล้าง")) return;
+  rebuildAll(); renderAll();
+};
+$("#btnClearSub").onclick = () => {
+  if (!confirm("ล้างเฉพาะวิชาที่ลงไว้ในทุกคาบ? (โครงสร้างเวลาและกิจกรรมยังอยู่)")) return;
+  dayKeys().forEach(k => T.days[k] && T.days[k].rows.forEach(r => { if (r.k === "sub"){ r.s = ""; r.w = ""; } }));
   save(); renderAll();
+};
+/** เติมวิชาตามโควตา — กระจายไม่ให้วิชาซ้ำในวันเดียวกัน */
+$("#btnFill").onclick = () => {
+  const slots = [];
+  activeKeys().forEach(k => T.days[k].rows.forEach((r, i) => { if (r.k === "sub") slots.push({ k, i }); }));
+  if (!slots.length) return alert("ยังไม่มีช่องคาบเรียน — กด “+ คาบเรียน” ในการ์ดรายวันก่อน");
+  if (slots.some(s => T.days[s.k].rows[s.i].s) && !confirm("เติมวิชาใหม่ทับของเดิมทั้งหมด?")) return;
+  slots.forEach(s => { T.days[s.k].rows[s.i].s = ""; T.days[s.k].rows[s.i].w = ""; });
+  const rem = Object.fromEntries(SUBJ.map(s => [s.k, s.q]));
+  for (const sl of slots){
+    const used = new Set(T.days[sl.k].rows.filter(r => r.k === "sub" && r.s).map(r => r.s));
+    let cand = SUBJ.map(x => x.k).filter(k => rem[k] > 0 && !used.has(k));
+    if (!cand.length) cand = SUBJ.map(x => x.k).filter(k => rem[k] > 0);
+    if (!cand.length) break;
+    cand.sort((a, b) => rem[b] - rem[a]);
+    const p = cand[0]; rem[p]--;
+    T.days[sl.k].rows[sl.i].s = p;
+    T.days[sl.k].rows[sl.i].w = T.teachers[p] || "";
+  }
+  save(); renderAll();
+  const left = Object.entries(rem).filter(([, v]) => v > 0);
+  if (left.length) alert("เติมครบทุกช่องแล้ว แต่ยังเหลือวิชาที่ลงไม่ครบโควตา\n\n"
+    + left.map(([k, v]) => "• " + SB[k].n + " ขาด " + v + " คาบ").join("\n")
+    + "\n\nกด “+ คาบเรียน” เพิ่มช่องในวันที่ต้องการ แล้วเลือกวิชาเอง");
 };
 
-/* ═══ เอกสารพิมพ์ ═══ */
+/* ═══════════ เอกสารพิมพ์ ═══════════ */
 const sheetEl = $("#sheet");
-const times = () => [T.p1t, T.p2t, T.p3t, T.fitT];
 const orgHead = () => `
   <div class="org"><b>${esc(S.school)}</b><small>${esc(S.fund)}<br>${num(esc(S.addr))} · โทรศัพท์ ${num(esc(S.tel))}</small></div>
   <div class="hr"></div>`;
 const sig = blocks => `<div class="sig">` + blocks.map(b => `
   <div><span>ลงชื่อ ………………………………………</span><span>( ${b.name ? esc(b.name) : "………………………………………"} )</span><span>${esc(b.role)}</span>${b.sub ? `<span>${esc(b.sub)}</span>` : ""}</div>`).join("") + `</div>`;
-
 function projInfo(){
-  const ds = dates();
-  const range = ds[0] && ds[9] ? `ระหว่างวันที่ ${num(thDate(ds[0]))} ถึงวันที่ ${num(thDate(ds[9]))}` : "กำหนดวันเริ่มโครงการในหน้าตั้งค่า";
-  return `<p class="sub">${esc(T.title)}</p>
-    <p class="sub">${range} · สถานที่ ${esc(T.room)} · นักเรียน ${num(T.students)} คน</p>`;
+  const ks = activeKeys();
+  const range = ks.length ? `ระหว่างวันที่ ${num(thDate(dObj(ks[0])))} ถึงวันที่ ${num(thDate(dObj(ks[ks.length - 1])))} รวม ${num(ks.length)} วัน` : "ยังไม่ได้กำหนดวัน";
+  return `<p class="sub">${esc(T.title)}</p><p class="sub">${range} · ${esc(T.room)} · นักเรียน ${num(T.students)} คน</p>`;
 }
-
-function doPrint(){ window.print(); }
+const rowWhat = r => r.k === "sub" ? (r.s ? esc(SB[r.s].n) : "— ยังไม่กำหนดวิชา —")
+  : r.k === "fit" ? esc(r.l || "ฝึกสมรรถภาพร่างกาย")
+  : r.k === "br"  ? esc(r.l || "พัก")
+  : `<span class="ev">${esc(r.l || "กิจกรรมพิเศษ")}</span>`;
+const doPrint = () => window.print();
 
 /* ตารางรวม */
-$("#btnPrGrid").onclick = () => {
-  const ds = dates();
-  const rows = T.grid.map((g, i) => {
-    const d = ds[i];
-    const cell = p => g[p].sub ? `<div class="subcell"><b>${esc(SUBJ_BY[g[p].sub].n)}</b><span>${esc(g[p].tea || "")}</span></div>` : "—";
-    return `<tr>
-      <td class="c"><b>${num(i + 1)}</b><br>${d ? "วัน" + THDAY[d.getDay()] + "<br>" + num(thDate(d)) : ""}</td>
-      <td>${cell("p1")}</td><td>${cell("p2")}</td><td>${cell("p3")}</td>
-      <td class="c">${g.fit ? esc(g.fit) : "—"}</td></tr>`;
+$("#prGrid").onclick = () => {
+  const ks = activeKeys();
+  const body = ks.map((dk, di) => {
+    const D = T.days[dk], dt = dObj(dk);
+    return D.rows.map((r, ri) => `<tr>
+      ${ri === 0 ? `<td class="c" rowspan="${D.rows.length}"><b>${num(di + 1)}</b><br>วัน${THDAY[dt.getDay()]}<br>${num(thDateA(dt))}</td>` : ""}
+      <td class="c">${num(esc(r.t1))}–${num(esc(r.t2))}</td>
+      <td>${rowWhat(r)}</td>
+      <td>${r.k === "br" ? "" : esc(r.w || "")}</td></tr>`).join("");
   }).join("");
   const { c } = counts();
-  const qrow = SUBJ.map(s => `<tr><td>${esc(s.n)}</td><td class="c">${num(c[s.k])} / ${num(s.q)}</td><td class="c">${num((c[s.k] * HOURS_PER).toLocaleString("en-US"))} ชม.</td><td>${esc(T.teachers[s.k] || "")}</td></tr>`).join("");
+  const qrow = SUBJ.map(s => `<tr><td>${esc(s.n)}</td><td class="c">${num(c[s.k])} / ${num(s.q)}</td><td>${esc(T.teachers[s.k] || "")}</td></tr>`).join("");
   sheetEl.innerHTML = orgHead() + `<h1>ตารางติวเข้มปิดภาคเรียน</h1>` + projInfo() + `
-    <table><thead><tr>
-      <th style="width:22mm">วันที่</th><th>คาบ ๑<br>${num(esc(T.p1t))}</th><th>คาบ ๒<br>${num(esc(T.p2t))}</th><th>คาบ ๓<br>${num(esc(T.p3t))}</th><th style="width:30mm">ฝึกสมรรถภาพ<br>${num(esc(T.fitT))}</th>
-    </tr></thead><tbody>${rows}</tbody></table>
-    <table style="width:70%"><thead><tr><th>วิชา</th><th style="width:22mm">คาบ/โควตา</th><th style="width:20mm">ชั่วโมง</th><th>ครูผู้สอน</th></tr></thead><tbody>${qrow}</tbody></table>
+    <table><thead><tr><th style="width:24mm">วันที่</th><th style="width:30mm">เวลา</th><th>รายการ</th><th style="width:44mm">ผู้รับผิดชอบ</th></tr></thead>
+    <tbody>${body || `<tr><td colspan="4" class="c">ยังไม่ได้จัดตาราง</td></tr>`}</tbody></table>
+    <table style="width:76%"><thead><tr><th>วิชา</th><th style="width:26mm">คาบ / โควตา</th><th>ครูผู้สอน</th></tr></thead><tbody>${qrow}</tbody></table>
     ${sig([{ role:"หัวหน้าแผนการเรียนเตรียมทหาร–ตำรวจ", sub:"ผู้จัดทำตาราง", name:S.head },
            { role:"ผู้อำนวยการ" + S.school, sub:"ผู้อนุมัติ", name:S.director }])}
-    <p class="foot">คาบละ ๑ ชั่วโมง ๓๐ นาที รวมวิชาการ ๔๕ ชั่วโมง · ฝึกสมรรถภาพช่วงบ่ายทุกวัน · สนับสนุนค่าใช้จ่ายโดย${esc(S.fund)}</p>`;
+    <p class="foot">สนับสนุนค่าใช้จ่ายโดย${esc(S.fund)}</p>`;
   doPrint();
 };
 
-/* กำหนดการรายครู */
+/* กำหนดการวันพิธีเปิด */
+$("#prOpen").onclick = () => {
+  const ks = activeKeys();
+  if (!ks.length) return alert("ยังไม่มีวันที่จัดติว");
+  const dk = ks[0], D = T.days[dk], dt = dObj(dk);
+  const body = D.rows.map(r => `<tr><td class="c">${num(esc(r.t1))}–${num(esc(r.t2))}</td>
+    <td>${rowWhat(r)}</td><td>${r.k === "br" ? "" : esc(r.w || "")}</td></tr>`).join("");
+  sheetEl.innerHTML = orgHead() + `<h1>กำหนดการพิธีเปิดโครงการ</h1>` + projInfo() + `
+    <p class="sub" style="margin-top:2mm"><b>วัน${THDAY[dt.getDay()]}ที่ ${num(thDate(dt))}</b> ณ ${esc(T.room)}</p>
+    <table><thead><tr><th style="width:34mm">เวลา</th><th>รายการ</th><th style="width:48mm">ผู้รับผิดชอบ</th></tr></thead>
+    <tbody>${body}</tbody></table>
+    <div class="box"><div class="bt">การเตรียมการ</div>
+      แต่งกายชุดนักเรียนแผนการเรียนเตรียมทหาร–ตำรวจ · นักเรียนพร้อม ณ สถานที่ก่อนเวลา ๑๕ นาที ·
+      เตรียมชุดพละสำหรับภาคบ่าย · จัดเตรียมเครื่องดื่มรับรองวิทยากร และของที่ระลึก
+    </div>
+    ${sig([{ role:"หัวหน้าแผนการเรียนเตรียมทหาร–ตำรวจ", sub:"ผู้จัดทำ", name:S.head },
+           { role:"ผู้อำนวยการ" + S.school, sub:"ประธานในพิธี", name:S.director }])}`;
+  doPrint();
+};
+
+/* กำหนดการรายคน */
 function printTeacher(name){
-  const st = teacherStats()[name];
-  if (!st) return alert("ไม่พบครูชื่อนี้ในตาราง");
-  const rows = st.rows.sort((a, b) => a.day - b.day || a.period - b.period).map((r, i) => {
-    const label = r.period === 3 ? "ฝึกสมรรถภาพ" : "คาบ " + num(r.period + 1);
-    const time = times()[r.period];
-    return `<tr><td class="c">${num(i + 1)}</td>
-      <td>${r.date ? "วัน" + THDAY[r.date.getDay()] + " " + num(thDate(r.date)) : "วันที่ " + num(r.day + 1)}</td>
-      <td class="c">${label}</td><td class="c">${num(esc(time))}</td><td>${esc(r.sub)}</td></tr>`;
-  }).join("");
-  const amount = pay(st);
-  sheetEl.innerHTML = orgHead() + `<h1>กำหนดการปฏิบัติงานครูผู้สอน</h1>` + projInfo() + `
-    <p style="margin-top:2mm"><b>ชื่อครูผู้สอน</b>&nbsp;&nbsp;${esc(name)}&nbsp;&nbsp;&nbsp;<b>วิชา/หน้าที่</b>&nbsp;&nbsp;${[...st.subs].map(esc).join(" · ")}</p>
-    <table><thead><tr><th style="width:12mm">ที่</th><th>วัน</th><th style="width:26mm">คาบ</th><th style="width:30mm">เวลา</th><th>วิชา / กิจกรรม</th></tr></thead>
-    <tbody>${rows}</tbody></table>
+  const o = stats()[name];
+  if (!o) return alert("ไม่พบชื่อนี้ในตาราง");
+  const rows = o.rows.sort((a, b) => a.di - b.di || (tmin(a.t1) - tmin(b.t1))).map((r, i) =>
+    `<tr><td class="c">${num(i + 1)}</td><td>วันที่ ${num(r.di + 1)} · วัน${THDAY[r.date.getDay()]} ${num(thDate(r.date))}</td>
+     <td class="c">${num(esc(r.t1))}–${num(esc(r.t2))}</td><td>${esc(r.what)}</td></tr>`).join("");
+  const bits = [];
+  if (o.periods) bits.push(`สอน ${num(o.periods)} คาบ × ${num(money0(Number(T.rate) || 0))} บาท`);
+  if (o.fitDays) bits.push(`ฝึกสมรรถภาพ ${num(o.fitDays)} วัน × ${num(money0(Number(T.fitRate) || 0))} บาท`);
+  if (o.events)  bits.push(`กิจกรรม/บรรยาย ${num(o.events)} ครั้ง`);
+  sheetEl.innerHTML = orgHead() + `<h1>กำหนดการปฏิบัติงาน</h1>` + projInfo() + `
+    <p style="margin-top:2mm"><b>ชื่อ–สกุล</b>&nbsp;&nbsp;${esc(name)}&nbsp;&nbsp;&nbsp;<b>หน้าที่</b>&nbsp;&nbsp;${[...o.roles].map(esc).join(" · ")}</p>
+    <table><thead><tr><th style="width:12mm">ที่</th><th>วัน</th><th style="width:30mm">เวลา</th><th>รายการ</th></tr></thead><tbody>${rows}</tbody></table>
     <div class="box"><div class="bt">สรุปภาระงานและค่าตอบแทน</div>
-      สอนวิชาการ ${num(st.periods)} คาบ (${num((st.periods * HOURS_PER).toLocaleString("en-US"))} ชั่วโมง) × ${num(money(Number(T.rate) || 0))} บาท/คาบ
-      ${st.fitDays ? `&nbsp;·&nbsp; ฝึกสมรรถภาพ ${num(st.fitDays)} วัน × ${num(money(Number(T.fitRate) || 0))} บาท/วัน` : ""}<br>
-      <b>รวมค่าตอบแทน ${num(money(amount))} บาท (${bahtText(amount)})</b><br>
+      ${bits.join(" · ")} &nbsp;·&nbsp; รวมเวลาปฏิบัติงาน ${num(hFmt(o.hours))} ชั่วโมง<br>
+      <b>รวมค่าตอบแทน ${num(money(o.pay))} บาท (${bahtText(o.pay)})</b><br>
       เบิกจ่ายจาก${esc(S.fund)} ตามขั้นการอนุมัติในข้อ ๑๘ ของข้อบังคับกองทุน
     </div>
-    ${sig([{ role:"ครูผู้สอน", name },
+    ${sig([{ role:"ผู้ปฏิบัติงาน", name },
            { role:"หัวหน้าแผนการเรียนเตรียมทหาร–ตำรวจ", sub:"กรรมการและเลขานุการกองทุน", name:S.head },
            { role:"ผู้อำนวยการ" + S.school, sub:"ผู้อนุมัติ", name:S.director }])}
-    <p class="foot">หากติดราชการหรือไม่สามารถสอนตามกำหนด ให้แจ้งหัวหน้าแผนการเรียนล่วงหน้าอย่างน้อย ๑ วัน เพื่อจัดครูสอนแทนหรือสลับคาบ</p>`;
+    <p class="foot">หากติดราชการหรือไม่สามารถปฏิบัติงานตามกำหนด ให้แจ้งหัวหน้าแผนการเรียนล่วงหน้าอย่างน้อย ๑ วัน เพื่อจัดผู้สอนแทนหรือสลับคาบ</p>`;
   doPrint();
 }
-$("#btnPrTeacher").onclick = () => {
-  const n = $("#selTeacher").value;
-  if (!n) return alert("เลือกครูจากรายการก่อน");
-  printTeacher(n);
-};
+$("#prTea").onclick = () => { const n = $("#selTea").value; if (!n) return alert("เลือกผู้ปฏิบัติงานจากรายการก่อน"); printTeacher(n); };
 
 /* ใบสรุปค่าตอบแทน */
-$("#btnPrPay").onclick = () => {
-  const map = teacherStats();
-  const names = Object.keys(map).sort((a, b) => a.localeCompare(b, "th"));
+$("#prPay").onclick = () => {
+  const map = stats(), names = Object.keys(map).sort((a, b) => a.localeCompare(b, "th"));
   let total = 0;
   const rows = names.map((n, i) => {
-    const st = map[n], a = pay(st); total += a;
-    return `<tr><td class="c">${num(i + 1)}</td><td>${esc(n)}</td><td>${[...st.subs].map(esc).join(" · ")}</td>
-      <td class="c">${st.periods ? num(st.periods) : "—"}</td><td class="c">${st.fitDays ? num(st.fitDays) : "—"}</td>
-      <td class="n">${num(money(a))}</td><td></td></tr>`;
+    const o = map[n]; total += o.pay;
+    return `<tr><td class="c">${num(i + 1)}</td><td>${esc(n)}</td><td>${[...o.roles].map(esc).join(" · ")}</td>
+      <td class="c">${o.periods ? num(o.periods) : "—"}</td><td class="c">${o.fitDays ? num(o.fitDays) : "—"}</td>
+      <td class="c">${o.events ? num(o.events) : "—"}</td><td class="n">${num(money(o.pay))}</td><td></td></tr>`;
   }).join("");
-  sheetEl.innerHTML = orgHead() + `<h1>ใบสรุปค่าตอบแทนครูผู้สอน</h1>` + projInfo() + `
-    <table><thead><tr><th style="width:10mm">ที่</th><th>ชื่อ–สกุล</th><th>วิชา / หน้าที่</th><th style="width:16mm">คาบ</th><th style="width:16mm">วันฝึก</th><th style="width:28mm">จำนวนเงิน (บาท)</th><th style="width:30mm">ลายมือชื่อผู้รับเงิน</th></tr></thead>
-    <tbody>${rows}
-      <tr><td colspan="5" style="text-align:right;font-weight:700">รวมทั้งสิ้น</td><td class="n" style="font-weight:700">${num(money(total))}</td><td></td></tr>
-      <tr><td colspan="7" class="c">(${bahtText(total)})</td></tr></tbody></table>
-    <div class="box"><div class="bt">อัตราที่ใช้</div>
-      ค่าสอนวิชาการ ${num(money(Number(T.rate) || 0))} บาท/คาบ (คาบละ ๑ ชั่วโมง ๓๐ นาที) · ครูฝึกสมรรถภาพ ${num(money(Number(T.fitRate) || 0))} บาท/วัน<br>
-      เบิกจ่ายจาก${esc(S.fund)} — ${total <= 10000
-        ? "วงเงินไม่เกิน ๑๐,๐๐๐ บาท: ประธานกรรมการบริหารกองทุนให้ความเห็นชอบ แล้วเสนอผู้อำนวยการอนุมัติ (ข้อ ๑๘ (๑))"
-        : total <= 50000
-        ? "วงเงินเกิน ๑๐,๐๐๐ บาท: ต้องผ่านมติคณะกรรมการบริหารกองทุนไม่น้อยกว่ากึ่งหนึ่งของกรรมการที่มาประชุม แล้วเสนอผู้อำนวยการอนุมัติ (ข้อ ๑๘ (๒))"
-        : "วงเงินเกิน ๕๐,๐๐๐ บาท: ต้องผ่านมติคณะกรรมการบริหารกองทุนไม่น้อยกว่าสองในสาม รายงานคณะกรรมการสถานศึกษา แล้วเสนอผู้อำนวยการอนุมัติ (ข้อ ๑๘ (๓))"}
+  const step = total <= 10000
+    ? "วงเงินไม่เกิน ๑๐,๐๐๐ บาท — ประธานกรรมการบริหารกองทุนให้ความเห็นชอบ แล้วเสนอผู้อำนวยการอนุมัติ (ข้อ ๑๘ (๑))"
+    : total <= 50000
+    ? "วงเงินเกิน ๑๐,๐๐๐ บาท แต่ไม่เกิน ๕๐,๐๐๐ บาท — ต้องผ่านมติคณะกรรมการบริหารกองทุนไม่น้อยกว่ากึ่งหนึ่งของกรรมการที่มาประชุม แล้วเสนอผู้อำนวยการอนุมัติ (ข้อ ๑๘ (๒))"
+    : "วงเงินเกิน ๕๐,๐๐๐ บาท — ต้องผ่านมติคณะกรรมการบริหารกองทุนไม่น้อยกว่าสองในสามของกรรมการทั้งหมด รายงานคณะกรรมการสถานศึกษา แล้วเสนอผู้อำนวยการอนุมัติ (ข้อ ๑๘ (๓))";
+  sheetEl.innerHTML = orgHead() + `<h1>ใบสรุปค่าตอบแทนผู้ปฏิบัติงาน</h1>` + projInfo() + `
+    <table><thead><tr><th style="width:10mm">ที่</th><th>ชื่อ–สกุล</th><th>หน้าที่</th><th style="width:14mm">คาบ</th><th style="width:16mm">วันฝึก</th><th style="width:16mm">กิจกรรม</th><th style="width:26mm">จำนวนเงิน</th><th style="width:26mm">ลายมือชื่อ</th></tr></thead>
+    <tbody>${rows || `<tr><td colspan="8" class="c">ยังไม่มีข้อมูล</td></tr>`}
+      <tr><td colspan="6" style="text-align:right;font-weight:700">รวมทั้งสิ้น</td><td class="n" style="font-weight:700">${num(money(total))}</td><td></td></tr>
+      <tr><td colspan="8" class="c">(${bahtText(total)})</td></tr></tbody></table>
+    <div class="box"><div class="bt">อัตราที่ใช้และขั้นการอนุมัติ</div>
+      ค่าสอน ${num(money0(Number(T.rate) || 0))} บาท/คาบ · ครูฝึกสมรรถภาพ ${num(money0(Number(T.fitRate) || 0))} บาท/วัน · ค่าตอบแทนวิทยากร ${num(money0(Number(T.lecRate) || 0))} บาท/ครั้ง<br>
+      ${step}
     </div>
     ${sig([{ role:"หัวหน้าแผนการเรียนเตรียมทหาร–ตำรวจ", sub:"กรรมการและเลขานุการกองทุน · ผู้จัดทำ", name:S.head },
            { role:"ประธานกรรมการบริหารกองทุน", sub:"ผู้ให้ความเห็นชอบ", name:S.chair },
            { role:"ผู้อำนวยการ" + S.school, sub:"ผู้อนุมัติ", name:S.director }])}
-    <p class="foot">แนบตารางติวรวม กำหนดการรายครู และหลักฐานการปฏิบัติงาน (ใบลงเวลา) ประกอบการเบิกจ่ายทุกครั้ง · การจ่ายเงินดำเนินการโดยงานการเงินโรงเรียนจากบัญชีของโรงเรียน</p>`;
+    <p class="foot">แนบตารางติวรวม กำหนดการรายคน และใบลงเวลาปฏิบัติงานประกอบการเบิกจ่ายทุกครั้ง · จ่ายจากบัญชีของโรงเรียนโดยงานการเงิน</p>`;
   doPrint();
 };
 
 /* ใบลงเวลา */
-$("#btnPrSign").onclick = () => {
-  const ds = dates();
+$("#prSign").onclick = () => {
   const rows = [];
-  T.grid.forEach((g, i) => {
-    const d = ds[i];
-    const dayLabel = d ? "วัน" + THDAY[d.getDay()] + " " + num(thDate(d)) : "วันที่ " + num(i + 1);
-    PERIODS.forEach((p, pi) => {
-      if (!g[p].sub) return;
-      rows.push(`<tr><td>${dayLabel}</td><td class="c">คาบ ${num(pi + 1)} · ${num(esc(times()[pi]))}</td>
-        <td>${esc(SUBJ_BY[g[p].sub].n)}</td><td>${esc(g[p].tea || "")}</td><td></td><td></td></tr>`);
+  activeKeys().forEach((dk, di) => {
+    const D = T.days[dk], dt = dObj(dk);
+    D.rows.forEach(r => {
+      if (r.k === "br") return;
+      if (r.k === "sub" && !r.s) return;
+      rows.push(`<tr><td>วันที่ ${num(di + 1)} · ${num(thDateA(dt))}</td><td class="c">${num(esc(r.t1))}–${num(esc(r.t2))}</td>
+        <td>${rowWhat(r)}</td><td>${esc(r.w || "")}</td><td></td><td></td></tr>`);
     });
-    if (g.fit) rows.push(`<tr><td>${dayLabel}</td><td class="c">ฝึกสมรรถภาพ · ${num(esc(T.fitT))}</td>
-      <td>ฝึกสมรรถภาพร่างกาย</td><td>${esc(g.fit)}</td><td></td><td></td></tr>`);
   });
-  sheetEl.innerHTML = orgHead() + `<h1>ใบลงเวลาปฏิบัติงานครูผู้สอน</h1>` + projInfo() + `
-    <table><thead><tr><th>วัน</th><th style="width:38mm">คาบ / เวลา</th><th>วิชา / กิจกรรม</th><th>ครูผู้สอน</th><th style="width:24mm">ลายมือชื่อ</th><th style="width:20mm">หมายเหตุ</th></tr></thead>
-    <tbody>${rows.join("") || `<tr><td colspan="6" class="c">ยังไม่มีการจัดตาราง</td></tr>`}</tbody></table>
+  sheetEl.innerHTML = orgHead() + `<h1>ใบลงเวลาปฏิบัติงาน</h1>` + projInfo() + `
+    <table><thead><tr><th style="width:32mm">วัน</th><th style="width:26mm">เวลา</th><th>รายการ</th><th style="width:34mm">ผู้ปฏิบัติงาน</th><th style="width:26mm">ลายมือชื่อ</th><th style="width:18mm">หมายเหตุ</th></tr></thead>
+    <tbody>${rows.join("") || `<tr><td colspan="6" class="c">ยังไม่ได้จัดตาราง</td></tr>`}</tbody></table>
     ${sig([{ role:"หัวหน้าแผนการเรียนเตรียมทหาร–ตำรวจ", sub:"ผู้ควบคุมการปฏิบัติงาน", name:S.head },
            { role:"ผู้อำนวยการ" + S.school, sub:"รับทราบ", name:S.director }])}
-    <p class="foot">ให้ครูผู้สอนลงลายมือชื่อทุกครั้งที่ปฏิบัติงานจริง ใช้เป็นหลักฐานประกอบการเบิกจ่ายค่าตอบแทนจากกองทุน</p>`;
+    <p class="foot">ให้ผู้ปฏิบัติงานลงลายมือชื่อทุกครั้งที่ปฏิบัติงานจริง ใช้เป็นหลักฐานประกอบการเบิกจ่ายค่าตอบแทนจากกองทุน</p>`;
   doPrint();
 };
 
-/* ═══ เริ่มต้น ═══ */
+/* ═══════════ เริ่มต้น ═══════════ */
+if (!Object.keys(T.days).length) rebuildAll();
 renderSettings();
 renderAll();
 </script>
