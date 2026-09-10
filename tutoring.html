@@ -222,6 +222,40 @@ footer b{color:#fff}
 .sheet .sig > div{display:flex;flex-direction:column;gap:1.2mm;min-width:42mm}
 .sheet .foot{font-size:11.5pt;margin-top:3mm;line-height:1.4}
 .sheet .ev{font-weight:700}
+
+/* กระดาษแนวนอน */
+.sheet.land{width:297mm}
+.sheet .page{break-after:page;page-break-after:always}
+.sheet .page:last-child{break-after:auto;page-break-after:auto}
+
+/* ── ตารางเรียนแบบนักเรียน (สีสัน) ── */
+.sheet .pretty{position:relative;background:#EAF4FD;border-radius:6mm;padding:7mm 8mm 6mm;overflow:hidden;
+  -webkit-print-color-adjust:exact;print-color-adjust:exact}
+.sheet .pretty *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.sheet .pdeco{position:absolute;inset:0;pointer-events:none}
+.sheet .ptitle{position:relative;font-size:26pt;font-weight:700;color:#14406E;
+  background:#fff;border:1.2pt solid #9CC6E8;border-radius:4mm;padding:1.5mm 9mm;display:inline-block;
+  box-shadow:0 1mm 0 #C9E1F5}
+.sheet .psub{text-align:center;font-size:13pt;color:#1B4A8F;margin:2.5mm 0 3.5mm;position:relative}
+.sheet table.ptbl{border-collapse:separate;border-spacing:1.1mm;width:100%;margin:0;position:relative;table-layout:fixed}
+.sheet .ptbl th,.sheet .ptbl td{border:none;border-radius:2mm;padding:1.4mm 1.2mm;text-align:center;vertical-align:middle;font-size:10.5pt;line-height:1.25}
+.sheet .ptbl thead th{background:#7FA8CC;color:#fff;font-weight:700;font-size:10pt}
+.sheet .ptbl thead th.tcorner{background:#5D87AE}
+.sheet .ptbl td.dcell{font-weight:700;font-size:12pt;color:#4A3A1E;width:24mm}
+.sheet .ptbl td.dcell small{display:block;font-size:9pt;font-weight:400;color:#6B5B3E}
+.sheet .ptbl td.slot{background:#fff;border:.5pt solid #CFE2F3}
+.sheet .ptbl td.slot b{display:block;font-size:11pt;color:#123A63;font-weight:700}
+.sheet .ptbl td.slot span{display:block;font-size:8.6pt;color:#4B6B8A}
+.sheet .ptbl td.k-ev{background:#FFF3CE;border-color:#EBD48A}
+.sheet .ptbl td.k-ev b{color:#7A5A08}
+.sheet .ptbl td.k-fit{background:#DFF3E2;border-color:#A8D8B2}
+.sheet .ptbl td.k-fit b{color:#1E6B3C}
+.sheet .ptbl td.k-br{background:#EFEFEF;border-color:#D6D6D6}
+.sheet .ptbl td.k-br b{color:#666;font-weight:400;font-size:10pt}
+.sheet .ptbl td.empty{background:#F6FAFE;border:.5pt dashed #C9DEF0}
+.sheet .pfoot{display:flex;justify-content:center;gap:10mm;margin-top:5mm;position:relative}
+.sheet .pbox{background:#fff;border:1pt solid #9CC6E8;border-radius:3mm;padding:1.6mm 8mm;font-size:13pt;color:#14406E}
+.sheet .pnote{text-align:center;font-size:9.5pt;color:#4B6B8A;margin-top:3mm;position:relative}
 </style>
 </head>
 <body>
@@ -356,7 +390,9 @@ footer b{color:#fff}
     <button class="btn" id="prTea" type="button">กำหนดการรายคน</button>
     <button class="btn" id="prPay" type="button">ใบสรุปค่าตอบแทน</button>
     <button class="btn" id="prSign" type="button">ใบลงเวลาปฏิบัติงาน</button>
+    <button class="btn gold" id="prPretty" type="button">ตารางเรียนแจกนักเรียน (สีสัน)</button>
   </div>
+  <p class="mini">ตารางเรียนแจกนักเรียนพิมพ์เป็นแนวนอน แยกหน้าตามสัปดาห์ ใช้สีประจำวันแบบไทย มีช่องชื่อและชั้นให้เขียน — พิมพ์แล้วถ่ายสำเนาแจกได้เลย</p>
   <p class="mini">ใบสรุปค่าตอบแทนจะระบุขั้นการอนุมัติตามวงเงินให้อัตโนมัติ ตามข้อ ๑๘ ของข้อบังคับกองทุน — คณะกรรมการกองทุนให้ความเห็นชอบ แล้วผู้อำนวยการเป็นผู้อนุมัติ</p>
 </div></section>
 
@@ -1068,7 +1104,15 @@ const rowWhat = r => r.k === "sub" ? (r.s ? esc(SB(r.s).n) : "— ยังไ�
   : r.k === "fit" ? esc(r.l || "ฝึกสมรรถภาพร่างกาย")
   : r.k === "br"  ? esc(r.l || "พัก")
   : `<span class="ev">${esc(r.l || "กิจกรรมพิเศษ")}</span>`;
-const doPrint = () => window.print();
+/** ตั้งแนวกระดาษก่อนพิมพ์ — portrait หรือ landscape */
+function doPrint(orient){
+  orient = orient || "portrait";
+  let st = document.getElementById("pagerule");
+  if (!st){ st = document.createElement("style"); st.id = "pagerule"; document.head.appendChild(st); }
+  st.textContent = `@media print{@page{size:A4 ${orient};margin:0}}`;
+  sheetEl.classList.toggle("land", orient === "landscape");
+  window.print();
+}
 
 /* ตารางรวม */
 $("#prGrid").onclick = () => {
@@ -1169,6 +1213,100 @@ $("#prPay").onclick = () => {
            { role:"ผู้อำนวยการ" + S.school, sub:"ผู้อนุมัติ", name:S.director }])}
     <p class="foot">แนบตารางติวรวม กำหนดการรายคน และใบลงเวลาปฏิบัติงานประกอบการเบิกจ่ายทุกครั้ง · จ่ายจากบัญชีของโรงเรียนโดยงานการเงิน</p>`;
   doPrint();
+};
+
+/* ── ตารางเรียนแบบนักเรียน (สีสัน) ── */
+const DAYTONE = [            /* สีประจำวันแบบไทย */
+  { bg:"#FFD9D9", ink:"#7A1F1F" },   /* อาทิตย์ แดง */
+  { bg:"#FFF2B8", ink:"#6B5300" },   /* จันทร์ เหลือง */
+  { bg:"#FFDCE8", ink:"#7A2A47" },   /* อังคาร ชมพู */
+  { bg:"#D6F0D8", ink:"#1E5B2A" },   /* พุธ เขียว */
+  { bg:"#FFE0C2", ink:"#7A4310" },   /* พฤหัสบดี ส้ม */
+  { bg:"#CFE6FA", ink:"#12456F" },   /* ศุกร์ ฟ้า */
+  { bg:"#E2D8F5", ink:"#41266E" }    /* เสาร์ ม่วง */
+];
+/** จัดวันเป็นสัปดาห์ (เริ่มวันจันทร์) */
+function byWeek(keys){
+  const g = new Map();
+  keys.forEach((k, di) => {
+    const d = dObj(k), x = new Date(d);
+    x.setDate(x.getDate() - ((x.getDay() + 6) % 7));
+    const wk = iso(x);
+    if (!g.has(wk)) g.set(wk, []);
+    g.get(wk).push({ k, di });
+  });
+  return [...g.values()];
+}
+const PDECO = `<svg class="pdeco" viewBox="0 0 297 210" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+  <g fill="#FFD86B" opacity=".85">
+    <path d="M16 20l2.2 4.6 5 .7-3.6 3.5.9 5-4.5-2.4-4.5 2.4.9-5-3.6-3.5 5-.7z"/>
+    <path d="M281 34l1.8 3.8 4.1.6-3 2.9.7 4.1-3.6-1.9-3.7 1.9.7-4.1-3-2.9 4.2-.6z"/>
+    <path d="M270 186l1.6 3.3 3.6.5-2.6 2.5.6 3.6-3.2-1.7-3.2 1.7.6-3.6-2.6-2.5 3.6-.5z"/>
+  </g>
+  <g fill="#BBDCF5" opacity=".7">
+    <ellipse cx="44" cy="16" rx="13" ry="6"/><ellipse cx="53" cy="13" rx="9" ry="6"/>
+    <ellipse cx="252" cy="199" rx="14" ry="6"/><ellipse cx="243" cy="196" rx="9" ry="5"/>
+  </g>
+  <g fill="#9BC8EC" opacity=".55">
+    <circle cx="10" cy="120" r="2.4"/><circle cx="20" cy="150" r="1.8"/><circle cx="288" cy="110" r="2.2"/>
+    <circle cx="278" cy="76" r="1.6"/><circle cx="8" cy="62" r="1.8"/>
+  </g></svg>`;
+
+$("#prPretty").onclick = () => {
+  const keys = activeKeys();
+  if (!keys.length) return alert("ยังไม่มีวันที่จัดติว");
+  const weeks = byWeek(keys);
+  const pages = weeks.map((wk, wi) => {
+    /* เส้นแบ่งเวลาจากทุกแถวในสัปดาห์นี้ */
+    const bounds = new Set();
+    wk.forEach(({ k }) => T.days[k].rows.forEach(r => {
+      const a = tmin(r.t1), b = tmin(r.t2);
+      if (a != null && b != null && b > a){ bounds.add(a); bounds.add(b); }
+    }));
+    const B = [...bounds].sort((x, y) => x - y);
+    const cols = [];
+    for (let i = 0; i + 1 < B.length; i++) cols.push([B[i], B[i + 1]]);
+    if (!cols.length) return "";
+
+    const head = cols.map(([a, b]) => `<th>${num(tstr(a))}<br>–${num(tstr(b))}</th>`).join("");
+    const body = wk.map(({ k, di }) => {
+      const D = T.days[k], d = dObj(k), tone = DAYTONE[d.getDay()];
+      const cells = [];
+      let ci = 0;
+      while (ci < cols.length){
+        const [cs] = cols[ci];
+        const r = D.rows.find(x => tmin(x.t1) === cs && tmin(x.t2) > cs);
+        if (!r){ cells.push(`<td class="empty"></td>`); ci++; continue; }
+        const end = tmin(r.t2);
+        let span = 0;
+        while (ci + span < cols.length && cols[ci + span][1] <= end) span++;
+        span = Math.max(1, span);
+        const label = r.k === "sub" ? (r.s ? esc(SB(r.s).n) : "—")
+          : r.k === "fit" ? esc(r.l || "ฝึกสมรรถภาพร่างกาย")
+          : r.k === "br" ? esc(r.l || "พัก")
+          : esc(r.l || "กิจกรรม");
+        const who = r.k === "br" ? "" : esc(r.w || "");
+        cells.push(`<td class="slot k-${r.k}" colspan="${span}"><b>${label}</b>${who ? `<span>${who}</span>` : ""}</td>`);
+        ci += span;
+      }
+      return `<tr><td class="dcell" style="background:${tone.bg};color:${tone.ink}">วัน${THDAY[d.getDay()]}
+        <small>${num(thDateA(d))} · วันที่ ${num(di + 1)}</small></td>${cells.join("")}</tr>`;
+    }).join("");
+
+    return `<div class="page"><div class="pretty">${PDECO}
+      <div style="text-align:center"><div class="ptitle">ตารางติวเข้มปิดภาคเรียน</div></div>
+      <p class="psub">${esc(S.plan)} · ${esc(S.school)}${weeks.length > 1 ? ` · สัปดาห์ที่ ${num(wi + 1)} จาก ${num(weeks.length)}` : ""}</p>
+      <table class="ptbl"><thead><tr><th class="tcorner">วัน / เวลา</th>${head}</tr></thead>
+        <tbody>${body}</tbody></table>
+      <div class="pfoot">
+        <div class="pbox">ชื่อ ………………………………………………………</div>
+        <div class="pbox">ชั้น ………………………………</div>
+      </div>
+      <p class="pnote">${esc(T.room)} · แต่งกายชุดนักเรียนหรือชุดพละตามตาราง · มาถึงก่อนเวลา ๑๕ นาที</p>
+    </div></div>`;
+  }).join("");
+  sheetEl.innerHTML = pages;
+  doPrint("landscape");
 };
 
 /* ใบลงเวลา */
