@@ -18,7 +18,7 @@
   --rule:#C7DCF3; --rule-2:#9CBADF;
   --ok:#2E6B4F; --warn:#9A6B00; --bad:#9B2C2C;
   --ui:'Bai Jamjuree','Sarabun',system-ui,sans-serif;
-  --doc:'TH SarabunPSK','TH Sarabun New','Sarabun',system-ui,serif;
+  --doc:'TH Sarabun New','TH SarabunPSK','Sarabun',system-ui,serif;
   --body:'Sarabun',system-ui,sans-serif;
 }
 @media (prefers-color-scheme:dark){
@@ -100,7 +100,7 @@ button,input,select,textarea{font:inherit;color:inherit}
 
 /* ── A4 sheet ─────────────────────────────── */
 .sheet-wrap{transform-origin:top center}
-.sheet{width:210mm;min-height:297mm;background:#fff;color:#000;padding:15mm 16mm 13mm;box-shadow:0 3px 18px rgba(16,48,95,.20);font-family:var(--doc);font-size:16pt;line-height:1.36}
+.sheet{width:210mm;min-height:297mm;background:#fff;color:#000;padding:15mm 20mm 20mm 30mm;box-shadow:0 3px 18px rgba(16,48,95,.20);font-family:var(--doc);font-size:16pt;line-height:1.36}
 .sheet.land{width:297mm;min-height:210mm;padding:14mm 16mm}
 .sheet.tight{line-height:1.26}
 .sheet.tight small{font-size:12.5pt}
@@ -116,11 +116,22 @@ button,input,select,textarea{font:inherit;color:inherit}
 .sheet .rt{text-align:right}
 .sheet h1{font-size:22pt;font-weight:700;text-align:center;margin:0 0 2mm;line-height:1.25}
 .sheet h2{font-size:18pt;font-weight:700;text-align:center;margin:0 0 3mm}
+/* กระดาษตราครุฑ ตามระเบียบงานสารบรรณ */
+.sheet .krut{display:block;margin:0 auto 3mm;height:30mm;width:auto}
+.sheet .krut.sm{height:15mm;margin:0 0 1mm}
+.sheet .exttop{display:flex;justify-content:space-between;align-items:flex-start;gap:8mm;font-size:16pt;margin-bottom:1mm}
+.sheet .exttop .sndr{text-align:left;line-height:1.35;white-space:nowrap}
+.sheet .extdate{text-align:center;margin:3mm 0 3mm}
+.sheet .lbl{display:inline-block;min-width:26mm;vertical-align:top}
+.sheet .lbl2{display:inline-block;min-width:33mm;vertical-align:top}
+.sheet .fld{display:flex;gap:0;align-items:baseline;margin-bottom:1.2mm}
+.sheet .fld .fv{flex:1}
+.sheet .ftr{margin-top:10mm;font-size:14pt;line-height:1.4}
 .sheet .org{text-align:center;font-size:15pt;line-height:1.35;margin-bottom:4mm}
 .sheet .org b{display:block;font-size:17pt;font-weight:700}
 .sheet .hr{border-bottom:1.2px solid #000;margin:3mm 0 4mm}
 .sheet p{margin:0 0 2mm;text-indent:0}
-.sheet p.ind{text-indent:15mm;text-align:justify}
+.sheet p.ind{text-indent:25mm;text-align:left}
 .sheet .meta{display:flex;justify-content:space-between;gap:6mm;font-size:15pt;margin-bottom:2mm}
 .sheet table{width:100%;border-collapse:collapse;font-size:15pt;margin:2.4mm 0}
 .sheet th,.sheet td{border:1px solid #000;padding:1.4mm 2mm;vertical-align:top}
@@ -154,7 +165,7 @@ button,input,select,textarea{font:inherit;color:inherit}
   .app{display:block;height:auto}
   .pane-preview{display:block!important;padding:0;background:#fff;overflow:visible}
   .sheet-wrap{transform:none!important}
-  .sheet{box-shadow:none;width:210mm;min-height:0;margin:0;padding:14mm 16mm}
+  .sheet{box-shadow:none;width:210mm;min-height:0;margin:0;padding:15mm 20mm 20mm 30mm}
   .sheet.land{width:297mm}
   .sheet table{break-inside:auto}
   .sheet tr,.sheet .box,.sheet .rw{break-inside:avoid}
@@ -300,6 +311,33 @@ const val = (k, d) => (V[cur] && V[cur][k] != null && V[cur][k] !== "") ? V[cur]
 const dot = (v, w) => v ? esc(v) : "…".repeat(w || 22);
 
 /* ═══ shared sheet parts ═══ */
+/* ตราครุฑ — ใช้ในหนังสือภายนอก บันทึกข้อความ และคำสั่ง ตามระเบียบงานสารบรรณ */
+const KRUT_SRC = "data:image/jpeg;base64,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";
+
+/** ตราครุฑขนาดที่กำหนดเป็นมิลลิเมตร — ใส่ width/height เป็น attribute ด้วย
+    เพราะ Microsoft Word ไม่อ่าน CSS height ของรูป (ต้นฉบับ ๒๙๗ × ๓๐๐ px) */
+function krutImg(mm, cls){
+  const h = Math.round(mm * 96 / 25.4), w = Math.round(h * 297 / 300);
+  return `<img class="krut${cls ? " " + cls : ""}" src="${KRUT_SRC}" width="${w}" height="${h}" alt="ตราครุฑ">`;
+}
+
+/** หัวกระดาษหนังสือภายนอก : ครุฑ ๓ ซม. → ที่ + ที่อยู่ผู้ส่ง → วันที่กึ่งกลาง */
+const extHead = (no, date) => `
+  ${krutImg(30)}
+  <div class="exttop">
+    <div>ที่ ${dot(num(no), 14)}</div>
+    <div class="sndr">${esc(S.school)}<br>${num(esc(S.addr))}</div>
+  </div>
+  <div class="extdate">${date ? num(thDate(date)) : "……… / ……… / …………"}</div>`;
+
+/** บรรทัดหัวข้อของหนังสือ เช่น เรื่อง / เรียน / อ้างถึง / สิ่งที่ส่งมาด้วย */
+const fld = (label, value, wide) => `
+  <div class="fld"><span class="${wide ? "lbl2" : "lbl"}"><b>${esc(label)}</b></span><span class="fv">${value}</span></div>`;
+
+/** ท้ายกระดาษหนังสือภายนอก */
+const extFoot = (extra) => `
+  <div class="ftr">${esc(S.plan)}<br>โทร. ${num(esc(S.tel))}${extra ? "<br>" + extra : ""}</div>`;
+
 const letterHead = () => `
   <div class="org"><b>${esc(S.school)}</b>${num(esc(S.addr))}<br>โทรศัพท์ ${num(esc(S.tel))}</div>
   <div class="hr"></div>`;
@@ -310,7 +348,8 @@ const fundHead = () => `
   <div class="hr"></div>`;
 
 const memoHead = (no, date, subject, to) => `
-  <h1>บันทึกข้อความ</h1>
+  ${krutImg(15, "sm")}
+  <h1 style="margin-top:-13mm">บันทึกข้อความ</h1>
   <div class="rw"><span class="lb"><b>ส่วนราชการ</b></span><span class="vl">${esc(S.school)} ${esc(S.plan)} โทร. ${num(esc(S.tel))}</span></div>
   <div class="meta">
     <div style="flex:1"><b>ที่</b> ${dot(no, 14)}</div>
@@ -400,7 +439,8 @@ order: {
       return `<tr><td class="c" style="width:14mm">${num(i + 1)}</td><td>${esc((p[0] || "").trim())}</td><td style="width:62mm">${esc((p[1] || "").trim())}</td></tr>`;
     }).join("");
     return `
-      <p class="ctr" style="font-size:19pt;font-weight:700;margin-top:4mm">คำสั่ง${esc(S.school)}</p>
+      ${krutImg(24)}
+      <p class="ctr" style="font-size:19pt;font-weight:700;margin-top:2mm">คำสั่ง${esc(S.school)}</p>
       <p class="ctr" style="font-size:17pt">ที่ ${v.no ? num(esc(v.no)) : "………… / …………"}</p>
       <p class="ctr" style="font-size:17pt;font-weight:700;margin-top:2mm">เรื่อง แต่งตั้งคณะกรรมการบริหาร${esc(S.fund)}</p>
       <div class="hr"></div>
@@ -586,18 +626,16 @@ thanks: {
   r(v){
     const a = Number(v.amount) || 0;
     const what = v.kind ? `สิ่งของ ${esc(v.kind)}` : (a ? `เงินจำนวน ${num(money(a))} บาท (${bahtText(a)})` : "…………………………………………………");
-    return letterHead() + `
-      <div class="meta" style="margin-top:2mm"><div>ที่ ${dot(num(v.no), 12)}</div><div>วันที่ ${dot(num(thDate(v.date)), 16)}</div></div>
-      <p style="margin-top:3mm"><b>เรื่อง</b>&nbsp;&nbsp;ขอขอบคุณในการสนับสนุน${esc(S.plan)}</p>
-      <p><b>เรียน</b>&nbsp;&nbsp;${dot(v.donor, 26)}</p>
+    return extHead(v.no, v.date)
+      + fld("เรื่อง", "ขอขอบคุณในการสนับสนุน" + esc(S.plan))
+      + fld("เรียน", dot(v.donor, 26)) + `
       <p class="ind" style="margin-top:3mm">ตามที่ท่านได้กรุณาบริจาค${what} ให้แก่${esc(S.school)} เพื่อ${esc(v.use) || "สนับสนุนการดำเนินงานของ" + S.plan} นั้น</p>
       <p class="ind">${esc(S.school)} ขอขอบคุณในความอนุเคราะห์ของท่านเป็นอย่างสูง การสนับสนุนดังกล่าวนับเป็นกำลังสำคัญในการพัฒนานักเรียนให้มีความพร้อมทั้งด้านวิชาการ สมรรถภาพทางร่างกาย และระเบียบวินัย อันจะเป็นประโยชน์ต่อการสร้างโอกาสทางการศึกษาและเส้นทางอาชีพที่มั่นคงให้แก่นักเรียนสืบไป</p>
       <p class="ind">โรงเรียนได้รับเงินบริจาคดังกล่าวเข้าบัญชีของโรงเรียนและออกใบเสร็จรับเงินของทางราชการให้ท่านไว้เป็นหลักฐานแล้ว ท่านสามารถใช้ใบเสร็จรับเงินฉบับดังกล่าวประกอบการใช้สิทธิหักลดหย่อนภาษีเงินได้สำหรับเงินบริจาคเพื่อสนับสนุนการศึกษาได้ตามหลักเกณฑ์ที่กรมสรรพากรกำหนด</p>
       <p class="ind">ทั้งนี้ โรงเรียนจะดำเนินการใช้จ่ายเงินและทรัพย์สินที่ได้รับบริจาคผ่าน${esc(S.fund)} ให้เป็นไปตามวัตถุประสงค์ของท่านทุกประการ และจะรายงานผลการดำเนินงานพร้อมสรุปการใช้จ่ายให้ท่านทราบภาคเรียนละหนึ่งครั้ง</p>
       <p class="ind">จึงเรียนมาเพื่อทราบ และขอขอบคุณมา ณ โอกาสนี้</p>
       <p class="ctr" style="margin-top:6mm">ขอแสดงความนับถือ</p>
-      ${sig([{ role:"ผู้อำนวยการ" + S.school, name:S.director }])}
-      <p style="margin-top:8mm;font-size:13pt">${esc(S.plan)} &nbsp; โทรศัพท์ ${num(esc(S.tel))}</p>`;
+      ${sig([{ role:"ผู้อำนวยการ" + S.school, name:S.director }])}` + extFoot();
   }
 },
 
@@ -624,19 +662,17 @@ invitelec: {
   ],
   r(v){
     const fee = Number(v.fee) || 0;
-    return letterHead() + `
-      <div class="meta" style="margin-top:2mm"><div>ที่ ${dot(num(v.no), 12)}</div><div>วันที่ ${dot(num(thDate(v.date)), 16)}</div></div>
-      <p style="margin-top:3mm"><b>เรื่อง</b>&nbsp;&nbsp;ขอเชิญเป็นวิทยากร</p>
-      <p><b>เรียน</b>&nbsp;&nbsp;${dot(v.to, 26)}</p>
-      <p><b>สิ่งที่ส่งมาด้วย</b>&nbsp;&nbsp;กำหนดการกิจกรรม จำนวน ๑ ฉบับ</p>
+    return extHead(v.no, v.date)
+      + fld("เรื่อง", "ขอเชิญเป็นวิทยากร")
+      + fld("เรียน", dot(v.to, 26))
+      + fld("สิ่งที่ส่งมาด้วย", "กำหนดการกิจกรรม จำนวน ๑ ฉบับ", 1) + `
       <p class="ind" style="margin-top:3mm">ด้วย${esc(S.school)} ได้จัด${esc(v.actname)} ${esc(v.purpose)}</p>
       <p class="ind">ในการนี้ โรงเรียนพิจารณาเห็นว่า ${v.lec ? esc(v.lec) : "…………………………………………………"} เป็นผู้มีความรู้ ความสามารถ และประสบการณ์อันเป็นประโยชน์อย่างยิ่งต่อนักเรียน จึงขอเรียนเชิญเป็นวิทยากรบรรยายพิเศษ เรื่อง “${esc(v.topic)}” ในวันที่ ${v.edate ? num(thDate(v.edate)) : "……… / ……… / …………"} เวลา ${num(esc(v.etime))} ณ ${esc(v.place)} ให้แก่นักเรียน${esc(S.plan)} จำนวน ${v.nstu ? num(v.nstu) : "………"} คน</p>
       ${fee ? `<p class="ind">ทั้งนี้ โรงเรียนได้จัดค่าตอบแทนวิทยากรไว้ จำนวน ${num(money(fee))} บาท (${bahtText(fee)}) โดยเบิกจ่ายจาก${esc(S.fund)}</p>` : ""}
       <p class="ind">จึงเรียนมาเพื่อโปรดพิจารณาให้ความอนุเคราะห์ และขอความกรุณาแจ้งผลการตอบรับ${v.reply ? ` ภายในวันที่ ${num(thDate(v.reply))}` : ""} จักขอบคุณยิ่ง</p>
       <p class="ctr" style="margin-top:6mm">ขอแสดงความนับถือ</p>
-      ${sig([{ role:"ผู้อำนวยการ" + S.school, name:S.director }])}
-      <p style="margin-top:7mm;font-size:13pt">${esc(S.plan)}<br>
-      ผู้ประสานงาน ${esc(v.coord || S.head || "………………………………………")} &nbsp; โทรศัพท์ ${dot(num(v.coordtel), 12)}</p>`;
+      ${sig([{ role:"ผู้อำนวยการ" + S.school, name:S.director }])}`
+      + extFoot(`ผู้ประสานงาน ${esc(v.coord || S.head || "………………………………………")} โทร. ${dot(num(v.coordtel), 12)}`);
   }
 },
 
@@ -659,17 +695,15 @@ inviteparent: {
     { k:"note", l:"ข้อความเพิ่มเติม (ถ้ามี)", t:"textarea", ph:"เช่น มีอาหารว่างรับรอง / ที่จอดรถภายในโรงเรียน" }
   ],
   r(v){
-    return letterHead() + `
-      <div class="meta" style="margin-top:2mm"><div>ที่ ${dot(num(v.no), 12)}</div><div>วันที่ ${dot(num(thDate(v.date)), 16)}</div></div>
-      <p style="margin-top:3mm"><b>เรื่อง</b>&nbsp;&nbsp;${esc(v.subject)}</p>
-      <p><b>เรียน</b>&nbsp;&nbsp;ผู้ปกครองนักเรียน${esc(S.plan)}</p>
+    return extHead(v.no, v.date)
+      + fld("เรื่อง", esc(v.subject))
+      + fld("เรียน", "ผู้ปกครองนักเรียน" + esc(S.plan)) + `
       <p class="ind" style="margin-top:3mm">ด้วย${esc(S.school)} ได้จัด${esc(v.actname)} ${esc(v.purpose)}</p>
       <p class="ind">ในการนี้ โรงเรียนขอเรียนเชิญท่านผู้ปกครองเข้าร่วมงานดังกล่าว ในวันที่ ${v.edate ? num(thDate(v.edate)) : "……… / ……… / …………"} เวลา ${num(esc(v.etime))} ณ ${esc(v.place)} การแต่งกาย${esc(v.dress)} เพื่อรับทราบรายละเอียดโครงการและร่วมเป็นกำลังใจให้แก่บุตรหลานของท่าน</p>
       ${v.note ? `<p class="ind">${esc(v.note)}</p>` : ""}
       <p class="ind">จึงเรียนมาเพื่อโปรดทราบ และขอความกรุณาส่งแบบตอบรับคืนโรงเรียน${v.reply ? ` ภายในวันที่ ${num(thDate(v.reply))}` : ""} สอบถามเพิ่มเติมได้ที่โทรศัพท์ ${v.coordtel ? num(esc(v.coordtel)) : num(esc(S.tel))}</p>
       <p class="ctr" style="margin-top:5mm">ขอแสดงความนับถือ</p>
       ${sig([{ role:"ผู้อำนวยการ" + S.school, name:S.director }])}
-
       <div class="cut">✂ ตัดตามรอยประและส่งคืนครูที่ปรึกษา ✂</div>
       <p class="ctr" style="font-weight:700;font-size:17pt">แบบตอบรับการเข้าร่วมงาน</p>
       <div class="rows">
@@ -706,18 +740,16 @@ thankslec: {
   r(v){
     const who = v.lec ? esc(v.lec) : "…………………………………………………";
     const org = v.org ? ` ${esc(v.org)}` : "";
-    return letterHead() + `
-      <div class="meta" style="margin-top:2mm"><div>ที่ ${dot(num(v.no), 12)}</div><div>วันที่ ${dot(num(thDate(v.date)), 16)}</div></div>
-      <p style="margin-top:3mm"><b>เรื่อง</b>&nbsp;&nbsp;ขอขอบคุณในการให้ความอนุเคราะห์วิทยากร</p>
-      <p><b>เรียน</b>&nbsp;&nbsp;${dot(v.to, 26)}</p>
-      ${v.attach ? `<p><b>สิ่งที่ส่งมาด้วย</b>&nbsp;&nbsp;${esc(v.attach)}</p>` : ""}
+    return extHead(v.no, v.date)
+      + fld("เรื่อง", "ขอขอบคุณในการให้ความอนุเคราะห์วิทยากร")
+      + fld("เรียน", dot(v.to, 26))
+      + (v.attach ? fld("สิ่งที่ส่งมาด้วย", esc(v.attach), 1) : "") + `
       <p class="ind" style="margin-top:3mm">ตามที่${esc(S.school)} ได้จัด${esc(v.actname)} และได้รับความอนุเคราะห์จาก${org ? org + " ให้" : ""} ${who} เป็นวิทยากรบรรยายพิเศษ เรื่อง “${esc(v.topic)}” เมื่อวันที่ ${v.edate ? num(thDate(v.edate)) : "……… / ……… / …………"} เวลา ${num(esc(v.etime))} ณ ${esc(v.place)} ให้แก่นักเรียน${esc(S.plan)} จำนวน ${v.nstu ? num(v.nstu) : "………"} คน นั้น</p>
       <p class="ind">การบรรยายดังกล่าวสำเร็จลุล่วงไปด้วยดี นักเรียนได้รับความรู้ ความเข้าใจ และแรงบันดาลใจในการเตรียมความพร้อมเพื่อสอบคัดเลือกเข้าโรงเรียนเตรียมทหารและสายอาชีพด้านความมั่นคง อันเป็นประโยชน์อย่างยิ่งต่อการวางเป้าหมายชีวิตของนักเรียน</p>
       <p class="ind">${esc(S.school)} ขอขอบคุณในความอนุเคราะห์และความเสียสละของท่านมา ณ โอกาสนี้ และหวังเป็นอย่างยิ่งว่าจะได้รับความอนุเคราะห์จากท่านอีกในโอกาสต่อไป</p>
       <p class="ind">จึงเรียนมาเพื่อทราบและขอขอบคุณ</p>
       <p class="ctr" style="margin-top:6mm">ขอแสดงความนับถือ</p>
-      ${sig([{ role:"ผู้อำนวยการ" + S.school, name:S.director }])}
-      <p style="margin-top:8mm;font-size:13pt">${esc(S.plan)}<br>โทรศัพท์ ${num(esc(S.tel))}</p>`;
+      ${sig([{ role:"ผู้อำนวยการ" + S.school, name:S.director }])}` + extFoot();
   }
 },
 
@@ -744,18 +776,16 @@ thanksguest: {
       ["ใบประกาศเกียรติคุณ จำนวน ๑ ฉบับ","ใบประกาศเกียรติคุณ ๑ ฉบับ"]] }
   ],
   r(v){
-    return letterHead() + `
-      <div class="meta" style="margin-top:2mm"><div>ที่ ${dot(num(v.no), 12)}</div><div>วันที่ ${dot(num(thDate(v.date)), 16)}</div></div>
-      <p style="margin-top:3mm"><b>เรื่อง</b>&nbsp;&nbsp;ขอขอบคุณในการให้เกียรติมาร่วมงาน</p>
-      <p><b>เรียน</b>&nbsp;&nbsp;${dot(v.to, 26)}${v.pos ? " &nbsp; " + esc(v.pos) : ""}</p>
-      ${v.attach ? `<p><b>สิ่งที่ส่งมาด้วย</b>&nbsp;&nbsp;${esc(v.attach)}</p>` : ""}
+    return extHead(v.no, v.date)
+      + fld("เรื่อง", "ขอขอบคุณในการให้เกียรติมาร่วมงาน")
+      + fld("เรียน", dot(v.to, 26) + (v.pos ? " &nbsp; " + esc(v.pos) : ""))
+      + (v.attach ? fld("สิ่งที่ส่งมาด้วย", esc(v.attach), 1) : "") + `
       <p class="ind" style="margin-top:3mm">ตามที่${esc(S.school)} ได้จัด${esc(v.actname)} เมื่อวันที่ ${v.edate ? num(thDate(v.edate)) : "……… / ……… / …………"} เวลา ${num(esc(v.etime))} ณ ${esc(v.place)} และท่านได้${esc(v.role || "ให้เกียรติมาร่วมงาน")}ในครั้งนี้ นั้น</p>
       <p class="ind">การจัดงานดังกล่าวสำเร็จลุล่วงไปด้วยความเรียบร้อยและบรรลุวัตถุประสงค์ทุกประการ การที่ท่านสละเวลามาร่วมงานนับเป็นเกียรติอย่างยิ่งแก่โรงเรียน คณะครู และนักเรียน ทั้งยังเป็นขวัญกำลังใจสำคัญให้นักเรียน${esc(S.plan)} มีความมุ่งมั่นในการเตรียมความพร้อมเพื่อสอบคัดเลือกเข้าโรงเรียนเตรียมทหารและสายอาชีพด้านความมั่นคงต่อไป</p>
       <p class="ind">${esc(S.school)} ขอขอบคุณท่านเป็นอย่างสูงมา ณ โอกาสนี้ และหวังเป็นอย่างยิ่งว่าจะได้รับเกียรติจากท่านอีกในโอกาสต่อไป</p>
       <p class="ind">จึงเรียนมาเพื่อทราบและขอขอบคุณ</p>
       <p class="ctr" style="margin-top:6mm">ขอแสดงความนับถือ</p>
-      ${sig([{ role:"ผู้อำนวยการ" + S.school, name:S.director }])}
-      <p style="margin-top:8mm;font-size:13pt">${esc(S.plan)}<br>โทรศัพท์ ${num(esc(S.tel))}</p>`;
+      ${sig([{ role:"ผู้อำนวยการ" + S.school, name:S.director }])}` + extFoot();
   }
 },
 
@@ -1032,8 +1062,7 @@ donorcert: {
   r(v){
     const a = Number(v.amount) || 0;
     const what = v.kind ? `ทรัพย์สิน ${esc(v.kind)}` : (a ? `เงินจำนวน ${num(money(a))} บาท (${bahtText(a)})` : "…………………………………………………");
-    return letterHead() + `
-      <div class="meta" style="margin-top:2mm"><div>ที่ ${dot(num(v.no), 12)}</div><div>วันที่ ${dot(num(thDate(v.date)), 16)}</div></div>
+    return extHead(v.no, v.date) + `
       <h2 style="margin-top:3mm">หนังสือรับรองการบริจาค</h2>
       <p class="ind" style="margin-top:4mm">${esc(S.school)} สังกัด${esc(S.area)} ขอรับรองว่า</p>
       <div class="rows">
@@ -1288,8 +1317,9 @@ function renderAll(){ renderList(); renderEdit(); renderSheet(); }
 
 /* ═══ บันทึกเป็นไฟล์ Word (.doc) — เปิดและแก้ไขต่อใน Microsoft Word ได้ ═══ */
 const WORD_CSS = `
-@page{size:A4 SIZE;margin:15mm 16mm 13mm}
-body{font-family:'TH SarabunPSK','TH Sarabun New',sans-serif;font-size:16pt;line-height:1.36;color:#000}
+@page WordSection1{size:PGSIZE;margin:15.0mm 20.0mm 20.0mm 30.0mm;mso-page-orientation:SIZE}
+div.WordSection1{page:WordSection1}
+body{font-family:'TH Sarabun New','TH SarabunPSK',sans-serif;font-size:16pt;line-height:1.36;color:#000}
 .ctr{text-align:center} .rt{text-align:right}
 h1{font-size:22pt;font-weight:700;text-align:center;margin:0 0 2mm;line-height:1.25}
 h2{font-size:18pt;font-weight:700;text-align:center;margin:0 0 3mm}
@@ -1297,7 +1327,7 @@ h2{font-size:18pt;font-weight:700;text-align:center;margin:0 0 3mm}
 .org b{display:block;font-size:17pt;font-weight:700}
 .hr{border-bottom:1.2pt solid #000;margin:3mm 0 4mm}
 p{margin:0 0 2mm}
-p.ind{text-indent:15mm;text-align:justify}
+p.ind{text-indent:25mm;text-align:left}
 .meta{width:100%;font-size:15pt;margin-bottom:2mm;overflow:hidden}
 .meta>div{float:left;width:48%}
 .meta>div+div{text-align:right}
@@ -1319,16 +1349,111 @@ small{font-size:13pt;line-height:1.4;display:block}
 .cert{border:3pt double #0E2A56;padding:12mm;text-align:center}
 .cert .cn{font-size:34pt;font-weight:700;margin:6mm 0}
 .cert .who{font-size:26pt;font-weight:700;border-bottom:1pt dotted #444;padding:0 10mm}
-.cut{border-top:1pt dashed #000;margin:5mm 0 3mm;text-align:center;font-size:12pt}`;
+.cut{border-top:1pt dashed #000;margin:5mm 0 3mm;text-align:center;font-size:12pt}
+.krut{display:block;margin:0 auto 3mm;height:30mm}
+.krut.sm{height:15mm;margin:0 0 1mm}
+.exttop{width:100%;font-size:16pt;margin-bottom:1mm;overflow:hidden}
+.exttop>div{float:left;width:49%}
+.exttop>div+div{text-align:left;line-height:1.35}
+.extdate{text-align:center;margin:3mm 0;clear:both}
+.lbl{display:inline-block;min-width:26mm;vertical-align:top}
+.lbl2{display:inline-block;min-width:33mm;vertical-align:top}
+.fld{margin-bottom:1.2mm}
+.ftr{margin-top:5mm;font-size:14pt;line-height:1.4}`;
+
+/* ── แปลงโครงสร้างให้ Word อ่านได้ ──────────────────────────
+   Word รองรับแค่ตาราง ย่อหน้า และ <br> ไม่รองรับ flexbox, inline-block width
+   หรือ margin:auto จึงต้องแปลง .exttop .meta .fld .rw .sig เป็นตารางก่อน */
+const wcell = (html, style) => `<td style="border:none;padding:0;vertical-align:top;${style || ""}">${html}</td>`;
+const wtable = (cells) =>
+  `<table border="0" cellspacing="0" cellpadding="0" style="width:100%;border:none;border-collapse:collapse;margin:0 0 1.2mm">` +
+  `<tr>${cells.join("")}</tr></table>`;
+
+function wordBody(){
+  const root = sheetEl.cloneNode(true);
+  const H = s => document.createRange().createContextualFragment(s);
+
+  /* ตราครุฑ — Word ไม่รู้จัก margin:auto ใช้ <p align> แทน */
+  root.querySelectorAll("img.krut").forEach(img => {
+    const p = document.createElement("p");
+    p.setAttribute("align", img.classList.contains("sm") ? "left" : "center");
+    p.style.margin = "0 0 3mm";
+    img.replaceWith(p); p.appendChild(img);
+  });
+
+  /* หัวหนังสือภายนอก : ที่ … | ที่อยู่ผู้ส่ง */
+  root.querySelectorAll(".exttop").forEach(el => {
+    const k = [...el.children];
+    el.replaceWith(H(wtable([
+      wcell(k[0] ? k[0].innerHTML : "", "width:45%"),
+      wcell(k[1] ? k[1].innerHTML : "", "width:55%")
+    ])));
+  });
+
+  /* แถว ที่ / วันที่ ของบันทึกข้อความ */
+  root.querySelectorAll(".meta").forEach(el => {
+    const k = [...el.children];
+    el.replaceWith(H(wtable(k.map((c, i) =>
+      wcell(c.innerHTML, `width:${Math.floor(100 / k.length)}%;text-align:${i === k.length - 1 && k.length > 1 ? "right" : "left"}`)))));
+  });
+
+  /* เรื่อง / เรียน / สิ่งที่ส่งมาด้วย */
+  root.querySelectorAll(".fld").forEach(el => {
+    const lb = el.querySelector(".lbl, .lbl2"), fv = el.querySelector(".fv");
+    const w = lb && lb.classList.contains("lbl2") ? "33mm" : "26mm";
+    el.replaceWith(H(wtable([
+      wcell(lb ? lb.innerHTML : "", `width:${w}`),
+      wcell(fv ? fv.innerHTML : "", "")
+    ])));
+  });
+
+  /* แถวกรอกข้อมูล ป้าย + เส้นประ */
+  root.querySelectorAll(".rw").forEach(el => {
+    const cells = [...el.children].map(c => c.classList.contains("vl")
+      ? wcell(c.innerHTML || "&nbsp;", "border-bottom:1pt dotted #444;padding:0 0 0 2mm")
+      : wcell(c.innerHTML, "white-space:nowrap;padding-right:2mm"));
+    el.replaceWith(H(wtable(cells)));
+  });
+
+  /* บล็อกลายมือชื่อ — แต่ละช่องเป็นคอลัมน์ แต่ละบรรทัดเป็นย่อหน้า */
+  root.querySelectorAll(".sig").forEach(el => {
+    const blocks = [...el.children];
+    const w = Math.floor(100 / Math.max(1, blocks.length));
+    el.replaceWith(H(
+      `<table border="0" cellspacing="0" cellpadding="0" style="width:100%;border:none;border-collapse:collapse;margin-top:7mm">` +
+      `<tr>${blocks.map(b => wcell(
+        [...b.children].map(s => `<p align="center" style="margin:0;line-height:1.5">${s.innerHTML}</p>`).join(""),
+        `width:${w}%;text-align:center`)).join("")}</tr></table>`));
+  });
+
+  /* กล่องข้อความ — Word วาดกรอบจากตารางได้ดีกว่า div */
+  root.querySelectorAll(".box").forEach(el => {
+    el.replaceWith(H(
+      `<table border="1" cellspacing="0" cellpadding="4" style="width:100%;border-collapse:collapse;margin-top:2.8mm">` +
+      `<tr><td style="border:1pt solid #000">${el.innerHTML}</td></tr></table>`));
+  });
+
+  /* small เป็น block ในหน้าเว็บ แต่ Word ถือเป็น inline */
+  root.querySelectorAll("small").forEach(el => {
+    const p = document.createElement("p");
+    p.style.cssText = "margin:0 0 1mm;font-size:13pt;line-height:1.4";
+    p.innerHTML = el.innerHTML;
+    el.replaceWith(p);
+  });
+
+  return root.innerHTML;
+}
 
 function saveWord(){
   const d = DOCS[cur];
-  const body = sheetEl.innerHTML;
-  const css = WORD_CSS.replace("SIZE", d.land ? "landscape" : "portrait");
+  const body = wordBody();
+  const css = WORD_CSS
+    .replace("PGSIZE", d.land ? "297.0mm 210.0mm" : "210.0mm 297.0mm")
+    .replace("SIZE", d.land ? "landscape" : "portrait");
   const html = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
 <head><meta charset="utf-8"><title>${esc(d.n)}</title>
 <!--[if gte mso 9]><xml><w:WordDocument><w:View>Print</w:View><w:Zoom>100</w:Zoom></w:WordDocument></xml><![endif]-->
-<style>${css}</style></head><body>${body}</body></html>`;
+<style>${css}</style></head><body><div class="WordSection1">${body}</div></body></html>`;
   const blob = new Blob(["\ufeff", html], { type: "application/msword" });
   const a = document.createElement("a");
   a.href = URL.createObjectURL(blob);
