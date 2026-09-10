@@ -139,6 +139,8 @@ section + section{border-top:1px solid var(--rule)}
 .q.ok   .qc,.q.ok   .qt{color:var(--ok)}    .q.ok   .qbar i{background:var(--ok)}
 .q.part .qc,.q.part .qt{color:var(--warn)}  .q.part .qbar i{background:var(--warn)}
 .q.over .qc,.q.over .qt{color:var(--crit)}  .q.over .qbar i{background:var(--crit)}
+.q.fitq{border-inline-start:4px solid var(--gold)}
+.q.fitq .qn b{color:var(--gold-ink)}
 .q.none{border-style:dashed}
 .q.none .qc,.q.none .qt{color:var(--idle)}  .q.none .qbar i{background:var(--idle)}
 @media (prefers-reduced-motion:reduce){.q .qbar i{transition:none}}
@@ -448,9 +450,11 @@ const SUBJ = () => T.subjects;
 const SB = k => T.subjects.find(s => s.k === k) || { k, n:"(วิชาที่ถูกลบแล้ว)", q:0, tea:[] };
 const QUOTA_TOTAL = () => T.subjects.reduce((a, s) => a + (Number(s.q) || 0), 0);
 /** ชื่อครูทั้งหมดที่กรอกไว้ ใช้เป็นรายการแนะนำ */
-const allTeachers = () => [...new Set(
-  T.subjects.flatMap(s => s.tea).concat([T.coach])
-    .map(x => String(x || "").trim()).filter(Boolean))];
+const allTeachers = () => {
+  const names = T.subjects.flatMap(s => s.tea).concat([T.coach]);
+  Object.values(T.days || {}).forEach(d => (d.rows || []).forEach(r => names.push(r.w)));
+  return [...new Set(names.map(x => String(x || "").trim()).filter(Boolean))].sort((a, b) => a.localeCompare(b, "th"));
+};
 
 /* ═══════════ แม่แบบแถว ═══════════ */
 const stdRows = () => ([
@@ -565,6 +569,19 @@ function overlaps(rows){
   return bad;
 }
 const clashCount = () => activeKeys().reduce((a, k) => a + overlaps(T.days[k].rows).size, 0);
+/** ย่อรายการเลขวันให้สั้น เช่น [1,2,3,5,6,7,9] → "1–3, 5–7, 9" */
+function compressDays(arr){
+  const a = [...new Set(arr)].sort((x, y) => x - y);
+  const out = [];
+  for (let i = 0; i < a.length; ){
+    let j = i;
+    while (j + 1 < a.length && a[j + 1] === a[j] + 1) j++;
+    out.push(j - i >= 2 ? a[i] + "–" + a[j] : a.slice(i, j + 1).join(", "));
+    i = j + 1;
+  }
+  return out.join(", ");
+}
+
 /** วิชาไหนถูกลงไว้ในวันที่เท่าไรบ้าง → { math:[1,2,4], ... } */
 function subjDays(){
   const m = Object.fromEntries(SUBJ().map(s => [s.k, []]));
@@ -634,11 +651,57 @@ function renderSubjects(){
           title="ลบวิชา${esc(s.n)}${used.has(s.k) ? " (มีคาบที่ลงไว้แล้ว)" : ""}">✕</button>
       </div>`;
     }).join("");
+  renderSubjMeta();
+}
+
+/** อัปเดตเฉพาะยอดรวมโควตาและรายการชื่อครูแนะนำ (ไม่แตะตารางวิชา) */
+function renderSubjMeta(){
   const QT = QUOTA_TOTAL();
   const el = $("#subjSum");
   el.textContent = `รวมโควตา ${num(QT)} คาบ · ${num(QT * 1.5)} ชั่วโมง`;
   el.className = "ssum " + (QT === 30 ? "ok" : "bad");
   $("#teaList").innerHTML = allTeachers().map(n => `<option value="${esc(n)}"></option>`).join("");
+}
+
+/** วาดใหม่ทุกส่วนยกเว้นตารางวิชา — ใช้ตอนพิมพ์ในช่อง เพื่อไม่ให้เคอร์เซอร์หลุด */
+function renderExceptSubjects(){ renderSubjMeta(); renderQuota(); renderDays(); renderTeachers(); renderKPI(); }
+
+/** สรุปการลงฝึกสมรรถภาพ : กี่วันจากวันติวทั้งหมด ใครเป็นครูฝึก วันไหนยังไม่ระบุครู */
+function fitInfo(){
+  const keys = activeKeys();
+  const days = [], noCoach = [], coaches = new Set();
+  keys.forEach((k, di) => {
+    const rows = T.days[k].rows.filter(r => r.k === "fit");
+    if (!rows.length) return;
+    days.push(di + 1);
+    const named = rows.map(r => String(r.w || "").trim()).filter(Boolean);
+    if (!named.length) noCoach.push(di + 1);
+    named.forEach(n => coaches.add(n));
+  });
+  return { total: keys.length, days, noCoach, coaches: [...coaches] };
+}
+
+/** ชิปฝึกสมรรถภาพในแถบโควตา */
+function fitChip(){
+  const f = fitInfo();
+  const got = f.days.length, q = f.total;
+  const cls = !q || got === 0 ? "none" : (got === q && !f.noCoach.length) ? "ok" : "part";
+  const w = q ? Math.min(100, got / q * 100) : 0;
+  const st = !q ? "ยังไม่มีวันติว"
+    : got === 0 ? "ยังไม่ได้ลงวันใด"
+    : got < q ? "ขาดอีก " + num(q - got) + " วัน"
+    : "✓ ครบทุกวัน";
+  const days = got ? "ลงแล้ว วันที่ " + num(compressDays(f.days)) : "ยังไม่ได้ลงวันใด";
+  const tea = (f.coaches.join(" · ") || "— ยังไม่ระบุครูฝึก —")
+    + (f.noCoach.length ? " · ขาดครูฝึก " + num(f.noCoach.length) + " วัน" : "");
+  const tip = "ฝึกสมรรถภาพร่างกาย · " + st + " · " + days + " · ครูฝึก " + tea
+    + (f.noCoach.length ? " · ยังไม่ระบุครูฝึกในวันที่ " + num(compressDays(f.noCoach)) : "");
+  return `<div class="q fitq ${cls}" title="${esc(tip)}">
+    <div class="qn"><b>ฝึกสมรรถภาพ</b><span class="qc">${num(got)} / ${num(q)}</span></div>
+    <div class="qbar"><i style="width:${w}%"></i></div>
+    <div class="qt">${st}</div>
+    <div class="qd">${esc(days)}</div>
+    <div class="qw">${esc(tea)}</div></div>`;
 }
 
 function renderQuota(){
@@ -653,8 +716,8 @@ function renderQuota(){
       : got === 0 ? "ยังไม่ได้ลง " + num(s.q) + " คาบ"
       : "ขาดอีก " + num(s.q - got) + " คาบ";
     const uniq = [...new Set(sd[s.k])];
-    const days = uniq.length ? "ลงแล้ว วันที่ " + num(uniq.join(", "))
-      + (sd[s.k].length > uniq.length ? " (บางวัน " + num(2) + " คาบขึ้นไป)" : "")
+    const days = uniq.length ? "ลงแล้ว วันที่ " + num(compressDays(uniq))
+      + (sd[s.k].length > uniq.length ? " (บางวันมากกว่า ๑ คาบ)" : "")
       : "ยังไม่ได้ลงวันใด";
     const tea = s.tea.filter(Boolean).join(" · ") || "— ยังไม่ระบุครู —";
     return `<div class="q ${cls}" title="${esc(s.n)} · ${st} · ${esc(days)} · ครู ${esc(tea)}">
@@ -663,13 +726,18 @@ function renderQuota(){
       <div class="qt">${st}</div>
       <div class="qd">${esc(days)}</div>
       <div class="qw">${esc(tea)}</div></div>`;
-  }).join("");
-  const QT = QUOTA_TOTAL(), left = QT - filled;
-  $("#qsum").innerHTML = left === 0
+  }).join("") + fitChip();
+
+  const f = fitInfo(), QT = QUOTA_TOTAL(), left = QT - filled;
+  const acad = left === 0
     ? `ลงครบแล้ว <i class="done">${num(QT)} / ${num(QT)}</i> คาบ`
     : left > 0
     ? `ลงแล้ว <i>${num(filled)}</i> / ${num(QT)} คาบ · ยังขาด <i>${num(left)}</i> คาบ`
     : `ลงแล้ว <i>${num(filled)}</i> / ${num(QT)} คาบ · เกินโควตา <i>${num(-left)}</i> คาบ`;
+  const fitTxt = !f.total ? ""
+    : ` &nbsp;·&nbsp; ฝึกสมรรถภาพ <i class="${f.days.length === f.total && !f.noCoach.length ? "done" : ""}">${num(f.days.length)} / ${num(f.total)}</i> วัน`
+      + (f.noCoach.length ? ` (ยังไม่ระบุครูฝึก <i>${num(f.noCoach.length)}</i> วัน)` : "");
+  $("#qsum").innerHTML = acad + fitTxt;
 }
 
 const KINDS = [["sub","คาบเรียน"], ["ev","กิจกรรม"], ["fit","ฝึกสมรรถภาพ"], ["br","พัก"]];
@@ -792,7 +860,8 @@ $("#subjTable").addEventListener("change", e => {
       if (r.k === "sub" && r.s === s.k && (r.w === old || (j === 0 && !r.w))) r.w = e.target.value;
     }));
   }
-  save(); renderAll();
+  save();
+  renderExceptSubjects();   /* ไม่วาดตารางวิชาใหม่ เพื่อให้ Tab ไปช่องถัดไปได้ต่อเนื่อง */
 });
 /* ปุ่มเพิ่ม/ลบ ในตารางวิชา */
 $("#subjTable").addEventListener("click", e => {
@@ -893,7 +962,10 @@ function handleRow(e){
     tgt.splice(at, 0, row);
   }
   else if (a === "sortday") D.rows.sort((x, y) => (tmin(x.t1) ?? 9999) - (tmin(y.t1) ?? 9999));
-  save(); renderAll();
+  save();
+  /* แก้ข้อความล้วน ไม่ต้องวาดการ์ดรายวันใหม่ เคอร์เซอร์จะได้ไม่หลุด */
+  if (["who", "label", "amt"].includes(a)){ renderSubjMeta(); renderQuota(); renderTeachers(); renderKPI(); }
+  else renderAll();
 }
 
 $("#btnCoach").onclick = () => {
