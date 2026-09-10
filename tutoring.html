@@ -96,6 +96,26 @@ section + section{border-top:1px solid var(--rule)}
 .btn.xs{font-size:.75rem;padding:.2rem .55rem}
 .btn.danger{color:var(--crit);border-color:var(--crit)}
 
+/* ตารางวิชา–ครูผู้สอน (แก้ไขได้) */
+.subj{display:flex;flex-direction:column;gap:.4rem}
+.srow{display:grid;grid-template-columns:minmax(8.5rem,1.3fr) 5.6rem minmax(11rem,2fr) 2rem;gap:.45rem;align-items:start}
+.srow.shead{font-family:var(--ui);font-weight:600;font-size:.76rem;color:var(--ink-2);padding-bottom:.1rem;border-bottom:1px solid var(--rule);align-items:center}
+.srow > input{width:100%;background:var(--ground);border:1px solid var(--rule);border-radius:5px;padding:.3rem .45rem;font-size:.86rem}
+.srow input[type=number]{text-align:center;font-variant-numeric:tabular-nums}
+.teal{display:flex;flex-direction:column;gap:.28rem;min-width:0}
+.tearow{display:flex;gap:.28rem;align-items:center}
+.tearow input{flex:1;min-width:0;background:var(--ground);border:1px solid var(--rule);border-radius:5px;padding:.3rem .45rem;font-size:.86rem}
+.srow .x,.tearow .x{background:transparent;border:1px solid var(--rule);border-radius:5px;color:var(--ink-3);cursor:pointer;
+  padding:.16rem .38rem;font-size:.82rem;line-height:1.2;flex:none;align-self:start}
+.srow .x:hover,.tearow .x:hover{color:var(--crit);border-color:var(--crit)}
+.ssum{font-family:var(--ui);font-weight:600;font-size:.83rem;font-variant-numeric:tabular-nums}
+.ssum.bad{color:var(--crit)} .ssum.ok{color:var(--ok)}
+@media (max-width:760px){
+  .srow{grid-template-columns:1fr 5.6rem 2rem}
+  .srow .teal{grid-column:1/-1}
+  .srow.shead span:nth-child(3){display:none}
+}
+
 /* โควตา — แถบลอยตามหน้าจอ */
 .qsticky{position:sticky;top:var(--topH,3.4rem);z-index:30;background:var(--ground);
   padding:.5rem 0 .55rem;border-bottom:1px solid var(--rule);box-shadow:0 6px 10px -8px rgba(16,48,95,.35)}
@@ -265,10 +285,19 @@ footer b{color:#fff}
 <section><div class="wrap">
   <div class="hd">
     <p class="eb">ขั้นที่ ๒</p>
-    <h2>ครูประจำวิชา</h2>
-    <p>กรอกชื่อครูครั้งเดียว เลือกวิชาในตารางแล้วชื่อครูจะเติมให้เอง ถ้าเปลี่ยนชื่อครูภายหลัง คาบที่ลงชื่อครูคนเดิมไว้จะเปลี่ยนตามให้ทั้งหมด</p>
+    <h2>วิชา โควตาคาบ และครูผู้สอน</h2>
+    <p>แก้ชื่อวิชา จำนวนคาบ และชื่อครูได้ทุกช่อง · <b>เพิ่มครูได้หลายคนต่อหนึ่งวิชา</b> คนแรกจะเป็นคนที่ระบบเติมให้อัตโนมัติเมื่อเลือกวิชา ส่วนคนอื่นเลือกได้จากรายการแนะนำในช่องครูของแต่ละคาบ · เพิ่มหรือลบวิชาได้ตามต้องการ</p>
   </div>
-  <div class="panel"><div class="grid3" id="teacherFields"></div></div>
+  <div class="panel">
+    <div class="subj" id="subjTable"></div>
+    <div class="acts">
+      <button class="btn" id="btnAddSubj" type="button">+ เพิ่มวิชา</button>
+      <button class="btn" id="btnResetSubj" type="button">คืนค่าวิชาเริ่มต้น</button>
+      <span class="spacer" style="margin-inline-start:auto"></span>
+      <span class="ssum" id="subjSum"></span>
+    </div>
+  </div>
+  <datalist id="teaList"></datalist>
 </div></section>
 
 <!-- ═══ ๓ ตารางรายวัน ═══ -->
@@ -404,18 +433,24 @@ const S = Object.assign({}, SCHOOL_DEF, JSON.parse(localStorage.getItem("nk_sett
 const num = s => S.thaiDigits === "1" ? thNum(s) : String(s ?? "");
 
 /* ═══════════ วิชาและโควตา ═══════════ */
-const SUBJ = [
-  { k:"math", n:"คณิตศาสตร์",       q:8 },
-  { k:"eng",  n:"ภาษาอังกฤษ",       q:6 },
-  { k:"tha",  n:"ภาษาไทย",          q:4 },
-  { k:"soc",  n:"สังคมศึกษา",        q:4 },
-  { k:"phy",  n:"ฟิสิกส์",           q:3 },
-  { k:"che",  n:"เคมี",              q:2 },
-  { k:"bio",  n:"ชีววิทยา",          q:2 },
-  { k:"sci",  n:"วิทยาศาสตร์ทั่วไป", sn:"วิทย์ทั่วไป", q:1 }
+const DEF_SUBJ = [
+  { k:"math", n:"คณิตศาสตร์",  q:8, tea:[""] },
+  { k:"eng",  n:"ภาษาอังกฤษ",  q:6, tea:[""] },
+  { k:"tha",  n:"ภาษาไทย",     q:4, tea:[""] },
+  { k:"soc",  n:"สังคมศึกษา",   q:4, tea:[""] },
+  { k:"phy",  n:"ฟิสิกส์",      q:3, tea:[""] },
+  { k:"che",  n:"เคมี",         q:3, tea:[""] },
+  { k:"bio",  n:"ชีววิทยา",     q:2, tea:[""] }
 ];
-const SB = Object.fromEntries(SUBJ.map(s => [s.k, s]));
-const QUOTA_TOTAL = SUBJ.reduce((a, s) => a + s.q, 0);
+/** รายการวิชาปัจจุบัน (แก้ไขได้ เก็บอยู่ใน T.subjects) */
+const SUBJ = () => T.subjects;
+/** หาวิชาจากรหัส — คืนค่าสำรองถ้าวิชานั้นถูกลบไปแล้ว เพื่อไม่ให้หน้าพัง */
+const SB = k => T.subjects.find(s => s.k === k) || { k, n:"(วิชาที่ถูกลบแล้ว)", q:0, tea:[] };
+const QUOTA_TOTAL = () => T.subjects.reduce((a, s) => a + (Number(s.q) || 0), 0);
+/** ชื่อครูทั้งหมดที่กรอกไว้ ใช้เป็นรายการแนะนำ */
+const allTeachers = () => [...new Set(
+  T.subjects.flatMap(s => s.tea).concat([T.coach])
+    .map(x => String(x || "").trim()).filter(Boolean))];
 
 /* ═══════════ แม่แบบแถว ═══════════ */
 const stdRows = () => ([
@@ -442,14 +477,31 @@ const DEF_T = {
   students: "15",
   room: "ห้องดอกแขม (ห้องปรับอากาศ พร้อมหน้าจออัจฉริยะ Smart Display)",
   rate: "600", fitRate: "600", lecRate: "1000",
-  coach: "", teachers: {}, days: {}
+  coach: "", subjects: [], days: {}
 };
 const KEY = "nk_tutor_v2";
+const newId = p => p + Math.random().toString(36).slice(2, 7);
 let T = (() => {
   const saved = JSON.parse(localStorage.getItem(KEY) || "null");
   const t = Object.assign(JSON.parse(JSON.stringify(DEF_T)), saved || {});
   if (!t.days || typeof t.days !== "object") t.days = {};
-  if (!t.teachers || typeof t.teachers !== "object") t.teachers = {};
+
+  /* ย้ายจากโครงสร้างเดิม : teachers {รหัสวิชา: ชื่อ} → subjects[].tea[] */
+  if (!Array.isArray(t.subjects) || !t.subjects.length){
+    t.subjects = JSON.parse(JSON.stringify(DEF_SUBJ));
+    if (t.teachers && typeof t.teachers === "object")
+      t.subjects.forEach(s => { const n = t.teachers[s.k]; if (n) s.tea = [n]; });
+    /* วิชาวิทยาศาสตร์ทั่วไปถูกยุบไปรวมกับเคมี — ย้ายคาบที่ลงไว้แล้วตามไปด้วย */
+    Object.values(t.days).forEach(d => (d.rows || []).forEach(r => {
+      if (r.k === "sub" && r.s === "sci") r.s = "che";
+    }));
+  }
+  t.subjects.forEach(s => {
+    if (!Array.isArray(s.tea)) s.tea = [s.tea ? String(s.tea) : ""];
+    if (!s.tea.length) s.tea = [""];
+    if (!s.k) s.k = newId("j");
+  });
+  delete t.teachers;
   return t;
 })();
 const save = () => localStorage.setItem(KEY, JSON.stringify(T));
@@ -494,7 +546,7 @@ function allRows(){
   return out;
 }
 function counts(){
-  const c = Object.fromEntries(SUBJ.map(s => [s.k, 0]));
+  const c = Object.fromEntries(SUBJ().map(s => [s.k, 0]));
   let filled = 0, slots = 0, hrs = 0;
   allRows().forEach(({ r }) => {
     if (r.k !== "sub") return;
@@ -515,7 +567,7 @@ function overlaps(rows){
 const clashCount = () => activeKeys().reduce((a, k) => a + overlaps(T.days[k].rows).size, 0);
 /** วิชาไหนถูกลงไว้ในวันที่เท่าไรบ้าง → { math:[1,2,4], ... } */
 function subjDays(){
-  const m = Object.fromEntries(SUBJ.map(s => [s.k, []]));
+  const m = Object.fromEntries(SUBJ().map(s => [s.k, []]));
   activeKeys().forEach((k, di) => T.days[k].rows.forEach(r => {
     if (r.k === "sub" && r.s && m[r.s]) m[r.s].push(di + 1);
   }));
@@ -533,9 +585,9 @@ function stats(){
       if (r.k === "sub"){
         if (!r.s) return;
         const o = get(who || "(ยังไม่ระบุครู)");
-        o.roles.add(SB[r.s].n); o.periods++; o.hours += dur(r);
+        o.roles.add(SB(r.s).n); o.periods++; o.hours += dur(r);
         o.pay += Number(T.rate) || 0;
-        o.rows.push({ di, date, t1:r.t1, t2:r.t2, what: SB[r.s].n });
+        o.rows.push({ di, date, t1:r.t1, t2:r.t2, what: SB(r.s).n });
       } else if (r.k === "fit"){
         if (!who) return;
         const o = get(who);
@@ -558,15 +610,41 @@ const totalPay = () => Object.values(stats()).reduce((a, o) => a + o.pay, 0);
 /* ═══════════ วาดหน้าจอ ═══════════ */
 function renderSettings(){
   document.querySelectorAll("[data-k]").forEach(el => { el.value = T[el.dataset.k] ?? ""; });
-  $("#teacherFields").innerHTML = SUBJ.map(s => `
-    <div class="field"><label for="tf_${s.k}">ครู${esc(s.n)} <span style="color:var(--ink-3)">(${num(s.q)} คาบ)</span></label>
-    <input id="tf_${s.k}" data-tk="${s.k}" type="text" value="${esc(T.teachers[s.k] || "")}" placeholder="ชื่อ–สกุลครูผู้สอน"></div>`).join("");
+}
+
+/** ตารางวิชา–โควตา–ครูผู้สอน (แก้ไขได้ทั้งหมด) */
+function renderSubjects(){
+  const used = new Set();
+  activeKeys().forEach(k => T.days[k].rows.forEach(r => { if (r.k === "sub" && r.s) used.add(r.s); }));
+  $("#subjTable").innerHTML =
+    `<div class="srow shead"><span>วิชา</span><span>โควตา (คาบ)</span><span>ครูผู้สอน</span><span></span></div>` +
+    T.subjects.map((s, i) => {
+      const teas = s.tea.map((tn, j) => `<div class="tearow">
+        <input data-sj="${i}" data-tea="${j}" type="text" value="${esc(tn)}" list="teaList"
+               placeholder="${j === 0 ? "ชื่อ–สกุลครูผู้สอน (คนหลัก)" : "ครูผู้สอนคนที่ " + num(j + 1)}"
+               aria-label="ครูผู้สอนวิชา${esc(s.n)} คนที่ ${j + 1}">
+        ${s.tea.length > 1 ? `<button class="x" data-sact="delTea" data-sj="${i}" data-tea="${j}" type="button" title="ลบครูคนนี้">✕</button>` : ""}
+      </div>`).join("");
+      return `<div class="srow">
+        <input data-sj="${i}" data-sf="n" type="text" value="${esc(s.n)}" placeholder="ชื่อวิชา" aria-label="ชื่อวิชา">
+        <input data-sj="${i}" data-sf="q" type="number" min="0" max="99" value="${esc(s.q)}" aria-label="โควตาคาบวิชา${esc(s.n)}">
+        <div class="teal">${teas}
+          <button class="btn xs" data-sact="addTea" data-sj="${i}" type="button">+ เพิ่มครูวิชานี้</button></div>
+        <button class="x" data-sact="delSub" data-sj="${i}" type="button"
+          title="ลบวิชา${esc(s.n)}${used.has(s.k) ? " (มีคาบที่ลงไว้แล้ว)" : ""}">✕</button>
+      </div>`;
+    }).join("");
+  const QT = QUOTA_TOTAL();
+  const el = $("#subjSum");
+  el.textContent = `รวมโควตา ${num(QT)} คาบ · ${num(QT * 1.5)} ชั่วโมง`;
+  el.className = "ssum " + (QT === 30 ? "ok" : "bad");
+  $("#teaList").innerHTML = allTeachers().map(n => `<option value="${esc(n)}"></option>`).join("");
 }
 
 function renderQuota(){
   const { c, filled } = counts();
   const sd = subjDays();
-  $("#quota").innerHTML = SUBJ.map(s => {
+  $("#quota").innerHTML = SUBJ().map(s => {
     const got = c[s.k];
     const cls = got === s.q ? "ok" : got > s.q ? "over" : got === 0 ? "none" : "part";
     const w = Math.min(100, s.q ? got / s.q * 100 : 0);
@@ -574,8 +652,11 @@ function renderQuota(){
       : got > s.q ? "เกิน " + num(got - s.q) + " คาบ"
       : got === 0 ? "ยังไม่ได้ลง " + num(s.q) + " คาบ"
       : "ขาดอีก " + num(s.q - got) + " คาบ";
-    const days = sd[s.k].length ? "ลงแล้ว วันที่ " + num(sd[s.k].join(", ")) : "ยังไม่ได้ลงวันใด";
-    const tea = T.teachers[s.k] || "— ยังไม่ระบุครู —";
+    const uniq = [...new Set(sd[s.k])];
+    const days = uniq.length ? "ลงแล้ว วันที่ " + num(uniq.join(", "))
+      + (sd[s.k].length > uniq.length ? " (บางวัน " + num(2) + " คาบขึ้นไป)" : "")
+      : "ยังไม่ได้ลงวันใด";
+    const tea = s.tea.filter(Boolean).join(" · ") || "— ยังไม่ระบุครู —";
     return `<div class="q ${cls}" title="${esc(s.n)} · ${st} · ${esc(days)} · ครู ${esc(tea)}">
       <div class="qn"><b>${esc(s.sn || s.n)}</b><span class="qc">${num(got)} / ${num(s.q)}</span></div>
       <div class="qbar"><i style="width:${w}%"></i></div>
@@ -583,12 +664,12 @@ function renderQuota(){
       <div class="qd">${esc(days)}</div>
       <div class="qw">${esc(tea)}</div></div>`;
   }).join("");
-  const left = QUOTA_TOTAL - filled;
+  const QT = QUOTA_TOTAL(), left = QT - filled;
   $("#qsum").innerHTML = left === 0
-    ? `ลงครบแล้ว <i class="done">${num(QUOTA_TOTAL)} / ${num(QUOTA_TOTAL)}</i> คาบ`
+    ? `ลงครบแล้ว <i class="done">${num(QT)} / ${num(QT)}</i> คาบ`
     : left > 0
-    ? `ลงแล้ว <i>${num(filled)}</i> / ${num(QUOTA_TOTAL)} คาบ · ยังขาด <i>${num(left)}</i> คาบ`
-    : `ลงแล้ว <i>${num(filled)}</i> / ${num(QUOTA_TOTAL)} คาบ · เกินโควตา <i>${num(-left)}</i> คาบ`;
+    ? `ลงแล้ว <i>${num(filled)}</i> / ${num(QT)} คาบ · ยังขาด <i>${num(left)}</i> คาบ`
+    : `ลงแล้ว <i>${num(filled)}</i> / ${num(QT)} คาบ · เกินโควตา <i>${num(-left)}</i> คาบ`;
 }
 
 const KINDS = [["sub","คาบเรียน"], ["ev","กิจกรรม"], ["fit","ฝึกสมรรถภาพ"], ["br","พัก"]];
@@ -599,13 +680,13 @@ function rowHTML(dk, ri, r, bad, keys){
   if (r.k === "sub"){
     mid = `<select data-a="sub" data-d="${dk}" data-r="${ri}" aria-label="วิชา">
       <option value="">— เลือกวิชา —</option>
-      ${SUBJ.map(s => `<option value="${s.k}"${s.k === r.s ? " selected" : ""}>${esc(s.n)}</option>`).join("")}</select>`;
+      ${SUBJ().map(s => `<option value="${s.k}"${s.k === r.s ? " selected" : ""}>${esc(s.n)}</option>`).join("")}</select>`;
   } else {
     const ph = r.k === "ev" ? "ชื่อกิจกรรม เช่น พิธีเปิดโครงการ" : r.k === "fit" ? "ฝึกสมรรถภาพร่างกาย" : "พักกลางวัน";
     mid = `<input data-a="label" data-d="${dk}" data-r="${ri}" type="text" value="${esc(r.l || "")}" placeholder="${ph}" aria-label="รายละเอียด">`;
   }
   const who = r.k === "br" ? `<span class="dur">—</span>`
-    : `<input data-a="who" data-d="${dk}" data-r="${ri}" type="text" value="${esc(r.w || "")}" placeholder="${r.k === "fit" ? "ครูฝึก" : r.k === "ev" ? "ผู้รับผิดชอบ / วิทยากร" : "ครูผู้สอน"}" aria-label="ผู้รับผิดชอบ">`;
+    : `<input data-a="who" data-d="${dk}" data-r="${ri}" type="text" list="teaList" value="${esc(r.w || "")}" placeholder="${r.k === "fit" ? "ครูฝึก" : r.k === "ev" ? "ผู้รับผิดชอบ / วิทยากร" : "ครูผู้สอน"}" aria-label="ผู้รับผิดชอบ">`;
   const amt = r.k === "ev"
     ? `<input class="amt" data-a="amt" data-d="${dk}" data-r="${ri}" type="number" min="0" value="${r.a === -1 || r.a == null ? "" : r.a}" placeholder="${num(T.lecRate)}" title="ค่าตอบแทนครั้งนี้ (บาท)" aria-label="ค่าตอบแทน">`
     : `<span class="dur amt" title="ค่าตอบแทน (บาท)">${r.k === "sub" ? num(money0(Number(T.rate) || 0)) : r.k === "fit" ? num(money0(Number(T.fitRate) || 0)) : "—"}</span>`;
@@ -673,10 +754,11 @@ function renderKPI(){
   const stu = Number(T.students) || 0;
   $("#kDays").textContent = num(act.length);
   $("#kDaysSub").textContent = keys.length === act.length ? "วัน · จัดครบทุกวันในช่วง" : `วัน · จาก ${num(keys.length)} วันในช่วง`;
-  $("#kSlot").textContent = num(filled) + " / " + num(QUOTA_TOTAL);
-  const el = $("#kSlot"); el.classList.toggle("bad", filled > QUOTA_TOTAL);
-  $("#kSlotSub").textContent = slots < QUOTA_TOTAL
-    ? `มีช่องคาบ ${num(slots)} ช่อง — ยังขาด ${num(QUOTA_TOTAL - slots)} ช่อง กด “+ คาบเรียน” เพิ่มในวันที่ต้องการ`
+  const QT = QUOTA_TOTAL();
+  $("#kSlot").textContent = num(filled) + " / " + num(QT);
+  const el = $("#kSlot"); el.classList.toggle("bad", filled > QT);
+  $("#kSlotSub").textContent = slots < QT
+    ? `มีช่องคาบ ${num(slots)} ช่อง — ยังขาด ${num(QT - slots)} ช่อง กด “+ คาบเรียน” เพิ่มในวันที่ต้องการ`
     : `มีช่องคาบ ${num(slots)} ช่อง · ลงแล้ว ${num(filled)}`;
   $("#kHours").textContent = num(hFmt(hrs));
   $("#kTea").textContent = num(Object.keys(map).length || "—");
@@ -686,22 +768,71 @@ function renderKPI(){
   $("#kClash").classList.toggle("bad", clash > 0);
 }
 
-function renderAll(){ renderQuota(); renderDays(); renderTeachers(); renderKPI(); }
+function renderAll(){ renderSubjects(); renderQuota(); renderDays(); renderTeachers(); renderKPI(); }
 
 /* ═══════════ อีเวนต์ ═══════════ */
 document.querySelectorAll("[data-k]").forEach(el => el.addEventListener("change", e => {
   T[e.target.dataset.k] = e.target.value; save(); renderAll();
 }));
-document.addEventListener("change", e => {
-  const tk = e.target.dataset && e.target.dataset.tk;
-  if (!tk) return;
-  const old = T.teachers[tk] || "";
-  T.teachers[tk] = e.target.value;
-  dayKeys().forEach(k => T.days[k] && T.days[k].rows.forEach(r => {
-    if (r.k === "sub" && r.s === tk && (!r.w || r.w === old)) r.w = e.target.value;
-  }));
+/* แก้ชื่อวิชา โควตา และชื่อครู */
+$("#subjTable").addEventListener("change", e => {
+  const d = e.target.dataset;
+  if (d.sj == null) return;
+  const s = T.subjects[+d.sj];
+  if (!s) return;
+  if (d.sf === "n"){
+    s.n = e.target.value.trim() || "วิชาใหม่";
+  } else if (d.sf === "q"){
+    s.q = Math.max(0, parseInt(e.target.value, 10) || 0);
+  } else if (d.tea != null){
+    const j = +d.tea, old = s.tea[j] || "";
+    s.tea[j] = e.target.value;
+    /* เปลี่ยนชื่อครูคนเดิม → คาบที่ลงชื่อคนนั้นไว้เปลี่ยนตามทั้งหมด */
+    dayKeys().forEach(k => T.days[k] && T.days[k].rows.forEach(r => {
+      if (r.k === "sub" && r.s === s.k && (r.w === old || (j === 0 && !r.w))) r.w = e.target.value;
+    }));
+  }
   save(); renderAll();
 });
+/* ปุ่มเพิ่ม/ลบ ในตารางวิชา */
+$("#subjTable").addEventListener("click", e => {
+  const a = e.target.dataset && e.target.dataset.sact;
+  if (!a) return;
+  const i = +e.target.dataset.sj, s = T.subjects[i];
+  if (!s) return;
+  if (a === "addTea") s.tea.push("");
+  else if (a === "delTea"){
+    if (s.tea.length <= 1) return;
+    s.tea.splice(+e.target.dataset.tea, 1);
+  } else if (a === "delSub"){
+    let n = 0;
+    activeKeys().forEach(k => T.days[k].rows.forEach(r => { if (r.k === "sub" && r.s === s.k) n++; }));
+    const msg = n ? `ลบวิชา “${s.n}” ?\n\nมี ${n} คาบในตารางที่ลงวิชานี้ไว้ คาบเหล่านั้นจะกลายเป็นคาบว่างให้เลือกวิชาใหม่`
+                  : `ลบวิชา “${s.n}” ?`;
+    if (!confirm(msg)) return;
+    dayKeys().forEach(k => T.days[k] && T.days[k].rows.forEach(r => {
+      if (r.k === "sub" && r.s === s.k){ r.s = ""; r.w = ""; }
+    }));
+    T.subjects.splice(i, 1);
+  }
+  save(); renderAll();
+});
+$("#btnAddSubj").onclick = () => {
+  T.subjects.push({ k: newId("j"), n: "วิชาใหม่", q: 1, tea: [""] });
+  save(); renderAll();
+  const rows = $("#subjTable").querySelectorAll(".srow:not(.shead)");
+  const last = rows[rows.length - 1];
+  if (last){ const inp = last.querySelector("input"); inp.focus(); inp.select(); }
+};
+$("#btnResetSubj").onclick = () => {
+  if (!confirm("คืนรายการวิชาเป็นค่าเริ่มต้น ๗ วิชา (๓๐ คาบ) ?\n\nชื่อครูที่กรอกไว้จะหายทั้งหมด และคาบที่ลงวิชาที่ไม่มีในค่าเริ่มต้นจะกลายเป็นคาบว่าง")) return;
+  T.subjects = JSON.parse(JSON.stringify(DEF_SUBJ));
+  const ok = new Set(T.subjects.map(s => s.k));
+  dayKeys().forEach(k => T.days[k] && T.days[k].rows.forEach(r => {
+    if (r.k === "sub" && r.s && !ok.has(r.s)){ r.s = ""; r.w = ""; }
+  }));
+  save(); renderAll();
+};
 
 $("#days").addEventListener("change", handleRow);
 $("#days").addEventListener("click", handleRow);
@@ -724,7 +855,7 @@ function handleRow(e){
     if (r.k === "br"){ r.w = ""; if (!r.l) r.l = "พักกลางวัน / เตรียมเรียนพละ"; }
     if (r.k === "ev" && r.a == null) r.a = -1;
   }
-  else if (a === "sub"){ D.rows[ri].s = el.value; D.rows[ri].w = el.value ? (T.teachers[el.value] || "") : ""; }
+  else if (a === "sub"){ D.rows[ri].s = el.value; D.rows[ri].w = el.value ? (SB(el.value).tea[0] || "") : ""; }
   else if (a === "label") D.rows[ri].l = el.value;
   else if (a === "who")   D.rows[ri].w = el.value;
   else if (a === "amt")   D.rows[ri].a = el.value === "" ? -1 : Number(el.value);
@@ -785,21 +916,21 @@ $("#btnFill").onclick = () => {
   if (!slots.length) return alert("ยังไม่มีช่องคาบเรียน — กด “+ คาบเรียน” ในการ์ดรายวันก่อน");
   if (slots.some(s => T.days[s.k].rows[s.i].s) && !confirm("เติมวิชาใหม่ทับของเดิมทั้งหมด?")) return;
   slots.forEach(s => { T.days[s.k].rows[s.i].s = ""; T.days[s.k].rows[s.i].w = ""; });
-  const rem = Object.fromEntries(SUBJ.map(s => [s.k, s.q]));
+  const rem = Object.fromEntries(SUBJ().map(s => [s.k, Number(s.q) || 0]));
   for (const sl of slots){
     const used = new Set(T.days[sl.k].rows.filter(r => r.k === "sub" && r.s).map(r => r.s));
-    let cand = SUBJ.map(x => x.k).filter(k => rem[k] > 0 && !used.has(k));
-    if (!cand.length) cand = SUBJ.map(x => x.k).filter(k => rem[k] > 0);
+    let cand = SUBJ().map(x => x.k).filter(k => rem[k] > 0 && !used.has(k));
+    if (!cand.length) cand = SUBJ().map(x => x.k).filter(k => rem[k] > 0);
     if (!cand.length) break;
     cand.sort((a, b) => rem[b] - rem[a]);
     const p = cand[0]; rem[p]--;
     T.days[sl.k].rows[sl.i].s = p;
-    T.days[sl.k].rows[sl.i].w = T.teachers[p] || "";
+    T.days[sl.k].rows[sl.i].w = SB(p).tea[0] || "";
   }
   save(); renderAll();
   const left = Object.entries(rem).filter(([, v]) => v > 0);
   if (left.length) alert("เติมครบทุกช่องแล้ว แต่ยังเหลือวิชาที่ลงไม่ครบโควตา\n\n"
-    + left.map(([k, v]) => "• " + SB[k].n + " ขาด " + v + " คาบ").join("\n")
+    + left.map(([k, v]) => "• " + SB(k).n + " ขาด " + v + " คาบ").join("\n")
     + "\n\nกด “+ คาบเรียน” เพิ่มช่องในวันที่ต้องการ แล้วเลือกวิชาเอง");
 };
 
@@ -815,7 +946,7 @@ function projInfo(){
   const range = ks.length ? `ระหว่างวันที่ ${num(thDate(dObj(ks[0])))} ถึงวันที่ ${num(thDate(dObj(ks[ks.length - 1])))} รวม ${num(ks.length)} วัน` : "ยังไม่ได้กำหนดวัน";
   return `<p class="sub">${esc(T.title)}</p><p class="sub">${range} · ${esc(T.room)} · นักเรียน ${num(T.students)} คน</p>`;
 }
-const rowWhat = r => r.k === "sub" ? (r.s ? esc(SB[r.s].n) : "— ยังไม่กำหนดวิชา —")
+const rowWhat = r => r.k === "sub" ? (r.s ? esc(SB(r.s).n) : "— ยังไม่กำหนดวิชา —")
   : r.k === "fit" ? esc(r.l || "ฝึกสมรรถภาพร่างกาย")
   : r.k === "br"  ? esc(r.l || "พัก")
   : `<span class="ev">${esc(r.l || "กิจกรรมพิเศษ")}</span>`;
@@ -833,7 +964,7 @@ $("#prGrid").onclick = () => {
       <td>${r.k === "br" ? "" : esc(r.w || "")}</td></tr>`).join("");
   }).join("");
   const { c } = counts();
-  const qrow = SUBJ.map(s => `<tr><td>${esc(s.n)}</td><td class="c">${num(c[s.k])} / ${num(s.q)}</td><td>${esc(T.teachers[s.k] || "")}</td></tr>`).join("");
+  const qrow = SUBJ().map(s => `<tr><td>${esc(s.n)}</td><td class="c">${num(c[s.k])} / ${num(s.q)}</td><td>${esc(s.tea.filter(Boolean).join(" · "))}</td></tr>`).join("");
   sheetEl.innerHTML = orgHead() + `<h1>ตารางติวเข้มปิดภาคเรียน</h1>` + projInfo() + `
     <table><thead><tr><th style="width:24mm">วันที่</th><th style="width:30mm">เวลา</th><th>รายการ</th><th style="width:44mm">ผู้รับผิดชอบ</th></tr></thead>
     <tbody>${body || `<tr><td colspan="4" class="c">ยังไม่ได้จัดตาราง</td></tr>`}</tbody></table>
