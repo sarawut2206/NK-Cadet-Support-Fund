@@ -273,10 +273,12 @@ footer b{color:#fff}
       <div class="field"><label for="cRate">ค่าสอน (บาท/คาบ)</label><input id="cRate" data-k="rate" type="number" min="0"></div>
       <div class="field"><label for="cFitRate">ค่าครูฝึกสมรรถภาพ (บาท/วัน)</label><input id="cFitRate" data-k="fitRate" type="number" min="0"></div>
       <div class="field"><label for="cLecRate">ค่าตอบแทนวิทยากร (บาท/ครั้ง)</label><input id="cLecRate" data-k="lecRate" type="number" min="0" ></div>
+      <div class="field"><label for="cFitDays">จำนวนวันที่มีฝึกสมรรถภาพ</label><input id="cFitDays" data-k="fitDays" type="number" min="0" max="60"></div>
       <div class="field"><label for="cCoach">ครูฝึกสมรรถภาพประจำ</label><input id="cCoach" data-k="coach" type="text" placeholder="ชื่อครูฝึก"></div>
     </div>
     <div class="acts">
       <button class="btn" id="btnCoach" type="button">เติมชื่อครูฝึกลงทุกวัน</button>
+      <button class="btn" id="btnFitDays" type="button">จัดวันฝึกให้ตรงตามจำนวนที่ตั้งไว้</button>
       <button class="btn" id="btnRebuild" type="button">สร้างแม่แบบตารางใหม่ทั้งหมด</button>
       <span class="field hint">“สร้างแม่แบบใหม่” จะล้างสิ่งที่ลงไว้แล้วทั้งหมด แล้ววางแม่แบบเริ่มต้นให้ใหม่</span>
     </div>
@@ -481,7 +483,7 @@ const DEF_T = {
   students: "15",
   room: "ห้องดอกแขม (ห้องปรับอากาศ พร้อมหน้าจออัจฉริยะ Smart Display)",
   rate: "600", fitRate: "600", lecRate: "1000",
-  coach: "", subjects: [], days: {}
+  fitDays: "8", coach: "", subjects: [], days: {}
 };
 const KEY = "nk_tutor_v2";
 const newId = p => p + Math.random().toString(36).slice(2, 7);
@@ -530,20 +532,30 @@ function dayKeys(){
   return out;
 }
 /** สร้างการ์ดของวันที่ยังไม่มีข้อมูล (คงข้อมูลเดิมไว้เสมอ) */
+const fitTarget = () => Math.max(0, parseInt(T.fitDays, 10) || 0);
+/** แม่แบบของวันลำดับที่ i — ใส่คาบฝึกเฉพาะวันที่อยู่ในจำนวนวันฝึกที่ตั้งไว้ */
+function dayTemplate(i){
+  const rows = (i === 0 ? openRows() : stdRows());
+  if (i < fitTarget()){
+    if (T.coach) rows.forEach(r => { if (r.k === "fit") r.w = T.coach; });
+    return rows;
+  }
+  const out = rows.filter(r => r.k !== "fit");
+  out.forEach(r => { if (r.k === "br") r.l = "พักกลางวัน"; });
+  return out;
+}
 function syncDays(){
   const keys = dayKeys();
   keys.forEach((k, i) => {
-    if (!T.days[k]) T.days[k] = { on:true, rows: (i === 0 ? openRows() : stdRows()) };
-    if (!Array.isArray(T.days[k].rows)) T.days[k].rows = stdRows();
+    if (!T.days[k]) T.days[k] = { on:true, rows: dayTemplate(i) };
+    if (!Array.isArray(T.days[k].rows)) T.days[k].rows = dayTemplate(i);
   });
   save();
   return keys;
 }
 function rebuildAll(){
   T.days = {};
-  const keys = dayKeys();
-  keys.forEach((k, i) => { T.days[k] = { on:true, rows: (i === 0 ? openRows() : stdRows()) }; });
-  if (T.coach) keys.forEach(k => T.days[k].rows.forEach(r => { if (r.k === "fit") r.w = T.coach; }));
+  dayKeys().forEach((k, i) => { T.days[k] = { on:true, rows: dayTemplate(i) }; });
   save();
 }
 
@@ -688,19 +700,20 @@ function fitInfo(){
     if (!named.length) noCoach.push(di + 1);
     named.forEach(n => coaches.add(n));
   });
-  return { total: keys.length, days, noCoach, coaches: [...coaches] };
+  return { total: keys.length, target: Math.min(fitTarget(), keys.length), days, noCoach, coaches: [...coaches] };
 }
 
 /** ชิปฝึกสมรรถภาพในแถบโควตา */
 function fitChip(){
   const f = fitInfo();
-  const got = f.days.length, q = f.total;
-  const cls = !q || got === 0 ? "none" : (got === q && !f.noCoach.length) ? "ok" : "part";
-  const w = q ? Math.min(100, got / q * 100) : 0;
-  const st = !q ? "ยังไม่มีวันติว"
+  const got = f.days.length, q = f.target;
+  const cls = !f.total || got === 0 ? "none" : (got === q && !f.noCoach.length) ? "ok" : "part";
+  const w = q ? Math.min(100, got / q * 100) : (got ? 100 : 0);
+  const st = !f.total ? "ยังไม่มีวันติว"
     : got === 0 ? "ยังไม่ได้ลงวันใด"
     : got < q ? "ขาดอีก " + num(q - got) + " วัน"
-    : "✓ ครบทุกวัน";
+    : got > q ? "เกินแผน " + num(got - q) + " วัน"
+    : "✓ ครบตามแผน";
   const days = got ? "ลงแล้ว วันที่ " + num(compressDays(f.days)) : "ยังไม่ได้ลงวันใด";
   const tea = (f.coaches.join(" · ") || "— ยังไม่ระบุครูฝึก —")
     + (f.noCoach.length ? " · ขาดครูฝึก " + num(f.noCoach.length) + " วัน" : "");
@@ -708,6 +721,7 @@ function fitChip(){
     + (f.noCoach.length ? " · ยังไม่ระบุครูฝึกในวันที่ " + num(compressDays(f.noCoach)) : "");
   return `<div class="q fitq ${cls}" title="${esc(tip)}">
     <div class="qn"><b>ฝึกสมรรถภาพ</b><span class="qc">${num(got)} / ${num(q)}</span></div>
+    <!-- q = จำนวนวันฝึกที่ตั้งไว้ในขั้นที่ ๑ -->
     <div class="qbar"><i style="width:${w}%"></i></div>
     <div class="qt">${st}</div>
     <div class="qd">${esc(days)}</div>
@@ -745,7 +759,7 @@ function renderQuota(){
     ? `ลงแล้ว <i>${num(filled)}</i> / ${num(QT)} คาบ · ยังขาด <i>${num(left)}</i> คาบ`
     : `ลงแล้ว <i>${num(filled)}</i> / ${num(QT)} คาบ · เกินโควตา <i>${num(-left)}</i> คาบ`;
   const fitTxt = !f.total ? ""
-    : ` &nbsp;·&nbsp; ฝึกสมรรถภาพ <i class="${f.days.length === f.total && !f.noCoach.length ? "done" : ""}">${num(f.days.length)} / ${num(f.total)}</i> วัน`
+    : ` &nbsp;·&nbsp; ฝึกสมรรถภาพ <i class="${f.days.length === f.target && !f.noCoach.length ? "done" : ""}">${num(f.days.length)} / ${num(f.target)}</i> วัน`
       + (f.noCoach.length ? ` (ยังไม่ระบุครูฝึก <i>${num(f.noCoach.length)}</i> วัน)` : "");
   $("#qsum").innerHTML = acad + fitTxt;
 }
@@ -949,8 +963,7 @@ function handleRow(e){
   }
   else if (a === "resetday"){
     if (!confirm("คืนแม่แบบของวันนี้ ข้อมูลที่ลงไว้ในวันนี้จะหายทั้งหมด?")) return;
-    D.rows = (dayKeys()[0] === dk ? openRows() : stdRows());
-    if (T.coach) D.rows.forEach(r => { if (r.k === "fit") r.w = T.coach; });
+    D.rows = dayTemplate(dayKeys().indexOf(dk));
   }
   else if (a === "move"){
     const to = el.value;
@@ -980,6 +993,29 @@ function handleRow(e){
 
 $("#btnCoach").onclick = () => {
   dayKeys().forEach(k => T.days[k] && T.days[k].rows.forEach(r => { if (r.k === "fit") r.w = T.coach || ""; }));
+  save(); renderAll();
+};
+$("#btnFitDays").onclick = () => {
+  const keys = dayKeys(), want = Math.min(fitTarget(), keys.length);
+  let add = 0, del = 0;
+  keys.forEach((k, i) => {
+    const D = T.days[k];
+    if (!D) return;
+    const has = D.rows.some(r => r.k === "fit");
+    if (i < want && !has){
+      const last = D.rows.reduce((m, r) => Math.max(m, tmin(r.t2) ?? 0), 0) || 780;
+      D.rows.push({ k:"fit", t1: tstr(last), t2: tstr(last + 90), l:"ฝึกสมรรถภาพร่างกาย", w: T.coach || "" });
+      D.rows.forEach(r => { if (r.k === "br" && r.l === "พักกลางวัน") r.l = "พักกลางวัน / เตรียมเรียนพละ"; });
+      add++;
+    } else if (i >= want && has){
+      D.rows = D.rows.filter(r => r.k !== "fit");
+      D.rows.forEach(r => { if (r.k === "br") r.l = "พักกลางวัน"; });
+      del++;
+    }
+  });
+  if (!add && !del) return alert(`วันฝึกสมรรถภาพตรงตามที่ตั้งไว้แล้ว (${want} วัน)`);
+  if (!confirm(`ปรับให้มีฝึกสมรรถภาพ ${want} วันแรก จาก ${keys.length} วัน\n\n`
+    + (add ? `• เพิ่มคาบฝึก ${add} วัน\n` : "") + (del ? `• ตัดคาบฝึกออก ${del} วัน\n` : ""))) return;
   save(); renderAll();
 };
 $("#btnRebuild").onclick = () => {
