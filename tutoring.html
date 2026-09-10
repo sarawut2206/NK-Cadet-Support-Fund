@@ -253,9 +253,7 @@ footer b{color:#fff}
 .sheet .ptbl td.k-br{background:#EFEFEF;border-color:#D6D6D6}
 .sheet .ptbl td.k-br b{color:#666;font-weight:400;font-size:10pt}
 .sheet .ptbl td.empty{background:#F6FAFE;border:.5pt dashed #C9DEF0}
-.sheet .pfoot{display:flex;justify-content:center;gap:10mm;margin-top:5mm;position:relative}
-.sheet .pbox{background:#fff;border:1pt solid #9CC6E8;border-radius:3mm;padding:1.6mm 8mm;font-size:13pt;color:#14406E}
-.sheet .pnote{text-align:center;font-size:9.5pt;color:#4B6B8A;margin-top:3mm;position:relative}
+.sheet .pnote{text-align:center;font-size:9.5pt;color:#4B6B8A;margin-top:4mm;position:relative}
 </style>
 </head>
 <body>
@@ -1298,10 +1296,6 @@ $("#prPretty").onclick = () => {
       <p class="psub">${esc(S.plan)} · ${esc(S.school)}${weeks.length > 1 ? ` · สัปดาห์ที่ ${num(wi + 1)} จาก ${num(weeks.length)}` : ""}</p>
       <table class="ptbl"><thead><tr><th class="tcorner">วัน / เวลา</th>${head}</tr></thead>
         <tbody>${body}</tbody></table>
-      <div class="pfoot">
-        <div class="pbox">ชื่อ ………………………………………………………</div>
-        <div class="pbox">ชั้น ………………………………</div>
-      </div>
       <p class="pnote">${esc(T.room)} · แต่งกายชุดนักเรียนหรือชุดพละตามตาราง · มาถึงก่อนเวลา ๑๕ นาที</p>
     </div></div>`;
   }).join("");
