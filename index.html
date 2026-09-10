@@ -138,6 +138,7 @@ button,input,select,textarea{font:inherit;color:inherit}
 .sheet .box .bt{font-weight:700;margin-bottom:1.5mm}
 .sheet small{font-size:13pt;line-height:1.4;display:block}
 .sheet .chk{display:inline-block;width:4.2mm;height:4.2mm;border:1.1px solid #000;margin-inline-end:1.6mm;vertical-align:-.5mm}
+.sheet .cut{border-top:1.4px dashed #000;margin:5mm 0 3mm;text-align:center;font-size:12.5pt;color:#333;padding-top:1.5mm}
 .sheet .cert{border:3px double #0E2A56;padding:12mm;min-height:180mm;display:flex;flex-direction:column;justify-content:center;text-align:center}
 .sheet .cert .cn{font-size:30pt;font-weight:700;color:#0E2A56;margin-bottom:3mm}
 .sheet .cert .who{font-size:26pt;font-weight:700;margin:5mm 0;border-bottom:1px dotted #666;padding-bottom:2mm;display:inline-block;min-width:120mm}
@@ -178,6 +179,7 @@ button,input,select,textarea{font:inherit;color:inherit}
   </nav>
   <button class="tbtn" id="btnSettings" type="button">ตั้งค่าโรงเรียน</button>
   <button class="tbtn" id="btnToggle" type="button">ดูตัวอย่าง</button>
+  <button class="tbtn" id="btnWord" type="button">บันทึกเป็น Word</button>
   <button class="tbtn gold" id="btnPrint" type="button">พิมพ์เอกสาร</button>
 </div></header>
 
@@ -596,6 +598,87 @@ thanks: {
       <p class="ctr" style="margin-top:6mm">ขอแสดงความนับถือ</p>
       ${sig([{ role:"ผู้อำนวยการ" + S.school, name:S.director }])}
       <p style="margin-top:8mm;font-size:13pt">${esc(S.plan)} &nbsp; โทรศัพท์ ${num(esc(S.tel))}</p>`;
+  }
+},
+
+/* ---------- หนังสือเชิญวิทยากร ---------- */
+invitelec: {
+  g: "งานพิธีการ", n: "หนังสือเชิญวิทยากร", d: "ส่งล่วงหน้าอย่างน้อย ๑๕ วัน · แนบกำหนดการไปด้วย", tight: true,
+  f: [
+    { k:"no", l:"เลขที่หนังสือ", ph:"ศธ 04232.xx/xxx", w:1 },
+    { k:"date", l:"วันที่ออกหนังสือ", t:"date", w:1 },
+    { k:"to", l:"เรียน (ผู้รับหนังสือ)", ph:"ผู้บังคับการกองบังคับการตำรวจนครบาล ๙" },
+    { k:"lec", l:"ชื่อ–สกุลวิทยากรที่ขอเชิญ (พร้อมยศ/ตำแหน่ง)", ph:"พันตำรวจเอก สมชาย ใจเด็ด" },
+    { k:"topic", l:"เรื่องที่ขอให้บรรยาย", d:"เส้นทางสู่การเป็นนายทหารและนายตำรวจ และการเตรียมตัวสอบคัดเลือก" },
+    { k:"actname", l:"ชื่อกิจกรรม/โครงการ", d:"โครงการติวเข้มปิดภาคเรียน แผนการเรียนเตรียมทหาร–ตำรวจ" },
+    { k:"purpose", l:"วัตถุประสงค์ของโครงการ", t:"textarea",
+      d:"เพื่อเตรียมความพร้อมด้านวิชาการ สมรรถภาพทางร่างกาย และระเบียบวินัย ให้แก่นักเรียนที่มุ่งสอบคัดเลือกเข้าโรงเรียนเตรียมทหารและสายอาชีพด้านความมั่นคง" },
+    { k:"edate", l:"วันที่บรรยาย", t:"date", w:1 },
+    { k:"etime", l:"เวลา", d:"๐๙.๓๐–๑๐.๓๐ น.", w:1 },
+    { k:"place", l:"สถานที่", d:"ห้องดอกแขม โรงเรียนมัธยมวัดหนองแขม", w:1 },
+    { k:"nstu", l:"จำนวนนักเรียนที่เข้าฟัง (คน)", t:"number", w:1 },
+    { k:"fee", l:"ค่าตอบแทนวิทยากร (บาท)", t:"number", ph:"เว้นว่างถ้าไม่ระบุในหนังสือ", w:1 },
+    { k:"reply", l:"ขอความกรุณาตอบรับภายในวันที่", t:"date", w:1 },
+    { k:"coord", l:"ผู้ประสานงาน", ph:"เว้นว่างไว้จะใช้ชื่อหัวหน้าแผนการเรียน" },
+    { k:"coordtel", l:"เบอร์ผู้ประสานงาน" }
+  ],
+  r(v){
+    const fee = Number(v.fee) || 0;
+    return letterHead() + `
+      <div class="meta" style="margin-top:2mm"><div>ที่ ${dot(num(v.no), 12)}</div><div>วันที่ ${dot(num(thDate(v.date)), 16)}</div></div>
+      <p style="margin-top:3mm"><b>เรื่อง</b>&nbsp;&nbsp;ขอเชิญเป็นวิทยากร</p>
+      <p><b>เรียน</b>&nbsp;&nbsp;${dot(v.to, 26)}</p>
+      <p><b>สิ่งที่ส่งมาด้วย</b>&nbsp;&nbsp;กำหนดการกิจกรรม จำนวน ๑ ฉบับ</p>
+      <p class="ind" style="margin-top:3mm">ด้วย${esc(S.school)} ได้จัด${esc(v.actname)} ${esc(v.purpose)}</p>
+      <p class="ind">ในการนี้ โรงเรียนพิจารณาเห็นว่า ${v.lec ? esc(v.lec) : "…………………………………………………"} เป็นผู้มีความรู้ ความสามารถ และประสบการณ์อันเป็นประโยชน์อย่างยิ่งต่อนักเรียน จึงขอเรียนเชิญเป็นวิทยากรบรรยายพิเศษ เรื่อง “${esc(v.topic)}” ในวันที่ ${v.edate ? num(thDate(v.edate)) : "……… / ……… / …………"} เวลา ${num(esc(v.etime))} ณ ${esc(v.place)} ให้แก่นักเรียน${esc(S.plan)} จำนวน ${v.nstu ? num(v.nstu) : "………"} คน</p>
+      ${fee ? `<p class="ind">ทั้งนี้ โรงเรียนได้จัดค่าตอบแทนวิทยากรไว้ จำนวน ${num(money(fee))} บาท (${bahtText(fee)}) โดยเบิกจ่ายจาก${esc(S.fund)}</p>` : ""}
+      <p class="ind">จึงเรียนมาเพื่อโปรดพิจารณาให้ความอนุเคราะห์ และขอความกรุณาแจ้งผลการตอบรับ${v.reply ? ` ภายในวันที่ ${num(thDate(v.reply))}` : ""} จักขอบคุณยิ่ง</p>
+      <p class="ctr" style="margin-top:6mm">ขอแสดงความนับถือ</p>
+      ${sig([{ role:"ผู้อำนวยการ" + S.school, name:S.director }])}
+      <p style="margin-top:7mm;font-size:13pt">${esc(S.plan)}<br>
+      ผู้ประสานงาน ${esc(v.coord || S.head || "………………………………………")} &nbsp; โทรศัพท์ ${dot(num(v.coordtel), 12)}</p>`;
+  }
+},
+
+/* ---------- หนังสือเชิญผู้ปกครอง ---------- */
+inviteparent: {
+  g: "งานพิธีการ", n: "หนังสือเชิญผู้ปกครอง", d: "มีแบบตอบรับให้ตัดส่งกลับ · ถ่ายสำเนาแจกนักเรียนได้เลย", tight: true,
+  f: [
+    { k:"no", l:"เลขที่หนังสือ", ph:"ศธ 04232.xx/xxx", w:1 },
+    { k:"date", l:"วันที่ออกหนังสือ", t:"date", w:1 },
+    { k:"subject", l:"เรื่อง", d:"ขอเชิญร่วมพิธีเปิดโครงการติวเข้มปิดภาคเรียน" },
+    { k:"actname", l:"ชื่องาน/กิจกรรม", d:"โครงการติวเข้มปิดภาคเรียน แผนการเรียนเตรียมทหาร–ตำรวจ" },
+    { k:"purpose", l:"วัตถุประสงค์และรายละเอียดโครงการ", t:"textarea",
+      d:"เพื่อเตรียมความพร้อมด้านวิชาการ สมรรถภาพทางร่างกาย และระเบียบวินัย ให้แก่นักเรียนที่มุ่งสอบคัดเลือกเข้าโรงเรียนเตรียมทหารและสายอาชีพด้านความมั่นคง โดยจัดติวเข้มภาควิชาการและฝึกสมรรถภาพร่างกายตลอดช่วงปิดภาคเรียน" },
+    { k:"edate", l:"วันที่จัดงาน", t:"date", w:1 },
+    { k:"etime", l:"เวลา", d:"๐๘.๐๐–๐๙.๓๐ น.", w:1 },
+    { k:"place", l:"สถานที่", d:"ห้องดอกแขม โรงเรียนมัธยมวัดหนองแขม", w:1 },
+    { k:"dress", l:"การแต่งกาย", d:"สุภาพ", w:1 },
+    { k:"reply", l:"ส่งแบบตอบรับคืนภายในวันที่", t:"date", w:1 },
+    { k:"coordtel", l:"เบอร์ติดต่อสอบถาม", w:1 },
+    { k:"note", l:"ข้อความเพิ่มเติม (ถ้ามี)", t:"textarea", ph:"เช่น มีอาหารว่างรับรอง / ที่จอดรถภายในโรงเรียน" }
+  ],
+  r(v){
+    return letterHead() + `
+      <div class="meta" style="margin-top:2mm"><div>ที่ ${dot(num(v.no), 12)}</div><div>วันที่ ${dot(num(thDate(v.date)), 16)}</div></div>
+      <p style="margin-top:3mm"><b>เรื่อง</b>&nbsp;&nbsp;${esc(v.subject)}</p>
+      <p><b>เรียน</b>&nbsp;&nbsp;ผู้ปกครองนักเรียน${esc(S.plan)}</p>
+      <p class="ind" style="margin-top:3mm">ด้วย${esc(S.school)} ได้จัด${esc(v.actname)} ${esc(v.purpose)}</p>
+      <p class="ind">ในการนี้ โรงเรียนขอเรียนเชิญท่านผู้ปกครองเข้าร่วมงานดังกล่าว ในวันที่ ${v.edate ? num(thDate(v.edate)) : "……… / ……… / …………"} เวลา ${num(esc(v.etime))} ณ ${esc(v.place)} การแต่งกาย${esc(v.dress)} เพื่อรับทราบรายละเอียดโครงการและร่วมเป็นกำลังใจให้แก่บุตรหลานของท่าน</p>
+      ${v.note ? `<p class="ind">${esc(v.note)}</p>` : ""}
+      <p class="ind">จึงเรียนมาเพื่อโปรดทราบ และขอความกรุณาส่งแบบตอบรับคืนโรงเรียน${v.reply ? ` ภายในวันที่ ${num(thDate(v.reply))}` : ""} สอบถามเพิ่มเติมได้ที่โทรศัพท์ ${v.coordtel ? num(esc(v.coordtel)) : num(esc(S.tel))}</p>
+      <p class="ctr" style="margin-top:5mm">ขอแสดงความนับถือ</p>
+      ${sig([{ role:"ผู้อำนวยการ" + S.school, name:S.director }])}
+
+      <div class="cut">✂ ตัดตามรอยประและส่งคืนครูที่ปรึกษา ✂</div>
+      <p class="ctr" style="font-weight:700;font-size:17pt">แบบตอบรับการเข้าร่วมงาน</p>
+      <div class="rows">
+        <div class="rw"><span class="lb">ข้าพเจ้า</span><span class="vl">${dot("", 26)}</span><span class="lb">ผู้ปกครองของ</span><span class="vl">${dot("", 20)}</span></div>
+        <div class="rw"><span class="lb">ชั้น</span><span class="vl" style="max-width:34mm"></span><span class="lb">เลขที่</span><span class="vl" style="max-width:26mm"></span><span class="lb">โทรศัพท์</span><span class="vl"></span></div>
+      </div>
+      <small style="margin-top:1.5mm"><span class="chk"></span>ยินดีเข้าร่วมงาน จำนวน ………… คน
+        &nbsp;&nbsp;&nbsp;<span class="chk"></span>ไม่สามารถเข้าร่วมงานได้ เนื่องจาก ……………………………………………………</small>
+      ${sig([{ role:"ผู้ปกครอง", date:1 }])}`;
   }
 },
 
@@ -1179,6 +1262,7 @@ function renderEdit(){
   if (buf.length) html += `<div class="two-col">${buf.map(x => fieldHTML(x, v)).join("")}</div>`;
   html += `<div class="acts">
       <button class="btn" id="btnPrint2" type="button">พิมพ์เอกสาร</button>
+      <button class="btn sec" id="btnWord2" type="button">บันทึกเป็น Word</button>
       <button class="btn sec" id="btnClear" type="button">ล้างข้อมูลในฟอร์มนี้</button></div>
     <div class="tip"><b>เคล็ดลับการพิมพ์</b><br>กด <b>พิมพ์เอกสาร</b> แล้วในหน้าต่างพิมพ์ให้ตั้ง “ขนาดกระดาษ A4” และปิด “หัวกระดาษและท้ายกระดาษ” จะได้เอกสารเต็มหน้าพอดี · เลือก “บันทึกเป็น PDF” เพื่อเก็บไฟล์ได้</div>`;
   editEl.innerHTML = html;
@@ -1186,6 +1270,7 @@ function renderEdit(){
     V[cur][e.target.dataset.k] = e.target.value; saveV(); renderSheet();
   }));
   $("#btnPrint2").onclick = doPrint;
+  $("#btnWord2").onclick = saveWord;
   $("#btnClear").onclick = () => { if (confirm("ล้างข้อมูลที่กรอกไว้ในฟอร์มนี้?")){ V[cur] = {}; saveV(); renderAll(); } };
 }
 
@@ -1200,6 +1285,57 @@ function renderSheet(){
 }
 
 function renderAll(){ renderList(); renderEdit(); renderSheet(); }
+
+/* ═══ บันทึกเป็นไฟล์ Word (.doc) — เปิดและแก้ไขต่อใน Microsoft Word ได้ ═══ */
+const WORD_CSS = `
+@page{size:A4 SIZE;margin:15mm 16mm 13mm}
+body{font-family:'TH SarabunPSK','TH Sarabun New',sans-serif;font-size:16pt;line-height:1.36;color:#000}
+.ctr{text-align:center} .rt{text-align:right}
+h1{font-size:22pt;font-weight:700;text-align:center;margin:0 0 2mm;line-height:1.25}
+h2{font-size:18pt;font-weight:700;text-align:center;margin:0 0 3mm}
+.org{text-align:center;font-size:15pt;line-height:1.35;margin-bottom:4mm}
+.org b{display:block;font-size:17pt;font-weight:700}
+.hr{border-bottom:1.2pt solid #000;margin:3mm 0 4mm}
+p{margin:0 0 2mm}
+p.ind{text-indent:15mm;text-align:justify}
+.meta{width:100%;font-size:15pt;margin-bottom:2mm;overflow:hidden}
+.meta>div{float:left;width:48%}
+.meta>div+div{text-align:right}
+table{width:100%;border-collapse:collapse;font-size:15pt;margin:2.4mm 0}
+th,td{border:1pt solid #000;padding:1.4mm 2mm;vertical-align:top}
+th{background:#EDEFF3;font-weight:700;text-align:center}
+td.n{text-align:right} td.c{text-align:center}
+.rows{margin:3mm 0}
+.rw{margin-bottom:1.6mm}
+.rw .lb{white-space:nowrap}
+.rw .vl{border-bottom:1pt dotted #444;padding-left:2mm}
+.sig{width:100%;margin-top:7mm;text-align:center;font-size:15pt}
+.sig>div{display:inline-block;width:46%;vertical-align:top;padding:0 1%}
+.sig div>span{display:block;line-height:1.5}
+.box{border:1.2pt solid #000;padding:2.4mm 3mm;margin-top:2.8mm}
+.box .bt{font-weight:700;margin-bottom:1.5mm}
+small{font-size:13pt;line-height:1.4;display:block}
+.chk{border:1pt solid #000;padding:0 2mm;margin-right:1.6mm}
+.cert{border:3pt double #0E2A56;padding:12mm;text-align:center}
+.cert .cn{font-size:34pt;font-weight:700;margin:6mm 0}
+.cert .who{font-size:26pt;font-weight:700;border-bottom:1pt dotted #444;padding:0 10mm}
+.cut{border-top:1pt dashed #000;margin:5mm 0 3mm;text-align:center;font-size:12pt}`;
+
+function saveWord(){
+  const d = DOCS[cur];
+  const body = sheetEl.innerHTML;
+  const css = WORD_CSS.replace("SIZE", d.land ? "landscape" : "portrait");
+  const html = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
+<head><meta charset="utf-8"><title>${esc(d.n)}</title>
+<!--[if gte mso 9]><xml><w:WordDocument><w:View>Print</w:View><w:Zoom>100</w:Zoom></w:WordDocument></xml><![endif]-->
+<style>${css}</style></head><body>${body}</body></html>`;
+  const blob = new Blob(["\ufeff", html], { type: "application/msword" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = `${d.n}_${S.year || ""}.doc`.replace(/[\\/:*?"<>|]/g, "-");
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+}
 function doPrint(){ window.print(); }
 
 listEl.addEventListener("click", e => {
@@ -1212,6 +1348,7 @@ listEl.addEventListener("click", e => {
 });
 $("#btnSettings").onclick = () => { settingsOpen = !settingsOpen; renderAll(); };
 $("#btnPrint").onclick = doPrint;
+$("#btnWord").onclick = saveWord;
 $("#btnToggle").onclick = () => $("#app").classList.toggle("showprev");
 
 if (!DOCS[cur]) cur = "memo";
