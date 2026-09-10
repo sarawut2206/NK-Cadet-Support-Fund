@@ -109,7 +109,7 @@ section + section{border-top:1px solid var(--rule)}
   padding:.16rem .38rem;font-size:.82rem;line-height:1.2;flex:none;align-self:start}
 .srow .x:hover,.tearow .x:hover{color:var(--crit);border-color:var(--crit)}
 .ssum{font-family:var(--ui);font-weight:600;font-size:.83rem;font-variant-numeric:tabular-nums}
-.ssum.bad{color:var(--crit)} .ssum.ok{color:var(--ok)}
+.ssum.bad{color:var(--crit)} .ssum.ok{color:var(--ok)} .ssum.warn{color:var(--warn)}
 @media (max-width:760px){
   .srow{grid-template-columns:1fr 5.6rem 2rem}
   .srow .teal{grid-column:1/-1}
@@ -441,7 +441,7 @@ const DEF_SUBJ = [
   { k:"tha",  n:"ภาษาไทย",     q:4, tea:[""] },
   { k:"soc",  n:"สังคมศึกษา",   q:4, tea:[""] },
   { k:"phy",  n:"ฟิสิกส์",      q:3, tea:[""] },
-  { k:"che",  n:"เคมี",         q:3, tea:[""] },
+  { k:"che",  n:"เคมี",         q:2, tea:[""] },
   { k:"bio",  n:"ชีววิทยา",     q:2, tea:[""] }
 ];
 /** รายการวิชาปัจจุบัน (แก้ไขได้ เก็บอยู่ใน T.subjects) */
@@ -505,6 +505,12 @@ let T = (() => {
     if (!s.tea.length) s.tea = [""];
     if (!s.k) s.k = newId("j");
   });
+  /* ปรับโควตาเคมีกลับเป็น ๒ คาบ ทำครั้งเดียว และเฉพาะที่ยังเป็น ๓ ตามค่าเดิมของระบบ */
+  if (t.subjVer !== 2){
+    const che = t.subjects.find(s => s.k === "che");
+    if (che && Number(che.q) === 3) che.q = 2;
+    t.subjVer = 2;
+  }
   delete t.teachers;
   return t;
 })();
@@ -656,10 +662,14 @@ function renderSubjects(){
 
 /** อัปเดตเฉพาะยอดรวมโควตาและรายการชื่อครูแนะนำ (ไม่แตะตารางวิชา) */
 function renderSubjMeta(){
-  const QT = QUOTA_TOTAL();
+  const QT = QUOTA_TOTAL(), { slots } = counts(), diff = QT - slots;
   const el = $("#subjSum");
-  el.textContent = `รวมโควตา ${num(QT)} คาบ · ${num(QT * 1.5)} ชั่วโมง`;
-  el.className = "ssum " + (QT === 30 ? "ok" : "bad");
+  el.innerHTML = `รวมโควตา <b>${num(QT)}</b> คาบ · ${num(hFmt(QT * 1.5))} ชั่วโมง`
+    + ` &nbsp;·&nbsp; ช่องคาบในตาราง ${num(slots)} ช่อง`
+    + (diff === 0 ? " ✓ พอดี"
+      : diff > 0 ? ` — ช่องไม่พอ ขาดอีก ${num(diff)} ช่อง`
+      : ` — มีช่องว่างเกิน ${num(-diff)} ช่อง`);
+  el.className = "ssum " + (diff === 0 ? "ok" : diff > 0 ? "bad" : "warn");
   $("#teaList").innerHTML = allTeachers().map(n => `<option value="${esc(n)}"></option>`).join("");
 }
 
