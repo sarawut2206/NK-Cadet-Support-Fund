@@ -1,0 +1,1922 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ระบบโครงการ | โรงเรียนมัธยมวัดหนองแขม</title>
+<meta name="description" content="จัดทำเอกสารโครงการครบวงจร ตั้งแต่บันทึกขออนุมัติ เอกสารแนบ คำสั่ง แบบประเมิน จนถึงเล่มรายงานสรุปผลและแบบตรวจสอบมาตรฐานการจัดโครงการ">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%230E2A56'/><text y='72' x='50' text-anchor='middle' font-size='62' fill='%23FFC72C' font-family='sans-serif'>P</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&family=Bai+Jamjuree:wght@500;600;700&display=swap">
+<style>
+:root{
+  --navy:#10305F; --navy-2:#1B4A8F; --navy-3:#2C63B0;
+  --gold:#F5B722; --gold-2:#FFD152; --gold-ink:#8A6410; --gold-ghost:rgba(245,183,34,.15);
+  --ground:#EDF4FD; --surface:#FFFFFF; --surface-2:#DCE9F9;
+  --ink:#0F2140; --ink-2:#3D5375; --ink-3:#5F7492;
+  --rule:#C7DCF3; --rule-2:#9CBADF;
+  --ok:#2E6B4F; --ok-bg:#E3F2EA; --warn:#9A6B00; --warn-bg:#FFF3D6; --bad:#9B2C2C;
+  --ui:'Bai Jamjuree','Sarabun',system-ui,sans-serif;
+  --doc:'TH Sarabun New','TH SarabunPSK','Sarabun',system-ui,serif;
+  --body:'Sarabun',system-ui,sans-serif;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --ground:#0A1526; --surface:#132034; --surface-2:#1C2B42;
+    --ink:#E6EBF3; --ink-2:#AFBACC; --ink-3:#8391A6;
+    --rule:#26344E; --rule-2:#3E506F;
+    --navy:#0A1830; --navy-2:#22508F; --navy-3:#4B82D8;
+    --gold:#FFC72C; --gold-2:#FFD766; --gold-ink:#FFC72C; --gold-ghost:rgba(255,199,44,.14);
+    --ok:#6FBF95; --ok-bg:rgba(111,191,149,.14); --warn:#E0B34D; --warn-bg:rgba(224,179,77,.14); --bad:#E08A8A;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#0A1526; --surface:#132034; --surface-2:#1C2B42;
+  --ink:#E6EBF3; --ink-2:#AFBACC; --ink-3:#8391A6;
+  --rule:#26344E; --rule-2:#3E506F;
+  --navy:#0A1830; --navy-2:#22508F; --navy-3:#4B82D8;
+  --gold:#FFC72C; --gold-2:#FFD766; --gold-ink:#FFC72C; --gold-ghost:rgba(255,199,44,.14);
+  --ok:#6FBF95; --ok-bg:rgba(111,191,149,.14); --warn:#E0B34D; --warn-bg:rgba(224,179,77,.14); --bad:#E08A8A;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--navy-3);outline-offset:2px;border-radius:5px}
+
+/* ── top bar ─────────────────────────────── */
+.top{background:var(--navy);color:#fff;border-bottom:3px solid var(--gold);position:sticky;top:0;z-index:40}
+.top-in{display:flex;align-items:center;gap:.9rem;padding:.6rem clamp(.8rem,2vw,1.4rem);flex-wrap:wrap}
+.mark{width:2.35rem;height:2.35rem;flex:none;background:var(--gold);color:var(--navy);display:grid;place-items:center;font-family:var(--ui);font-weight:700;font-size:.8rem;clip-path:polygon(50% 0,100% 24%,100% 76%,50% 100%,0 76%,0 24%)}
+.title{line-height:1.25;min-width:0}
+.title b{display:block;font-family:var(--ui);font-weight:600;font-size:.98rem;color:#fff}
+.title span{font-size:.76rem;color:#B6C6E0}
+.top .spacer{margin-inline-start:auto}
+.tabs{display:flex;gap:.25rem;flex-wrap:wrap}
+.tabs a{font-family:var(--ui);font-weight:600;font-size:.83rem;text-decoration:none;color:#C6D4EA;padding:.4rem .85rem;border-radius:5px;border:1px solid transparent}
+.tabs a:hover{background:rgba(255,255,255,.1);color:#fff}
+.tabs a[aria-current]{background:var(--gold);color:var(--navy)}
+.tbtn{font-family:var(--ui);font-weight:600;font-size:.82rem;background:transparent;color:#D7E2F4;border:1px solid rgba(255,255,255,.28);padding:.4rem .8rem;border-radius:5px;cursor:pointer}
+.tbtn:hover{background:rgba(255,255,255,.1);color:#fff}
+.tbtn.gold{background:var(--gold);color:var(--navy);border-color:var(--gold)}
+.tbtn.gold:hover{background:var(--gold-2)}
+@media(min-width:1201px){#btnToggle{display:none}}
+
+/* ── layout ─────────────────────────────── */
+.app{display:grid;grid-template-columns:16rem 25rem 1fr;height:calc(100vh - 3.6rem);min-height:0}
+@media(max-width:1200px){.app{grid-template-columns:15rem 1fr}.pane-preview{display:none}.app.showprev .pane-edit{display:none}.app.showprev .pane-preview{display:block}}
+@media(max-width:760px){.app{grid-template-columns:1fr;height:auto}.pane-list{border-inline-end:none;border-bottom:1px solid var(--rule)}}
+.pane{overflow-y:auto;min-height:0}
+.pane-list{background:var(--surface);border-inline-end:1px solid var(--rule);padding-bottom:2rem}
+.pane-edit{background:var(--surface);border-inline-end:1px solid var(--rule);padding:1rem 1rem 5rem}
+.pane-preview{background:var(--surface-2);padding:1.2rem;display:flex;justify-content:center;align-items:flex-start}
+
+/* ── รายการเอกสารตามขั้นตอน ── */
+.prog{margin:.9rem .9rem .3rem;padding:.75rem .8rem;border:1px solid var(--rule);border-radius:8px;background:var(--ground)}
+.prog b{font-family:var(--ui);font-size:.82rem;font-weight:600;color:var(--ink)}
+.prog .bar{height:.5rem;border-radius:99px;background:var(--surface-2);margin:.45rem 0 .3rem;overflow:hidden}
+.prog .bar i{display:block;height:100%;background:var(--gold);border-radius:99px}
+.prog span{font-size:.74rem;color:var(--ink-3)}
+.phase{display:flex;align-items:center;gap:.5rem;font-family:var(--ui);font-size:.72rem;font-weight:600;letter-spacing:.06em;color:var(--ink-3);padding:1rem .95rem .35rem}
+.phase .pd{width:1.45rem;height:1.45rem;border-radius:50%;background:var(--navy-2);color:#fff;display:grid;place-items:center;font-size:.72rem;flex:none}
+.item{display:flex;gap:.55rem;align-items:flex-start;width:100%;text-align:start;background:none;border:none;border-inline-start:4px solid transparent;padding:.48rem .95rem;cursor:pointer;line-height:1.35}
+.item .st{flex:none;width:.7rem;height:.7rem;border-radius:50%;margin-top:.3rem;border:2px solid var(--rule-2)}
+.item .st.ok{background:var(--ok);border-color:var(--ok)}
+.item .st.part{background:var(--gold);border-color:var(--gold)}
+.item b{display:block;font-family:var(--ui);font-weight:500;font-size:.86rem;color:var(--ink)}
+.item span.d{display:block;font-size:.74rem;color:var(--ink-3)}
+.item:hover{background:var(--gold-ghost)}
+.item[aria-current="true"]{background:var(--gold-ghost);border-inline-start-color:var(--gold)}
+.item[aria-current="true"] b{color:var(--navy-3);font-weight:600}
+
+/* ── แผงแก้ไข ── */
+.fh{font-family:var(--ui);font-weight:600;font-size:1.02rem;color:var(--ink);margin:0 0 .15rem}
+.fsub{font-size:.82rem;color:var(--ink-3);margin:0 0 .8rem;line-height:1.55}
+.need{border:1px solid var(--rule);border-radius:8px;padding:.6rem .75rem;margin:0 0 .9rem;font-size:.8rem;line-height:1.55}
+.need.ok{background:var(--ok-bg);border-color:transparent;color:var(--ok)}
+.need.warn{background:var(--warn-bg);border-color:transparent;color:var(--ink-2)}
+.need b{font-family:var(--ui);font-weight:600}
+.need ul{margin:.25rem 0 0;padding-inline-start:1.1rem}
+details.sec{border:1px solid var(--rule);border-radius:8px;margin-bottom:.6rem;background:var(--surface)}
+details.sec>summary{list-style:none;cursor:pointer;padding:.6rem .8rem;display:flex;align-items:center;gap:.5rem;font-family:var(--ui);font-weight:600;font-size:.88rem;color:var(--ink)}
+details.sec>summary::-webkit-details-marker{display:none}
+details.sec>summary::before{content:"▸";color:var(--ink-3);font-size:.8rem;transition:transform .15s}
+details.sec[open]>summary::before{transform:rotate(90deg)}
+details.sec>summary .use{margin-inline-start:auto;font-size:.68rem;font-weight:600;color:var(--gold-ink);background:var(--gold-ghost);border-radius:99px;padding:.05rem .5rem}
+details.sec>.bd{padding:.2rem .8rem .8rem;border-top:1px solid var(--rule)}
+details.sec.hot{border-color:var(--gold)}
+.field{margin:.55rem 0}
+.field label{display:block;font-family:var(--ui);font-size:.76rem;font-weight:500;color:var(--ink-2);margin-bottom:.2rem}
+.field input,.field select,.field textarea{width:100%;background:var(--ground);border:1px solid var(--rule);border-radius:5px;padding:.4rem .5rem;font-size:.86rem}
+.field textarea{min-height:5.2rem;resize:vertical;line-height:1.6}
+.field input:focus,.field select:focus,.field textarea:focus,.grid input:focus,.grid select:focus,.grid textarea:focus{border-color:var(--navy-3);background:var(--surface);outline:none}
+.hint{font-size:.72rem;color:var(--ink-3);margin-top:.2rem;line-height:1.5}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:.55rem}
+.two-col .field{margin:.55rem 0 0}
+.chk-l{display:flex;gap:.5rem;align-items:flex-start;font-size:.82rem;line-height:1.45;padding:.22rem 0;cursor:pointer;color:var(--ink-2)}
+.chk-l input{margin-top:.2rem;flex:none}
+.stdh{font-family:var(--ui);font-size:.78rem;font-weight:600;color:var(--ink);margin:.7rem 0 .15rem}
+/* ตารางแก้ไขรายการ */
+.grid{width:100%;border-collapse:collapse;font-size:.8rem;margin:.5rem 0}
+.grid th{font-family:var(--ui);font-weight:500;font-size:.7rem;color:var(--ink-3);text-align:start;padding:.15rem .2rem;white-space:nowrap}
+.grid td{padding:.14rem .15rem;vertical-align:top}
+.grid input,.grid select,.grid textarea{width:100%;background:var(--ground);border:1px solid var(--rule);border-radius:4px;padding:.28rem .35rem;font-size:.8rem;line-height:1.45}
+.grid textarea{min-height:2.3rem;resize:vertical}
+.grid input[type=number]{text-align:end;padding-inline:.25rem}
+.grid .x{background:none;border:none;color:var(--ink-3);cursor:pointer;font-size:1rem;line-height:1;padding:.3rem .2rem}
+.grid .x:hover{color:var(--bad)}
+.grid tr.g td{padding-top:.5rem}
+.grid .sum{font-family:var(--ui);font-weight:600;text-align:end;padding:.35rem .3rem;color:var(--ink)}
+.grid .calc{font-size:.74rem;color:var(--ink-3);text-align:end;white-space:nowrap;padding-top:.45rem}
+.addb{font-family:var(--ui);font-weight:600;font-size:.76rem;background:transparent;color:var(--navy-3);border:1px dashed var(--rule-2);border-radius:5px;padding:.3rem .7rem;cursor:pointer;margin-top:.2rem}
+.addb:hover{background:var(--gold-ghost)}
+.acts{display:flex;gap:.5rem;flex-wrap:wrap;margin:.9rem 0 .4rem}
+.btn{font-family:var(--ui);font-weight:600;font-size:.84rem;border:1px solid var(--navy-2);background:var(--navy-2);color:#fff;padding:.46rem .95rem;border-radius:5px;cursor:pointer}
+.btn:hover{background:var(--navy-3);border-color:var(--navy-3)}
+.btn.sec{background:transparent;color:var(--navy-3);border-color:var(--rule-2)}
+.btn.sec:hover{background:var(--gold-ghost)}
+.btn.sm{font-size:.76rem;padding:.3rem .7rem}
+.tip{background:var(--gold-ghost);border-inline-start:4px solid var(--gold);border-radius:0 8px 8px 0;padding:.6rem .8rem;font-size:.78rem;color:var(--ink-2);line-height:1.6;margin-top:.8rem}
+.tip b{color:var(--ink)}
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:.4rem;margin:.5rem 0}
+.kpi{background:var(--ground);border:1px solid var(--rule);border-radius:6px;padding:.4rem .5rem}
+.kpi b{display:block;font-family:var(--ui);font-weight:600;font-size:.95rem;color:var(--ink)}
+.kpi span{font-size:.68rem;color:var(--ink-3)}
+.ph-grid{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin:.5rem 0}
+.ph-card{border:1px solid var(--rule);border-radius:6px;overflow:hidden;background:var(--ground)}
+.ph-card img{display:block;width:100%;height:6.5rem;object-fit:cover}
+.ph-card input{width:100%;border:none;border-top:1px solid var(--rule);background:var(--surface);padding:.3rem .4rem;font-size:.76rem}
+.ph-card .row{display:flex;gap:.2rem;padding:.2rem .3rem;justify-content:flex-end}
+.ph-card .row button{background:none;border:1px solid var(--rule);border-radius:4px;font-size:.72rem;padding:.05rem .4rem;cursor:pointer;color:var(--ink-2)}
+.ph-card .row button:hover{border-color:var(--bad);color:var(--bad)}
+
+.card{border:1px solid var(--rule);border-radius:6px;padding:.4rem .45rem;margin:.4rem 0;background:var(--ground);display:grid;gap:.25rem}
+.card .ch{display:flex;align-items:center;gap:.35rem;font-family:var(--ui);font-size:.76rem;color:var(--ink-2)}
+.card .ch b{font-weight:600;white-space:nowrap}
+.card .ch select,.card .ch input{flex:1;min-width:0}
+.card .grow{flex:1}
+.card input,.card select,.card textarea{width:100%;background:var(--surface);border:1px solid var(--rule);border-radius:4px;padding:.28rem .38rem;font-size:.8rem;line-height:1.45}
+.card textarea{min-height:2.3rem;resize:vertical}
+.card input[type=number]{text-align:end}
+.card .x{background:none;border:none;color:var(--ink-3);cursor:pointer;font-size:.95rem;line-height:1;padding:.2rem .25rem;flex:none}
+.card .x:hover{color:var(--bad)}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:.25rem}
+.g3{display:grid;grid-template-columns:1fr 1fr 1.4fr;gap:.25rem}
+.g4{display:grid;grid-template-columns:1fr 1fr 1fr 1.3fr;gap:.25rem;align-items:center}
+.calc{font-size:.74rem;color:var(--ink-2);text-align:end;white-space:nowrap}
+.sitem{border-top:1px dashed var(--rule);padding-top:.3rem;display:grid;gap:.2rem}
+.freq{display:grid;grid-template-columns:repeat(5,1fr) 5.2rem 1.3rem;gap:.2rem;align-items:end}
+.freq label{display:grid;gap:.05rem;font-size:.66rem;color:var(--ink-3);text-align:center}
+.freq input{padding:.2rem .15rem!important;text-align:center!important}
+.card .mem{display:grid;grid-template-columns:1.2fr 1.3fr 1fr 1.3rem;gap:.2rem;align-items:center}
+.sep{font-family:var(--ui);font-size:.7rem;font-weight:600;letter-spacing:.08em;color:var(--ink-3);margin:1.2rem 0 .4rem;text-transform:uppercase}
+
+/* ── แผ่นกระดาษ A4 ─────────────────────────────── */
+.sheet-wrap{display:flex;flex-direction:column;gap:8mm;align-items:center}
+.sheet{width:210mm;min-height:297mm;background:#fff;color:#000;padding:15mm 20mm 20mm 30mm;box-shadow:0 3px 18px rgba(16,48,95,.20);font-family:var(--doc);font-size:16pt;line-height:1.36;position:relative}
+.sheet.land{width:297mm;min-height:210mm;padding:12mm 15mm}
+.sheet.tight{line-height:1.27}
+.sheet.tight p{margin-bottom:1.2mm}
+.sheet *{box-sizing:border-box}
+.sheet .ctr{text-align:center}
+.sheet .rt{text-align:right}
+.sheet h1{font-size:22pt;font-weight:700;text-align:center;margin:0 0 2mm;line-height:1.25}
+.sheet h2{font-size:18pt;font-weight:700;text-align:center;margin:0 0 4mm;line-height:1.3}
+.sheet h3{font-size:16pt;font-weight:700;margin:3mm 0 1.5mm}
+.sheet h4{font-size:16pt;font-weight:700;margin:2mm 0 1mm;text-indent:10mm}
+.sheet .krut{display:block;margin:0 auto 3mm;height:30mm;width:auto}
+.sheet .krut.sm{height:15mm;margin:0 0 1mm}
+.sheet .hr{border-bottom:1.2px solid #000;margin:2mm 0 3mm}
+.sheet p{margin:0 0 1.6mm;text-indent:0}
+.sheet p.ind{text-indent:25mm;text-align:left}
+.sheet p.i1{margin-left:10mm}
+.sheet p.i2{margin-left:18mm;text-indent:-8mm}
+.sheet .mhead{display:flex;align-items:flex-end;margin-bottom:1mm}
+.sheet .mhead .krut.sm{margin:0}
+.sheet .mhead h1{flex:1;margin:0 15mm 0 0;padding-bottom:1mm}
+.sheet table.mem{margin:0 0 1mm}
+.sheet table.mem td{border:none;padding:.2mm 1mm;font-size:16pt;line-height:1.36}
+.sheet .meta{display:flex;justify-content:space-between;gap:6mm;margin-bottom:1mm}
+.sheet table{width:100%;border-collapse:collapse;font-size:15pt;margin:2mm 0 3mm}
+.sheet th,.sheet td{border:1px solid #000;padding:1.1mm 2mm;vertical-align:top;line-height:1.3}
+.sheet th{background:#EDEFF3;font-weight:700;text-align:center}
+.sheet td.n{text-align:right;white-space:nowrap}
+.sheet td.c{text-align:center;white-space:nowrap}
+.sheet tr.tot td{font-weight:700}
+.sheet table.cmp th,.sheet table.cmp td{padding:.5mm 1.5mm;line-height:1.25}
+.sheet tr.grp td{font-weight:700;background:#F5F6F9}
+.sheet .rw{display:flex;gap:2mm;margin-bottom:1.2mm;align-items:baseline}
+.sheet .rw .lb{white-space:nowrap}
+.sheet .rw .vl{flex:1;border-bottom:1px dotted #444;padding-inline-start:2mm;min-height:1.4em}
+.sheet .sig{display:block;margin-top:6mm;text-align:center;font-size:16pt}
+.sheet .sig>div{display:inline-block;vertical-align:top;width:47%;margin:0 1% 4mm;break-inside:avoid}
+.sheet .sig.one{max-width:85mm;margin-inline-start:auto}
+.sheet .sig.one>div{width:100%;margin:0}
+.sheet .sig div>span{display:block;line-height:1.45}
+.sheet table.sigt{border-collapse:collapse;font-size:16pt;margin-bottom:0}
+.sheet table.sigt td{border:none;padding:0 1mm;text-align:center;vertical-align:top}
+.sheet table.sigt p.sl{margin:0;line-height:1.45;text-align:center}
+.sheet .box{border:1.2px solid #000;padding:2mm 3mm;margin-top:2.5mm}
+.sheet small{font-size:13pt;line-height:1.4;display:block}
+.sheet .chk{display:inline-block;width:4.2mm;height:4.2mm;border:1.1px solid #000;margin-inline-end:1.6mm;vertical-align:-.5mm}
+.sheet table.cm td{border:1px solid #000;width:50%;font-size:15pt;padding:1.2mm 2.5mm}
+.sheet table.lay,.sheet table.lay td{border:none;padding:0}
+.sheet .kv td:first-child{white-space:nowrap;font-weight:700;width:1%;padding-inline-end:4mm}
+.sheet .kv,.sheet .kv td{border:none;padding:.3mm 0;font-size:16pt}
+/* ปก */
+.sheet .cover{min-height:262mm;display:flex;flex-direction:column;align-items:center;justify-content:space-between;text-align:center;padding:10mm 0 6mm}
+.sheet .cover .ct{font-size:28pt;font-weight:700;line-height:1.3}
+.sheet .cover .cn{font-size:24pt;font-weight:700;line-height:1.35;margin-top:6mm}
+.sheet .cover .cs{font-size:18pt;font-weight:700;line-height:1.5}
+.sheet .cover img.logo{display:block;margin:0 auto}
+.sheet .divider{min-height:262mm;display:flex;align-items:center;justify-content:center;font-size:36pt;font-weight:700}
+/* สารบัญ */
+.sheet .toc{display:flex;align-items:baseline;gap:2mm;margin-bottom:1.2mm}
+.sheet .toc .tt{white-space:nowrap}
+.sheet .toc .ld{flex:1;border-bottom:1.4px dotted #555;transform:translateY(-1.4mm)}
+.sheet .toc .pg{min-width:10mm;text-align:right}
+.sheet .toc.sub{padding-inline-start:8mm}
+/* ภาพกิจกรรม */
+.sheet table.photos,.sheet table.photos td{border:none}
+.sheet table.photos td{width:50%;text-align:center;padding:2mm 2mm 4mm;vertical-align:top;font-size:14pt;line-height:1.3}
+.sheet table.photos img{display:block;margin:0 auto 1.5mm;border:1px solid #999}
+.sheet .ok{font-weight:700}
+.sheet .mk{font-family:'Segoe UI Symbol','Sarabun',sans-serif}
+.sheet .note{font-size:13pt;color:#333}
+
+@media(max-width:1600px){.sheet-wrap{zoom:.8}}
+@media(max-width:1400px){.sheet-wrap{zoom:.68}}
+
+/* ── พิมพ์ ─────────────────────────────── */
+@media print{
+  body{background:#fff}
+  .top,.pane-list,.pane-edit,.noprint{display:none!important}
+  .app{display:block;height:auto}
+  .pane-preview{display:block!important;padding:0;background:#fff;overflow:visible}
+  .sheet-wrap{zoom:1!important;display:block}
+  .sheet{box-shadow:none;width:auto;min-height:0;margin:0;padding:0}
+  .sheet.land{width:auto;padding:0;min-height:0}
+  .sheet + .sheet{break-before:page}
+  .sheet .cover,.sheet .divider{min-height:255mm}
+  .sheet table{break-inside:auto}
+  .sheet tr,.sheet .box,.sheet .rw,.sheet h3,.sheet h4,.sheet .sig,.sheet table.cm{break-inside:avoid}
+  .sheet h3,.sheet h4{break-after:avoid}
+  .sheet thead{display:table-header-group}
+  #rul{display:none!important}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+
+<header class="top"><div class="top-in">
+  <span class="mark">นข</span>
+  <span class="title"><b>ระบบโครงการ</b><span>โรงเรียนมัธยมวัดหนองแขม · ขออนุมัติ → ดำเนินการ → ประเมิน → รายงานผล</span></span>
+  <span class="spacer"></span>
+  <nav class="tabs">
+    <a href="index.html">ศูนย์เอกสาร</a>
+    <a href="project.html" aria-current="page">ระบบโครงการ</a>
+    <a href="dashboard.html">แดชบอร์ด</a>
+    <a href="ledger.html">ทะเบียนกลาง</a>
+    <a href="tutoring.html">ตารางติว</a>
+    <a href="fitness.html">สมรรถภาพ</a>
+  </nav>
+  <button class="tbtn" id="btnToggle" type="button">ดูตัวอย่าง</button>
+  <button class="tbtn" id="btnWord" type="button">บันทึกเป็น Word</button>
+  <button class="tbtn gold" id="btnPrint" type="button">พิมพ์เอกสาร</button>
+</div></header>
+
+<div class="app" id="app">
+  <aside class="pane pane-list" id="list"></aside>
+  <section class="pane pane-edit" id="edit"></section>
+  <section class="pane pane-preview"><div class="sheet-wrap" id="pages"></div></section>
+</div>
+<script>
+"use strict";
+const $ = s => document.querySelector(s);
+
+/* ═══════════ ตัวช่วยทั่วไป ═══════════ */
+const TH_D = "๐๑๒๓๔๕๖๗๘๙";
+const THMON = ["มกราคม","กุมภาพันธ์","มีนาคม","เมษายน","พฤษภาคม","มิถุนายน","กรกฎาคม","สิงหาคม","กันยายน","ตุลาคม","พฤศจิกายน","ธันวาคม"];
+const THMON_S = ["ม.ค.","ก.พ.","มี.ค.","เม.ย.","พ.ค.","มิ.ย.","ก.ค.","ส.ค.","ก.ย.","ต.ค.","พ.ย.","ธ.ค."];
+const WD = ["อาทิตย์","จันทร์","อังคาร","พุธ","พฤหัสบดี","ศุกร์","เสาร์"];
+const WDS = ["อา.","จ.","อ.","พ.","พฤ.","ศ.","ส."];
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;" }[c]));
+const thNum = s => String(s ?? "").replace(/[0-9]/g, d => TH_D[+d]);
+const N = v => { const x = Number(String(v ?? "").replace(/[, ]/g, "")); return isFinite(x) ? x : 0; };
+const has = v => String(v ?? "").trim() !== "";
+const lines = t => String(t || "").split("\n").map(s => s.trim()).filter(Boolean);
+const money = n => (Number(n) || 0).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const money0 = n => (Number(n) || 0).toLocaleString("en-US", { maximumFractionDigits: 2 });
+const f2 = n => (Math.round((Number(n) || 0) * 100) / 100).toFixed(2);
+const pct = (a, b) => b ? f2(a * 100 / b) : "0.00";
+const dObj = s => new Date(s + "T00:00:00");
+const okDate = s => !!s && !isNaN(dObj(s));
+
+function thDate(s){
+  if (!okDate(s)) return "";
+  const d = dObj(s);
+  return `${d.getDate()} ${THMON[d.getMonth()]} ${d.getFullYear() + 543}`;
+}
+function thDateS(s){
+  if (!okDate(s)) return "";
+  const d = dObj(s);
+  return `${d.getDate()} ${THMON_S[d.getMonth()]} ${d.getFullYear() + 543}`;
+}
+/** ช่วงวันที่แบบย่อให้อ่านง่าย เช่น ๒๘ กันยายน – ๙ ตุลาคม ๒๕๖๙ */
+function thRange(a, b, short){
+  const M = short ? THMON_S : THMON;
+  if (!okDate(a)) return "";
+  if (!okDate(b) || a === b) return short ? thDateS(a) : thDate(a);
+  const x = dObj(a), y = dObj(b);
+  if (x.getFullYear() !== y.getFullYear())
+    return `${x.getDate()} ${M[x.getMonth()]} ${x.getFullYear() + 543} – ${y.getDate()} ${M[y.getMonth()]} ${y.getFullYear() + 543}`;
+  if (x.getMonth() === y.getMonth())
+    return `${x.getDate()}–${y.getDate()} ${M[y.getMonth()]} ${y.getFullYear() + 543}`;
+  return `${x.getDate()} ${M[x.getMonth()]} – ${y.getDate()} ${M[y.getMonth()]} ${y.getFullYear() + 543}`;
+}
+function bahtText(num){
+  const n = Number(num);
+  if (!isFinite(n)) return "";
+  const D = ["ศูนย์","หนึ่ง","สอง","สาม","สี่","ห้า","หก","เจ็ด","แปด","เก้า"];
+  const P = ["","สิบ","ร้อย","พัน","หมื่น","แสน","ล้าน"];
+  function readInt(s){
+    s = String(s).replace(/^0+/, "");
+    if (!s) return "";
+    if (s.length > 7) return readInt(s.slice(0, s.length - 6)) + "ล้าน" + readInt(s.slice(s.length - 6));
+    let out = "";
+    for (let i = 0; i < s.length; i++){
+      const d = +s[i], pos = s.length - i - 1;
+      if (!d) continue;
+      if (pos === 0 && d === 1 && s.length > 1) out += "เอ็ด";
+      else if (pos === 1 && d === 1) out += "";
+      else if (pos === 1 && d === 2) out += "ยี่";
+      else out += D[d];
+      out += P[pos];
+    }
+    return out;
+  }
+  const [i, f] = Math.abs(n).toFixed(2).split(".");
+  let t = (readInt(i) || "ศูนย์") + "บาท";
+  t += (f === "00") ? "ถ้วน" : readInt(f) + "สตางค์";
+  return (n < 0 ? "ลบ" : "") + t;
+}
+
+/* ═══════════ ตั้งค่าโรงเรียน (ใช้ร่วมกับหน้าศูนย์เอกสาร) ═══════════ */
+const DEF_S = {
+  school: "โรงเรียนมัธยมวัดหนองแขม",
+  area: "สำนักงานเขตพื้นที่การศึกษามัธยมศึกษากรุงเทพมหานคร",
+  addr: "443 ถนนเลียบคลองภาษีเจริญฝั่งใต้ แขวงหนองแขม เขตหนองแขม กรุงเทพมหานคร 10160",
+  tel: "02-429-3402",
+  plan: "แผนการเรียนเตรียมทหาร–ตำรวจ",
+  fund: "กองทุนสนับสนุนการจัดการเรียนการสอน แผนการเรียนเตรียมทหาร ตำรวจ โรงเรียนมัธยมวัดหนองแขม",
+  director: "", head: "", year: "2569", thaiDigits: "1"
+};
+let S = (() => { try { return Object.assign({}, DEF_S, JSON.parse(localStorage.getItem("nk_settings") || "{}")); } catch (e) { return Object.assign({}, DEF_S); } })();
+const num = s => S.thaiDigits === "1" ? thNum(s) : String(s ?? "");
+/** ข้อความผู้ใช้ → HTML ปลอดภัย + เลขไทย */
+const tx = s => num(esc(s));
+const dot = (v, w) => has(v) ? tx(v) : "…".repeat(w || 22);
+const Y = () => S.year || "2569";
+
+/* ตราครุฑ (ต้นฉบับ ๒๙๗ × ๓๐๐ px) — ใส่ width/height เป็น attribute เพราะ Word ไม่อ่าน CSS height ของรูป */
+const KRUT_SRC = "data:image/jpeg;base64,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";
+function krutImg(mm, cls){
+  const h = Math.round(mm * 96 / 25.4), w = Math.round(h * 297 / 300);
+  return `<img class="krut${cls ? " " + cls : ""}" src="${KRUT_SRC}" width="${w}" height="${h}" alt="ตราครุฑ">`;
+}
+
+/* ═══════════ มาตรฐานการศึกษาขั้นพื้นฐาน (ประกาศกระทรวงศึกษาธิการ พ.ศ. ๒๕๖๑) ═══════════ */
+const STD = [
+  ["มาตรฐานที่ 1 คุณภาพของผู้เรียน", [
+    ["1.1 ผลสัมฤทธิ์ทางวิชาการของผู้เรียน", [
+      ["1.1.1", "มีความสามารถในการอ่าน การเขียน การสื่อสาร และการคิดคำนวณ"],
+      ["1.1.2", "มีความสามารถในการคิดวิเคราะห์ คิดอย่างมีวิจารณญาณ อภิปรายแลกเปลี่ยนความคิดเห็น และแก้ปัญหา"],
+      ["1.1.3", "มีความสามารถในการสร้างนวัตกรรม"],
+      ["1.1.4", "มีความสามารถในการใช้เทคโนโลยีสารสนเทศและการสื่อสาร"],
+      ["1.1.5", "มีผลสัมฤทธิ์ทางการเรียนตามหลักสูตรสถานศึกษา"],
+      ["1.1.6", "มีความรู้ ทักษะพื้นฐาน และเจตคติที่ดีต่องานอาชีพ"]]],
+    ["1.2 คุณลักษณะที่พึงประสงค์ของผู้เรียน", [
+      ["1.2.1", "การมีคุณลักษณะและค่านิยมที่ดีตามที่สถานศึกษากำหนด"],
+      ["1.2.2", "ความภูมิใจในท้องถิ่นและความเป็นไทย"],
+      ["1.2.3", "การยอมรับที่จะอยู่ร่วมกันบนความแตกต่างและหลากหลาย"],
+      ["1.2.4", "สุขภาวะทางร่างกาย และจิตสังคม"]]]]],
+  ["มาตรฐานที่ 2 กระบวนการบริหารและการจัดการ", [
+    ["", [
+      ["2.1", "มีเป้าหมาย วิสัยทัศน์ และพันธกิจที่สถานศึกษากำหนดชัดเจน"],
+      ["2.2", "มีระบบบริหารจัดการคุณภาพของสถานศึกษา"],
+      ["2.3", "ดำเนินงานพัฒนาวิชาการที่เน้นคุณภาพผู้เรียนรอบด้านตามหลักสูตรสถานศึกษาและทุกกลุ่มเป้าหมาย"],
+      ["2.4", "พัฒนาครูและบุคลากรให้มีความเชี่ยวชาญทางวิชาชีพ"],
+      ["2.5", "จัดสภาพแวดล้อมทางกายภาพและสังคมที่เอื้อต่อการจัดการเรียนรู้อย่างมีคุณภาพ"],
+      ["2.6", "จัดระบบเทคโนโลยีสารสนเทศเพื่อสนับสนุนการบริหารจัดการและการจัดการเรียนรู้"]]]]],
+  ["มาตรฐานที่ 3 กระบวนการจัดการเรียนการสอนที่เน้นผู้เรียนเป็นสำคัญ", [
+    ["", [
+      ["3.1", "จัดการเรียนรู้ผ่านกระบวนการคิดและปฏิบัติจริง และสามารถนำไปประยุกต์ใช้ในชีวิตได้"],
+      ["3.2", "ใช้สื่อ เทคโนโลยีสารสนเทศ และแหล่งเรียนรู้ที่เอื้อต่อการเรียนรู้"],
+      ["3.3", "มีการบริหารจัดการชั้นเรียนเชิงบวก"],
+      ["3.4", "ตรวจสอบและประเมินผลผู้เรียนอย่างเป็นระบบ และนำผลมาพัฒนาผู้เรียน"],
+      ["3.5", "มีการแลกเปลี่ยนเรียนรู้และให้ข้อมูลสะท้อนกลับเพื่อพัฒนาและปรับปรุงการจัดการเรียนรู้"]]]]]
+];
+/** 1.1.5 → "1.1 (5)" · 3.4 → "3.4" */
+const stdCode = k => { const p = k.split("."); return p.length === 3 ? `${p[0]}.${p[1]} (${p[2]})` : k; };
+
+const SRC = [
+  ["กองทุน", "เงินกองทุน"], ["รายได้", "เงินรายได้สถานศึกษา"], ["อุดหนุน", "เงินอุดหนุนกิจกรรมพัฒนาผู้เรียน"],
+  ["แผน", "งบประมาณตามแผนปฏิบัติการประจำปีของโรงเรียน"], ["อื่น", "แหล่งอื่น (ระบุ)"], ["ไม่ใช้", "ไม่ใช้งบประมาณ"]
+];
+function srcText(){
+  switch (P.source){
+    case "กองทุน": return "เงิน" + S.fund;
+    case "รายได้": return "เงินรายได้สถานศึกษา";
+    case "อุดหนุน": return "เงินอุดหนุนกิจกรรมพัฒนาผู้เรียน";
+    case "แผน": return "งบประมาณตามแผนปฏิบัติการประจำปีการศึกษา " + Y();
+    case "อื่น": return P.sourceOther || "……………………";
+    default: return "";
+  }
+}
+const CATS = [["ตอบแทน", "ค่าตอบแทน"], ["ใช้สอย", "ค่าใช้สอย"], ["วัสดุ", "ค่าวัสดุ"]];
+const PH = { P: "ขั้นวางแผน (Plan)", D: "ขั้นดำเนินการ (Do)", C: "ขั้นตรวจสอบและประเมินผล (Check)", A: "ขั้นปรับปรุงและรายงานผล (Act)" };
+const LEVELS = [[4.51, "มากที่สุด"], [3.51, "มาก"], [2.51, "ปานกลาง"], [1.51, "น้อย"], [0, "น้อยที่สุด"]];
+const level = m => (LEVELS.find(([t]) => m >= t) || LEVELS[4])[1];
+
+/* ═══════════ ข้อมูลโครงการตั้งต้น (ตัวอย่าง : โครงการติวเข้มปิดภาคเรียน) ═══════════ */
+function defSurvey(){
+  const g = (n, items) => ({ n, items: items.map(t => ({ t, f: ["", "", "", "", ""] })) });
+  return [
+    g("ด้านการจัดกิจกรรม", ["ความเหมาะสมของระยะเวลาในการจัดกิจกรรม", "ความเหมาะสมของลำดับขั้นตอนการจัดกิจกรรม", "กิจกรรมตรงกับความต้องการของผู้เข้าร่วม"]),
+    g("ด้านครูผู้สอนและวิทยากร", ["ความรู้ความสามารถในการถ่ายทอดเนื้อหา", "การเปิดโอกาสให้ซักถามและให้คำแนะนำ", "ความเหมาะสมของเนื้อหาและเอกสารประกอบ"]),
+    g("ด้านสถานที่และสิ่งอำนวยความสะดวก", ["ความเหมาะสมของสถานที่จัดกิจกรรม", "ความพร้อมของสื่อ วัสดุ และอุปกรณ์", "ความปลอดภัยในการฝึกสมรรถภาพทางร่างกาย"]),
+    g("ด้านประโยชน์ที่ได้รับ", ["นำความรู้ที่ได้รับไปใช้ในการสอบคัดเลือกได้", "สมรรถภาพทางร่างกายพัฒนาขึ้น", "ความพึงพอใจต่อโครงการในภาพรวม"])
+  ];
+}
+function defProject(){
+  return {
+    v: 1,
+    title: "โครงการติวเข้มปิดภาคเรียน แผนการเรียนเตรียมทหาร–ตำรวจ",
+    planName: "แผนงานส่งเสริมศักยภาพผู้เรียน",
+    group: "กลุ่มบริหารวิชาการ",
+    kind: "ใหม่",
+    strategy: "",
+    policy: "",
+    owner: "", ownerPos: "หัวหน้าแผนการเรียนเตรียมทหาร–ตำรวจ",
+    deputy: "", deputyPos: "รองผู้อำนวยการกลุ่มบริหารวิชาการ",
+    start: "2026-09-28", end: "2026-10-09",
+    place: "ห้องดอกแขม และสนามกีฬา โรงเรียนมัธยมวัดหนองแขม",
+    targetDesc: "นักเรียนแผนการเรียนเตรียมทหาร–ตำรวจ",
+    targetN: "15",
+    inPlan: "0", planRef: "",
+    source: "กองทุน", sourceOther: "",
+    rationale: [
+      "การสอบคัดเลือกเข้าศึกษาในโรงเรียนเตรียมทหารและโรงเรียนนายร้อยตำรวจมีการแข่งขันสูง ผู้สมัครต้องผ่านทั้งการสอบข้อเขียนวิชาคณิตศาสตร์ วิทยาศาสตร์ ภาษาอังกฤษ ภาษาไทย และสังคมศึกษา และการทดสอบสมรรถภาพทางร่างกายตามเกณฑ์ที่กำหนด นักเรียนจึงต้องได้รับการเตรียมความพร้อมอย่างเป็นระบบและต่อเนื่องทั้งสองด้าน",
+      "โรงเรียนมัธยมวัดหนองแขมเปิดแผนการเรียนเตรียมทหาร–ตำรวจ เพื่อพัฒนานักเรียนที่มุ่งศึกษาต่อในสายอาชีพด้านความมั่นคง ช่วงปิดภาคเรียนเป็นช่วงเวลาที่นักเรียนสามารถทบทวนเนื้อหาและฝึกสมรรถภาพได้อย่างเข้มข้นโดยไม่กระทบเวลาเรียนปกติ",
+      "แผนการเรียนเตรียมทหาร–ตำรวจ จึงจัดทำโครงการติวเข้มปิดภาคเรียนขึ้น เพื่อทบทวนเนื้อหาวิชาที่ใช้สอบ ฝึกทำข้อสอบ ฝึกสมรรถภาพทางร่างกาย และเสริมสร้างระเบียบวินัย ให้นักเรียนมีความพร้อมก่อนการสอบคัดเลือกจริง"
+    ].join("\n"),
+    objectives: [
+      "เพื่อทบทวนและเสริมความรู้วิชาที่ใช้ในการสอบคัดเลือก 7 วิชา ให้แก่นักเรียนแผนการเรียนเตรียมทหาร–ตำรวจ",
+      "เพื่อพัฒนาสมรรถภาพทางร่างกายของนักเรียนให้ผ่านเกณฑ์การทดสอบที่กำหนด",
+      "เพื่อเสริมสร้างระเบียบวินัย ความอดทน และแรงบันดาลใจในการประกอบอาชีพด้านความมั่นคง"
+    ].join("\n"),
+    expected: [
+      "นักเรียนมีความรู้และความมั่นใจในการสอบคัดเลือกเข้าศึกษาต่อในโรงเรียนเตรียมทหารและโรงเรียนนายร้อยตำรวจ",
+      "นักเรียนมีสมรรถภาพทางร่างกายดีขึ้น และมีแนวทางฝึกฝนต่อด้วยตนเอง",
+      "นักเรียนมีระเบียบวินัย และมีเป้าหมายในการศึกษาต่อที่ชัดเจน"
+    ].join("\n"),
+    targets: [
+      { t:"q", text:"นักเรียนแผนการเรียนเตรียมทหาร–ตำรวจเข้าร่วมโครงการ", tgt:"15", unit:"คน", how:"ตรวจสอบการลงชื่อเข้าร่วมกิจกรรม", tool:"ใบลงชื่อผู้เข้าร่วมโครงการ", auto:"n", res:"" },
+      { t:"q", text:"จัดการเรียนการสอนภาควิชาการครบตามแผน", tgt:"29", unit:"คาบ", how:"ตรวจสอบตารางติวและบันทึกการสอน", tool:"ตารางติวและใบลงเวลาครูผู้สอน", auto:"", res:"" },
+      { t:"q", text:"จัดการฝึกสมรรถภาพทางร่างกายครบตามแผน", tgt:"8", unit:"วัน", how:"ตรวจสอบบันทึกการฝึก", tool:"แบบบันทึกการฝึกสมรรถภาพ", auto:"", res:"" },
+      { t:"l", text:"นักเรียนที่เข้าร่วมโครงการมีผลการทดสอบสมรรถภาพทางร่างกายดีขึ้น", tgt:"80", unit:"ร้อยละ", how:"เปรียบเทียบผลการทดสอบครั้งแรกกับครั้งสุดท้าย", tool:"แบบบันทึกผลการทดสอบสมรรถภาพ", auto:"fit", res:"" },
+      { t:"l", text:"ผู้เข้าร่วมโครงการมีความพึงพอใจต่อโครงการในระดับมากขึ้นไป", tgt:"3.51", unit:"ค่าเฉลี่ย", how:"สอบถามความพึงพอใจ", tool:"แบบประเมินความพึงพอใจ", auto:"sat", res:"" }
+    ],
+    std: ["1.1.5", "1.1.6", "1.2.1", "1.2.4", "3.1", "3.4"],
+    steps: [
+      { ph:"P", act:"ประชุมวางแผน จัดทำโครงการ และเสนอขออนุมัติ", when:"1–15 ก.ย. 2569", who:"หัวหน้าแผนการเรียน" },
+      { ph:"P", act:"แต่งตั้งคณะกรรมการ ประสานครูผู้สอนและวิทยากร", when:"16–20 ก.ย. 2569", who:"คณะกรรมการอำนวยการ" },
+      { ph:"P", act:"แจ้งผู้ปกครองและขอความยินยอมให้นักเรียนเข้าร่วมโครงการ", when:"16–25 ก.ย. 2569", who:"หัวหน้าแผนการเรียน" },
+      { ph:"D", act:"พิธีเปิดโครงการและบรรยายพิเศษจากวิทยากร", when:"28 ก.ย. 2569", who:"คณะกรรมการดำเนินงาน" },
+      { ph:"D", act:"ติวเข้มภาควิชาการ 7 วิชา", when:"28 ก.ย. – 9 ต.ค. 2569", who:"ครูผู้สอน" },
+      { ph:"D", act:"ฝึกสมรรถภาพทางร่างกาย", when:"28 ก.ย. – 7 ต.ค. 2569", who:"ครูฝึกสมรรถภาพ" },
+      { ph:"C", act:"ทดสอบสมรรถภาพและประเมินความพึงพอใจของผู้เข้าร่วม", when:"9 ต.ค. 2569", who:"คณะกรรมการประเมินผล" },
+      { ph:"A", act:"สรุปผล จัดทำรายงาน และเสนอแนวทางพัฒนาครั้งต่อไป", when:"12–23 ต.ค. 2569", who:"หัวหน้าแผนการเรียน" }
+    ],
+    sched: [
+      { d:"2026-09-28", d2:"", t:"08.00–09.30", act:"พิธีเปิดโครงการ", who:"ผู้อำนวยการโรงเรียน" },
+      { d:"2026-09-28", d2:"", t:"09.30–10.30", act:"บรรยายพิเศษ “เส้นทางสู่การเป็นนายทหารและนายตำรวจ”", who:"วิทยากร" },
+      { d:"2026-09-28", d2:"", t:"10.30–12.00", act:"ติวเข้มภาควิชาการ", who:"ครูผู้สอน" },
+      { d:"2026-09-28", d2:"", t:"13.30–15.00", act:"ฝึกสมรรถภาพทางร่างกาย", who:"ครูฝึกสมรรถภาพ" },
+      { d:"2026-09-29", d2:"2026-10-09", t:"08.00–12.30", act:"ติวเข้มภาควิชาการ วันละ 3 คาบ คาบละ 1 ชั่วโมง 30 นาที", who:"ครูผู้สอน" },
+      { d:"2026-09-29", d2:"2026-10-07", t:"13.30–15.00", act:"ฝึกสมรรถภาพทางร่างกาย", who:"ครูฝึกสมรรถภาพ" },
+      { d:"2026-10-09", d2:"", t:"13.30–15.00", act:"ทดสอบสมรรถภาพ ประเมินความพึงพอใจ และปิดโครงการ", who:"คณะกรรมการประเมินผล" }
+    ],
+    budget: [
+      { c:"ตอบแทน", n:"ค่าตอบแทนครูผู้สอนภาควิชาการ", q:"29", u:"คาบ", p:"600", a:"" },
+      { c:"ตอบแทน", n:"ค่าตอบแทนครูฝึกสมรรถภาพทางร่างกาย", q:"8", u:"วัน", p:"600", a:"" },
+      { c:"ตอบแทน", n:"ค่าตอบแทนวิทยากรบรรยายพิเศษ", q:"1", u:"ครั้ง", p:"1000", a:"" },
+      { c:"วัสดุ", n:"ค่าเอกสารและแบบฝึกหัดประกอบการติว", q:"15", u:"ชุด", p:"60", a:"" },
+      { c:"ใช้สอย", n:"ค่าน้ำดื่มและเวชภัณฑ์ปฐมพยาบาลระหว่างการฝึก", q:"1", u:"ชุด", p:"1400", a:"" }
+    ],
+    justify: [
+      "ค่าตอบแทนครูผู้สอนภาควิชาการ คิดอัตราคาบละ 600 บาท (คาบละ 1 ชั่วโมง 30 นาที) ตามจำนวนคาบที่สอนจริง",
+      "ค่าตอบแทนครูฝึกสมรรถภาพทางร่างกาย คิดอัตราวันละ 600 บาท ตามจำนวนวันที่ฝึกจริง",
+      "ค่าตอบแทนวิทยากรจ่ายไม่เกินอัตราที่ทางราชการกำหนด",
+      "ขอถัวจ่ายทุกรายการ และเบิกจ่ายตามที่จ่ายจริงโดยมีหลักฐานการจ่ายครบถ้วน"
+    ].join("\n"),
+    comm: [
+      { n:"คณะกรรมการอำนวยการ", duty:"ให้คำปรึกษา กำกับ ติดตาม และอำนวยความสะดวกในการดำเนินโครงการให้บรรลุวัตถุประสงค์", m:[
+        { name:"", pos:"ผู้อำนวยการโรงเรียน", role:"ประธานกรรมการ" },
+        { name:"", pos:"รองผู้อำนวยการกลุ่มบริหารวิชาการ", role:"รองประธานกรรมการ" },
+        { name:"", pos:"หัวหน้าแผนการเรียนเตรียมทหาร–ตำรวจ", role:"กรรมการและเลขานุการ" }] },
+      { n:"คณะกรรมการดำเนินงาน", duty:"จัดการเรียนการสอนและฝึกสมรรถภาพตามตารางที่กำหนด ดูแลความปลอดภัยของนักเรียน และบันทึกการปฏิบัติงาน", m:[
+        { name:"", pos:"หัวหน้าแผนการเรียนเตรียมทหาร–ตำรวจ", role:"ประธานกรรมการ" },
+        { name:"", pos:"ครูผู้สอนวิชาคณิตศาสตร์", role:"กรรมการ" },
+        { name:"", pos:"ครูผู้สอนวิชาภาษาอังกฤษ", role:"กรรมการ" },
+        { name:"", pos:"ครูผู้สอนวิชาภาษาไทย", role:"กรรมการ" },
+        { name:"", pos:"ครูผู้สอนวิชาสังคมศึกษา", role:"กรรมการ" },
+        { name:"", pos:"ครูผู้สอนวิชาฟิสิกส์", role:"กรรมการ" },
+        { name:"", pos:"ครูผู้สอนวิชาเคมี", role:"กรรมการ" },
+        { name:"", pos:"ครูผู้สอนวิชาชีววิทยา", role:"กรรมการ" },
+        { name:"", pos:"ครูฝึกสมรรถภาพทางร่างกาย", role:"กรรมการ" },
+        { name:"", pos:"ครูผู้ช่วยงานแผนการเรียนเตรียมทหาร–ตำรวจ", role:"กรรมการและเลขานุการ" }] },
+      { n:"คณะกรรมการประเมินผล", duty:"ทดสอบสมรรถภาพ ประเมินความพึงพอใจ วิเคราะห์ผล และจัดทำรายงานสรุปผลการดำเนินโครงการ", m:[
+        { name:"", pos:"หัวหน้างานวัดและประเมินผล", role:"ประธานกรรมการ" },
+        { name:"", pos:"ครูฝึกสมรรถภาพทางร่างกาย", role:"กรรมการ" },
+        { name:"", pos:"หัวหน้าแผนการเรียนเตรียมทหาร–ตำรวจ", role:"กรรมการและเลขานุการ" }] }
+    ],
+    docs: { memoNo:"", memoDate:"", orderNo:"", orderDate:"", approveDate:"", repNo:"", repDate:"" },
+    res: { actualN:"", summary:"", problems:"", suggest:"", next:"", fit:"1", appendix:"1" },
+    survey: defSurvey(),
+    photos: [], logo: "",
+    manual: {}
+  };
+}
+/** แม่แบบว่างสำหรับเริ่มโครงการใหม่ — คงโครงสร้างที่ต้องมีไว้ */
+function blankProject(){
+  const b = defProject();
+  Object.assign(b, {
+    title:"", planName:"", strategy:"", policy:"", owner:"", start:"", end:"", place:"", targetDesc:"", targetN:"",
+    rationale:"", objectives:"", expected:"", justify:"ขอถัวจ่ายทุกรายการ และเบิกจ่ายตามที่จ่ายจริงโดยมีหลักฐานการจ่ายครบถ้วน",
+    std:[], steps:[
+      { ph:"P", act:"", when:"", who:"" }, { ph:"D", act:"", when:"", who:"" },
+      { ph:"C", act:"", when:"", who:"" }, { ph:"A", act:"", when:"", who:"" }],
+    targets:[{ t:"q", text:"", tgt:"", unit:"คน", how:"", tool:"", auto:"n", res:"" },
+             { t:"l", text:"ผู้เข้าร่วมโครงการมีความพึงพอใจต่อโครงการในระดับมากขึ้นไป", tgt:"3.51", unit:"ค่าเฉลี่ย", how:"สอบถามความพึงพอใจ", tool:"แบบประเมินความพึงพอใจ", auto:"sat", res:"" }],
+    sched:[], budget:[{ c:"ตอบแทน", n:"", q:"", u:"", p:"", a:"" }],
+    comm:[{ n:"คณะกรรมการดำเนินงาน", duty:"", m:[{ name:"", pos:"", role:"ประธานกรรมการ" }] }],
+    photos:[], logo:"", manual:{}
+  });
+  b.survey.forEach(g => g.items.forEach(it => it.f = ["", "", "", "", ""]));
+  return b;
+}
+
+/* ═══════════ สถานะ ═══════════ */
+const KEY = "nk_proj_v1";
+let P = (() => {
+  try {
+    const raw = JSON.parse(localStorage.getItem(KEY) || "null");
+    if (!raw) return defProject();
+    const d = Object.assign(defProject(), raw);
+    d.docs = Object.assign(defProject().docs, raw.docs || {});
+    d.res = Object.assign(defProject().res, raw.res || {});
+    ["targets","std","steps","sched","budget","comm","survey","photos"].forEach(k => { if (!Array.isArray(d[k])) d[k] = defProject()[k]; });
+    d.manual ||= {};
+    return d;
+  } catch (e) { return defProject(); }
+})();
+const save = () => { try { localStorage.setItem(KEY, JSON.stringify(P)); } catch (e) { toast("บันทึกไม่สำเร็จ: พื้นที่เก็บข้อมูลของเบราว์เซอร์เต็ม"); } };
+
+function getPath(o, path){ return path.split(".").reduce((a, k) => a == null ? a : a[k], o); }
+function setPath(o, path, v){
+  const ks = path.split("."), last = ks.pop();
+  const t = ks.reduce((a, k) => a[k], o);
+  t[last] = v;
+}
+
+/* ═══════════ รูปภาพ (เก็บใน IndexedDB เพราะ localStorage จุได้น้อย) ═══════════ */
+const MEDIA = {};   // id → { src, w, h }
+const IDB = {
+  db: null,
+  open(){
+    return new Promise(res => {
+      try {
+        const rq = indexedDB.open("nk_proj_media", 1);
+        rq.onupgradeneeded = () => rq.result.createObjectStore("m");
+        rq.onsuccess = () => { this.db = rq.result; res(true); };
+        rq.onerror = () => res(false);
+      } catch (e) { res(false); }
+    });
+  },
+  tx(mode){ return this.db.transaction("m", mode).objectStore("m"); },
+  put(id, v){ return new Promise(r => { if (!this.db) return r(); const q = this.tx("readwrite").put(v, id); q.onsuccess = q.onerror = () => r(); }); },
+  del(id){ return new Promise(r => { if (!this.db) return r(); const q = this.tx("readwrite").delete(id); q.onsuccess = q.onerror = () => r(); }); },
+  all(){
+    return new Promise(r => {
+      if (!this.db) return r({});
+      const out = {}, q = this.tx("readonly").openCursor();
+      q.onsuccess = () => { const c = q.result; if (c){ out[c.key] = c.value; c.continue(); } else r(out); };
+      q.onerror = () => r(out);
+    });
+  }
+};
+/** ย่อรูปให้ด้านยาวไม่เกิน max px แล้วเก็บเป็น JPEG (หรือ PNG สำหรับตราโรงเรียน) */
+function shrink(file, max, png){
+  return new Promise((res, rej) => {
+    const fr = new FileReader();
+    fr.onload = () => {
+      const im = new Image();
+      im.onload = () => {
+        const k = Math.min(1, max / Math.max(im.width, im.height));
+        const w = Math.round(im.width * k), h = Math.round(im.height * k);
+        const c = document.createElement("canvas"); c.width = w; c.height = h;
+        const g = c.getContext("2d");
+        if (!png){ g.fillStyle = "#fff"; g.fillRect(0, 0, w, h); }
+        g.drawImage(im, 0, 0, w, h);
+        res({ src: c.toDataURL(png ? "image/png" : "image/jpeg", .8), w, h });
+      };
+      im.onerror = () => rej(new Error("อ่านรูปไม่ได้"));
+      im.src = fr.result;
+    };
+    fr.onerror = () => rej(new Error("อ่านไฟล์ไม่ได้"));
+    fr.readAsDataURL(file);
+  });
+}
+/** <img> ขนาดพอดีกรอบ (มม.) ใส่ width/height เป็น attribute เพื่อให้ Word แสดงขนาดถูก */
+function fitImg(m, boxW, boxH, cls){
+  if (!m) return "";
+  const k = Math.min(boxW / m.w, boxH / m.h);
+  const wmm = m.w * k, hmm = m.h * k;
+  const px = mm => Math.round(mm * 96 / 25.4);
+  return `<img${cls ? ` class="${cls}"` : ""} src="${m.src}" width="${px(wmm)}" height="${px(hmm)}" style="width:${wmm.toFixed(1)}mm;height:${hmm.toFixed(1)}mm" alt="">`;
+}
+
+/* ═══════════ คำนวณ ═══════════ */
+const objList = () => lines(P.objectives);
+const lineAmt = b => N(b.q) * N(b.p);
+function budget(){
+  const plan = P.budget.reduce((a, b) => a + lineAmt(b), 0);
+  const withAct = P.budget.filter(b => has(b.a));
+  const actual = withAct.reduce((a, b) => a + N(b.a), 0);
+  const byCat = Object.fromEntries(CATS.map(([k]) => [k, 0]));
+  P.budget.forEach(b => { if (byCat[b.c] != null) byCat[b.c] += lineAmt(b); });
+  return { plan, actual, byCat, actDone: P.budget.length > 0 && withAct.length === P.budget.length, actAny: withAct.length > 0 };
+}
+/** สถิติความพึงพอใจจากตารางความถี่ ๕ ระดับ · S.D. ใช้ตัวหาร n − 1 */
+function statOf(freqs){
+  let n = 0, sx = 0, sxx = 0;
+  freqs.forEach(f => f.forEach((c, i) => { const k = N(c), x = 5 - i; n += k; sx += k * x; sxx += k * x * x; }));
+  if (!n) return null;
+  const m = sx / n;
+  const sd = n > 1 ? Math.sqrt(Math.max(0, (sxx - n * m * m) / (n - 1))) : 0;
+  return { n, m, sd, lv: level(Math.round(m * 100) / 100) };
+}
+function survey(){
+  const groups = P.survey.map(g => ({ n: g.n, items: g.items.map(it => ({ t: it.t, s: statOf([it.f]) })), s: statOf(g.items.map(it => it.f)) }));
+  const all = statOf(P.survey.flatMap(g => g.items.map(it => it.f)));
+  const ns = P.survey.flatMap(g => g.items.map(it => it.f.reduce((a, c) => a + N(c), 0)));
+  const resp = ns.length ? Math.max(...ns) : 0;
+  const uneven = ns.some(x => x && x !== resp);
+  const flat = groups.flatMap(g => g.items).filter(i => i.s);
+  const hi = flat.slice().sort((a, b) => b.s.m - a.s.m)[0], lo = flat.slice().sort((a, b) => a.s.m - b.s.m)[0];
+  return { groups, all, resp, uneven, hi, lo };
+}
+
+/* ── ข้อมูลจากหน้าสมรรถภาพ (อ่านอย่างเดียว · สรุปเป็นจำนวนคน ไม่แสดงชื่อ) ── */
+const TESTS = [
+  { k:"pu", n:"ท่าดันพื้น",       type:"reps", target:100, limit:240, unit:"ครั้ง" },
+  { k:"pl", n:"ท่าดึงข้อ",        type:"reps", target:20,  limit:240, unit:"ครั้ง" },
+  { k:"su", n:"ท่าลุก–นั่ง",      type:"reps", target:100, limit:240, unit:"ครั้ง" },
+  { k:"rl", n:"วิ่ง 1,000 เมตร",  type:"ms",   limit:360 },
+  { k:"rs", n:"วิ่ง 50 เมตร",     type:"sec",  limit:8 }
+];
+const fmtMS = v => `${Math.floor(v / 60)}:${String(Math.round(v % 60)).padStart(2, "0")}`;
+const critText = t => t.type === "reps" ? `${t.target} ${t.unit} ภายใน ${fmtMS(t.limit)} นาที`
+  : t.type === "ms" ? `ภายใน ${fmtMS(t.limit)} นาที` : `ภายใน ${t.limit} วินาที`;
+function passOf(t, v){
+  if (!v) return null;
+  if (t.type === "reps"){
+    if (v.r == null && v.t == null) return null;
+    if (v.t != null && v.r == null) return v.t <= t.limit;
+    if (v.r == null) return null;
+    return v.r >= t.target && (v.t == null || v.t <= t.limit);
+  }
+  if (v.t == null) return null;
+  return v.t <= t.limit;
+}
+const trendVal = (t, v) => !v ? null : t.type === "reps" ? (v.r ?? null) : (v.t ?? null);
+function readLS(k){ try { return JSON.parse(localStorage.getItem(k) || "null"); } catch (e) { return null; } }
+function fitSummary(){
+  const F = readLS("nk_fit_v1");
+  if (!F || !Array.isArray(F.rounds) || !Array.isArray(F.students)) return null;
+  const res = F.res || {};
+  const R = (r, s) => res[r.id + "|" + s.id];
+  const rounds = F.rounds.slice().sort((a, b) => (a.date || "").localeCompare(b.date || ""));
+  const dr = rounds.filter(r => F.students.some(s => R(r, s)));
+  if (dr.length < 2) return { ok:false, n: dr.length };
+  const a = dr[0], b = dr[dr.length - 1];
+  const rows = TESTS.map(t => {
+    let p1 = 0, n1 = 0, p2 = 0, n2 = 0;
+    F.students.forEach(s => {
+      const q1 = passOf(t, (R(a, s) || {})[t.k]), q2 = passOf(t, (R(b, s) || {})[t.k]);
+      if (q1 !== null){ n1++; if (q1) p1++; }
+      if (q2 !== null){ n2++; if (q2) p2++; }
+    });
+    return { t, p1, n1, p2, n2 };
+  });
+  let imp = 0, comp = 0;
+  F.students.forEach(s => {
+    let up = 0, dn = 0, any = false;
+    TESTS.forEach(t => {
+      const x = trendVal(t, (R(a, s) || {})[t.k]), y = trendVal(t, (R(b, s) || {})[t.k]);
+      if (x == null || y == null) return;
+      any = true;
+      const better = t.type === "reps" ? y > x : y < x, worse = t.type === "reps" ? y < x : y > x;
+      if (better) up++; else if (worse) dn++;
+    });
+    if (any){ comp++; if (up > dn) imp++; }
+  });
+  return { ok:true, a, b, rows, imp, comp, nRounds: dr.length };
+}
+/** รายชื่อนักเรียนจากหน้าสมรรถภาพ (ใช้พิมพ์ใบลงชื่อเท่านั้น) */
+function studentNames(){
+  const F = readLS("nk_fit_v1");
+  if (!F || !Array.isArray(F.students)) return [];
+  return F.students.map(s => String(s.name || "").trim()).filter(Boolean);
+}
+
+/** ผลของตัวชี้วัด : กรอกเองก่อน ถ้าไม่ได้กรอกใช้ค่าที่ระบบคำนวณได้ */
+function autoRes(t){
+  if (t.auto === "n") return has(P.res.actualN) ? String(N(P.res.actualN)) : "";
+  if (t.auto === "sat"){ const s = survey().all; return s ? f2(s.m) : ""; }
+  if (t.auto === "fit"){ const f = fitSummary(); return f && f.ok && f.comp ? pct(f.imp, f.comp) : ""; }
+  return "";
+}
+const resOf = t => has(t.res) ? String(t.res).trim() : autoRes(t);
+const metOf = t => { const r = resOf(t); return has(r) && has(t.tgt) ? N(r) >= N(t.tgt) : null; };
+function fmtVal(v, unit){
+  if (!has(v)) return "";
+  if (unit === "ร้อยละ") return `ร้อยละ ${v}`;
+  if (unit === "ค่าเฉลี่ย") return `ค่าเฉลี่ย ${v}`;
+  return `${v} ${unit || ""}`.trim();
+}
+function fmtTarget(t){
+  if (!has(t.tgt)) return "";
+  if (t.unit === "ร้อยละ") return `ร้อยละ ${t.tgt}`;
+  if (t.unit === "ค่าเฉลี่ย") return `ค่าเฉลี่ยไม่ต่ำกว่า ${t.tgt}`;
+  return `จำนวน ${t.tgt} ${t.unit || ""}`.trim();
+}
+function indicators(){
+  const rows = P.targets.map(t => ({ t, r: resOf(t), met: metOf(t) }));
+  const judged = rows.filter(x => x.met !== null);
+  return { rows, met: judged.filter(x => x.met).length, judged: judged.length, total: rows.length };
+}
+
+/** ชื่อบุคคลตามตำแหน่ง — ถ้ายังไม่กรอกชื่อ ใช้ชื่อที่ตั้งไว้ในส่วนอื่น */
+function autoName(pos){
+  const p = String(pos || "");
+  if (/^ผู้อำนวยการ/.test(p)) return S.director || "";
+  if (p && p === P.deputyPos) return P.deputy || "";
+  if (p && p === P.ownerPos) return P.owner || "";
+  return "";
+}
+const unitName = () => `${S.plan} ${S.school}`;
+const toast = (msg) => {
+  let t = $("#toast");
+  if (!t){ t = document.createElement("div"); t.id = "toast"; t.className = "noprint";
+    t.style.cssText = "position:fixed;bottom:1.2rem;left:50%;transform:translateX(-50%);background:var(--navy);color:#fff;padding:.6rem 1rem;border-radius:8px;font-size:.85rem;z-index:99;box-shadow:0 6px 20px rgba(0,0,0,.25);max-width:90vw";
+    document.body.appendChild(t); }
+  t.textContent = msg; t.hidden = false;
+  clearTimeout(t._h); t._h = setTimeout(() => { t.hidden = true; }, 3800);
+};
+
+/* ═══════════ ส่วนประกอบเอกสาร ═══════════ */
+const sheet = (html, cls) => ({ html, cls: cls || "" });
+const iso = d => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+const dots = n => "…".repeat(n || 18);
+const nm = v => has(v) ? tx(v) : dots(18);
+const rangeTxt = () => okDate(P.start) ? "ระหว่างวันที่ " + num(thRange(P.start, P.end)) : "ระหว่างวันที่ " + dots(14);
+const H3 = (n, t, id) => `<h3${id ? ` id="${id}"` : ""}>${num(n)} ${t}</h3>`;
+const listP = (arr, pre) => arr.map((t, i) => `<p class="i2">${num(pre ? `${pre}.${i + 1}` : `${i + 1}.`)} ${tx(t)}</p>`).join("");
+const dotsP = () => `<p class="ind">${dots(46)}</p>`;
+let TN = 0;   // ลำดับตาราง
+const tcap = t => `<p style="margin-top:2mm"><b>ตารางที่ ${num(++TN)}</b> ${t}</p>`;
+
+/** ลายมือชื่อ มีคำกำกับท้ายบรรทัด เช่น "ผู้เสนอโครงการ" */
+const sigL = (label, name, pos) => `
+  <div><span>ลงชื่อ ${"…".repeat(label ? 11 : 16)} ${label || ""}</span><span>( ${nm(name)} )</span><span>${tx(pos)}</span></div>`;
+
+/** วัตถุประสงค์เป็นประโยคเดียว · short = ถ้ายาวเกินให้ใช้ข้อแรก (บันทึกข้อความต้องจบใน ๑ หน้า) */
+function objText(short){
+  const o = objList().map(x => x.replace(/^เพื่อ\s*/, ""));
+  if (!o.length) return "";
+  const full = "เพื่อ" + (o.length > 1 ? o.slice(0, -1).join(" ") + " และ" + o[o.length - 1] : o[0]);
+  return short && full.length > 150 ? "เพื่อ" + o[0] : full;
+}
+function stdSummary(){
+  return STD.map(([, subs], si) => {
+    const codes = subs.flatMap(([, items]) => items.filter(([k]) => P.std.includes(k)).map(([k]) => stdCode(k)));
+    return codes.length ? `มาตรฐานที่ ${si + 1} ประเด็นพิจารณาที่ ${codes.join(", ")}` : "";
+  }).filter(Boolean);
+}
+function stdFull(){
+  return STD.map(([sn, subs]) => {
+    const sel = subs.flatMap(([, items]) => items.filter(([k]) => P.std.includes(k)));
+    if (!sel.length) return "";
+    return `<p class="i1"><b>${tx(sn)}</b></p>` + sel.map(([k, t]) => `<p class="i2">${num(stdCode(k))} ${tx(t)}</p>`).join("");
+  }).join("");
+}
+function approvalStep(total){
+  if (total <= 10000) return "ประธานกรรมการบริหารกองทุนให้ความเห็นชอบ แล้วเสนอผู้อำนวยการอนุมัติ และรายงานให้คณะกรรมการบริหารกองทุนทราบในการประชุมคราวถัดไป";
+  if (total <= 50000) return "มติคณะกรรมการบริหารกองทุนไม่น้อยกว่ากึ่งหนึ่งของกรรมการที่มาประชุม แล้วเสนอผู้อำนวยการอนุมัติ";
+  return "มติคณะกรรมการบริหารกองทุนไม่น้อยกว่าสองในสามของกรรมการทั้งหมดเท่าที่มีอยู่ รายงานคณะกรรมการสถานศึกษาขั้นพื้นฐาน แล้วเสนอผู้อำนวยการอนุมัติ";
+}
+
+/** หัวบันทึกข้อความ : ครุฑ ๑.๕ ซม. คู่กับคำว่า "บันทึกข้อความ" */
+const memoHead = (no, date, subject) => `
+  <div class="mhead">${krutImg(15, "sm")}<h1>บันทึกข้อความ</h1></div>
+  <div class="rw"><span class="lb"><b>ส่วนราชการ</b></span><span class="vl">${tx(S.school)} ${tx(P.group)} โทร. ${tx(S.tel)}</span></div>
+  <div class="meta"><div style="flex:1"><b>ที่</b> ${has(no) ? tx(no) : dots(16)}</div><div style="flex:1"><b>วันที่</b> ${okDate(date) ? num(thDate(date)) : dots(20)}</div></div>
+  <div class="rw"><span class="lb"><b>เรื่อง</b></span><span class="vl">${tx(subject)}</span></div>
+  <p style="margin-top:2mm"><b>เรียน</b>&nbsp;&nbsp;ผู้อำนวยการ${tx(S.school)}</p>`;
+
+/** ช่องความเห็นผู้บังคับบัญชาท้ายบันทึก */
+function commentTable(kind){
+  const c = (title, body, name, pos) => `<td>
+    <p style="margin:0"><b>${title}</b></p>
+    <p style="margin:0">${body}</p>
+    <p align="center" style="margin:2mm 0 0;text-align:center">ลงชื่อ ${dots(14)}</p>
+    <p align="center" style="margin:0;text-align:center">( ${nm(name)} )</p>
+    <p align="center" style="margin:0;text-align:center">${tx(pos)}</p></td>`;
+  const line = dots(24);
+  const dir = kind === "report"
+    ? `<span class="mk">☐</span> ทราบ &nbsp;&nbsp; <span class="mk">☐</span> อื่น ๆ ${dots(10)}`
+    : `<span class="mk">☐</span> อนุมัติ &nbsp;&nbsp; <span class="mk">☐</span> ไม่อนุมัติ`;
+  return `<table class="cm" style="margin-top:3mm"><tbody><tr>
+    ${c("ความเห็น" + tx(P.deputyPos), line, P.deputy, P.deputyPos)}
+    ${c(kind === "report" ? "ความเห็นผู้อำนวยการ" : "คำสั่งผู้อำนวยการ", dir, S.director, "ผู้อำนวยการ" + S.school)}
+  </tr></tbody></table>`;
+}
+
+function stepsTable(){
+  let i = 0;
+  const rows = ["P", "D", "C", "A"].map(ph => {
+    const ss = P.steps.filter(s => s.ph === ph);
+    if (!ss.length) return "";
+    return `<tr class="grp"><td colspan="4">${PH[ph]}</td></tr>` + ss.map(s =>
+      `<tr><td class="c">${num(++i)}</td><td>${nm(s.act)}</td><td>${tx(s.when)}</td><td>${tx(s.who)}</td></tr>`).join("");
+  }).join("");
+  return `<table><thead><tr><th style="width:11mm">ที่</th><th>กิจกรรม / ขั้นตอนการดำเนินงาน</th><th style="width:37mm">ระยะเวลา</th><th style="width:37mm">ผู้รับผิดชอบ</th></tr></thead><tbody>${rows}</tbody></table>`;
+}
+function budgetByCatTable(){
+  const b = budget();
+  const col = k => CATS.map(([c]) => `<td class="n">${k.c === c ? num(money(lineAmt(k))) : ""}</td>`).join("");
+  return `<table style="font-size:14pt"><thead><tr><th style="width:10mm">ที่</th><th>รายการ</th>${CATS.map(([, n]) => `<th style="width:23mm">${n}</th>`).join("")}<th style="width:25mm">รวม (บาท)</th></tr></thead><tbody>
+    ${P.budget.map((x, i) => `<tr><td class="c">${num(i + 1)}</td><td>${nm(x.n)}</td>${col(x)}<td class="n">${num(money(lineAmt(x)))}</td></tr>`).join("")}
+    <tr class="tot"><td colspan="2" style="text-align:center">รวมทั้งสิ้น</td>${CATS.map(([c]) => `<td class="n">${num(money(b.byCat[c]))}</td>`).join("")}<td class="n">${num(money(b.plan))}</td></tr>
+  </tbody></table>`;
+}
+function fundLine(){ return P.source === "ไม่ใช้" ? "โครงการนี้ไม่ใช้งบประมาณ" : `ใช้งบประมาณจาก${tx(srcText())} จำนวน ${num(money(budget().plan))} บาท (${bahtText(budget().plan)})`; }
+
+/* ═══════════ ๑. บันทึกข้อความขออนุมัติโครงการ ═══════════ */
+function docMemo(){
+  const b = budget();
+  let k = 0;
+  const it = s => `<p class="ind">${num(++k)}. ${s}</p>`;
+  const head = P.inPlan === "1"
+    ? `<p class="ind"><b>เรื่องเดิม</b></p><p class="ind">ตามแผนปฏิบัติการประจำปีการศึกษา ${num(Y())} ของ${tx(S.school)} ${has(P.planRef) ? tx(P.planRef) + " " : ""}ได้กำหนดให้มี${nm(P.title)} ${tx(objText(true))} นั้น</p>`
+    : `<p class="ind"><b>ต้นเรื่อง</b></p><p class="ind">ด้วย${tx(unitName())} มีความประสงค์จะจัด${nm(P.title)} ปีการศึกษา ${num(Y())} ${tx(objText(true))}</p>`;
+  const facts = [
+    it(`ระยะเวลาดำเนินการ ${rangeTxt()} ณ ${nm(P.place)}`),
+    it(`กลุ่มเป้าหมาย ได้แก่ ${nm(P.targetDesc)} จำนวน ${has(P.targetN) ? num(P.targetN) : dots(4)} คน`),
+    it(P.source === "ไม่ใช้" ? "โครงการนี้ไม่ใช้งบประมาณ" : `งบประมาณ จำนวน ${num(money(b.plan))} บาท (${bahtText(b.plan)}) จาก${tx(srcText())}`)
+  ].join("");
+  k = 0;
+  const props = [
+    it(`อนุมัติให้ดำเนินการ${nm(P.title)}`),
+    P.source === "ไม่ใช้" ? "" : it(`อนุมัติให้ใช้งบประมาณ จำนวน ${num(money(b.plan))} บาท`),
+    it("ลงนามในคำสั่งแต่งตั้งคณะกรรมการดำเนินงานโครงการ")
+  ].join("");
+  return [sheet(
+    memoHead(P.docs.memoNo, P.docs.memoDate, "ขออนุมัติจัด" + (P.title || "โครงการ")) + head +
+    `<p class="ind"><b>ข้อเท็จจริง</b></p>
+     <p class="ind">สรุปสาระสำคัญ ดังนี้ (รายละเอียดตามเอกสารที่แนบ)</p>` + facts +
+    `<p class="ind"><b>ข้อเสนอเพื่อพิจารณา</b></p>` + props +
+    `<p class="ind">จึงเรียนมาเพื่อโปรดพิจารณาอนุมัติ</p>
+     <div class="sig one" style="margin-top:3mm">${sigL("", P.owner, P.ownerPos)}</div>` + commentTable("approve"), "tight")];
+}
+
+/* ═══════════ ๒. โครงการ ═══════════ */
+function docProject(){
+  const kv = (k, v) => `<tr><td>${k}</td><td>${v}</td></tr>`;
+  const box = on => `<span class="mk">${on ? "☑" : "☐"}</span>`;
+  const std = stdSummary();
+  const q = P.targets.filter(t => t.t === "q"), l = P.targets.filter(t => t.t === "l");
+  const tgt = arr => arr.length ? arr.map((t, i) => `<p class="i2">${num(`(${i + 1})`)} ${nm(t.text)} ${tx(fmtTarget(t))}</p>`).join("") : dotsP();
+  let h = `<h2>${nm(P.title)}<br>ปีการศึกษา ${num(Y())}</h2>
+  <table class="kv"><tbody>
+    ${kv("แผนงาน", nm(P.planName))}
+    ${kv("สนองมาตรฐานการศึกษา", std.length ? std.map(tx).join("<br>") : dots(20))}
+    ${kv("สนองกลยุทธ์โรงเรียน", nm(P.strategy))}
+    ${has(P.policy) ? kv("สนองนโยบาย/จุดเน้น", lines(P.policy).map(tx).join("<br>")) : ""}
+    ${kv("ลักษณะโครงการ", `${box(P.kind === "ใหม่")} โครงการใหม่ &nbsp;&nbsp; ${box(P.kind === "ต่อเนื่อง")} โครงการต่อเนื่อง`)}
+    ${kv("ผู้รับผิดชอบโครงการ", `${nm(P.owner)} ${tx(P.ownerPos)}`)}
+    ${kv("กลุ่มงาน", nm(P.group))}
+    ${kv("ระยะเวลาดำเนินการ", okDate(P.start) ? num(thRange(P.start, P.end)) : dots(18))}
+    ${kv("สถานที่", nm(P.place))}
+  </tbody></table>
+  <div class="hr"></div>`;
+  h += H3("1.", "หลักการและเหตุผล") + (lines(P.rationale).map(p => `<p class="ind">${tx(p)}</p>`).join("") || dotsP());
+  h += H3("2.", "วัตถุประสงค์") + (listP(objList(), "2") || dotsP());
+  h += H3("3.", "เป้าหมาย") + `<h4>${num("3.1")} เชิงปริมาณ</h4>` + tgt(q) + `<h4>${num("3.2")} เชิงคุณภาพ</h4>` + tgt(l);
+  h += H3("4.", "วิธีดำเนินการ") + stepsTable();
+  h += H3("5.", "งบประมาณ") + `<p class="ind">${fundLine()}${P.source === "ไม่ใช้" ? "" : " รายละเอียดดังนี้"}</p>` +
+    (P.source === "ไม่ใช้" ? "" : budgetByCatTable() + `<small>หมายเหตุ ขอถัวจ่ายทุกรายการ</small>`);
+  h += H3("6.", "การประเมินผล") + `<table><thead><tr><th>ตัวชี้วัดความสำเร็จ</th><th style="width:40mm">วิธีการประเมิน</th><th style="width:42mm">เครื่องมือที่ใช้</th></tr></thead><tbody>
+    ${P.targets.map(t => `<tr><td>${nm(t.text)} ${tx(fmtTarget(t))}</td><td>${tx(t.how)}</td><td>${tx(t.tool)}</td></tr>`).join("")}</tbody></table>`;
+  h += H3("7.", "ผลที่คาดว่าจะได้รับ") + (listP(lines(P.expected), "7") || dotsP());
+  h += `<div class="sig" style="margin-top:9mm">${sigL("ผู้เสนอโครงการ", P.owner, P.ownerPos)}${sigL("ผู้เห็นชอบโครงการ", P.deputy, P.deputyPos)}</div>
+        <div class="sig one" style="margin-inline:auto">${sigL("ผู้อนุมัติโครงการ", S.director, "ผู้อำนวยการ" + S.school)}</div>`;
+  return [sheet(h)];
+}
+
+/* ═══════════ ๓. รายละเอียดประมาณการค่าใช้จ่าย ═══════════ */
+function docBudget(){
+  const b = budget();
+  let rows = "", i = 0;
+  CATS.forEach(([k, label]) => {
+    const items = P.budget.filter(x => x.c === k);
+    if (!items.length) return;
+    i++;
+    const sub = items.reduce((a, x) => a + lineAmt(x), 0);
+    rows += `<tr class="grp"><td class="c">${num(i)}</td><td colspan="4">${label}</td><td class="n">${num(money(sub))}</td></tr>`;
+    items.forEach((x, j) => rows += `<tr><td class="c">${num(`${i}.${j + 1}`)}</td><td>${nm(x.n)}</td><td class="c">${num(money0(N(x.q)))}</td><td class="c">${tx(x.u)}</td><td class="n">${num(money(N(x.p)))}</td><td class="n">${num(money(lineAmt(x)))}</td></tr>`);
+  });
+  const just = lines(P.justify);
+  if (P.source === "กองทุน") just.push(`การเบิกจ่ายจากกองทุนวงเงินนี้ ดำเนินการตามข้อบังคับกองทุน คือ ${approvalStep(b.plan)}`);
+  return [sheet(`<h2>รายละเอียดประมาณการค่าใช้จ่าย<br>${nm(P.title)}<br>ปีการศึกษา ${num(Y())}</h2>
+    <p class="ind">${fundLine()} รายละเอียดดังนี้</p>
+    <table><thead><tr><th style="width:12mm">ที่</th><th>รายการ</th><th style="width:16mm">จำนวน</th><th style="width:16mm">หน่วย</th><th style="width:25mm">ราคาต่อหน่วย (บาท)</th><th style="width:28mm">จำนวนเงิน (บาท)</th></tr></thead>
+    <tbody>${rows || `<tr><td colspan="6" class="c">${dots(20)}</td></tr>`}
+      <tr class="tot"><td colspan="5" style="text-align:center">รวมทั้งสิ้น (${bahtText(b.plan)})</td><td class="n">${num(money(b.plan))}</td></tr></tbody></table>
+    ${just.length ? `<p style="margin-top:3mm"><b>คำชี้แจง</b></p>` + listP(just) : ""}
+    <div class="sig one" style="margin-top:4mm">${sigL("ผู้เสนอโครงการ", P.owner, P.ownerPos)}</div>`, "tight")];
+}
+
+/* ═══════════ ๔. กำหนดการ ═══════════ */
+function schedLabel(r){
+  if (!okDate(r.d)) return dots(10);
+  if (okDate(r.d2) && r.d2 !== r.d) return num(thRange(r.d, r.d2, true));
+  return `${WD[dObj(r.d).getDay()]}ที่ ${num(thDateS(r.d))}`;
+}
+function docSched(){
+  const rs = P.sched.slice().sort((a, b) => (a.d || "").localeCompare(b.d || "") || (a.d2 || "").localeCompare(b.d2 || "") || (a.t || "").localeCompare(b.t || ""));
+  let body = "";
+  for (let i = 0; i < rs.length; ){
+    let j = i;
+    while (j + 1 < rs.length && rs[j + 1].d === rs[i].d && (rs[j + 1].d2 || "") === (rs[i].d2 || "")) j++;
+    for (let x = i; x <= j; x++){
+      const r = rs[x];
+      body += `<tr>${x === i ? `<td rowspan="${j - i + 1}">${schedLabel(r)}</td>` : ""}<td class="c">${r.t ? tx(r.t) + " น." : ""}</td><td>${nm(r.act)}</td><td>${tx(r.who)}</td></tr>`;
+    }
+    i = j + 1;
+  }
+  return [sheet(`<h2>กำหนดการ<br>${nm(P.title)}<br><span style="font-weight:400;font-size:16pt">${rangeTxt()}<br>ณ ${nm(P.place)}</span></h2>
+    <table><thead><tr><th style="width:38mm">วัน เดือน ปี</th><th style="width:28mm">เวลา</th><th>กิจกรรม</th><th style="width:36mm">ผู้รับผิดชอบ</th></tr></thead>
+    <tbody>${body || `<tr><td colspan="4" class="c">${dots(20)}</td></tr>`}</tbody></table>
+    <small>หมายเหตุ กำหนดการอาจเปลี่ยนแปลงได้ตามความเหมาะสม</small>`)];
+}
+
+/* ═══════════ ๕. คำสั่งแต่งตั้งคณะกรรมการ ═══════════ */
+function docOrder(){
+  const groups = P.comm.map((g, gi) => {
+    const mem = g.m.map((m, mi) => {
+      const name = has(m.name) ? m.name : autoName(m.pos);
+      return `<tr><td style="width:12mm">${num(`${gi + 1}.${mi + 1}`)}</td><td style="width:50mm">${has(name) ? tx(name) : dots(10)}</td><td>${tx(m.pos)}</td><td style="width:40mm">${tx(m.role)}</td></tr>`;
+    }).join("");
+    return `<p style="margin-top:2mm"><b>${num(gi + 1)}. ${nm(g.n)}</b> ประกอบด้วย</p>
+      <table class="lay mem"><tbody>${mem}</tbody></table>
+      ${has(g.duty) ? `<p class="ind">มีหน้าที่ ${tx(g.duty)}</p>` : ""}`;
+  }).join("");
+  const od = P.docs.orderDate;
+  return [sheet(`${krutImg(30)}
+    <p class="ctr" style="font-weight:700;margin:0">คำสั่ง${tx(S.school)}</p>
+    <p class="ctr" style="margin:0">ที่ ${has(P.docs.orderNo) ? tx(P.docs.orderNo) : dots(6) + " / " + num(Y())}</p>
+    <p class="ctr" style="margin:0">เรื่อง แต่งตั้งคณะกรรมการดำเนินงาน${nm(P.title)} ปีการศึกษา ${num(Y())}</p>
+    <p class="ctr" style="margin:0 0 2mm">${"-".repeat(34)}</p>
+    <p class="ind">ด้วย${tx(S.school)} โดย${tx(S.plan)} ได้รับอนุมัติให้ดำเนินการ${nm(P.title)} ปีการศึกษา ${num(Y())} ${rangeTxt()} ณ ${nm(P.place)} ${tx(objText())}</p>
+    <p class="ind">เพื่อให้การดำเนินงานเป็นไปด้วยความเรียบร้อยและบรรลุวัตถุประสงค์ อาศัยอำนาจตามความในมาตรา ${num(39)} แห่งพระราชบัญญัติระเบียบบริหารราชการกระทรวงศึกษาธิการ พ.ศ. ${num(2546)} และที่แก้ไขเพิ่มเติม จึงแต่งตั้งคณะกรรมการ ดังต่อไปนี้</p>
+    ${groups}
+    <p class="ind" style="margin-top:2mm">ให้ผู้ที่ได้รับการแต่งตั้งปฏิบัติหน้าที่ที่ได้รับมอบหมายอย่างเต็มความสามารถ เพื่อให้เกิดประโยชน์สูงสุดต่อทางราชการและนักเรียน</p>
+    <p class="ind">ทั้งนี้ ตั้งแต่บัดนี้เป็นต้นไป</p>
+    <p style="margin:3mm 0 0 55mm">สั่ง ณ วันที่ ${okDate(od) ? num(thDate(od)) : `${dots(4)} เดือน ${dots(10)} พ.ศ. ${dots(4)}`}</p>
+    <div class="sig one" style="margin-top:12mm"><div><span>( ${nm(S.director)} )</span><span>ผู้อำนวยการ${tx(S.school)}</span></div></div>`)];
+}
+
+/* ═══════════ ๖. ใบลงชื่อผู้เข้าร่วมโครงการ (แนวนอน) ═══════════ */
+function signDays(){
+  const T = readLS("nk_tutor_v2");
+  const wkday = k => { const w = dObj(k).getDay(); return w !== 0 && w !== 6; };
+  let keys = [];
+  if (T && T.days && okDate(P.start) && okDate(P.end))
+    keys = Object.keys(T.days).filter(k => okDate(k) && k >= P.start && k <= P.end && T.days[k] && T.days[k].on !== false
+      && (T.mode !== "weekday" || wkday(k))).sort();
+  if (!keys.length && okDate(P.start) && okDate(P.end))
+    for (let d = dObj(P.start); d <= dObj(P.end) && keys.length < 31; d.setDate(d.getDate() + 1)) if (wkday(iso(d))) keys.push(iso(d));
+  return keys;
+}
+function docSign(){
+  const days = signDays(), names = studentNames();
+  const nRows = names.length || Math.min(40, Math.max(N(P.targetN) || 15, 1));
+  const chunks = [];
+  for (let i = 0; i < Math.max(days.length, 1); i += 10) chunks.push(days.slice(i, i + 10));
+  return chunks.map(ch => sheet(`<h2 style="margin-bottom:0">ใบลงชื่อผู้เข้าร่วม${nm(P.title)}</h2>
+    <p class="ctr" style="margin-bottom:1.5mm">${rangeTxt()} ณ ${nm(P.place)}</p>
+    <table style="font-size:14pt;margin:0"><thead><tr><th style="width:10mm">ที่</th><th style="width:64mm">ชื่อ–สกุล</th>
+      ${ch.length ? ch.map(k => { const d = dObj(k); return `<th style="font-size:13pt">${WDS[d.getDay()]}<br>${num(d.getDate() + " " + THMON_S[d.getMonth()])}</th>`; }).join("") : "<th>ลายมือชื่อ</th>"}</tr></thead>
+    <tbody>${Array.from({ length: nRows }, (_, i) => `<tr><td class="c" style="height:7.2mm;padding:0 1mm;vertical-align:middle">${num(i + 1)}</td><td style="padding:0 2mm;vertical-align:middle">${names[i] ? tx(names[i]) : ""}</td>${"<td></td>".repeat(Math.max(ch.length, 1))}</tr>`).join("")}</tbody></table>
+    <div class="sig one" style="margin-top:3mm;font-size:15pt">${sigL("ผู้ตรวจสอบ", P.owner, P.ownerPos)}</div>`, "tight"));
+}
+
+/* ═══════════ ๗. แบบประเมินความพึงพอใจ ═══════════ */
+function docSurveyForm(){
+  let i = 0, rows = "";
+  P.survey.forEach(g => {
+    rows += `<tr class="grp"><td colspan="7">${nm(g.n)}</td></tr>`;
+    g.items.forEach(it => rows += `<tr><td class="c">${num(++i)}</td><td>${nm(it.t)}</td>${"<td></td>".repeat(5)}</tr>`);
+  });
+  return [sheet(`<h2>แบบประเมินความพึงพอใจ<br>${nm(P.title)} ปีการศึกษา ${num(Y())}</h2>
+    <p><b>คำชี้แจง</b> โปรดทำเครื่องหมาย ✓ ลงในช่องที่ตรงกับความคิดเห็นของท่านมากที่สุด
+      โดย ${num(5)} = มากที่สุด ${num(4)} = มาก ${num(3)} = ปานกลาง ${num(2)} = น้อย ${num(1)} = น้อยที่สุด</p>
+    <p style="margin-top:2mm"><b>ตอนที่ ${num(1)} ข้อมูลทั่วไป</b> &nbsp; สถานภาพ &nbsp;
+      <span class="mk">☐</span> นักเรียน &nbsp; <span class="mk">☐</span> ผู้ปกครอง &nbsp; <span class="mk">☐</span> ครูและบุคลากร &nbsp; <span class="mk">☐</span> อื่น ๆ ${dots(8)}</p>
+    <p style="margin-top:2mm"><b>ตอนที่ ${num(2)} ความพึงพอใจต่อการจัดโครงการ</b></p>
+    <table class="cmp"><thead><tr><th rowspan="2" style="width:11mm">ที่</th><th rowspan="2">รายการประเมิน</th><th colspan="5">ระดับความพึงพอใจ</th></tr>
+      <tr>${[5, 4, 3, 2, 1].map(x => `<th style="width:11mm">${num(x)}</th>`).join("")}</tr></thead><tbody>${rows}</tbody></table>
+    <p style="margin-top:1mm"><b>ตอนที่ ${num(3)} ข้อเสนอแนะเพิ่มเติม</b></p>
+    <div class="rw"><span class="vl"></span></div><div class="rw"><span class="vl"></span></div>
+    <p class="ctr" style="margin-top:2mm">ขอขอบคุณที่ให้ความร่วมมือในการตอบแบบประเมิน</p>`, "tight")];
+}
+
+/* ═══════════ ข้อความสรุปผล (ใช้ร่วมกันทั้งบันทึกรายงานผลและเล่มรายงาน) ═══════════ */
+function resultBullets(){
+  const b = budget(), ind = indicators(), sv = survey(), aN = N(P.res.actualN), tN = N(P.targetN);
+  const fit = P.res.fit === "1" ? fitSummary() : null;
+  const out = [];
+  out.push(has(P.res.actualN)
+    ? `มีผู้เข้าร่วมโครงการ ${money0(aN)} คน จากกลุ่มเป้าหมาย ${money0(tN)} คน คิดเป็นร้อยละ ${pct(aN, tN)}`
+    : `มีผู้เข้าร่วมโครงการ …… คน จากกลุ่มเป้าหมาย ${money0(tN)} คน`);
+  out.push(ind.judged
+    ? `ผลการดำเนินงานบรรลุตัวชี้วัดความสำเร็จ ${ind.met} จาก ${ind.total} ตัวชี้วัด คิดเป็นร้อยละ ${pct(ind.met, ind.total)}`
+    : `ผลการดำเนินงานตามตัวชี้วัดความสำเร็จ ……`);
+  out.push(sv.all
+    ? `ผู้ตอบแบบประเมิน ${sv.resp} คน มีความพึงพอใจต่อโครงการในภาพรวมอยู่ในระดับ${sv.all.lv} (x̄ = ${f2(sv.all.m)}, S.D. = ${f2(sv.all.sd)})`
+    : `ความพึงพอใจของผู้เข้าร่วมโครงการในภาพรวมอยู่ในระดับ……`);
+  if (P.source !== "ไม่ใช้") out.push(b.actAny
+    ? `ใช้งบประมาณจริง ${money(b.actual)} บาท จากที่ได้รับอนุมัติ ${money(b.plan)} บาท คิดเป็นร้อยละ ${pct(b.actual, b.plan)} คงเหลือ ${money(b.plan - b.actual)} บาท`
+    : `ใช้งบประมาณจริง …… บาท จากที่ได้รับอนุมัติ ${money(b.plan)} บาท`);
+  if (fit && fit.ok && fit.comp)
+    out.push(`นักเรียนร้อยละ ${pct(fit.imp, fit.comp)} มีผลการทดสอบสมรรถภาพทางร่างกายดีขึ้น เมื่อเทียบการทดสอบครั้งแรกกับครั้งล่าสุด`);
+  return out;
+}
+
+/* ═══════════ ๘. บันทึกข้อความรายงานผลโครงการ ═══════════ */
+function docReport(){
+  const b = budget(), ad = P.docs.approveDate;
+  let k = 0;
+  const it = s => `<p class="ind">${num(++k)}. ${tx(s)}</p>`;
+  return [sheet(
+    memoHead(P.docs.repNo, P.docs.repDate, "รายงานผลการดำเนิน" + (P.title || "โครงการ")) +
+    `<p class="ind"><b>เรื่องเดิม</b></p>
+     <p class="ind">ตามที่${tx(S.school)} ได้อนุมัติให้${tx(S.plan)} ดำเนินการ${nm(P.title)} ปีการศึกษา ${num(Y())}${okDate(ad) ? " เมื่อวันที่ " + num(thDate(ad)) : ""}${P.source === "ไม่ใช้" ? "" : ` งบประมาณ ${num(money(b.plan))} บาท`} นั้น</p>
+     <p class="ind"><b>ข้อเท็จจริง</b></p>
+     <p class="ind">${tx(S.plan)} ได้ดำเนินโครงการเสร็จสิ้นแล้ว ${rangeTxt()} ณ ${nm(P.place)} รายละเอียดปรากฏตามเล่มรายงานผลการดำเนินโครงการที่แนบมาพร้อมนี้ สรุปผลการดำเนินงาน ดังนี้</p>` +
+    resultBullets().map(it).join("") +
+    `<p class="ind"><b>ข้อเสนอเพื่อพิจารณา</b></p>
+     <p class="ind">เห็นควรรับทราบผลการดำเนินโครงการ และใช้เป็นข้อมูลวางแผนในปีการศึกษาต่อไป</p>
+     <p class="ind">จึงเรียนมาเพื่อโปรดทราบและพิจารณา</p>
+     <div class="sig one" style="margin-top:3mm">${sigL("", P.owner, P.ownerPos)}</div>` + commentTable("report"), "tight")];
+}
+
+/* ═══════════ ๙. เล่มรายงานสรุปผลการดำเนินโครงการ ═══════════ */
+function docBook(){
+  TN = 0;
+  const b = budget(), ind = indicators(), sv = survey();
+  const fit = P.res.fit === "1" ? fitSummary() : null;
+  const showFit = !!(fit && fit.ok);
+  const pages = [], toc = [];
+  const T = (id, t, lv) => { toc.push({ id, t, lv: lv || 0 }); return id; };
+
+  /* ปก */
+  const logo = P.logo && MEDIA[P.logo];
+  pages.push(sheet(`${logo ? `<p class="ctr" style="margin:4mm 0 0">${fitImg(logo, 48, 40, "logo")}</p>` : `<p style="margin:0;height:44mm">&nbsp;</p>`}
+    <p class="ctr" style="margin:16mm 0 0;font-size:28pt;font-weight:700;line-height:1.3">รายงานผลการดำเนินโครงการ</p>
+    <p class="ctr" style="margin:4mm 0 0;font-size:24pt;font-weight:700;line-height:1.35">${nm(P.title)}</p>
+    <p class="ctr" style="margin:4mm 0 0;font-size:22pt;font-weight:700">ปีการศึกษา ${num(Y())}</p>
+    <p class="ctr" style="margin:46mm 0 0;font-size:18pt;font-weight:700;line-height:1.5">ผู้รับผิดชอบโครงการ<br>${nm(P.owner)}<br>${tx(P.ownerPos)}</p>
+    <p class="ctr" style="margin:28mm 0 0;font-size:18pt;font-weight:700;line-height:1.5">${tx(P.group)}<br>${tx(S.school)}<br>${tx(S.area)}</p>`));
+
+  /* คำนำ */
+  const rd = P.docs.repDate;
+  pages.push(sheet(`<h2 id="${T("t_pre", "คำนำ")}">คำนำ</h2>
+    <p class="ind">รายงานผลการดำเนิน${nm(P.title)} ปีการศึกษา ${num(Y())} ฉบับนี้ จัดทำขึ้นเพื่อสรุปผลการดำเนินงานตามวัตถุประสงค์และเป้าหมายของโครงการ ซึ่งดำเนินการตามวงจรคุณภาพ PDCA ตั้งแต่การวางแผน การดำเนินงาน การตรวจสอบประเมินผล จนถึงการนำผลไปปรับปรุงพัฒนา</p>
+    <p class="ind">เนื้อหาในรายงานประกอบด้วย ข้อมูลพื้นฐานของโครงการ วิธีดำเนินการ ผลการดำเนินงานตามตัวชี้วัด การใช้งบประมาณ ผลการประเมินความพึงพอใจ ตลอดจนปัญหา อุปสรรค และข้อเสนอแนะ เพื่อใช้เป็นข้อมูลในการพัฒนาและปรับปรุงการจัดโครงการในปีการศึกษาต่อไป และเป็นหลักฐานประกอบการประกันคุณภาพการศึกษาภายในสถานศึกษา</p>
+    <p class="ind">ขอขอบคุณผู้บริหารโรงเรียน คณะครู วิทยากร ผู้ปกครอง และผู้มีส่วนเกี่ยวข้องทุกท่าน ที่ให้การสนับสนุนจนโครงการสำเร็จลุล่วงด้วยดี</p>
+    <div class="sig one" style="margin-top:10mm"><div><span>${has(P.owner) ? tx(P.owner) : "ผู้รับผิดชอบโครงการ"}</span><span>${tx(P.ownerPos)}</span><span>${okDate(rd) ? num(THMON[dObj(rd).getMonth()] + " " + (dObj(rd).getFullYear() + 543)) : dots(12)}</span></div></div>`));
+
+  /* สารบัญ — เลขหน้าเติมหลังวาดหน้าจริง (fillToc) */
+  const tocAt = pages.length;
+  pages.push(null);
+
+  /* บทสรุปสำหรับผู้บริหาร */
+  const sug = lines(P.res.suggest);
+  pages.push(sheet(`<h2 id="${T("t_exec", "บทสรุปสำหรับผู้บริหาร")}">บทสรุปสำหรับผู้บริหาร</h2>
+    <p class="ind">${nm(P.title)} ปีการศึกษา ${num(Y())} ดำเนินการโดย${tx(S.plan)} ${tx(P.group)} ${tx(S.school)} ${tx(objText())} ดำเนินการ${rangeTxt()} ณ ${nm(P.place)} กลุ่มเป้าหมาย ได้แก่ ${nm(P.targetDesc)} จำนวน ${has(P.targetN) ? num(P.targetN) : dots(4)} คน${P.source === "ไม่ใช้" ? "" : ` ได้รับอนุมัติงบประมาณจาก${tx(srcText())} จำนวน ${num(money(b.plan))} บาท`}</p>
+    <p class="ind">ผลการดำเนินงาน พบว่า ${resultBullets().map(tx).join(" ")}</p>
+    ${lines(P.res.summary).map(s => `<p class="ind">${tx(s)}</p>`).join("")}
+    ${sug.length ? `<p class="ind">ข้อเสนอแนะที่สำคัญ ได้แก่ ${tx(sug.slice(0, 3).join(" "))}</p>` : ""}`));
+
+  /* ส่วนที่ ๑ */
+  const q = P.targets.filter(t => t.t === "q"), l = P.targets.filter(t => t.t === "l");
+  const tgt = arr => arr.length ? arr.map((t, i) => `<p class="i2">${num(`(${i + 1})`)} ${nm(t.text)} ${tx(fmtTarget(t))}</p>`).join("") : dotsP();
+  pages.push(sheet(`<h2 id="${T("t_p1", "ส่วนที่ " + num(1) + " ข้อมูลพื้นฐานของโครงการ")}">ส่วนที่ ${num(1)}<br>ข้อมูลพื้นฐานของโครงการ</h2>
+    ${H3("1.1", "ชื่อโครงการ")}<p class="ind">${nm(P.title)}</p>
+    ${H3("1.2", "หลักการและเหตุผล")}${lines(P.rationale).map(p => `<p class="ind">${tx(p)}</p>`).join("") || dotsP()}
+    ${H3("1.3", "วัตถุประสงค์")}${listP(objList()) || dotsP()}
+    ${H3("1.4", "เป้าหมาย")}<h4>เชิงปริมาณ</h4>${tgt(q)}<h4>เชิงคุณภาพ</h4>${tgt(l)}
+    ${H3("1.5", "ความสอดคล้องกับมาตรฐานการศึกษาของสถานศึกษา")}${stdFull() || dotsP()}
+    ${has(P.strategy) ? `<p class="i1"><b>กลยุทธ์โรงเรียน</b> ${tx(P.strategy)}</p>` : ""}
+    ${H3("1.6", "งบประมาณ")}<p class="ind">${fundLine()}</p>
+    ${H3("1.7", "ผู้รับผิดชอบโครงการ")}<p class="ind">${nm(P.owner)} ${tx(P.ownerPos)} ${tx(P.group)}</p>`));
+
+  /* ส่วนที่ ๒ */
+  const tools = [...new Set(P.targets.map(t => String(t.tool || "").trim()).filter(Boolean))];
+  const nItems = P.survey.reduce((a, g) => a + g.items.length, 0);
+  if (nItems && !tools.some(t => /ความพึงพอใจ/.test(t))) tools.push("แบบประเมินความพึงพอใจ");
+  pages.push(sheet(`<h2 id="${T("t_p2", "ส่วนที่ " + num(2) + " วิธีดำเนินการ")}">ส่วนที่ ${num(2)}<br>วิธีดำเนินการ</h2>
+    ${H3("2.1", "กลุ่มเป้าหมาย")}<p class="ind">${nm(P.targetDesc)} จำนวน ${has(P.targetN) ? num(P.targetN) : dots(4)} คน</p>
+    ${H3("2.2", "ระยะเวลาและสถานที่")}<p class="ind">ดำเนินการ${rangeTxt()} ณ ${nm(P.place)}</p>
+    ${H3("2.3", "ขั้นตอนการดำเนินงาน")}<p class="ind">ดำเนินงานตามวงจรคุณภาพ PDCA ดังนี้</p>${stepsTable()}
+    ${H3("2.4", "เครื่องมือที่ใช้ในการประเมินผล")}${listP(tools.map(t => /ความพึงพอใจ/.test(t) && nItems ? `${t} แบบมาตราส่วนประมาณค่า 5 ระดับ จำนวน ${nItems} ข้อ` : t)) || dotsP()}
+    ${H3("2.5", "การวิเคราะห์ข้อมูล")}
+    <p class="ind">วิเคราะห์ข้อมูลด้วยสถิติ ร้อยละ ค่าเฉลี่ย (x̄) และส่วนเบี่ยงเบนมาตรฐาน (S.D.) โดยแปลความหมายของค่าเฉลี่ยความพึงพอใจตามเกณฑ์ ดังนี้</p>
+    <table style="width:120mm;margin-inline:auto"><thead><tr><th>ค่าเฉลี่ย</th><th>ระดับความพึงพอใจ</th></tr></thead><tbody>
+      ${[["4.51 – 5.00", "มากที่สุด"], ["3.51 – 4.50", "มาก"], ["2.51 – 3.50", "ปานกลาง"], ["1.51 – 2.50", "น้อย"], ["1.00 – 1.50", "น้อยที่สุด"]]
+        .map(([a, c]) => `<tr><td class="c">${num(a)}</td><td class="c">${c}</td></tr>`).join("")}</tbody></table>`));
+
+  /* ส่วนที่ ๓ */
+  let p3 = `<h2 id="${T("t_p3", "ส่วนที่ " + num(3) + " ผลการดำเนินงาน")}">ส่วนที่ ${num(3)}<br>ผลการดำเนินงาน</h2>`;
+  p3 += H3("3.1", "ผลการดำเนินงานตามตัวชี้วัดความสำเร็จ", T("t31", num("3.1") + " ผลการดำเนินงานตามตัวชี้วัดความสำเร็จ", 1));
+  p3 += tcap("ผลการดำเนินงานเทียบกับค่าเป้าหมาย") + `<table class="cmp"><thead><tr><th style="width:11mm">ที่</th><th>ตัวชี้วัดความสำเร็จ</th><th style="width:30mm">ค่าเป้าหมาย</th><th style="width:30mm">ผลการดำเนินงาน</th><th style="width:22mm">ผลการประเมิน</th></tr></thead><tbody>
+    ${ind.rows.map((x, i) => `<tr><td class="c">${num(i + 1)}</td><td>${nm(x.t.text)}</td><td class="c">${tx(fmtVal(x.t.tgt, x.t.unit))}</td><td class="c">${has(x.r) ? tx(fmtVal(x.r, x.t.unit)) : dots(6)}</td><td class="c">${x.met === null ? "—" : x.met ? "บรรลุ" : "ไม่บรรลุ"}</td></tr>`).join("")}</tbody></table>
+    <p class="ind">${ind.judged ? `จากตาราง พบว่า โครงการบรรลุตัวชี้วัดความสำเร็จ ${num(ind.met)} จาก ${num(ind.total)} ตัวชี้วัด คิดเป็นร้อยละ ${num(pct(ind.met, ind.total))}` : "ยังไม่ได้บันทึกผลการดำเนินงานตามตัวชี้วัด"}</p>`;
+  if (P.source !== "ไม่ใช้"){
+    p3 += H3("3.2", "การใช้งบประมาณ", T("t32", num("3.2") + " การใช้งบประมาณ", 1));
+    p3 += tcap("การใช้งบประมาณเทียบกับงบประมาณที่ได้รับอนุมัติ") + `<table class="cmp" style="font-size:14pt"><thead><tr><th style="width:10mm">ที่</th><th>รายการ</th><th style="width:27mm">ได้รับอนุมัติ (บาท)</th><th style="width:27mm">ใช้จริง (บาท)</th><th style="width:27mm">คงเหลือ (บาท)</th></tr></thead><tbody>
+      ${P.budget.map((x, i) => `<tr><td class="c">${num(i + 1)}</td><td>${nm(x.n)}</td><td class="n">${num(money(lineAmt(x)))}</td><td class="n">${has(x.a) ? num(money(N(x.a))) : dots(5)}</td><td class="n">${has(x.a) ? num(money(lineAmt(x) - N(x.a))) : ""}</td></tr>`).join("")}
+      <tr class="tot"><td colspan="2" style="text-align:center">รวม</td><td class="n">${num(money(b.plan))}</td><td class="n">${b.actAny ? num(money(b.actual)) : ""}</td><td class="n">${b.actAny ? num(money(b.plan - b.actual)) : ""}</td></tr></tbody></table>
+      <p class="ind">${b.actAny ? `ใช้งบประมาณจริง ${num(money(b.actual))} บาท คิดเป็นร้อยละ ${num(pct(b.actual, b.plan))} ของงบประมาณที่ได้รับอนุมัติ คงเหลือ ${num(money(b.plan - b.actual))} บาท` : "ยังไม่ได้บันทึกยอดใช้จ่ายจริง"}</p>`;
+  }
+  const n33 = P.source === "ไม่ใช้" ? "3.2" : "3.3";
+  p3 += H3(n33, "ผลการประเมินความพึงพอใจ", T("t33", num(n33) + " ผลการประเมินความพึงพอใจ", 1));
+  if (sv.all){
+    let i = 0;
+    const st = s => s ? `<td class="c">${num(f2(s.m))}</td><td class="c">${num(f2(s.sd))}</td><td class="c">${s.lv}</td>` : `<td></td><td></td><td></td>`;
+    p3 += `<p class="ind">ผู้ตอบแบบประเมินความพึงพอใจ จำนวน ${num(sv.resp)} คน ผลการประเมินปรากฏดังตาราง</p>` +
+      tcap("ผลการประเมินความพึงพอใจของผู้เข้าร่วมโครงการ") +
+      `<table class="cmp" style="font-size:14pt"><thead><tr><th style="width:10mm">ที่</th><th>รายการประเมิน</th><th style="width:15mm">x̄</th><th style="width:15mm">S.D.</th><th style="width:25mm">ระดับ</th></tr></thead><tbody>
+      ${sv.groups.map(g => `<tr class="grp"><td colspan="5">${nm(g.n)}</td></tr>` +
+        g.items.map(x => `<tr><td class="c">${num(++i)}</td><td>${nm(x.t)}</td>${st(x.s)}</tr>`).join("") +
+        `<tr class="tot"><td colspan="2" style="text-align:center">รวม${tx(g.n)}</td>${st(g.s)}</tr>`).join("")}
+      <tr class="tot"><td colspan="2" style="text-align:center">รวมทุกด้าน</td>${st(sv.all)}</tr></tbody></table>
+      <p class="ind">จากตาราง พบว่า ผู้เข้าร่วมโครงการมีความพึงพอใจในภาพรวมอยู่ในระดับ${sv.all.lv} (x̄ = ${num(f2(sv.all.m))}, S.D. = ${num(f2(sv.all.sd))})${sv.hi && sv.lo && sv.hi !== sv.lo ? ` โดยข้อที่มีค่าเฉลี่ยสูงสุด คือ ${tx(sv.hi.t)} (x̄ = ${num(f2(sv.hi.s.m))}) และข้อที่มีค่าเฉลี่ยต่ำสุด คือ ${tx(sv.lo.t)} (x̄ = ${num(f2(sv.lo.s.m))})` : ""}</p>`;
+  } else p3 += `<p class="ind">ยังไม่ได้บันทึกผลการประเมินความพึงพอใจ</p>`;
+  if (showFit){
+    const n34 = P.source === "ไม่ใช้" ? "3.3" : "3.4";
+    const cell = (p, n) => n ? `${num(p)}/${num(n)} คน<br>(ร้อยละ ${num(pct(p, n))})` : "—";
+    p3 += H3(n34, "ผลการทดสอบสมรรถภาพทางร่างกาย", T("t34", num(n34) + " ผลการทดสอบสมรรถภาพทางร่างกาย", 1)) +
+      `<p class="ind">เปรียบเทียบผลการทดสอบครั้งแรก (${num(thDate(fit.a.date))}) กับครั้งล่าสุด (${num(thDate(fit.b.date))}) จากการทดสอบทั้งหมด ${num(fit.nRounds)} ครั้ง</p>` +
+      tcap("จำนวนนักเรียนที่ผ่านเกณฑ์การทดสอบสมรรถภาพ") +
+      `<table style="font-size:14pt"><thead><tr><th style="width:10mm">ที่</th><th>รายการทดสอบ</th><th style="width:38mm">เกณฑ์</th><th style="width:28mm">ครั้งแรก</th><th style="width:28mm">ครั้งล่าสุด</th><th style="width:20mm">เปลี่ยนแปลง</th></tr></thead><tbody>
+      ${fit.rows.map((r, i) => `<tr><td class="c">${num(i + 1)}</td><td>${tx(r.t.n)}</td><td>${tx(critText(r.t))}</td><td class="c">${cell(r.p1, r.n1)}</td><td class="c">${cell(r.p2, r.n2)}</td><td class="c">${num((r.p2 - r.p1 >= 0 ? "+" : "") + (r.p2 - r.p1))} คน</td></tr>`).join("")}</tbody></table>
+      <p class="ind">นักเรียนที่มีผลการทดสอบดีขึ้น (จำนวนรายการที่ดีขึ้นมากกว่ารายการที่ลดลง) มี ${num(fit.imp)} คน จาก ${num(fit.comp)} คน คิดเป็นร้อยละ ${num(pct(fit.imp, fit.comp))}</p>`;
+  }
+  pages.push(sheet(p3));
+
+  /* ส่วนที่ ๔ */
+  const ls = (t, empty) => lines(t).length ? listP(lines(t)) : `<p class="ind">${empty}</p>`;
+  pages.push(sheet(`<h2 id="${T("t_p4", "ส่วนที่ " + num(4) + " สรุปผล ปัญหา อุปสรรค และข้อเสนอแนะ")}">ส่วนที่ ${num(4)}<br>สรุปผล ปัญหา อุปสรรค และข้อเสนอแนะ</h2>
+    ${H3("4.1", "สรุปผลการดำเนินงาน")}${listP([...resultBullets(), ...lines(P.res.summary)])}
+    ${H3("4.2", "ปัญหาและอุปสรรค")}${ls(P.res.problems, dots(40))}
+    ${H3("4.3", "ข้อเสนอแนะ")}${ls(P.res.suggest, dots(40))}
+    ${H3("4.4", "แนวทางการพัฒนาในครั้งต่อไป")}${ls(P.res.next, dots(40))}
+    <div class="sig" style="margin-top:10mm">${sigL("ผู้รายงาน", P.owner, P.ownerPos)}${sigL("ผู้ตรวจสอบ", P.deputy, P.deputyPos)}</div>
+    <div class="sig one" style="margin-inline:auto">${sigL("ผู้รับรอง", S.director, "ผู้อำนวยการ" + S.school)}</div>`));
+
+  /* ภาคผนวก */
+  pages.push(sheet(`<p class="ctr" id="${T("t_app", "ภาคผนวก")}" style="margin-top:105mm;font-size:36pt;font-weight:700">ภาคผนวก</p>`));
+  const ph = P.photos.filter(p => MEDIA[p.id]);
+  const headA = `<h2 id="${T("t_appA", "ภาคผนวก ก ภาพกิจกรรม", 1)}">ภาคผนวก ก<br>ภาพกิจกรรม</h2>`;
+  if (!ph.length) pages.push(sheet(headA + `<p class="ctr" style="margin-top:30mm">(แนบภาพกิจกรรม)</p>`));
+  for (let i = 0; i < ph.length; i += 6){
+    const chunk = ph.slice(i, i + 6);
+    let rows = "";
+    for (let j = 0; j < chunk.length; j += 2)
+      rows += `<tr>${[chunk[j], chunk[j + 1]].map(p => p ? `<td>${fitImg(MEDIA[p.id], 74, 54)}${tx(p.cap || "")}</td>` : "<td></td>").join("")}</tr>`;
+    pages.push(sheet((i === 0 ? headA : "") + `<table class="photos lay"><tbody>${rows}</tbody></table>`));
+  }
+  const app = [
+    ["บันทึกข้อความขออนุมัติโครงการ", docMemo], ["โครงการ", docProject], ["คำสั่งแต่งตั้งคณะกรรมการดำเนินงาน", docOrder],
+    ["แบบประเมินความพึงพอใจ", docSurveyForm]
+  ];
+  const attach = P.res.appendix === "1";
+  pages.push(sheet(`<h2 id="${T("t_appB", "ภาคผนวก ข เอกสารประกอบโครงการ", 1)}">ภาคผนวก ข<br>เอกสารประกอบโครงการ</h2>
+    ${listP([...app.map(a => a[0]), "ใบลงชื่อผู้เข้าร่วมโครงการ", "หลักฐานการเบิกจ่ายงบประมาณ"])}
+    ${attach ? `<p class="ind" style="margin-top:3mm">เอกสารลำดับที่ ${num(1)}–${num(app.length)} แนบไว้ในหน้าถัดไป ส่วนเอกสารลำดับที่ ${num(app.length + 1)}–${num(app.length + 2)} ให้แนบสำเนาฉบับจริง</p>` : `<p class="ind" style="margin-top:3mm">ให้แนบสำเนาเอกสารฉบับจริงต่อจากหน้านี้</p>`}`));
+  if (attach) app.forEach(([, f]) => pages.push(...f()));
+
+  /* สารบัญ */
+  pages[tocAt] = sheet(`<h2>สารบัญ</h2>
+    <div class="toc" style="font-weight:700"><span class="tt">เรื่อง</span><span style="flex:1"></span><span class="pg">หน้า</span></div>
+    ${toc.map(e => `<div class="toc${e.lv ? " sub" : ""}"><span class="tt">${e.t}</span><span class="ld"></span><span class="pg" data-for="${e.id}">…</span></div>`).join("")}`);
+  return pages;
+}
+
+/* ═══════════ ๑๐. แบบตรวจสอบมาตรฐานการจัดโครงการ ═══════════ */
+function checks(){
+  const b = budget(), sv = survey(), ind = indicators();
+  const M = k => P.manual[k] === "1";
+  const noB = P.source === "ไม่ใช้";
+  return [
+    ["P", "ระบุหลักการและเหตุผล และวัตถุประสงค์ชัดเจน", has(P.title) && has(P.rationale) && objList().length > 0, "โครงการ ข้อ 1–2"],
+    ["P", "สอดคล้องกับมาตรฐานการศึกษาและกลยุทธ์โรงเรียน", P.std.length > 0 && has(P.strategy), "โครงการ ส่วนหัว"],
+    ["P", "กำหนดเป้าหมายเชิงปริมาณและเชิงคุณภาพที่วัดได้", P.targets.some(t => t.t === "q" && has(t.tgt)) && P.targets.some(t => t.t === "l" && has(t.tgt)), "โครงการ ข้อ 3"],
+    ["P", "มีขั้นตอนครบวงจร PDCA พร้อมระยะเวลาและผู้รับผิดชอบ", ["P", "D", "C", "A"].every(ph => P.steps.some(s => s.ph === ph && has(s.act) && has(s.when))), "โครงการ ข้อ 4"],
+    ["P", "มีรายละเอียดประมาณการค่าใช้จ่ายที่ตรวจสอบได้", noB || (P.budget.length > 0 && P.budget.every(x => has(x.n) && N(x.q) && N(x.p))), "รายละเอียดค่าใช้จ่าย"],
+    ["P", "กำหนดตัวชี้วัด วิธีการ และเครื่องมือประเมินผลครบทุกตัวชี้วัด", P.targets.length > 0 && P.targets.every(t => has(t.how) && has(t.tool)), "โครงการ ข้อ 6"],
+    ["P", "โครงการได้รับอนุมัติจากผู้อำนวยการโรงเรียน", M("approved") || okDate(P.docs.approveDate), "บันทึกข้อความขออนุมัติ", "approved"],
+    ["P", "มีคำสั่งแต่งตั้งคณะกรรมการดำเนินงาน", P.comm.length > 0 && (M("order") || has(P.docs.orderNo)), "คำสั่งโรงเรียน", "order"],
+    ["D", "ดำเนินกิจกรรมตามกำหนดการที่วางไว้", M("onplan"), "กำหนดการ บันทึกการปฏิบัติงาน", "onplan"],
+    ["D", "มีหลักฐานการเข้าร่วมกิจกรรมของกลุ่มเป้าหมาย", has(P.res.actualN), "ใบลงชื่อผู้เข้าร่วมโครงการ"],
+    ["D", "มีภาพถ่ายหรือหลักฐานเชิงประจักษ์ของการดำเนินกิจกรรม", P.photos.length > 0, "ภาคผนวก ก ภาพกิจกรรม"],
+    ["D", "เบิกจ่ายงบประมาณตามระเบียบ มีหลักฐานการจ่ายครบถ้วน", noB || (b.actDone && M("paid")), "หลักฐานการเบิกจ่าย", "paid"],
+    ["C", "ประเมินผลตามตัวชี้วัดครบทุกตัวชี้วัด", ind.total > 0 && ind.judged === ind.total, "รายงานผล ส่วนที่ 3"],
+    ["C", "ประเมินความพึงพอใจของผู้เข้าร่วมโครงการ", !!sv.all, "แบบประเมินความพึงพอใจ"],
+    ["C", "เปรียบเทียบผลกับเป้าหมาย และสรุปการใช้งบประมาณ", ind.judged > 0 && (noB || b.actDone), "รายงานผล ส่วนที่ 3"],
+    ["A", "วิเคราะห์ปัญหา อุปสรรค และจัดทำข้อเสนอแนะ", lines(P.res.problems).length > 0 && lines(P.res.suggest).length > 0, "รายงานผล ส่วนที่ 4"],
+    ["A", "กำหนดแนวทางการพัฒนาในครั้งต่อไป", lines(P.res.next).length > 0, "รายงานผล ส่วนที่ 4"],
+    ["A", "รายงานผลการดำเนินโครงการต่อผู้บริหาร", M("reported") || okDate(P.docs.repDate), "บันทึกข้อความรายงานผล", "reported"]
+  ].map(([ph, t, ok, ev, mk]) => ({ ph, t, ok: !!ok, ev, mk }));
+}
+function qLevel(p){ return p >= 90 ? "ดีเยี่ยม" : p >= 80 ? "ดีมาก" : p >= 70 ? "ดี" : p >= 60 ? "พอใช้" : "ปรับปรุง"; }
+function docCheck(){
+  const c = checks(), ok = c.filter(x => x.ok).length, p = ok * 100 / c.length;
+  let i = 0;
+  const rows = ["P", "D", "C", "A"].map(ph => `<tr class="grp"><td colspan="4">${PH[ph]}</td></tr>` +
+    c.filter(x => x.ph === ph).map(x => `<tr><td class="c">${num(++i)}</td><td>${tx(x.t)}</td><td>${tx(x.ev)}</td><td class="c">${x.ok ? "มี" : "ยังไม่มี"}</td></tr>`).join("")).join("");
+  return [sheet(`<h2>แบบตรวจสอบมาตรฐานการจัดโครงการ<br>${nm(P.title)} ปีการศึกษา ${num(Y())}</h2>
+    <table class="cmp" style="font-size:14pt"><thead><tr><th style="width:10mm">ที่</th><th>รายการตรวจสอบ</th><th style="width:46mm">หลักฐาน / เอกสารอ้างอิง</th><th style="width:20mm">ผล</th></tr></thead><tbody>${rows}</tbody></table>
+    <p class="ind">สรุป ผ่าน ${num(ok)} จาก ${num(c.length)} รายการ คิดเป็นร้อยละ ${num(f2(p))} อยู่ในระดับคุณภาพ <b>${qLevel(p)}</b></p>
+    <small>เกณฑ์ระดับคุณภาพ : ร้อยละ ${num(90)} ขึ้นไป = ดีเยี่ยม · ${num(80)}–${num(89.99)} = ดีมาก · ${num(70)}–${num(79.99)} = ดี · ${num(60)}–${num(69.99)} = พอใช้ · ต่ำกว่า ${num(60)} = ปรับปรุง</small>
+    <div class="sig" style="margin-top:5mm">${sigL("ผู้รับผิดชอบโครงการ", P.owner, P.ownerPos)}${sigL("ผู้ตรวจสอบ", "", "หัวหน้างานประกันคุณภาพการศึกษา")}</div>`, "tight")];
+}
+
+/* ═══════════ ทะเบียนเอกสาร ═══════════ */
+const DOCS = [
+  { id:"memo", ph:1, n:"บันทึกข้อความขออนุมัติโครงการ", d:"เสนอผู้อำนวยการ · ต้นเรื่อง ข้อเท็จจริง ข้อเสนอ", uses:["basic","plan","budget","docno"], pages: docMemo },
+  { id:"project", ph:1, n:"โครงการ", d:"เอกสารแนบ · หลักการ เป้าหมาย PDCA งบประมาณ การประเมิน", uses:["basic","plan","target","std","steps","budget"], pages: docProject },
+  { id:"budget", ph:1, n:"รายละเอียดประมาณการค่าใช้จ่าย", d:"เอกสารแนบ · จำนวน × ราคา แยกหมวด พร้อมคำชี้แจง", uses:["budget"], pages: docBudget },
+  { id:"sched", ph:1, n:"กำหนดการ", d:"เอกสารแนบ · วัน เวลา กิจกรรม ผู้รับผิดชอบ", uses:["sched"], pages: docSched },
+  { id:"order", ph:1, n:"คำสั่งแต่งตั้งคณะกรรมการ", d:"คำสั่งโรงเรียน กระดาษตราครุฑ", uses:["comm","docno"], pages: docOrder },
+  { id:"bundle", ph:1, n:"ชุดเสนอขออนุมัติ (รวมทุกฉบับ)", d:"บันทึก + โครงการ + ค่าใช้จ่าย + กำหนดการ + คำสั่ง", uses:["basic","docno"],
+    pages: () => [...docMemo(), ...docProject(), ...docBudget(), ...docSched(), ...docOrder()] },
+  { id:"signin", ph:2, n:"ใบลงชื่อผู้เข้าร่วมโครงการ", d:"แนวนอน · ช่องลงชื่อรายวัน", land:true, uses:["basic"], pages: docSign },
+  { id:"surveyform", ph:2, n:"แบบประเมินความพึงพอใจ", d:"แบบสอบถาม ๕ ระดับ แจกผู้เข้าร่วม", uses:["survey"], pages: docSurveyForm },
+  { id:"report", ph:3, n:"บันทึกข้อความรายงานผลโครงการ", d:"สรุปผลเสนอผู้อำนวยการ", uses:["result","survey","budget","docno"], pages: docReport },
+  { id:"book", ph:3, n:"เล่มรายงานสรุปผลการดำเนินโครงการ", d:"ปก คำนำ สารบัญ บทสรุป ๔ ส่วน ภาคผนวก", uses:["result","survey","photo"], pages: docBook, toc:true },
+  { id:"check", ph:4, n:"แบบตรวจสอบมาตรฐานการจัดโครงการ", d:"ตรวจครบวงจร PDCA ๑๘ รายการ พร้อมระดับคุณภาพ", uses:["stat","std"], pages: docCheck }
+];
+
+/** รายการข้อมูลที่ยังขาด — ใช้บอกความพร้อมของเอกสารแต่ละฉบับ */
+function needs(id){
+  const m = [], b = budget();
+  const req = (c, msg) => { if (!c && !m.includes(msg)) m.push(msg); };
+  const base = () => { req(has(P.title), "ชื่อโครงการ"); req(okDate(P.start) && okDate(P.end), "วันเริ่ม–สิ้นสุดโครงการ"); req(has(P.place), "สถานที่"); };
+  switch (id){
+    case "memo": base(); req(has(P.owner), "ชื่อผู้รับผิดชอบโครงการ"); req(has(P.deputy), "ชื่อผู้เห็นชอบ (รองผู้อำนวยการ)");
+      req(has(S.director), "ชื่อผู้อำนวยการ (ตั้งค่าที่หน้าศูนย์เอกสาร)"); req(objList().length, "วัตถุประสงค์");
+      req(P.source === "ไม่ใช้" || b.plan > 0, "งบประมาณ"); req(okDate(P.docs.memoDate), "วันที่ของบันทึกขออนุมัติ"); break;
+    case "project": base(); req(has(P.owner), "ชื่อผู้รับผิดชอบโครงการ"); req(has(P.rationale), "หลักการและเหตุผล"); req(objList().length, "วัตถุประสงค์");
+      req(P.targets.length, "เป้าหมายและตัวชี้วัด"); req(P.std.length, "มาตรฐานที่สนอง"); req(has(P.strategy), "กลยุทธ์โรงเรียนที่สนอง");
+      req(P.steps.length, "ขั้นตอนดำเนินงาน"); req(lines(P.expected).length, "ผลที่คาดว่าจะได้รับ"); break;
+    case "budget": req(P.source === "ไม่ใช้" || (P.budget.length && P.budget.every(x => has(x.n) && N(x.q) && N(x.p))), "รายการงบประมาณให้ครบ (ชื่อ จำนวน ราคา)"); break;
+    case "sched": req(P.sched.length, "กำหนดการอย่างน้อย ๑ รายการ"); req(P.sched.every(r => okDate(r.d) && has(r.act)), "วันที่และกิจกรรมของกำหนดการทุกแถว"); break;
+    case "order": req(P.comm.length, "คณะกรรมการ"); req(has(S.director), "ชื่อผู้อำนวยการ (ตั้งค่าที่หน้าศูนย์เอกสาร)"); req(okDate(P.docs.orderDate), "วันที่สั่ง"); break;
+    case "bundle": ["memo", "project", "budget", "sched", "order"].forEach(k => needs(k).forEach(x => req(false, x))); break;
+    case "signin": base(); break;
+    case "surveyform": req(P.survey.some(g => g.items.length), "ข้อคำถาม"); break;
+    case "report": req(has(P.res.actualN), "จำนวนผู้เข้าร่วมจริง"); req(!!survey().all, "ผลแบบประเมินความพึงพอใจ");
+      req(P.source === "ไม่ใช้" || b.actDone, "ยอดใช้จ่ายจริงทุกรายการ"); req(P.targets.every(t => has(resOf(t))), "ผลของตัวชี้วัดทุกตัว");
+      req(okDate(P.docs.repDate), "วันที่ของบันทึกรายงานผล"); break;
+    case "book": needs("report").filter(x => !/วันที่ของบันทึก/.test(x)).forEach(x => req(false, x));
+      req(lines(P.res.problems).length, "ปัญหาและอุปสรรค"); req(lines(P.res.suggest).length, "ข้อเสนอแนะ");
+      req(lines(P.res.next).length, "แนวทางพัฒนาครั้งต่อไป"); req(P.photos.length, "ภาพกิจกรรม"); break;
+    case "check": checks().filter(x => !x.ok).forEach(x => req(false, x.t)); break;
+  }
+  return m;
+}
+
+/* ═══════════ แผงแก้ไขข้อมูล ═══════════ */
+const listEl = $("#list"), editEl = $("#edit"), pagesEl = $("#pages");
+let cur = new URLSearchParams(location.search).get("doc") || localStorage.getItem("nk_proj_doc") || "memo";
+let openSec = null;
+const doc = () => DOCS.find(d => d.id === cur) || DOCS[0];
+
+function fi(path, label, o = {}){
+  const v = getPath(P, path) ?? "";
+  const id = "f_" + path.replace(/\./g, "_");
+  let inp;
+  if (o.t === "area") inp = `<textarea id="${id}" data-p="${path}" rows="${o.rows || 4}" placeholder="${esc(o.ph || "")}">${esc(v)}</textarea>`;
+  else if (o.t === "sel") inp = `<select id="${id}" data-p="${path}" data-re="1">${o.o.map(([a, b]) => `<option value="${esc(a)}"${a === v ? " selected" : ""}>${esc(b)}</option>`).join("")}</select>`;
+  else inp = `<input id="${id}" data-p="${path}" type="${o.t || "text"}" value="${esc(v)}" placeholder="${esc(o.ph || "")}">`;
+  return `<div class="field"><label for="${id}">${esc(label)}</label>${inp}${o.h ? `<div class="hint">${o.h}</div>` : ""}</div>`;
+}
+function gi(path, o = {}){
+  const v = getPath(P, path) ?? "";
+  const a = ` aria-label="${esc(o.a || o.ph || "")}"`;
+  if (o.t === "area") return `<textarea data-p="${path}" rows="${o.rows || 2}" placeholder="${esc(o.ph || "")}"${a}>${esc(v)}</textarea>`;
+  if (o.t === "sel") return `<select data-p="${path}"${o.re ? ' data-re="1"' : ""}${a}>${o.o.map(([x, y]) => `<option value="${esc(x)}"${x === v ? " selected" : ""}>${esc(y)}</option>`).join("")}</select>`;
+  return `<input data-p="${path}" type="${o.t || "text"}" value="${esc(v)}" placeholder="${esc(o.ph || "")}"${a}${o.list ? ` list="${o.list}"` : ""}>`;
+}
+const two = (...a) => `<div class="two-col">${a.join("")}</div>`;
+const xb = (arr, i) => `<button class="x" type="button" data-act="del" data-arr="${arr}" data-i="${i}" title="ลบ" aria-label="ลบ">✕</button>`;
+const ub = (arr, i) => i ? `<button class="x" type="button" data-act="up" data-arr="${arr}" data-i="${i}" title="เลื่อนขึ้น" aria-label="เลื่อนขึ้น">↑</button>` : "";
+const addb = (arr, t) => `<button class="addb" type="button" data-act="add" data-arr="${arr}">+ ${t}</button>`;
+
+function secBasic(){
+  return fi("title", "ชื่อโครงการ", { t:"area", rows:2 })
+    + two(fi("planName", "แผนงาน"), fi("group", "กลุ่มงาน", { h:"ใช้ในช่อง “ส่วนราชการ” ของบันทึกข้อความ" }))
+    + two(fi("kind", "ลักษณะโครงการ", { t:"sel", o:[["ใหม่", "โครงการใหม่"], ["ต่อเนื่อง", "โครงการต่อเนื่อง"]] }), fi("targetN", "จำนวนกลุ่มเป้าหมาย (คน)", { t:"number" }))
+    + fi("targetDesc", "กลุ่มเป้าหมาย")
+    + two(fi("start", "วันเริ่มโครงการ", { t:"date" }), fi("end", "วันสิ้นสุดโครงการ", { t:"date" }))
+    + fi("place", "สถานที่")
+    + two(fi("owner", "ผู้รับผิดชอบโครงการ (ชื่อ–สกุล)"), fi("ownerPos", "ตำแหน่ง"))
+    + two(fi("deputy", "ผู้เห็นชอบ (ชื่อ–สกุล)"), fi("deputyPos", "ตำแหน่ง"))
+    + `<div class="hint">ผู้อนุมัติ : ${S.director ? esc(S.director) : "<b>ยังไม่ได้ตั้งชื่อผู้อำนวยการ</b>"} — แก้ได้ที่ <a href="index.html">ศูนย์เอกสาร › ตั้งค่าโรงเรียน</a></div>`
+    + fi("strategy", "สนองกลยุทธ์โรงเรียน", { t:"area", rows:2, ph:"เช่น กลยุทธ์ที่ … พัฒนาผู้เรียนให้มีคุณภาพตามมาตรฐาน", h:"คัดลอกจากแผนปฏิบัติการประจำปีของโรงเรียน" })
+    + fi("policy", "สนองนโยบาย / จุดเน้น (ถ้ามี)", { t:"area", rows:2, ph:"บรรทัดละ ๑ ข้อ" })
+    + two(fi("inPlan", "ที่มาของโครงการ", { t:"sel", o:[["1", "อยู่ในแผนปฏิบัติการ (หัวข้อ “เรื่องเดิม”)"], ["0", "ริเริ่มใหม่ (หัวข้อ “ต้นเรื่อง”)"]] }),
+          fi("source", "แหล่งงบประมาณ", { t:"sel", o:SRC }))
+    + (P.inPlan === "1" ? fi("planRef", "อ้างอิงแผนปฏิบัติการ", { ph:"เช่น โครงการที่ 12 หน้า 45" }) : "")
+    + (P.source === "อื่น" ? fi("sourceOther", "ระบุแหล่งงบประมาณ") : "");
+}
+function secPlan(){
+  return fi("rationale", "หลักการและเหตุผล", { t:"area", rows:8, h:"ขึ้นบรรทัดใหม่ = ย่อหน้าใหม่" })
+    + fi("objectives", "วัตถุประสงค์", { t:"area", rows:4, h:"บรรทัดละ ๑ ข้อ ขึ้นต้นด้วย “เพื่อ…”" })
+    + fi("expected", "ผลที่คาดว่าจะได้รับ", { t:"area", rows:4, h:"บรรทัดละ ๑ ข้อ" });
+}
+function secTarget(){
+  return `<datalist id="units"><option>คน<option>คาบ<option>วัน<option>ครั้ง<option>ร้อยละ<option>ค่าเฉลี่ย</datalist>
+    <div class="hint">ตัวชี้วัดชุดเดียวนี้ใช้ทั้ง “เป้าหมาย” และ “การประเมินผล” ในโครงการ และตารางผลการดำเนินงานในเล่มรายงาน</div>`
+    + P.targets.map((t, i) => `<div class="card">
+      <div class="ch"><b>ตัวชี้วัดที่ ${i + 1}</b>${gi(`targets.${i}.t`, { t:"sel", o:[["q", "เชิงปริมาณ"], ["l", "เชิงคุณภาพ"]], a:"ประเภท" })}${ub("targets", i)}${xb("targets", i)}</div>
+      ${gi(`targets.${i}.text`, { t:"area", ph:"ตัวชี้วัด เช่น นักเรียนเข้าร่วมโครงการ" })}
+      <div class="g3">${gi(`targets.${i}.tgt`, { ph:"ค่าเป้าหมาย" })}${gi(`targets.${i}.unit`, { list:"units", ph:"หน่วย" })}${gi(`targets.${i}.auto`, { t:"sel", a:"ที่มาของผล",
+        o:[["", "กรอกผลเอง"], ["n", "ผล = ผู้เข้าร่วมจริง"], ["sat", "ผล = ค่าเฉลี่ยพึงพอใจ"], ["fit", "ผล = ร้อยละสมรรถภาพดีขึ้น"]] })}</div>
+      <div class="g2">${gi(`targets.${i}.how`, { ph:"วิธีการประเมิน" })}${gi(`targets.${i}.tool`, { ph:"เครื่องมือที่ใช้" })}</div></div>`).join("")
+    + addb("targets", "เพิ่มตัวชี้วัด");
+}
+function secStd(){
+  return STD.map(([sn, subs]) => `<div class="stdh">${esc(num(sn))}</div>` + subs.map(([ss, items]) =>
+    (ss ? `<div class="hint" style="margin:.2rem 0 0"><b>${esc(num(ss))}</b></div>` : "") +
+    items.map(([k, t]) => `<label class="chk-l"><input type="checkbox" data-std="${k}"${P.std.includes(k) ? " checked" : ""}> <span>${esc(num(stdCode(k)))} ${esc(t)}</span></label>`).join("")).join("")).join("")
+    + `<div class="tip">เป็นมาตรฐานการศึกษาขั้นพื้นฐาน พ.ศ. ๒๕๖๑ ถ้าโรงเรียนกำหนดมาตรฐานสถานศึกษาของตนเองต่างจากนี้ ให้เทียบกับรายงานการประเมินตนเอง (SAR) ของโรงเรียน</div>`;
+}
+function secSteps(){
+  return P.steps.map((s, i) => `<div class="card">
+      <div class="ch">${gi(`steps.${i}.ph`, { t:"sel", o:[["P", "P · วางแผน"], ["D", "D · ดำเนินการ"], ["C", "C · ตรวจสอบ"], ["A", "A · ปรับปรุง"]], a:"ขั้น" })}${ub("steps", i)}${xb("steps", i)}</div>
+      ${gi(`steps.${i}.act`, { t:"area", ph:"กิจกรรม / ขั้นตอน" })}
+      <div class="g2">${gi(`steps.${i}.when`, { ph:"ระยะเวลา เช่น 1–15 ก.ย. 2569" })}${gi(`steps.${i}.who`, { ph:"ผู้รับผิดชอบ" })}</div></div>`).join("")
+    + addb("steps", "เพิ่มขั้นตอน");
+}
+function secSched(){
+  return `<div class="acts" style="margin:.2rem 0"><button class="btn sec sm" type="button" data-act="imp-sched">นำเข้าจากตารางติว</button></div>
+    <div class="hint">แต่ละแถว : วันที่ · ถึงวันที่ (ถ้าทำหลายวันเหมือนกัน) · เวลา</div>`
+    + P.sched.map((r, i) => `<div class="card">
+      <div class="g3">${gi(`sched.${i}.d`, { t:"date", a:"วันที่" })}${gi(`sched.${i}.d2`, { t:"date", a:"ถึงวันที่" })}${gi(`sched.${i}.t`, { ph:"08.00–09.30", a:"เวลา" })}</div>
+      <div class="ch" style="gap:.25rem">${gi(`sched.${i}.act`, { ph:"กิจกรรม" })}${gi(`sched.${i}.who`, { ph:"ผู้รับผิดชอบ" })}${xb("sched", i)}</div></div>`).join("")
+    + addb("sched", "เพิ่มแถว");
+}
+function secBudget(){
+  const b = budget();
+  return `<div class="kpis">
+      <div class="kpi"><b data-live="bplan">${money(b.plan)}</b><span>งบที่ขอ (บาท)</span></div>
+      <div class="kpi"><b data-live="bact">${b.actAny ? money(b.actual) : "—"}</b><span>ใช้จริง (บาท)</span></div>
+      <div class="kpi"><b data-live="bleft">${b.actAny ? money(b.plan - b.actual) : "—"}</b><span>คงเหลือ (บาท)</span></div></div>
+    <div class="acts" style="margin:.3rem 0"><button class="btn sec sm" type="button" data-act="imp-budget">นำเข้าค่าตอบแทนจากตารางติว</button><button class="btn sec sm" type="button" data-act="act-copy">ใช้จริง = ตามที่ขอ</button></div>`
+    + P.budget.map((x, i) => `<div class="card">
+      <div class="ch">${gi(`budget.${i}.c`, { t:"sel", o:CATS, a:"หมวด" })}${ub("budget", i)}${xb("budget", i)}</div>
+      ${gi(`budget.${i}.n`, { ph:"รายการ" })}
+      <div class="g4">${gi(`budget.${i}.q`, { t:"number", ph:"จำนวน" })}${gi(`budget.${i}.u`, { ph:"หน่วย" })}${gi(`budget.${i}.p`, { t:"number", ph:"ราคา/หน่วย" })}<span class="calc" data-live="bl${i}">= ${money(lineAmt(x))}</span></div>
+      <div class="g2"><span class="hint" style="align-self:center;margin:0">ใช้จริง (บาท) · กรอกหลังจบโครงการ</span>${gi(`budget.${i}.a`, { t:"number", ph:"ใช้จริง" })}</div></div>`).join("")
+    + addb("budget", "เพิ่มรายการ")
+    + fi("justify", "คำชี้แจงประกอบรายละเอียดค่าใช้จ่าย", { t:"area", rows:4, h:"บรรทัดละ ๑ ข้อ" });
+}
+function secComm(){
+  return `<div class="acts" style="margin:.2rem 0"><button class="btn sec sm" type="button" data-act="imp-teach">ดึงชื่อครูจากตารางติว</button></div>
+    <div class="hint">เว้นชื่อว่างไว้ได้ — ตำแหน่งผู้อำนวยการ ผู้เห็นชอบ และผู้รับผิดชอบ จะใช้ชื่อที่กรอกไว้ในข้อมูลพื้นฐานให้เอง</div>`
+    + P.comm.map((g, i) => `<div class="card">
+      <div class="ch">${gi(`comm.${i}.n`, { ph:"ชื่อคณะกรรมการ" })}${ub("comm", i)}${xb("comm", i)}</div>
+      ${gi(`comm.${i}.duty`, { t:"area", ph:"หน้าที่" })}
+      ${g.m.map((m, j) => `<div class="mem">${gi(`comm.${i}.m.${j}.name`, { ph: autoName(m.pos) || "ชื่อ–สกุล" })}${gi(`comm.${i}.m.${j}.pos`, { ph:"ตำแหน่ง" })}${gi(`comm.${i}.m.${j}.role`, { ph:"หน้าที่ในคณะ" })}${xb(`comm.${i}.m`, j)}</div>`).join("")}
+      ${addb(`comm.${i}.m`, "เพิ่มกรรมการ")}</div>`).join("")
+    + addb("comm", "เพิ่มคณะกรรมการ");
+}
+function secDocno(){
+  return `<div class="hint">เว้นว่างไว้ได้ ระบบจะพิมพ์เป็นเส้นประให้เขียนด้วยมือ</div>`
+    + two(fi("docs.memoNo", "เลขที่บันทึกขออนุมัติ"), fi("docs.memoDate", "วันที่บันทึกขออนุมัติ", { t:"date" }))
+    + two(fi("docs.orderNo", "เลขที่คำสั่ง", { ph:"เช่น 123/2569" }), fi("docs.orderDate", "วันที่สั่ง", { t:"date" }))
+    + fi("docs.approveDate", "วันที่ผู้อำนวยการอนุมัติโครงการ", { t:"date", h:"ใช้อ้างถึงใน “เรื่องเดิม” ของบันทึกรายงานผล" })
+    + two(fi("docs.repNo", "เลขที่บันทึกรายงานผล"), fi("docs.repDate", "วันที่บันทึกรายงานผล", { t:"date" }));
+}
+function secStat(){
+  const c = checks(), ok = c.filter(x => x.ok).length;
+  const man = [["approved", "ผู้อำนวยการอนุมัติโครงการแล้ว"], ["order", "ออกคำสั่งแต่งตั้งคณะกรรมการแล้ว"], ["onplan", "ดำเนินกิจกรรมตามกำหนดการแล้ว"],
+    ["paid", "เบิกจ่ายตามระเบียบ มีหลักฐานการจ่ายครบ"], ["reported", "รายงานผลต่อผู้อำนวยการแล้ว"]];
+  return `<div class="kpis"><div class="kpi"><b>${ok}/${c.length}</b><span>รายการที่ผ่าน</span></div><div class="kpi"><b>${f2(ok * 100 / c.length)}</b><span>ร้อยละ</span></div><div class="kpi"><b>${qLevel(ok * 100 / c.length)}</b><span>ระดับคุณภาพ</span></div></div>
+    <div class="hint">ติ๊กเฉพาะเรื่องที่ระบบรู้เองไม่ได้ รายการอื่นระบบตรวจจากข้อมูลที่กรอก</div>`
+    + man.map(([k, t]) => `<label class="chk-l"><input type="checkbox" data-man="${k}"${P.manual[k] === "1" ? " checked" : ""}> <span>${t}</span></label>`).join("");
+}
+function secResult(){
+  const fit = fitSummary();
+  return fi("res.actualN", "จำนวนผู้เข้าร่วมจริง (คน)", { t:"number" })
+    + `<div class="stdh">ผลตามตัวชี้วัด</div>`
+    + P.targets.map((t, i) => { const a = autoRes(t); return `<div class="field"><label for="r_${i}">${esc(num(i + 1))}. ${esc(t.text || "(ยังไม่ระบุตัวชี้วัด)")} — เป้าหมาย ${esc(num(fmtTarget(t)) || "-")}</label>
+      <input id="r_${i}" data-p="targets.${i}.res" value="${esc(t.res || "")}" placeholder="${esc(a ? `ระบบคำนวณได้ ${a} · เว้นว่างเพื่อใช้ค่านี้` : `ผลที่ได้ (${t.unit || ""})`)}"></div>`; }).join("")
+    + fi("res.summary", "สรุปผลเพิ่มเติม (ถ้ามี)", { t:"area", rows:3, h:"บรรทัดละ ๑ ข้อ ต่อท้ายสรุปผลที่ระบบเขียนให้" })
+    + fi("res.problems", "ปัญหาและอุปสรรค", { t:"area", rows:3, h:"บรรทัดละ ๑ ข้อ" })
+    + fi("res.suggest", "ข้อเสนอแนะ", { t:"area", rows:3, h:"บรรทัดละ ๑ ข้อ" })
+    + fi("res.next", "แนวทางการพัฒนาในครั้งต่อไป", { t:"area", rows:3, h:"บรรทัดละ ๑ ข้อ" })
+    + `<label class="chk-l"><input type="checkbox" data-flag="res.fit"${P.res.fit === "1" ? " checked" : ""}> <span>แสดงผลการทดสอบสมรรถภาพในเล่มรายงาน — ${fit && fit.ok ? `พบข้อมูลทดสอบ ${fit.nRounds} ครั้ง` : "ยังไม่มีข้อมูลทดสอบอย่างน้อย ๒ ครั้งในหน้าสมรรถภาพ"}</span></label>`
+    + `<label class="chk-l"><input type="checkbox" data-flag="res.appendix"${P.res.appendix === "1" ? " checked" : ""}> <span>แนบบันทึกขออนุมัติ โครงการ คำสั่ง และแบบประเมิน ไว้ในภาคผนวก ข ของเล่มรายงาน</span></label>`;
+}
+function itemCalc(it){ const s = statOf([it.f]); return s ? `x̄ ${f2(s.m)} · ${f2(s.sd)}` : "—"; }
+function secSurvey(){
+  const sv = survey();
+  return `<div class="kpis">
+      <div class="kpi"><b data-live="sresp">${sv.resp}</b><span>ผู้ตอบ (คน)</span></div>
+      <div class="kpi"><b data-live="smean">${sv.all ? f2(sv.all.m) : "—"}</b><span>ค่าเฉลี่ยรวม</span></div>
+      <div class="kpi"><b data-live="slv">${sv.all ? sv.all.lv : "—"}</b><span>ระดับ</span></div></div>
+    <div class="hint">กรอก <b>จำนวนคน</b> ที่เลือกแต่ละระดับ (๕ = มากที่สุด … ๑ = น้อยที่สุด) ระบบคำนวณ x̄ และ S.D. ให้ · ทุกข้อควรมีจำนวนผู้ตอบเท่ากัน</div>
+    <div class="hint" data-live="swarn" style="color:var(--bad)">${sv.uneven ? "จำนวนผู้ตอบแต่ละข้อไม่เท่ากัน โปรดตรวจสอบ" : ""}</div>`
+    + P.survey.map((g, a) => `<div class="card">
+      <div class="ch">${gi(`survey.${a}.n`, { ph:"ชื่อด้าน" })}${xb("survey", a)}</div>
+      ${g.items.map((it, b) => `<div class="sitem">${gi(`survey.${a}.items.${b}.t`, { ph:"ข้อคำถาม" })}
+        <div class="freq">${[0, 1, 2, 3, 4].map(k => `<label><span>${num(5 - k)}</span>${gi(`survey.${a}.items.${b}.f.${k}`, { t:"number", a:`ระดับ ${5 - k}` })}</label>`).join("")}
+        <span class="calc" data-live="s${a}_${b}">${itemCalc(it)}</span>${xb(`survey.${a}.items`, b)}</div></div>`).join("")}
+      ${addb(`survey.${a}.items`, "เพิ่มข้อ")}</div>`).join("")
+    + addb("survey", "เพิ่มด้าน");
+}
+function secPhoto(){
+  const logo = P.logo && MEDIA[P.logo];
+  return `<div class="field"><label for="upLogo">ตราโรงเรียน (แสดงบนปกเล่มรายงาน)</label>
+      ${logo ? `<div class="ph-card" style="max-width:8rem;margin-bottom:.3rem"><img src="${logo.src}" alt="ตราโรงเรียน" style="object-fit:contain;background:#fff"><div class="row"><button type="button" data-act="logo-del">ลบ</button></div></div>` : ""}
+      <input type="file" accept="image/*" id="upLogo"></div>
+    <div class="field"><label for="upPhoto">ภาพกิจกรรม (${P.photos.length} ภาพ · พิมพ์หน้าละ ๖ ภาพ)</label>
+      <input type="file" accept="image/*" multiple id="upPhoto">
+      <div class="hint">ระบบย่อรูปให้อัตโนมัติ เก็บไว้ในเบราว์เซอร์เครื่องนี้เท่านั้น ไม่อัปโหลดขึ้นเว็บ</div></div>
+    <div class="ph-grid">${P.photos.map((p, i) => { const m = MEDIA[p.id]; return `<div class="ph-card">
+      ${m ? `<img src="${m.src}" alt="">` : `<div style="height:6.5rem;display:grid;place-items:center;font-size:.75rem;color:var(--ink-3)">ไม่พบรูปในเครื่องนี้</div>`}
+      ${gi(`photos.${i}.cap`, { ph:"คำบรรยายภาพ" })}
+      <div class="row">${i ? `<button type="button" data-act="up" data-arr="photos" data-i="${i}">↑</button>` : ""}<button type="button" data-act="ph-del" data-i="${i}">ลบ</button></div></div>`; }).join("")}</div>`;
+}
+const SECS = {
+  basic: ["ข้อมูลพื้นฐานโครงการ", secBasic], plan: ["หลักการ วัตถุประสงค์ ผลที่คาดว่าจะได้รับ", secPlan],
+  target: ["เป้าหมายและตัวชี้วัดความสำเร็จ", secTarget], std: ["ความสอดคล้องกับมาตรฐานการศึกษา", secStd],
+  steps: ["ขั้นตอนดำเนินงาน (PDCA)", secSteps], sched: ["กำหนดการ", secSched], budget: ["งบประมาณ", secBudget],
+  comm: ["คณะกรรมการ", secComm], docno: ["เลขที่และวันที่ของหนังสือ", secDocno], stat: ["สถานะการดำเนินงาน", secStat],
+  result: ["ผลการดำเนินงาน", secResult], survey: ["แบบประเมินความพึงพอใจ", secSurvey], photo: ["ภาพกิจกรรมและตราโรงเรียน", secPhoto]
+};
+const ORDER = ["basic", "plan", "target", "std", "steps", "sched", "budget", "comm", "docno", "stat", "result", "survey", "photo"];
+
+function needHTML(){
+  const m = needs(doc().id);
+  return m.length
+    ? `<div class="need warn"><b>ยังขาดข้อมูล ${num(m.length)} รายการ</b> — พิมพ์ได้เลย ช่องที่ขาดจะเป็นเส้นประให้เขียนด้วยมือ
+       <ul>${m.slice(0, 8).map(x => `<li>${esc(x)}</li>`).join("")}${m.length > 8 ? `<li>และอีก ${num(m.length - 8)} รายการ</li>` : ""}</ul></div>`
+    : `<div class="need ok"><b>ข้อมูลครบ พร้อมพิมพ์</b></div>`;
+}
+function renderEdit(){
+  const d = doc();
+  if (!openSec) openSec = new Set(d.uses.slice(0, 2));
+  const rest = ORDER.filter(k => !d.uses.includes(k));
+  const secHTML = k => `<details class="sec${d.uses.includes(k) ? " hot" : ""}" data-sec="${k}"${openSec.has(k) ? " open" : ""}>
+    <summary>${esc(SECS[k][0])}${d.uses.includes(k) ? `<span class="use">ใช้ในฉบับนี้</span>` : ""}</summary><div class="bd">${SECS[k][1]()}</div></details>`;
+  const y = editEl.scrollTop;
+  editEl.innerHTML = `<p class="fh">${esc(d.n)}</p><p class="fsub">${esc(d.d)}</p>
+    <div id="need">${needHTML()}</div>
+    <div class="acts" style="margin-top:0"><button class="btn" type="button" data-act="print">พิมพ์เอกสาร</button><button class="btn sec" type="button" data-act="word">บันทึกเป็น Word</button></div>
+    ${d.uses.map(secHTML).join("")}
+    <p class="sep">ข้อมูลส่วนอื่นของโครงการ</p>
+    ${rest.map(secHTML).join("")}
+    <details class="sec" data-sec="file"${openSec.has("file") ? " open" : ""}><summary>ไฟล์โครงการ</summary><div class="bd">
+      <p class="hint">ข้อมูลเก็บไว้ในเบราว์เซอร์เครื่องนี้ บันทึกเป็นไฟล์เพื่อสำรองหรือย้ายไปเครื่องอื่นได้ (รวมรูปภาพ)</p>
+      <div class="acts"><button class="btn sec sm" type="button" data-act="export">บันทึกไฟล์โครงการ (.json)</button>
+        <label class="btn sec sm" style="display:inline-block">เปิดไฟล์โครงการ<input type="file" accept=".json,application/json" id="upProj" hidden></label></div>
+      <div class="acts"><button class="btn sec sm" type="button" data-act="new">เริ่มโครงการใหม่ (แม่แบบว่าง)</button>
+        <button class="btn sec sm" type="button" data-act="sample">โหลดตัวอย่างโครงการติวเข้ม</button></div></div></details>`;
+  editEl.scrollTop = y;
+}
+function updateLive(){
+  const set = (k, v) => { const el = editEl.querySelector(`[data-live="${k}"]`); if (el) el.textContent = v; };
+  const b = budget();
+  set("bplan", money(b.plan)); set("bact", b.actAny ? money(b.actual) : "—"); set("bleft", b.actAny ? money(b.plan - b.actual) : "—");
+  P.budget.forEach((x, i) => set("bl" + i, "= " + money(lineAmt(x))));
+  const sv = survey();
+  set("sresp", sv.resp); set("smean", sv.all ? f2(sv.all.m) : "—"); set("slv", sv.all ? sv.all.lv : "—");
+  set("swarn", sv.uneven ? "จำนวนผู้ตอบแต่ละข้อไม่เท่ากัน โปรดตรวจสอบ" : "");
+  P.survey.forEach((g, a) => g.items.forEach((it, c) => set(`s${a}_${c}`, itemCalc(it))));
+  const nd = $("#need"); if (nd) nd.innerHTML = needHTML();
+}
+
+/* ═══════════ รายการเอกสาร ═══════════ */
+function renderList(){
+  const st = DOCS.filter(d => d.id !== "bundle" && d.id !== "check").map(d => needs(d.id).length);
+  const ready = st.filter(x => !x).length;
+  const c = checks(), cp = c.filter(x => x.ok).length;
+  const PHN = { 1:["๑", "ก่อนดำเนินการ · เสนอขออนุมัติ"], 2:["๒", "ระหว่างดำเนินการ"], 3:["๓", "หลังดำเนินการ · รายงานผล"], 4:["✓", "มาตรฐานการจัดโครงการ"] };
+  let h = `<div class="prog"><b>${esc(P.title || "(ยังไม่ตั้งชื่อโครงการ)")}</b>
+    <div class="bar"><i style="width:${Math.round(ready * 100 / st.length)}%"></i></div>
+    <span>เอกสารพร้อม ${num(ready)}/${num(st.length)} ฉบับ · มาตรฐานการจัดโครงการ ${num(cp)}/${num(c.length)} รายการ</span></div>`;
+  [1, 2, 3, 4].forEach(p => {
+    h += `<div class="phase"><span class="pd">${PHN[p][0]}</span>${PHN[p][1]}</div>`;
+    DOCS.filter(d => d.ph === p).forEach(d => {
+      const n = needs(d.id).length;
+      h += `<button class="item" type="button" data-id="${d.id}" aria-current="${d.id === cur}"><span class="st ${n ? (n <= 2 ? "part" : "") : "ok"}" title="${n ? `ขาด ${n} รายการ` : "พร้อม"}"></span><span><b>${esc(d.n)}</b><span class="d">${esc(d.d)}</span></span></button>`;
+    });
+  });
+  listEl.innerHTML = h;
+}
+
+/* ═══════════ ตัวอย่างเอกสาร ═══════════ */
+function renderPreview(){
+  const d = doc();
+  let pages;
+  try { pages = d.pages(); }
+  catch (e) { console.error(e); pages = [sheet(`<p>สร้างเอกสารไม่สำเร็จ: ${esc(e.message)}</p>`)]; }
+  pagesEl.innerHTML = pages.map(p => `<div class="sheet${d.land ? " land" : ""}${p.cls ? " " + p.cls : ""}">${p.html}</div>`).join("")
+    + `<div id="rul" aria-hidden="true" style="position:absolute;visibility:hidden;height:262mm;width:1px;left:0;top:0"></div>`;
+  sigToTable(pagesEl);
+  let st = document.getElementById("pagerule");
+  if (!st){ st = document.createElement("style"); st.id = "pagerule"; document.head.appendChild(st); }
+  const pn = d.land ? "none" : `counter(page${S.thaiDigits === "1" ? ", thai" : ""})`;
+  st.textContent = `@media print{
+    @page{size:A4 ${d.land ? "landscape" : "portrait"};margin:${d.land ? "12mm 15mm" : "15mm 20mm 20mm 30mm"};
+      @top-center{content:${pn};font-family:'TH Sarabun New','TH SarabunPSK','Sarabun',sans-serif;font-size:16pt;vertical-align:bottom;padding-bottom:3mm}}
+    @page:first{@top-center{content:none}}}`;
+  if (d.toc) fillToc();
+}
+/** บล็อกลายมือชื่อ → ตาราง ๑ แถว : Chrome ไม่ตัดแถวตารางข้ามหน้า และ Word จัดตำแหน่งได้ตรง */
+function sigToTable(root){
+  root.querySelectorAll(".sig").forEach(el => {
+    const one = el.classList.contains("one"), mid = one && el.style.marginInline === "auto";
+    const blocks = [...el.children], w = Math.floor(100 / Math.max(1, blocks.length));
+    const t = document.createElement("table");
+    t.className = "sigt"; t.setAttribute("border", "0");
+    t.setAttribute("align", one ? (mid ? "center" : "right") : "center");
+    t.style.cssText = `margin-top:${el.style.marginTop || "6mm"};width:${one ? "85mm" : "100%"};`
+      + (one ? (mid ? "margin-left:auto;margin-right:auto;" : "margin-left:auto;margin-right:0;") : "")
+      + (el.style.fontSize ? `font-size:${el.style.fontSize};` : "");
+    t.innerHTML = `<tbody><tr>${blocks.map(b => `<td style="width:${w}%">${[...b.children].map(s => `<p class="sl" align="center">${s.innerHTML}</p>`).join("")}</td>`).join("")}</tr></tbody>`;
+    el.replaceWith(t);
+  });
+}
+/** เติมเลขหน้าในสารบัญจากความสูงจริงของแต่ละแผ่น (หน้าละ ๒๖.๒ ซม. หลังหักขอบบน–ล่าง) */
+function fillToc(){
+  const rul = $("#rul"), H = rul ? rul.offsetHeight : 0;
+  if (!H) return;
+  const padT = H * 15 / 262, padB = H * 20 / 262;
+  let start = 1;
+  const at = new Map();
+  pagesEl.querySelectorAll(".sheet").forEach(s => {
+    at.set(s, start);
+    start += Math.max(1, Math.ceil((s.offsetHeight - padT - padB - 2) / H));
+  });
+  pagesEl.querySelectorAll(".pg[data-for]").forEach(el => {
+    const t = document.getElementById(el.dataset.for);
+    if (!t) { el.textContent = "–"; return; }
+    const s = t.closest(".sheet");
+    el.textContent = num(at.get(s) + Math.max(0, Math.floor((t.offsetTop - padT) / H)));
+  });
+}
+let tmr = 0;
+const later = () => { clearTimeout(tmr); tmr = setTimeout(() => { renderPreview(); renderList(); }, 200); };
+function renderAll(){ renderList(); renderEdit(); renderPreview(); }
+
+/* ═══════════ นำเข้าจากตารางติว ═══════════ */
+function tutor(){
+  const T = readLS("nk_tutor_v2");
+  if (!T || !T.days || typeof T.days !== "object") return null;
+  const inR = k => (!T.start || k >= T.start) && (!T.end || k <= T.end);
+  const wk = k => { const w = dObj(k).getDay(); return T.mode === "weekday" ? (w !== 0 && w !== 6) : T.mode === "skipsun" ? w !== 0 : true; };
+  const keys = Object.keys(T.days).filter(k => okDate(k) && inR(k) && wk(k) && T.days[k] && T.days[k].on !== false && Array.isArray(T.days[k].rows)).sort();
+  if (!keys.length) return null;
+  const subj = Array.isArray(T.subjects) ? T.subjects : [];
+  const SBn = k => (subj.find(s => s.k === k) || {}).n || "";
+  const evAmt = r => (r.a === -1 || r.a == null || r.a === "") ? N(T.lecRate) : N(r.a);
+  let periods = 0, fitDays = 0;
+  const evs = [];
+  keys.forEach(k => {
+    let f = false;
+    T.days[k].rows.forEach(r => { if (r.k === "sub" && r.s) periods++; if (r.k === "fit") f = true; if (r.k === "ev") evs.push(r); });
+    if (f) fitDays++;
+  });
+  const paid = evs.filter(r => evAmt(r) > 0);
+  const quota = subj.reduce((a, s) => a + N(s.q), 0);
+  return { T, keys, SBn, subj, periods: periods || quota, filled: periods, fitDays, paid, evSum: paid.reduce((a, r) => a + evAmt(r), 0) };
+}
+function importBudget(){
+  const t = tutor();
+  if (!t) return toast("ยังไม่มีข้อมูลในหน้าตารางติว");
+  const upsert = (name, q, u, p) => {
+    let x = P.budget.find(b => b.n.startsWith(name));
+    if (!q){ if (x) P.budget.splice(P.budget.indexOf(x), 1); return; }
+    if (!x){ x = { c:"ตอบแทน", n:name, q:"", u, p:"", a:"" }; P.budget.unshift(x); }
+    Object.assign(x, { q:String(q), u, p:String(p) });
+  };
+  upsert("ค่าตอบแทนวิทยากรบรรยายพิเศษ", t.paid.length, "ครั้ง", t.paid.length ? Math.round(t.evSum / t.paid.length) : N(t.T.lecRate));
+  upsert("ค่าตอบแทนครูฝึกสมรรถภาพทางร่างกาย", t.fitDays, "วัน", N(t.T.fitRate));
+  upsert("ค่าตอบแทนครูผู้สอนภาควิชาการ", t.periods, "คาบ", N(t.T.rate));
+  P.targets.forEach(x => { if (x.unit === "คาบ") x.tgt = String(t.periods); if (x.unit === "วัน" && /สมรรถภาพ/.test(x.text)) x.tgt = String(t.fitDays); });
+  if (N(t.T.students)) P.targetN = String(N(t.T.students));
+  save(); renderAll();
+  toast(`นำเข้าแล้ว : สอน ${t.periods} คาบ × ${money0(N(t.T.rate))} · ฝึก ${t.fitDays} วัน × ${money0(N(t.T.fitRate))} · วิทยากร ${t.paid.length} ครั้ง${t.filled ? "" : " (ยังไม่ได้ลงตาราง ใช้โควตาคาบแทน)"}`);
+}
+function importSched(){
+  const t = tutor();
+  if (!t) return toast("ยังไม่มีข้อมูลในหน้าตารางติว");
+  const tm = s => String(s || "");
+  P.sched = t.keys.map(k => {
+    const rows = t.T.days[k].rows.filter(r => r.k !== "br").slice().sort((a, b) => tm(a.t1).localeCompare(tm(b.t1)));
+    const t1 = rows.length ? rows[0].t1 : "", t2 = rows.reduce((a, r) => tm(r.t2) > a ? tm(r.t2) : a, "");
+    const act = rows.map(r => r.k === "sub" ? (r.s ? t.SBn(r.s) : "ติวภาควิชาการ") : (r.l || (r.k === "fit" ? "ฝึกสมรรถภาพร่างกาย" : "กิจกรรม"))).join(" · ");
+    return { d:k, d2:"", t: t1 && t2 ? `${t1}–${t2}` : "", act, who:"" };
+  });
+  P.start = t.keys[0]; P.end = t.keys[t.keys.length - 1];
+  save(); renderAll();
+  toast(`นำเข้ากำหนดการ ${t.keys.length} วัน (${thRange(P.start, P.end, true)})`);
+}
+function importTeachers(){
+  const t = tutor();
+  if (!t) return toast("ยังไม่มีข้อมูลในหน้าตารางติว");
+  let n = 0;
+  P.comm.forEach(g => g.m.forEach(m => {
+    if (has(m.name)) return;
+    const s = t.subj.find(s => s.n && m.pos.includes(s.n));
+    const names = s ? (s.tea || []).filter(Boolean).join(" และ ") : /ฝึกสมรรถภาพ/.test(m.pos) ? (t.T.coach || "") : "";
+    if (names){ m.name = names; n++; }
+  }));
+  save(); renderAll();
+  toast(n ? `เติมชื่อครู ${n} ตำแหน่ง` : "ไม่พบชื่อครูในตารางติว (ยังไม่ได้กรอกชื่อครูผู้สอน)");
+}
+
+/* ═══════════ รูปภาพ ═══════════ */
+async function addPhotos(files){
+  let n = 0;
+  for (const f of files){
+    try {
+      const m = await shrink(f, 1400, false);
+      const id = "p" + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+      MEDIA[id] = m; await IDB.put(id, m);
+      P.photos.push({ id, cap: f.name.replace(/\.[^.]+$/, "") });
+      n++;
+    } catch (e) { toast(`เพิ่มรูป ${f.name} ไม่สำเร็จ`); }
+  }
+  save(); renderAll(); if (n) toast(`เพิ่มภาพกิจกรรม ${n} ภาพ`);
+}
+async function setLogo(file){
+  try {
+    const m = await shrink(file, 700, /png|gif|webp|svg/i.test(file.type));
+    if (P.logo){ delete MEDIA[P.logo]; await IDB.del(P.logo); }
+    const id = "logo" + Date.now().toString(36);
+    MEDIA[id] = m; await IDB.put(id, m);
+    P.logo = id; save(); renderAll();
+  } catch (e) { toast("เพิ่มตราโรงเรียนไม่สำเร็จ"); }
+}
+
+/* ═══════════ ไฟล์โครงการ ═══════════ */
+function download(name, text, type){
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([text], { type }));
+  a.download = name.replace(/[\\/:*?"<>|]/g, "-");
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+}
+function exportProject(){
+  const ids = [P.logo, ...P.photos.map(p => p.id)].filter(id => id && MEDIA[id]);
+  download(`โครงการ_${P.title || "ไม่มีชื่อ"}_${Y()}.json`,
+    JSON.stringify({ kind:"nk-project", v:1, project:P, media:Object.fromEntries(ids.map(id => [id, MEDIA[id]])) }), "application/json");
+}
+async function importProject(file){
+  try {
+    const o = JSON.parse(await file.text());
+    if (!o || o.kind !== "nk-project" || !o.project || !Array.isArray(o.project.targets)) throw new Error("ไม่ใช่ไฟล์โครงการของระบบนี้");
+    if (!confirm("เปิดไฟล์นี้แทนโครงการที่มีอยู่ในเครื่อง?")) return;
+    for (const [id, m] of Object.entries(o.media || {})) if (m && m.src){ MEDIA[id] = m; await IDB.put(id, m); }
+    P = Object.assign(defProject(), o.project);
+    P.docs = Object.assign(defProject().docs, o.project.docs || {});
+    P.res = Object.assign(defProject().res, o.project.res || {});
+    save(); openSec = null; renderAll(); toast("เปิดไฟล์โครงการแล้ว");
+  } catch (e) { toast("เปิดไฟล์ไม่สำเร็จ : " + e.message); }
+}
+async function resetTo(p, msg){
+  if (!confirm(msg)) return;
+  for (const id of [P.logo, ...P.photos.map(x => x.id)].filter(Boolean)){ delete MEDIA[id]; await IDB.del(id); }
+  P = p; save(); openSec = null; renderAll();
+}
+
+/* ═══════════ Word (.doc) ═══════════ */
+const WORD_CSS = `
+@page WordSection1{size:PGSIZE;margin:MARGIN;mso-page-orientation:ORIENT}
+div.WordSection1{page:WordSection1}
+body{font-family:'TH Sarabun New','TH SarabunPSK',sans-serif;font-size:16pt;line-height:100%;color:#000}
+.ctr{text-align:center} .rt{text-align:right}
+h1{font-size:22pt;font-weight:700;text-align:center;margin:0 0 2mm;line-height:100%}
+h2{font-size:18pt;font-weight:700;text-align:center;margin:0 0 4mm;line-height:100%}
+h3{font-size:16pt;font-weight:700;margin:3mm 0 1.5mm}
+h4{font-size:16pt;font-weight:700;margin:2mm 0 1mm;text-indent:10mm}
+.hr{border-bottom:1.2pt solid #000;margin:2mm 0 3mm}
+p{margin:0;line-height:100%}
+p.ind{text-indent:25mm;text-align:left}
+p.i1{margin-left:10mm}
+p.i2{margin-left:18mm;text-indent:-8mm}
+p.sl{margin:0;text-align:center;line-height:100%}
+table{width:100%;border-collapse:collapse;font-size:15pt;margin:2mm 0 3mm}
+th,td{border:1pt solid #000;padding:1.1mm 2mm;vertical-align:top}
+th{background:#EDEFF3;font-weight:700;text-align:center}
+td.n{text-align:right} td.c{text-align:center}
+tr.tot td{font-weight:700} tr.grp td{font-weight:700;background:#F5F6F9}
+small{font-size:13pt}
+.krut{height:30mm} .krut.sm{height:15mm}`;
+const wcell = (html, style) => `<td style="border:none;padding:0;vertical-align:top;${style || ""}">${html}</td>`;
+const wtable = (cells, mb) => `<table border="0" cellspacing="0" cellpadding="0" style="width:100%;border:none;border-collapse:collapse;margin:0 0 ${mb || "1.2mm"}"><tr>${cells.join("")}</tr></table>`;
+/** Word ไม่รองรับ flexbox / grid / inline-block จึงแปลงเป็นตารางและย่อหน้าก่อนส่งออก */
+function wordBody(sheetNode){
+  const root = sheetNode.cloneNode(true);
+  const F = s => document.createRange().createContextualFragment(s);
+  root.querySelectorAll(".mhead").forEach(el => {
+    const img = el.querySelector("img"), h = el.querySelector("h1");
+    el.replaceWith(F(wtable([wcell(img ? img.outerHTML : "", "width:28mm;vertical-align:bottom"),
+      wcell(`<p align="center" style="margin:0;text-align:center;font-size:22pt;font-weight:700">${h ? h.innerHTML : ""}</p>`, "vertical-align:bottom"),
+      wcell("&nbsp;", "width:28mm")], "2mm")));
+  });
+  root.querySelectorAll("img.krut:not(.sm)").forEach(img => {
+    const p = document.createElement("p"); p.setAttribute("align", "center"); p.style.margin = "0 0 3mm";
+    img.replaceWith(p); p.appendChild(img);
+  });
+  root.querySelectorAll(".meta").forEach(el => {
+    const k = [...el.children];
+    el.replaceWith(F(wtable(k.map((c, i) => wcell(c.innerHTML, `width:${Math.floor(100 / k.length)}%;text-align:${i && i === k.length - 1 ? "right" : "left"}`)))));
+  });
+  root.querySelectorAll(".rw").forEach(el => {
+    el.replaceWith(F(wtable([...el.children].map(c => c.classList.contains("vl")
+      ? wcell(c.innerHTML || "&nbsp;", "border-bottom:1pt dotted #444;padding:0 0 0 2mm")
+      : wcell(c.innerHTML, "white-space:nowrap;padding-right:2mm;width:1%")))));
+  });
+  root.querySelectorAll(".sig").forEach(el => {
+    const blocks = [...el.children], one = el.classList.contains("one");
+    const w = Math.floor(100 / Math.max(1, blocks.length));
+    const cells = blocks.map(b => wcell([...b.children].map(s => `<p align="center" style="margin:0;line-height:1.45;text-align:center">${s.innerHTML}</p>`).join(""), `width:${one ? 50 : w}%;text-align:center`));
+    if (one) cells.unshift(wcell("&nbsp;", "width:50%"));
+    el.replaceWith(F(`<table border="0" cellspacing="0" cellpadding="0" style="width:100%;border:none;border-collapse:collapse;margin-top:7mm"><tr>${cells.join("")}</tr></table>`));
+  });
+  root.querySelectorAll(".toc").forEach(el => {
+    const tt = el.querySelector(".tt"), pg = el.querySelector(".pg");
+    el.replaceWith(F(wtable([wcell(tt ? tt.innerHTML : "", (el.classList.contains("sub") ? "padding-left:8mm;" : "") + (el.style.fontWeight ? "font-weight:700" : "")),
+      wcell(pg ? pg.innerHTML : "", "width:18mm;text-align:right" + (el.style.fontWeight ? ";font-weight:700" : ""))], "1mm")));
+  });
+  root.querySelectorAll("table.lay, table.kv, table.photos, table.sigt").forEach(t => {
+    t.setAttribute("border", "0"); t.style.border = "none";
+    t.querySelectorAll("td").forEach(td => { td.style.border = "none"; });
+  });
+  /* ตารางลายมือชื่อ : Word ทำให้ตารางที่มี align ลอยและดันย่อหน้าก่อนหน้าไปไว้ใต้ตาราง
+     จึงแปลงเป็นตารางเต็มความกว้างที่มีช่องว่างกันด้านซ้าย (ชิดขวา) หรือสองข้าง (กึ่งกลาง) แทน */
+  root.querySelectorAll("table.sigt").forEach(tb => {
+    const al = tb.getAttribute("align"), tr = tb.rows[0];
+    tb.removeAttribute("align");
+    const pad = w => { const td = document.createElement("td"); td.style.cssText = `border:none;width:${w}`; td.innerHTML = "&nbsp;"; return td; };
+    if (tr && tr.cells.length === 1 && al === "right"){ tr.insertBefore(pad("50%"), tr.firstChild); tr.cells[1].style.width = "50%"; }
+    else if (tr && tr.cells.length === 1 && al === "center"){ tr.insertBefore(pad("25%"), tr.firstChild); tr.appendChild(pad("25%")); tr.cells[1].style.width = "50%"; }
+    tb.style.width = "100%"; tb.style.marginLeft = "0"; tb.style.marginRight = "0";
+  });
+  root.querySelectorAll("table.kv td:first-child").forEach(td => { td.style.whiteSpace = "nowrap"; td.style.fontWeight = "700"; td.style.width = "45mm"; });
+  root.querySelectorAll("table.photos td").forEach(td => { td.setAttribute("align", "center"); td.style.textAlign = "center"; });
+  root.querySelectorAll("small").forEach(el => {
+    const p = document.createElement("p"); p.style.cssText = "margin:0 0 1mm;font-size:13pt"; p.innerHTML = el.innerHTML; el.replaceWith(p);
+  });
+  return root.innerHTML;
+}
+function wordHTML(){
+  const d = doc();
+  const sheets = [...pagesEl.querySelectorAll(".sheet")];
+  const body = sheets.map(wordBody).join(`<br clear="all" style="page-break-before:always">`);
+  const css = WORD_CSS.replace("PGSIZE", d.land ? "297.0mm 210.0mm" : "210.0mm 297.0mm")
+    .replace("MARGIN", d.land ? "12.0mm 15.0mm 12.0mm 15.0mm" : "15.0mm 20.0mm 20.0mm 30.0mm")
+    .replace("ORIENT", d.land ? "landscape" : "portrait");
+  const html = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
+<head><meta charset="utf-8"><title>${esc(d.n)}</title>
+<!--[if gte mso 9]><xml><w:WordDocument><w:View>Print</w:View><w:Zoom>100</w:Zoom></w:WordDocument></xml><![endif]-->
+<style>${css}</style></head><body><div class="WordSection1">${body}</div></body></html>`;
+  return html;
+}
+function saveWord(){
+  const d = doc();
+  download(`${d.n}_${P.title ? P.title.slice(0, 40) + "_" : ""}${Y()}.doc`, "﻿" + wordHTML(), "application/msword");
+}
+
+/* ═══════════ เหตุการณ์ ═══════════ */
+listEl.addEventListener("click", e => {
+  const b = e.target.closest(".item");
+  if (!b) return;
+  cur = b.dataset.id; openSec = null;
+  localStorage.setItem("nk_proj_doc", cur);
+  renderAll();
+  pagesEl.parentElement.scrollTop = 0; editEl.scrollTop = 0;
+});
+editEl.addEventListener("input", e => {
+  const el = e.target;
+  if (!el.dataset.p) return;
+  setPath(P, el.dataset.p, el.value);
+  save(); updateLive(); later();
+});
+editEl.addEventListener("change", e => {
+  const el = e.target;
+  if (el.id === "upPhoto"){ addPhotos([...el.files]); return; }
+  if (el.id === "upLogo"){ if (el.files[0]) setLogo(el.files[0]); return; }
+  if (el.id === "upProj"){ if (el.files[0]) importProject(el.files[0]); return; }
+  if (el.dataset.std){
+    const k = el.dataset.std;
+    P.std = el.checked ? [...new Set([...P.std, k])] : P.std.filter(x => x !== k);
+  } else if (el.dataset.flag) setPath(P, el.dataset.flag, el.checked ? "1" : "0");
+  else if (el.dataset.man) P.manual[el.dataset.man] = el.checked ? "1" : "";
+  else if (el.dataset.re){ save(); renderAll(); return; }
+  else return;
+  save(); renderList(); renderPreview();
+  const nd = $("#need"); if (nd) nd.innerHTML = needHTML();
+  if (el.dataset.man){ const s = editEl.querySelector('[data-sec="stat"] .bd'); if (s) s.innerHTML = secStat(); }
+});
+editEl.addEventListener("toggle", e => {
+  const d = e.target.closest && e.target.closest("details.sec");
+  if (!d || !openSec) return;
+  if (d.open) openSec.add(d.dataset.sec); else openSec.delete(d.dataset.sec);
+}, true);
+const TPL = {
+  targets: () => ({ t:"q", text:"", tgt:"", unit:"คน", how:"", tool:"", auto:"", res:"" }),
+  steps: () => ({ ph:"D", act:"", when:"", who:"" }),
+  sched: () => ({ d:P.start || "", d2:"", t:"", act:"", who:"" }),
+  budget: () => ({ c:"ใช้สอย", n:"", q:"1", u:"", p:"", a:"" }),
+  comm: () => ({ n:"คณะกรรมการ", duty:"", m:[{ name:"", pos:"", role:"ประธานกรรมการ" }] }),
+  m: () => ({ name:"", pos:"", role:"กรรมการ" }),
+  survey: () => ({ n:"ด้าน", items:[{ t:"", f:["", "", "", "", ""] }] }),
+  items: () => ({ t:"", f:["", "", "", "", ""] })
+};
+editEl.addEventListener("click", e => {
+  const b = e.target.closest("[data-act]");
+  if (!b) return;
+  const act = b.dataset.act, arr = b.dataset.arr ? getPath(P, b.dataset.arr) : null, i = +b.dataset.i;
+  switch (act){
+    case "print": return window.print();
+    case "word": return saveWord();
+    case "add": arr.push(TPL[b.dataset.arr.split(".").pop()]()); break;
+    case "del": arr.splice(i, 1); break;
+    case "up": if (i > 0) [arr[i - 1], arr[i]] = [arr[i], arr[i - 1]]; break;
+    case "ph-del": { const p = P.photos.splice(i, 1)[0]; if (p){ delete MEDIA[p.id]; IDB.del(p.id); } break; }
+    case "logo-del": if (P.logo){ delete MEDIA[P.logo]; IDB.del(P.logo); P.logo = ""; } break;
+    case "act-copy": P.budget.forEach(x => { x.a = String(lineAmt(x)); }); break;
+    case "imp-budget": return importBudget();
+    case "imp-sched": return importSched();
+    case "imp-teach": return importTeachers();
+    case "export": return exportProject();
+    case "new": return resetTo(blankProject(), "เริ่มโครงการใหม่ด้วยแม่แบบว่าง? ข้อมูลโครงการเดิมในเครื่องนี้จะถูกแทนที่ (บันทึกไฟล์โครงการไว้ก่อนได้)");
+    case "sample": return resetTo(defProject(), "โหลดตัวอย่างโครงการติวเข้มแทนข้อมูลเดิม?");
+    default: return;
+  }
+  save(); renderAll();
+});
+$("#btnPrint").onclick = () => window.print();
+$("#btnWord").onclick = saveWord;
+$("#btnToggle").onclick = () => $("#app").classList.toggle("showprev");
+window.addEventListener("storage", e => {
+  if (e.key === "nk_settings"){ try { S = Object.assign({}, DEF_S, JSON.parse(e.newValue || "{}")); } catch (x) {} renderAll(); }
+});
+
+/* ═══════════ เริ่มต้น ═══════════ */
+(async () => {
+  renderAll();
+  if (await IDB.open()){
+    Object.assign(MEDIA, await IDB.all());
+    if (P.logo || P.photos.length) renderAll();
+  }
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { if (doc().toc) fillToc(); });
+})();
+</script>
+</body>
+</html>

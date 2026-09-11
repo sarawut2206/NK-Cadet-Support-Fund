@@ -183,6 +183,7 @@ button,input,select,textarea{font:inherit;color:inherit}
   <span class="spacer"></span>
   <nav class="tabs">
     <a href="index.html" aria-current="page">ศูนย์เอกสาร</a>
+    <a href="project.html">ระบบโครงการ</a>
     <a href="dashboard.html">แดชบอร์ด</a>
     <a href="ledger.html">ทะเบียนกลาง</a>
     <a href="tutoring.html">ตารางติว</a>
@@ -439,7 +440,7 @@ order: {
       return `<tr><td class="c" style="width:14mm">${num(i + 1)}</td><td>${esc((p[0] || "").trim())}</td><td style="width:62mm">${esc((p[1] || "").trim())}</td></tr>`;
     }).join("");
     return `
-      ${krutImg(24)}
+      ${krutImg(30)}
       <p class="ctr" style="font-size:19pt;font-weight:700;margin-top:2mm">คำสั่ง${esc(S.school)}</p>
       <p class="ctr" style="font-size:17pt">ที่ ${v.no ? num(esc(v.no)) : "………… / …………"}</p>
       <p class="ctr" style="font-size:17pt;font-weight:700;margin-top:2mm">เรื่อง แต่งตั้งคณะกรรมการบริหาร${esc(S.fund)}</p>
