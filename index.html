@@ -394,6 +394,30 @@ const itemsTable = (items) => {
   </table>` };
 };
 
+/** รายชื่อนักเรียน : ใช้ที่กรอกในฟอร์มก่อน ถ้าเว้นว่างจะอ่านจากหน้าสมรรถภาพของเครื่องนี้ */
+function studentRows(v){
+  const typed = parseLines(v.students).map(l => {
+    const [n, c] = l.split("|");
+    return { name: (n || "").trim(), cls: (c || "").trim() };
+  }).filter(x => x.name);
+  const src = typed.length ? typed : (() => {
+    let F = null;
+    try { F = JSON.parse(localStorage.getItem("nk_fit_v1") || "null"); } catch (e) { return []; }
+    if (!F || !Array.isArray(F.students)) return [];
+    return F.students.map(s => ({ name: String(s.name || "").trim(), cls: String(s.cls || "").trim() })).filter(x => x.name);
+  })();
+  return src.map((x, i) => ({ name: x.name, cls: x.cls, no: i + 1 }));
+}
+
+/** หน้ารายชื่อนักเรียนที่เข้าร่วมโครงการ (แนบท้ายเมื่อพิมพ์ฉบับเดียว) */
+function namesSheet(list, v){
+  return `
+    <h2 style="break-before:page;margin-top:0">รายชื่อนักเรียนที่เข้าร่วม${num(esc(v.actname))}</h2>
+    <table><thead><tr><th style="width:18mm">เลขที่</th><th>ชื่อ–สกุล</th><th style="width:26mm">ห้อง</th></tr></thead>
+    <tbody>${list.map(s => `<tr><td class="c">${num(s.no)}</td><td>${esc(s.name)}</td><td class="c">${num(esc(s.cls))}</td></tr>`).join("")}
+    <tr><td colspan="3" style="text-align:right;font-weight:700">รวม ${num(list.length)} คน</td></tr></tbody></table>`;
+}
+
 /** หน้ารายละเอียดโครงการ แนบท้ายหนังสือเชิญผู้ปกครอง (ขึ้นหน้าใหม่เมื่อพิมพ์) */
 function detailSheet(v){
   const items = (txt, no) => parseLines(txt).map((s, i) =>
@@ -711,7 +735,7 @@ invitelec: {
 
 /* ---------- หนังสือเชิญผู้ปกครอง ---------- */
 inviteparent: {
-  g: "งานพิธีการ", n: "หนังสือเชิญผู้ปกครอง", d: "มีแบบตอบรับให้ตัดส่งกลับ · ถ่ายสำเนาแจกนักเรียนได้เลย", tight: true,
+  g: "งานพิธีการ", n: "หนังสือเชิญผู้ปกครอง", d: "พิมพ์รายคนได้ · มีแบบตอบรับให้ตัดส่งกลับ · ถ่ายสำเนาแจกนักเรียนได้เลย", tight: true,
   f: [
     { k:"no", l:"เลขที่หนังสือ", ph:"ศธ 04232.xx/xxx", w:1 },
     { k:"date", l:"วันที่ออกหนังสือ", t:"date", w:1 },
@@ -725,6 +749,12 @@ inviteparent: {
     { k:"dress", l:"การแต่งกาย", d:"สุภาพ", w:1 },
     { k:"reply", l:"ส่งแบบตอบรับคืนภายในวันที่", t:"date", w:1 },
     { k:"coordtel", l:"เบอร์ติดต่อสอบถาม", w:1 },
+    { k:"mode", l:"รูปแบบการพิมพ์", t:"select", d:"each",
+      o:[["each","พิมพ์รายคน — ระบุชื่อนักเรียนในแต่ละฉบับ"],
+         ["list","ฉบับเดียว + แนบรายชื่อนักเรียนท้ายฉบับ"],
+         ["one","ฉบับเดียว ไม่ระบุชื่อนักเรียน"]] },
+    { k:"students", l:"รายชื่อนักเรียน", t:"textarea", ph:"เว้นว่างไว้ = ดึงรายชื่อจากหน้าสมรรถภาพในเครื่องนี้",
+      hint:"บรรทัดละ ๑ คน รูปแบบ ชื่อ–สกุล|ห้อง · รายชื่ออยู่ในเบราว์เซอร์เครื่องนี้เท่านั้น ไม่ถูกส่งออกไปไหน" },
     { k:"detail", l:"แนบหน้ารายละเอียดโครงการ", t:"select", d:"1",
       o:[["1","แนบ — ผู้ปกครองเห็นว่าทำอะไรและนักเรียนได้อะไร"],["0","ไม่แนบ"]] },
     { k:"acts", l:"โครงการนี้จัดอะไรให้นักเรียน", t:"textarea",
@@ -741,12 +771,16 @@ inviteparent: {
     { k:"note", l:"ข้อความเพิ่มเติม (ถ้ามี)", t:"textarea", ph:"เช่น มีอาหารว่างรับรอง / ที่จอดรถภายในโรงเรียน" }
   ],
   r(v){
-    return extHead(v.no, v.date)
+    const list = studentRows(v);
+    /** หนังสือ ๑ ฉบับ · st = นักเรียนเจ้าของฉบับ (null = ฉบับไม่ระบุชื่อ) */
+    const copy = (st) => {
+      const who = st ? `ของ ${esc(st.name)}${st.cls ? " ห้อง " + num(esc(st.cls)) : ""} เลขที่ ${num(st.no)} ` : "";
+      return extHead(v.no, v.date)
       + fld("เรื่อง", esc(v.subject))
-      + fld("เรียน", "ผู้ปกครองนักเรียน" + esc(S.plan))
+      + fld("เรียน", st ? "ผู้ปกครองของ " + esc(st.name) : "ผู้ปกครองนักเรียน" + esc(S.plan))
       + (v.detail === "1" ? fld("สิ่งที่ส่งมาด้วย", "รายละเอียดโครงการโดยสังเขป จำนวน ๑ ฉบับ", 1) : "") + `
       <p class="ind" style="margin-top:3mm">ด้วย${esc(S.school)} ได้จัด${esc(v.actname)} ${esc(v.purpose)}</p>
-      <p class="ind">ในการนี้ โรงเรียนขอเรียนเชิญท่านผู้ปกครองเข้าร่วมงานดังกล่าว ในวันที่ ${v.edate ? num(thDate(v.edate)) : "……… / ……… / …………"} เวลา ${num(esc(v.etime))} ณ ${esc(v.place)} การแต่งกาย${esc(v.dress)} เพื่อรับทราบรายละเอียดโครงการและร่วมเป็นกำลังใจให้แก่บุตรหลานของท่าน</p>
+      <p class="ind">ในการนี้ โรงเรียนขอเรียนเชิญท่านผู้ปกครอง${who}เข้าร่วมงานดังกล่าว ในวันที่ ${v.edate ? num(thDate(v.edate)) : "……… / ……… / …………"} เวลา ${num(esc(v.etime))} ณ ${esc(v.place)} การแต่งกาย${esc(v.dress)} เพื่อรับทราบรายละเอียดโครงการและร่วมเป็นกำลังใจให้แก่บุตรหลานของท่าน</p>
       ${v.note ? `<p class="ind">${esc(v.note)}</p>` : ""}
       <p class="ind">จึงเรียนมาเพื่อโปรดทราบ และขอความกรุณาส่งแบบตอบรับคืนโรงเรียน${v.reply ? ` ภายในวันที่ ${num(thDate(v.reply))}` : ""} สอบถามเพิ่มเติมได้ที่โทรศัพท์ ${v.coordtel ? num(esc(v.coordtel)) : num(esc(S.tel))}</p>
       <p class="ctr" style="margin-top:5mm">ขอแสดงความนับถือ</p>
@@ -754,12 +788,16 @@ inviteparent: {
       <div class="cut">✂ ตัดตามรอยประและส่งคืนครูที่ปรึกษา ✂</div>
       <p class="ctr" style="font-weight:700;font-size:17pt">แบบตอบรับการเข้าร่วมงาน</p>
       <div class="rows">
-        <div class="rw"><span class="lb">ข้าพเจ้า</span><span class="vl">${dot("", 26)}</span><span class="lb">ผู้ปกครองของ</span><span class="vl">${dot("", 20)}</span></div>
-        <div class="rw"><span class="lb">ชั้น</span><span class="vl" style="max-width:34mm"></span><span class="lb">เลขที่</span><span class="vl" style="max-width:26mm"></span><span class="lb">โทรศัพท์</span><span class="vl"></span></div>
+        <div class="rw"><span class="lb">ข้าพเจ้า</span><span class="vl">${dot("", 26)}</span><span class="lb">ผู้ปกครองของ</span><span class="vl">${st ? esc(st.name) : dot("", 20)}</span></div>
+        <div class="rw"><span class="lb">ชั้น</span><span class="vl" style="max-width:34mm"></span><span class="lb">เลขที่</span><span class="vl" style="max-width:26mm">${st ? num(st.no) : ""}</span><span class="lb">โทรศัพท์</span><span class="vl"></span></div>
       </div>
       <small style="margin-top:1.5mm"><span class="chk"></span>ยินดีเข้าร่วมงาน จำนวน ………… คน
         &nbsp;&nbsp;&nbsp;<span class="chk"></span>ไม่สามารถเข้าร่วมงานได้ เนื่องจาก ……………………………………………………</small>
       ${sig([{ role:"ผู้ปกครอง", date:1 }])}` + (v.detail === "1" ? detailSheet(v) : "");
+    };
+    if (v.mode === "each" && list.length)
+      return list.map((st, i) => `<div${i ? ` style="break-before:page"` : ""}>${copy(st)}</div>`).join("");
+    return copy(null) + (v.mode === "list" && list.length ? namesSheet(list, v) : "");
   }
 },
 
