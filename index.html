@@ -267,7 +267,7 @@ const DEF_S = {
   plan: "แผนการเรียนเตรียมทหาร–ตำรวจ",
   fund: "กองทุนสนับสนุนการจัดการเรียนการสอน แผนการเรียนเตรียมทหาร ตำรวจ โรงเรียนมัธยมวัดหนองแขม",
   fundShort: "กองทุนเตรียมทหาร–ตำรวจ นข.",
-  director: "",
+  director: "นายสุริยันต์ เหล่ามะลึก",
   boardChair: "",
   chair: "ร้อยโท มงคล อ่วมนุช",
   head: "",
@@ -299,6 +299,14 @@ let S = Object.assign({}, DEF_S, JSON.parse(localStorage.getItem("nk_settings") 
   const OLD_FUND = "กองทุนส่งเสริมศักยภาพนักเรียนเตรียมทหารและสายอาชีพความมั่นคง";
   if (!S.fund || S.fund === OLD_FUND) S.fund = DEF_S.fund;
   for (const k of ["fundShort", "chair", "boardChair", "bank"]) if (S[k] == null) S[k] = DEF_S[k];
+  localStorage.setItem(DONE, "1");
+  localStorage.setItem("nk_settings", JSON.stringify(S));
+})();
+/* ── เติมชื่อผู้อำนวยการให้เครื่องที่เคยบันทึกค่าว่างไว้ (ทำครั้งเดียว) ── */
+(function fillDirector(){
+  const DONE = "nk_settings_v3";
+  if (localStorage.getItem(DONE)) return;
+  if (!S.director) S.director = DEF_S.director;
   localStorage.setItem(DONE, "1");
   localStorage.setItem("nk_settings", JSON.stringify(S));
 })();

@@ -371,9 +371,10 @@ const DEF_S = {
   tel: "02-429-3402",
   plan: "แผนการเรียนเตรียมทหาร–ตำรวจ",
   fund: "กองทุนสนับสนุนการจัดการเรียนการสอน แผนการเรียนเตรียมทหาร ตำรวจ โรงเรียนมัธยมวัดหนองแขม",
-  director: "", head: "", year: "2569", thaiDigits: "1"
+  director: "นายสุริยันต์ เหล่ามะลึก", head: "", year: "2569", thaiDigits: "1"
 };
 let S = (() => { try { return Object.assign({}, DEF_S, JSON.parse(localStorage.getItem("nk_settings") || "{}")); } catch (e) { return Object.assign({}, DEF_S); } })();
+if (!S.director) S.director = DEF_S.director;   /* ค่าที่บันทึกไว้เดิมอาจเป็นค่าว่าง */
 const num = s => S.thaiDigits === "1" ? thNum(s) : String(s ?? "");
 /** ข้อความผู้ใช้ → HTML ปลอดภัย + เลขไทย */
 const tx = s => num(esc(s));
@@ -1905,7 +1906,7 @@ $("#btnPrint").onclick = () => window.print();
 $("#btnWord").onclick = saveWord;
 $("#btnToggle").onclick = () => $("#app").classList.toggle("showprev");
 window.addEventListener("storage", e => {
-  if (e.key === "nk_settings"){ try { S = Object.assign({}, DEF_S, JSON.parse(e.newValue || "{}")); } catch (x) {} renderAll(); }
+  if (e.key === "nk_settings"){ try { S = Object.assign({}, DEF_S, JSON.parse(e.newValue || "{}")); } catch (x) {} if (!S.director) S.director = DEF_S.director; renderAll(); }
 });
 
 /* ═══════════ เริ่มต้น ═══════════ */

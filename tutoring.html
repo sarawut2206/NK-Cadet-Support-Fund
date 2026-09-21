@@ -466,9 +466,10 @@ const SCHOOL_DEF = {
   plan: "แผนการเรียนเตรียมทหาร–ตำรวจ",
   fund: "กองทุนสนับสนุนการจัดการเรียนการสอน แผนการเรียนเตรียมทหาร ตำรวจ โรงเรียนมัธยมวัดหนองแขม",
   chair: "ร้อยโท มงคล อ่วมนุช",
-  director: "", head: "", year: "2569", thaiDigits: "1"
+  director: "นายสุริยันต์ เหล่ามะลึก", head: "", year: "2569", thaiDigits: "1"
 };
 const S = Object.assign({}, SCHOOL_DEF, JSON.parse(localStorage.getItem("nk_settings") || "{}"));
+if (!S.director) S.director = SCHOOL_DEF.director;   /* ค่าที่บันทึกไว้เดิมอาจเป็นค่าว่าง */
 const num = s => S.thaiDigits === "1" ? thNum(s) : String(s ?? "");
 
 /* ═══════════ วิชาและโควตา ═══════════ */
