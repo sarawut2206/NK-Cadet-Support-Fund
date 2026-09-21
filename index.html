@@ -165,8 +165,8 @@ button,input,select,textarea{font:inherit;color:inherit}
   .app{display:block;height:auto}
   .pane-preview{display:block!important;padding:0;background:#fff;overflow:visible}
   .sheet-wrap{transform:none!important}
-  .sheet{box-shadow:none;width:210mm;min-height:0;margin:0;padding:15mm 20mm 20mm 30mm}
-  .sheet.land{width:297mm}
+  .sheet{box-shadow:none;width:auto;min-height:0;margin:0;padding:0}
+  .sheet.land{width:auto}
   .sheet table{break-inside:auto}
   .sheet tr,.sheet .box,.sheet .rw{break-inside:avoid}
   .sheet thead{display:table-header-group}
@@ -243,6 +243,9 @@ function bahtText(num){
   t += (f === "00") ? "ถ้วน" : readInt(f) + "สตางค์";
   return (n < 0 ? "ลบ" : "") + t;
 }
+/** ข้อความหลายบรรทัด → อาร์เรย์ ตัดบรรทัดว่างทิ้ง */
+const parseLines = txt => String(txt || "").split("\n").map(s => s.trim()).filter(Boolean);
+
 /** "รายการ|จำนวน" ต่อบรรทัด → [{name, amt}] */
 function parseItems(txt){
   return String(txt || "").split("\n").map(l => l.trim()).filter(Boolean).map(l => {
@@ -311,7 +314,7 @@ let S = Object.assign({}, DEF_S, JSON.parse(localStorage.getItem("nk_settings") 
   localStorage.setItem("nk_settings", JSON.stringify(S));
 })();
 let V = JSON.parse(localStorage.getItem("nk_values") || "{}");
-let cur = localStorage.getItem("nk_doc") || "memo";
+let cur = new URLSearchParams(location.search).get("doc") || localStorage.getItem("nk_doc") || "memo";
 
 const saveS = () => localStorage.setItem("nk_settings", JSON.stringify(S));
 const saveV = () => localStorage.setItem("nk_values", JSON.stringify(V));
@@ -390,6 +393,27 @@ const itemsTable = (items) => {
     </tbody>
   </table>` };
 };
+
+/** หน้ารายละเอียดโครงการ แนบท้ายหนังสือเชิญผู้ปกครอง (ขึ้นหน้าใหม่เมื่อพิมพ์) */
+function detailSheet(v){
+  const items = (txt, no) => parseLines(txt).map((s, i) =>
+    `<p style="margin-left:18mm;text-indent:-8mm">${num(no + "." + (i + 1))} ${num(esc(s))}</p>`).join("");
+  const head = (no, t) => `<p style="margin-top:3mm"><b>${num(no)}. ${t}</b></p>`;
+  const times = parseLines(v.daily).map(l => {
+    const [a, b] = l.split("|");
+    return `<p style="margin-left:10mm">${num(esc((a || "").trim()))} &nbsp;&nbsp; ${num(esc((b || "").trim()))}</p>`;
+  }).join("");
+  const coord = v.coord || S.head;
+  return `
+    <h2 style="break-before:page;margin-top:0">รายละเอียดโครงการโดยสังเขป</h2>
+    <p class="ctr" style="margin-bottom:3mm">${num(esc(v.actname))} ปีการศึกษา ${num(S.year)}</p>
+    ${head(1, "โครงการนี้จัดอะไรให้นักเรียน")}${items(v.acts, 1)}
+    ${head(2, "สิ่งที่นักเรียนจะได้รับ")}${items(v.gains, 2)}
+    ${times ? head(3, "เวลาเรียนในแต่ละวัน") + times : ""}
+    ${v.prep ? head(4, "สิ่งที่นักเรียนต้องเตรียม") + `<p style="margin-left:10mm">${num(esc(v.prep))}</p>` : ""}
+    ${head(5, "ติดต่อสอบถาม")}
+    <p style="margin-left:10mm">${coord ? esc(coord) + " " : ""}${esc(S.plan)} โทร. ${num(esc(v.coordtel || S.tel))}</p>`;
+}
 
 /* ═══ documents ═══ */
 const DOCS = {
@@ -701,12 +725,26 @@ inviteparent: {
     { k:"dress", l:"การแต่งกาย", d:"สุภาพ", w:1 },
     { k:"reply", l:"ส่งแบบตอบรับคืนภายในวันที่", t:"date", w:1 },
     { k:"coordtel", l:"เบอร์ติดต่อสอบถาม", w:1 },
+    { k:"detail", l:"แนบหน้ารายละเอียดโครงการ", t:"select", d:"1",
+      o:[["1","แนบ — ผู้ปกครองเห็นว่าทำอะไรและนักเรียนได้อะไร"],["0","ไม่แนบ"]] },
+    { k:"acts", l:"โครงการนี้จัดอะไรให้นักเรียน", t:"textarea",
+      d:"ติวเข้มภาควิชาการ 7 วิชา รวม 29 คาบ ได้แก่ คณิตศาสตร์ 8 คาบ ภาษาอังกฤษ 6 คาบ ภาษาไทย 4 คาบ สังคมศึกษา 4 คาบ ฟิสิกส์ 3 คาบ เคมี 2 คาบ และชีววิทยา 2 คาบ โดยครูผู้สอนของโรงเรียน\nฝึกสมรรถภาพทางร่างกาย 8 วัน ในช่วงบ่าย ตามรายการที่ใช้สอบจริง ได้แก่ ดันพื้น ดึงข้อ ลุกนั่ง วิ่ง 1,000 เมตร และวิ่ง 50 เมตร\nบรรยายพิเศษจากวิทยากรภายนอก เรื่องเส้นทางสู่การเป็นนายทหารและนายตำรวจ ในวันเปิดโครงการ\nทดสอบสมรรถภาพทางร่างกายก่อนและหลังโครงการ เพื่อวัดพัฒนาการเป็นรายบุคคล\nครูผู้ควบคุมดูแลความปลอดภัยและกำกับระเบียบวินัยตลอดกิจกรรม",
+      hint:"บรรทัดละ ๑ ข้อ" },
+    { k:"gains", l:"สิ่งที่นักเรียนจะได้รับ", t:"textarea",
+      d:"ทบทวนเนื้อหาและฝึกทำข้อสอบในวิชาที่ใช้สอบคัดเลือก พร้อมเอกสารและแบบฝึกหัดประกอบการติว\nสมรรถภาพทางร่างกายดีขึ้นตามเกณฑ์การสอบ โดยมีผลทดสอบรายบุคคลเปรียบเทียบก่อนและหลังโครงการ\nผู้ปกครองได้รับรายงานผลการทดสอบสมรรถภาพรายบุคคลของบุตรหลาน\nได้รับคำแนะนำแนวทางการเตรียมตัวสอบและข้อมูลการรับสมัครจากวิทยากรผู้มีประสบการณ์\nฝึกระเบียบวินัย ความอดทน และใช้เวลาช่วงปิดภาคเรียนให้เกิดประโยชน์\nไม่มีค่าใช้จ่ายสำหรับนักเรียน เนื่องจากใช้งบประมาณจากกองทุนสนับสนุนการจัดการเรียนการสอนของแผนการเรียน",
+      hint:"บรรทัดละ ๑ ข้อ" },
+    { k:"daily", l:"เวลาเรียนในแต่ละวัน", t:"textarea",
+      d:"08.00–09.30 น.|คาบที่ 1 ภาควิชาการ\n09.30–11.00 น.|คาบที่ 2 ภาควิชาการ\n11.00–12.30 น.|คาบที่ 3 ภาควิชาการ\n12.30–13.30 น.|พักกลางวันและเตรียมตัวฝึกสมรรถภาพ\n13.30–15.00 น.|ฝึกสมรรถภาพทางร่างกาย",
+      hint:"บรรทัดละ ๑ ช่วง รูปแบบ เวลา|กิจกรรม" },
+    { k:"prep", l:"สิ่งที่นักเรียนต้องเตรียม", d:"ชุดและรองเท้าสำหรับฝึกสมรรถภาพ อุปกรณ์การเรียน และน้ำดื่มส่วนตัว" },
+    { k:"coord", l:"ชื่อผู้ประสานงาน", ph:"เว้นว่างไว้จะใช้ชื่อหัวหน้าแผนการเรียนจากตั้งค่า", w:1 },
     { k:"note", l:"ข้อความเพิ่มเติม (ถ้ามี)", t:"textarea", ph:"เช่น มีอาหารว่างรับรอง / ที่จอดรถภายในโรงเรียน" }
   ],
   r(v){
     return extHead(v.no, v.date)
       + fld("เรื่อง", esc(v.subject))
-      + fld("เรียน", "ผู้ปกครองนักเรียน" + esc(S.plan)) + `
+      + fld("เรียน", "ผู้ปกครองนักเรียน" + esc(S.plan))
+      + (v.detail === "1" ? fld("สิ่งที่ส่งมาด้วย", "รายละเอียดโครงการโดยสังเขป จำนวน ๑ ฉบับ", 1) : "") + `
       <p class="ind" style="margin-top:3mm">ด้วย${esc(S.school)} ได้จัด${esc(v.actname)} ${esc(v.purpose)}</p>
       <p class="ind">ในการนี้ โรงเรียนขอเรียนเชิญท่านผู้ปกครองเข้าร่วมงานดังกล่าว ในวันที่ ${v.edate ? num(thDate(v.edate)) : "……… / ……… / …………"} เวลา ${num(esc(v.etime))} ณ ${esc(v.place)} การแต่งกาย${esc(v.dress)} เพื่อรับทราบรายละเอียดโครงการและร่วมเป็นกำลังใจให้แก่บุตรหลานของท่าน</p>
       ${v.note ? `<p class="ind">${esc(v.note)}</p>` : ""}
@@ -721,7 +759,7 @@ inviteparent: {
       </div>
       <small style="margin-top:1.5mm"><span class="chk"></span>ยินดีเข้าร่วมงาน จำนวน ………… คน
         &nbsp;&nbsp;&nbsp;<span class="chk"></span>ไม่สามารถเข้าร่วมงานได้ เนื่องจาก ……………………………………………………</small>
-      ${sig([{ role:"ผู้ปกครอง", date:1 }])}`;
+      ${sig([{ role:"ผู้ปกครอง", date:1 }])}` + (v.detail === "1" ? detailSheet(v) : "");
   }
 },
 
@@ -1319,7 +1357,11 @@ function renderSheet(){
   sheetEl.innerHTML = d.r(v);
   let st = document.getElementById("pagerule");
   if (!st){ st = document.createElement("style"); st.id = "pagerule"; document.head.appendChild(st); }
-  st.textContent = `@media print{@page{size:A4 ${d.land ? "landscape" : "portrait"};margin:0}}`;
+  const pn = d.land ? "none" : `counter(page${S.thaiDigits === "1" ? ", thai" : ""})`;
+  st.textContent = `@media print{
+    @page{size:A4 ${d.land ? "landscape" : "portrait"};margin:${d.land ? "12mm 15mm" : "15mm 20mm 20mm 30mm"};
+      @top-center{content:${pn};font-family:var(--doc);font-size:16pt;vertical-align:bottom;padding-bottom:3mm}}
+    @page:first{@top-center{content:none}}}`;
 }
 
 function renderAll(){ renderList(); renderEdit(); renderSheet(); }
