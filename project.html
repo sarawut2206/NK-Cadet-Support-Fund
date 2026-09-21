@@ -464,6 +464,8 @@ function defProject(){
     deputy: "", deputyPos: "รองผู้อำนวยการกลุ่มบริหารวิชาการ",
     start: "2026-09-28", end: "2026-10-09",
     place: "ห้องดอกแขม และสนามกีฬา โรงเรียนมัธยมวัดหนองแขม",
+    rooms: "ห้องดอกแขม (ห้องปรับอากาศ พร้อมหน้าจออัจฉริยะ)\nสนามกีฬาโรงเรียน (ใช้ฝึกสมรรถภาพทางร่างกาย ช่วงบ่าย)",
+    equip: "เปิด–ปิดเครื่องปรับอากาศและระบบไฟฟ้าตามช่วงเวลาที่ใช้\nโต๊ะและเก้าอี้สำหรับนักเรียนและครูผู้สอน\nเครื่องเสียงและเครื่องฉายภาพสำหรับพิธีเปิดและการบรรยายพิเศษ\nทำความสะอาดห้องก่อนและหลังการใช้งาน",
     targetDesc: "นักเรียนแผนการเรียนเตรียมทหาร–ตำรวจ",
     targetN: "15",
     inPlan: "0", planRef: "",
@@ -544,7 +546,7 @@ function defProject(){
         { name:"", pos:"ครูฝึกสมรรถภาพทางร่างกาย", role:"กรรมการ" },
         { name:"", pos:"หัวหน้าแผนการเรียนเตรียมทหาร–ตำรวจ", role:"กรรมการและเลขานุการ" }] }
     ],
-    docs: { memoNo:"", memoDate:"", orderNo:"", orderDate:"", approveDate:"", repNo:"", repDate:"" },
+    docs: { memoNo:"", memoDate:"", orderNo:"", orderDate:"", approveDate:"", repNo:"", repDate:"", roomNo:"", roomDate:"" },
     res: { actualN:"", summary:"", problems:"", suggest:"", next:"", fit:"1", appendix:"1" },
     survey: defSurvey(),
     photos: [], logo: "",
@@ -850,6 +852,8 @@ function commentTable(kind){
   const line = dots(24);
   const dir = kind === "report"
     ? `<span class="mk">☐</span> ทราบ &nbsp;&nbsp; <span class="mk">☐</span> อื่น ๆ ${dots(10)}`
+    : kind === "permit"
+    ? `<span class="mk">☐</span> อนุญาต &nbsp;&nbsp; <span class="mk">☐</span> ไม่อนุญาต`
     : `<span class="mk">☐</span> อนุมัติ &nbsp;&nbsp; <span class="mk">☐</span> ไม่อนุมัติ`;
   return `<table class="cm" style="margin-top:3mm"><tbody><tr>
     ${c("ความเห็น" + tx(P.deputyPos), line, P.deputy, P.deputyPos)}
@@ -1010,6 +1014,41 @@ function docOrder(){
     <p class="ind">ทั้งนี้ ตั้งแต่บัดนี้เป็นต้นไป</p>
     <p style="margin:3mm 0 0 55mm">สั่ง ณ วันที่ ${okDate(od) ? num(thDate(od)) : `${dots(4)} เดือน ${dots(10)} พ.ศ. ${dots(4)}`}</p>
     <div class="sig one" style="margin-top:12mm"><div><span>( ${nm(S.director)} )</span><span>ผู้อำนวยการ${tx(S.school)}</span></div></div>`)];
+}
+
+/* ═══════════ ๕.๑ บันทึกข้อความขออนุญาตใช้ห้องและสถานที่ ═══════════ */
+/** ช่วงเวลาที่ใช้ห้อง คำนวณจากกำหนดการ (เวลาเริ่มเร็วสุด – เลิกช้าสุด) */
+function roomTime(){
+  const parts = P.sched.map(r => String(r.t || "")).filter(x => /\d/.test(x))
+    .flatMap(x => x.split(/[–—-]/).map(s => s.trim()).filter(Boolean)).sort();
+  return parts.length ? `${parts[0]} – ${parts[parts.length - 1]} น.` : "";
+}
+function docRoom(){
+  const rooms = lines(P.rooms), eq = lines(P.equip), tm = roomTime();
+  const ad = P.docs.approveDate;
+  let k = 0;
+  const it = s => `<p class="ind">${num(++k)}. ${s}</p>`;
+  const sub = (arr) => arr.map((r, i) => `<p class="i2" style="margin-left:33mm">${num(`${k}.${i + 1}`)} ${tx(r)}</p>`).join("");
+  const head = okDate(ad)
+    ? `<p class="ind"><b>เรื่องเดิม</b></p>
+       <p class="ind">ตามที่${tx(S.school)} ได้อนุมัติให้${tx(S.plan)} ดำเนินการ${nm(P.title)} ปีการศึกษา ${num(Y())} เมื่อวันที่ ${num(thDate(ad))} นั้น</p>`
+    : `<p class="ind"><b>ต้นเรื่อง</b></p>
+       <p class="ind">ด้วย${tx(unitName())} จะดำเนินการ${nm(P.title)} ปีการศึกษา ${num(Y())} ${rangeTxt()}</p>`;
+  const b1 = it(`ขออนุญาตใช้ห้องและสถานที่ ${rooms.length ? "ดังนี้" : dots(20)}`) + sub(rooms);
+  const b2 = it(`ระยะเวลาที่ขอใช้ ${rangeTxt()} เวลา ${tm ? num(tm) : dots(10)}`)
+           + it(`ผู้ใช้ห้อง ได้แก่ ${nm(P.targetDesc)} จำนวน ${has(P.targetN) ? num(P.targetN) : dots(4)} คน พร้อมครูผู้สอนและครูผู้ควบคุม`);
+  const b3 = eq.length ? it("ขอความอนุเคราะห์สิ่งสนับสนุน ดังนี้") + sub(eq) : "";
+  const b4 = it(`ผู้รับผิดชอบดูแลความเรียบร้อยและส่งมอบห้องคืน ได้แก่ ${nm(P.owner)} ${tx(P.ownerPos)}`);
+  k = 0;
+  const props = it("อนุญาตให้ใช้ห้องและสถานที่ตามวัน เวลา ที่เสนอ")
+              + it("แจ้งงานอาคารสถานที่และงานโสตทัศนศึกษาเพื่อเตรียมความพร้อม");
+  return [sheet(
+    memoHead(P.docs.roomNo, P.docs.roomDate, "ขออนุญาตใช้ห้องและสถานที่ในการจัด" + (P.title || "โครงการ")) + head +
+    `<p class="ind"><b>ข้อเท็จจริง</b></p>
+     <p class="ind">รายละเอียดการขอใช้ห้องและสถานที่ ดังนี้</p>` + b1 + b2 + b3 + b4 +
+    `<p class="ind"><b>ข้อเสนอเพื่อพิจารณา</b></p>` + props +
+    `<p class="ind">จึงเรียนมาเพื่อโปรดพิจารณาอนุญาต</p>
+     <div class="sig one" style="margin-top:3mm">${sigL("", P.owner, P.ownerPos)}</div>` + commentTable("permit"), "tight")];
 }
 
 /* ═══════════ ๖. ใบลงชื่อผู้เข้าร่วมโครงการ (แนวนอน) ═══════════ */
@@ -1287,6 +1326,7 @@ const DOCS = [
   { id:"budget", ph:1, n:"รายละเอียดประมาณการค่าใช้จ่าย", d:"เอกสารแนบ · จำนวน × ราคา แยกหมวด พร้อมคำชี้แจง", uses:["budget"], pages: docBudget },
   { id:"sched", ph:1, n:"กำหนดการ", d:"เอกสารแนบ · วัน เวลา กิจกรรม ผู้รับผิดชอบ", uses:["sched"], pages: docSched },
   { id:"order", ph:1, n:"คำสั่งแต่งตั้งคณะกรรมการ", d:"คำสั่งโรงเรียน กระดาษตราครุฑ", uses:["comm","docno"], pages: docOrder },
+  { id:"room", ph:1, n:"บันทึกข้อความขออนุญาตใช้ห้องและสถานที่", d:"เสนอผู้อำนวยการ · ห้อง วัน เวลา และสิ่งสนับสนุนที่ขอ", uses:["room","basic","docno"], pages: docRoom },
   { id:"bundle", ph:1, n:"ชุดเสนอขออนุมัติ (รวมทุกฉบับ)", d:"บันทึก + โครงการ + ค่าใช้จ่าย + กำหนดการ + คำสั่ง", uses:["basic","docno"],
     pages: () => [...docMemo(), ...docProject(), ...docBudget(), ...docSched(), ...docOrder()] },
   { id:"signin", ph:2, n:"ใบลงชื่อผู้เข้าร่วมโครงการ", d:"แนวนอน · ช่องลงชื่อรายวัน", land:true, uses:["basic"], pages: docSign },
@@ -1312,6 +1352,8 @@ function needs(id){
     case "sched": req(P.sched.length, "กำหนดการอย่างน้อย ๑ รายการ"); req(P.sched.every(r => okDate(r.d) && has(r.act)), "วันที่และกิจกรรมของกำหนดการทุกแถว"); break;
     case "order": req(P.comm.length, "คณะกรรมการ"); req(has(S.director), "ชื่อผู้อำนวยการ (ตั้งค่าที่หน้าศูนย์เอกสาร)"); req(okDate(P.docs.orderDate), "วันที่สั่ง"); break;
     case "bundle": ["memo", "project", "budget", "sched", "order"].forEach(k => needs(k).forEach(x => req(false, x))); break;
+    case "room": base(); req(lines(P.rooms).length, "ห้องและสถานที่ที่ขอใช้"); req(has(P.owner), "ชื่อผู้รับผิดชอบโครงการ");
+      req(has(S.director), "ชื่อผู้อำนวยการ (ตั้งค่าที่หน้าศูนย์เอกสาร)"); req(okDate(P.docs.roomDate), "วันที่ของบันทึกขอใช้ห้อง"); break;
     case "signin": base(); break;
     case "surveyform": req(P.survey.some(g => g.items.length), "ข้อคำถาม"); break;
     case "report": req(has(P.res.actualN), "จำนวนผู้เข้าร่วมจริง"); req(!!survey().all, "ผลแบบประเมินความพึงพอใจ");
@@ -1431,10 +1473,16 @@ function secComm(){
       ${addb(`comm.${i}.m`, "เพิ่มกรรมการ")}</div>`).join("")
     + addb("comm", "เพิ่มคณะกรรมการ");
 }
+function secRoom(){
+  return fi("rooms", "ห้องและสถานที่ที่ขอใช้", { t:"area", rows:3, h:"บรรทัดละ ๑ แห่ง ระบุลักษณะห้องหรือช่วงที่ใช้ต่อท้ายได้" })
+    + fi("equip", "สิ่งสนับสนุนที่ขอความอนุเคราะห์", { t:"area", rows:4, h:"บรรทัดละ ๑ รายการ เว้นว่างได้ถ้าไม่ขอ" })
+    + `<div class="hint">ช่วงเวลาที่ขอใช้ คำนวณจากกำหนดการให้เอง : ${esc(num(roomTime()) || "ยังไม่มีกำหนดการ")}</div>`;
+}
 function secDocno(){
   return `<div class="hint">เว้นว่างไว้ได้ ระบบจะพิมพ์เป็นเส้นประให้เขียนด้วยมือ</div>`
     + two(fi("docs.memoNo", "เลขที่บันทึกขออนุมัติ"), fi("docs.memoDate", "วันที่บันทึกขออนุมัติ", { t:"date" }))
     + two(fi("docs.orderNo", "เลขที่คำสั่ง", { ph:"เช่น 123/2569" }), fi("docs.orderDate", "วันที่สั่ง", { t:"date" }))
+    + two(fi("docs.roomNo", "เลขที่บันทึกขอใช้ห้อง"), fi("docs.roomDate", "วันที่บันทึกขอใช้ห้อง", { t:"date" }))
     + fi("docs.approveDate", "วันที่ผู้อำนวยการอนุมัติโครงการ", { t:"date", h:"ใช้อ้างถึงใน “เรื่องเดิม” ของบันทึกรายงานผล" })
     + two(fi("docs.repNo", "เลขที่บันทึกรายงานผล"), fi("docs.repDate", "วันที่บันทึกรายงานผล", { t:"date" }));
 }
@@ -1493,10 +1541,10 @@ const SECS = {
   basic: ["ข้อมูลพื้นฐานโครงการ", secBasic], plan: ["หลักการ วัตถุประสงค์ ผลที่คาดว่าจะได้รับ", secPlan],
   target: ["เป้าหมายและตัวชี้วัดความสำเร็จ", secTarget], std: ["ความสอดคล้องกับมาตรฐานการศึกษา", secStd],
   steps: ["ขั้นตอนดำเนินงาน (PDCA)", secSteps], sched: ["กำหนดการ", secSched], budget: ["งบประมาณ", secBudget],
-  comm: ["คณะกรรมการ", secComm], docno: ["เลขที่และวันที่ของหนังสือ", secDocno], stat: ["สถานะการดำเนินงาน", secStat],
+  comm: ["คณะกรรมการ", secComm], room: ["ห้องและสถานที่ที่ขอใช้", secRoom], docno: ["เลขที่และวันที่ของหนังสือ", secDocno], stat: ["สถานะการดำเนินงาน", secStat],
   result: ["ผลการดำเนินงาน", secResult], survey: ["แบบประเมินความพึงพอใจ", secSurvey], photo: ["ภาพกิจกรรมและตราโรงเรียน", secPhoto]
 };
-const ORDER = ["basic", "plan", "target", "std", "steps", "sched", "budget", "comm", "docno", "stat", "result", "survey", "photo"];
+const ORDER = ["basic", "plan", "target", "std", "steps", "sched", "budget", "comm", "room", "docno", "stat", "result", "survey", "photo"];
 
 function needHTML(){
   const m = needs(doc().id);
