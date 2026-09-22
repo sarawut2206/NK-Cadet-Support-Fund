@@ -597,6 +597,29 @@ let P = (() => {
     return d;
   } catch (e) { return defProject(); }
 })();
+/* ── เติมคณะกรรมการชุดใหม่ให้ข้อมูลที่บันทึกไว้เดิม โดยไม่แตะรายชื่อที่กรอกไว้ (ทำครั้งเดียว) ── */
+(function migrateComm(){
+  if (Number(P.commVer) >= 2 || !Array.isArray(P.comm)) return;
+  const D = defProject().comm;
+  const clone = o => JSON.parse(JSON.stringify(o));
+  /* ๑. เพิ่มฝ่ายที่ยังไม่มี */
+  ["ฝ่ายรักษาความปลอดภัย", "ฝ่ายพยาบาล"].forEach(n => {
+    if (!P.comm.some(g => String(g.n || "").includes(n))){
+      const g = D.find(x => x.n === n);
+      if (g) P.comm.push(clone(g));
+    }
+  });
+  /* ๒. เติมรองผู้อำนวยการกลุ่มบริหารที่ยังไม่มีในคณะกรรมการอำนวยการ (แทรกก่อนเลขานุการ) */
+  const dir = P.comm.find(g => String(g.n || "").includes("อำนวยการ"));
+  if (dir && Array.isArray(dir.m)){
+    const have = dir.m.map(m => String(m.pos || ""));
+    const add = (D[0].m || []).filter(m => /^รองผู้อำนวยการ/.test(m.pos) && !have.includes(m.pos)).map(clone);
+    const last = dir.m.length && /เลขานุการ/.test(String(dir.m[dir.m.length - 1].role || "")) ? dir.m.length - 1 : dir.m.length;
+    dir.m.splice(last, 0, ...add);
+  }
+  P.commVer = 2;
+  try { localStorage.setItem(KEY, JSON.stringify(P)); } catch (e) {}
+})();
 const save = () => { try { localStorage.setItem(KEY, JSON.stringify(P)); } catch (e) { toast("บันทึกไม่สำเร็จ: พื้นที่เก็บข้อมูลของเบราว์เซอร์เต็ม"); } };
 
 function getPath(o, path){ return path.split(".").reduce((a, k) => a == null ? a : a[k], o); }
