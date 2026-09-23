@@ -350,6 +350,12 @@ const fld = (label, value, wide) => `
 const extFoot = (extra) => `
   <div class="ftr">${esc(S.plan)}<br>โทร. ${num(esc(S.tel))}${extra ? "<br>" + extra : ""}</div>`;
 
+/** หัวหนังสือของแผนการเรียน — ไม่ใช้ตราครุฑ ออกในนามแผนการเรียน หัวหน้าแผนเป็นผู้ลงนาม */
+const planHead = (date) => `
+  <div class="org"><b>${esc(S.plan)} ${esc(S.school)}</b>${num(esc(S.addr))} · โทรศัพท์ ${num(esc(S.tel))}</div>
+  <div class="hr"></div>
+  <div class="extdate">${date ? num(thDate(date)) : "……… / ……… / …………"}</div>`;
+
 const letterHead = () => `
   <div class="org"><b>${esc(S.school)}</b>${num(esc(S.addr))}<br>โทรศัพท์ ${num(esc(S.tel))}</div>
   <div class="hr"></div>`;
@@ -735,11 +741,10 @@ invitelec: {
 
 /* ---------- หนังสือเชิญผู้ปกครอง ---------- */
 inviteparent: {
-  g: "งานพิธีการ", n: "หนังสือเชิญผู้ปกครอง", d: "พิมพ์รายคนได้ · มีแบบตอบรับให้ตัดส่งกลับ · ถ่ายสำเนาแจกนักเรียนได้เลย", tight: true,
+  g: "งานพิธีการ", n: "หนังสือเชิญผู้ปกครอง", d: "ออกในนามแผนการเรียน หัวหน้าแผนลงนาม ไม่ใช้ตราครุฑ · พิมพ์รายคนได้ · มีแบบตอบรับให้ตัดส่งกลับ", tight: true,
   f: [
-    { k:"no", l:"เลขที่หนังสือ", ph:"ศธ 04232.xx/xxx", w:1 },
     { k:"date", l:"วันที่ออกหนังสือ", t:"date", w:1 },
-    { k:"subject", l:"เรื่อง", d:"ขอเชิญร่วมพิธีเปิดโครงการติวเข้มปิดภาคเรียน" },
+    { k:"subject", l:"เรื่อง", d:"ขอเชิญร่วมพิธีเปิดโครงการติวเข้มปิดภาคเรียน", w:1 },
     { k:"actname", l:"ชื่องาน/กิจกรรม", d:"โครงการติวเข้มปิดภาคเรียน แผนการเรียนเตรียมทหาร–ตำรวจ" },
     { k:"purpose", l:"วัตถุประสงค์และรายละเอียดโครงการ", t:"textarea",
       d:"เพื่อเตรียมความพร้อมด้านวิชาการ สมรรถภาพทางร่างกาย และระเบียบวินัย ให้แก่นักเรียนที่มุ่งสอบคัดเลือกเข้าโรงเรียนเตรียมทหารและสายอาชีพด้านความมั่นคง โดยจัดติวเข้มภาควิชาการและฝึกสมรรถภาพร่างกายตลอดช่วงปิดภาคเรียน" },
@@ -775,16 +780,16 @@ inviteparent: {
     /** หนังสือ ๑ ฉบับ · st = นักเรียนเจ้าของฉบับ (null = ฉบับไม่ระบุชื่อ) */
     const copy = (st) => {
       const who = st ? `ของ ${esc(st.name)}${st.cls ? " ห้อง " + num(esc(st.cls)) : ""} เลขที่ ${num(st.no)} ` : "";
-      return extHead(v.no, v.date)
+      return planHead(v.date)
       + fld("เรื่อง", esc(v.subject))
       + fld("เรียน", st ? "ผู้ปกครองของ " + esc(st.name) : "ผู้ปกครองนักเรียน" + esc(S.plan))
       + (v.detail === "1" ? fld("สิ่งที่ส่งมาด้วย", "รายละเอียดโครงการโดยสังเขป จำนวน ๑ ฉบับ", 1) : "") + `
-      <p class="ind" style="margin-top:3mm">ด้วย${esc(S.school)} ได้จัด${esc(v.actname)} ${esc(v.purpose)}</p>
-      <p class="ind">ในการนี้ โรงเรียนขอเรียนเชิญท่านผู้ปกครอง${who}เข้าร่วมงานดังกล่าว ในวันที่ ${v.edate ? num(thDate(v.edate)) : "……… / ……… / …………"} เวลา ${num(esc(v.etime))} ณ ${esc(v.place)} การแต่งกาย${esc(v.dress)} เพื่อรับทราบรายละเอียดโครงการและร่วมเป็นกำลังใจให้แก่บุตรหลานของท่าน</p>
+      <p class="ind" style="margin-top:3mm">ด้วย${esc(S.plan)} ${esc(S.school)} ได้จัด${esc(v.actname)} ${esc(v.purpose)}</p>
+      <p class="ind">ในการนี้ แผนการเรียนฯ ขอเรียนเชิญท่านผู้ปกครอง${who}เข้าร่วมงานดังกล่าว ในวันที่ ${v.edate ? num(thDate(v.edate)) : "……… / ……… / …………"} เวลา ${num(esc(v.etime))} ณ ${esc(v.place)} การแต่งกาย${esc(v.dress)} เพื่อรับทราบรายละเอียดโครงการและร่วมเป็นกำลังใจให้แก่บุตรหลานของท่าน</p>
       ${v.note ? `<p class="ind">${esc(v.note)}</p>` : ""}
-      <p class="ind">จึงเรียนมาเพื่อโปรดทราบ และขอความกรุณาส่งแบบตอบรับคืนโรงเรียน${v.reply ? ` ภายในวันที่ ${num(thDate(v.reply))}` : ""} สอบถามเพิ่มเติมได้ที่โทรศัพท์ ${v.coordtel ? num(esc(v.coordtel)) : num(esc(S.tel))}</p>
+      <p class="ind">จึงเรียนมาเพื่อโปรดทราบ และขอความกรุณาส่งแบบตอบรับคืนครูที่ปรึกษา${v.reply ? ` ภายในวันที่ ${num(thDate(v.reply))}` : ""} สอบถามเพิ่มเติมได้ที่โทรศัพท์ ${v.coordtel ? num(esc(v.coordtel)) : num(esc(S.tel))}</p>
       <p class="ctr" style="margin-top:5mm">ขอแสดงความนับถือ</p>
-      ${sig([{ role:"ผู้อำนวยการ" + S.school, name:S.director }])}
+      ${sig([{ role:"หัวหน้า" + S.plan, name:S.head }])}
       <div class="cut">✂ ตัดตามรอยประและส่งคืนครูที่ปรึกษา ✂</div>
       <p class="ctr" style="font-weight:700;font-size:17pt">แบบตอบรับการเข้าร่วมงาน</p>
       <div class="rows">
