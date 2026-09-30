@@ -301,6 +301,26 @@ const pick = () => ALL.filter(d => sel.has(d.key));
 $("#runPrint").onclick = () => run(pick(), "print");
 $("#runWord").onclick = () => run(pick(), "word");
 
+/* นำเข้ารายชื่อจากลิงก์ที่สร้างไว้ในเครื่อง : kit.html#roster=<base64>
+   ข้อมูลหลังเครื่องหมาย # ไม่ถูกส่งไปยังเซิร์ฟเวอร์ และจะถูกลบออกจากแถบที่อยู่ทันทีหลังนำเข้า */
+(function importFromHash(){
+  const m = /^#roster=(.+)$/.exec(location.hash);
+  if (!m) return;
+  try {
+    const bin = atob(decodeURIComponent(m[1]));
+    const txt = new TextDecoder("utf-8").decode(Uint8Array.from(bin, c => c.charCodeAt(0)));
+    const list = txt.split(String.fromCharCode(10)).map(l => l.trim()).filter(Boolean).map(l => {
+      const [name, cls] = l.split("|").map(x => (x || "").trim());
+      return { name, cls };
+    }).filter(x => x.name);
+    if (list.length){
+      localStorage.setItem("nk_roster_v1", JSON.stringify(list));
+      history.replaceState(null, "", location.pathname + location.search);
+      setTimeout(() => { $("#rosterMsg").textContent = `นำเข้ารายชื่อจากลิงก์แล้ว ${num(list.length)} คน`; }, 0);
+    }
+  } catch (e) { history.replaceState(null, "", location.pathname + location.search); }
+})();
+
 loadRosterBox(); renderStatus(); renderDocs();
 </script>
 </body>
