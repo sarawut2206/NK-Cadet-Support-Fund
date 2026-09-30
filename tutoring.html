@@ -98,10 +98,11 @@ section + section{border-top:1px solid var(--rule)}
 
 /* ตารางวิชา–ครูผู้สอน (แก้ไขได้) */
 .subj{display:flex;flex-direction:column;gap:.4rem}
-.srow{display:grid;grid-template-columns:minmax(8.5rem,1.3fr) 5.6rem minmax(11rem,2fr) 2rem;gap:.45rem;align-items:start}
+.srow{display:grid;grid-template-columns:minmax(8rem,1.25fr) 5.6rem 6.4rem minmax(10rem,1.9fr) 2rem;gap:.45rem;align-items:start}
 .srow.shead{font-family:var(--ui);font-weight:600;font-size:.76rem;color:var(--ink-2);padding-bottom:.1rem;border-bottom:1px solid var(--rule);align-items:center}
 .srow > input{width:100%;background:var(--ground);border:1px solid var(--rule);border-radius:5px;padding:.3rem .45rem;font-size:.86rem}
 .srow input[type=number]{text-align:center;font-variant-numeric:tabular-nums}
+.tonesel{width:100%;border:1px solid var(--rule);border-radius:5px;padding:.3rem .35rem;font-size:.82rem;font-weight:600}
 .teal{display:flex;flex-direction:column;gap:.28rem;min-width:0}
 .tearow{display:flex;gap:.28rem;align-items:center}
 .tearow input{flex:1;min-width:0;background:var(--ground);border:1px solid var(--rule);border-radius:5px;padding:.3rem .45rem;font-size:.86rem}
@@ -111,9 +112,9 @@ section + section{border-top:1px solid var(--rule)}
 .ssum{font-family:var(--ui);font-weight:600;font-size:.83rem;font-variant-numeric:tabular-nums}
 .ssum.bad{color:var(--crit)} .ssum.ok{color:var(--ok)} .ssum.warn{color:var(--warn)}
 @media (max-width:760px){
-  .srow{grid-template-columns:1fr 5.6rem 2rem}
+  .srow{grid-template-columns:1fr 5.6rem 6.4rem 2rem}
   .srow .teal{grid-column:1/-1}
-  .srow.shead span:nth-child(3){display:none}
+  .srow.shead span:nth-child(4){display:none}
 }
 
 /* โควตา — แถบลอยตามหน้าจอ */
@@ -235,6 +236,8 @@ footer b{color:#fff}
 .sheet .pretty{position:relative;background:#EAF4FD;border-radius:6mm;padding:7mm 8mm 6mm;overflow:hidden;
   -webkit-print-color-adjust:exact;print-color-adjust:exact}
 .sheet .pretty *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+/* สีประจำวิชาในตารางทั่วไปต้องติดไปกับกระดาษด้วย ไม่ใช่เห็นแค่บนจอ */
+.sheet td[style*="background"],.sheet .tonechip{-webkit-print-color-adjust:exact;print-color-adjust:exact}
 .sheet .pdeco{position:absolute;inset:0;pointer-events:none}
 .sheet .ptitle{position:relative;font-size:26pt;font-weight:700;color:#14406E;
   background:#fff;border:1.2pt solid #9CC6E8;border-radius:4mm;padding:1.5mm 9mm;display:inline-block;
@@ -490,14 +493,36 @@ if (!S.director) S.director = SCHOOL_DEF.director;   /* ค่าที่บั
 const num = s => S.thaiDigits === "1" ? thNum(s) : String(s ?? "");
 
 /* ═══════════ วิชาและโควตา ═══════════ */
+/* ═══════════ สีประจำวิชา ═══════════
+   พื้นอ่อน–ตัวอักษรเข้ม ให้อ่านชัดทั้งบนจอและตอนถ่ายสำเนาขาวดำ */
+const TONES = {
+  "เหลือง":  { bg:"#FFF1C2", ink:"#6B4E00", edge:"#E4C558" },
+  "แดง":     { bg:"#FFE1DE", ink:"#8E1F16", edge:"#E79B94" },
+  "ฟ้า":     { bg:"#D9EBFF", ink:"#0E3D6B", edge:"#93BFE8" },
+  "เขียว":   { bg:"#DCF2DC", ink:"#1E5B28", edge:"#96CC9C" },
+  "ส้ม":     { bg:"#FFE3CC", ink:"#8A4510", edge:"#EDB07A" },
+  "ม่วง":    { bg:"#EFE1FB", ink:"#57287F", edge:"#BFA0DD" },
+  "เขียวน้ำทะเล": { bg:"#D5F0EC", ink:"#0F5A52", edge:"#8CCCC3" },
+  "ชมพู":    { bg:"#FFE2EE", ink:"#8B2350", edge:"#EDA1BF" },
+  "น้ำตาล":  { bg:"#EEE4D6", ink:"#5E4526", edge:"#C9B394" },
+  "เทา":     { bg:"#EAEEF2", ink:"#3A4756", edge:"#B9C4CF" }
+};
+const TONE_KEYS = Object.keys(TONES);
+const DEF_TONE = { math:"เหลือง", eng:"แดง", tha:"ม่วง", soc:"เขียว",
+                   phy:"ฟ้า", che:"ส้ม", bio:"เขียวน้ำทะเล" };
+/** สีของวิชา — คืนค่าเทาถ้ายังไม่ได้เลือก */
+const tone = k => TONES[(T.subjects.find(x => x.k === k) || {}).c] || TONES["เทา"];
+/** สไตล์พื้น–ตัวอักษรสำหรับช่องวิชา */
+const toneCss = k => { const t = tone(k); return `background:${t.bg};color:${t.ink};border-color:${t.edge}`; };
+
 const DEF_SUBJ = [
-  { k:"math", n:"คณิตศาสตร์",  q:7, tea:[""] },
-  { k:"eng",  n:"ภาษาอังกฤษ",  q:5, tea:[""] },
-  { k:"tha",  n:"ภาษาไทย",     q:3, tea:[""] },
-  { k:"soc",  n:"สังคมศึกษา",   q:4, tea:[""] },
-  { k:"phy",  n:"ฟิสิกส์",      q:3, tea:[""] },
-  { k:"che",  n:"เคมี",         q:2, tea:[""] },
-  { k:"bio",  n:"ชีววิทยา",     q:2, tea:[""] }
+  { k:"math", n:"คณิตศาสตร์",  q:7, tea:[""] , c:"เหลือง" },
+  { k:"eng",  n:"ภาษาอังกฤษ",  q:5, tea:[""] , c:"แดง" },
+  { k:"tha",  n:"ภาษาไทย",     q:3, tea:[""] , c:"ม่วง" },
+  { k:"soc",  n:"สังคมศึกษา",   q:4, tea:[""] , c:"เขียว" },
+  { k:"phy",  n:"ฟิสิกส์",      q:3, tea:[""] , c:"ฟ้า" },
+  { k:"che",  n:"เคมี",         q:2, tea:[""] , c:"ส้ม" },
+  { k:"bio",  n:"ชีววิทยา",     q:2, tea:[""] , c:"เขียวน้ำทะเล" }
 ];
 /** รายการวิชาปัจจุบัน (แก้ไขได้ เก็บอยู่ใน T.subjects) */
 const SUBJ = () => T.subjects;
@@ -594,7 +619,8 @@ let T = (() => {
       if (r.k === "sub" && r.s === "sci") r.s = "che";
     }));
   }
-  t.subjects.forEach(s => {
+  t.subjects.forEach((s, i) => {
+    if (!s.c || !TONES[s.c]) s.c = DEF_TONE[s.k] || TONE_KEYS[i % TONE_KEYS.length];
     if (!Array.isArray(s.tea)) s.tea = [s.tea ? String(s.tea) : ""];
     if (!s.tea.length) s.tea = [""];
     if (!s.k) s.k = newId("j");
@@ -736,7 +762,7 @@ function stats(){
         const o = get(who || "(ยังไม่ระบุครู)");
         o.roles.add(SB(r.s).n); o.periods++; o.hours += dur(r);
         o.pay += Number(T.rate) || 0;
-        o.rows.push({ di, date, t1:r.t1, t2:r.t2, what: SB(r.s).n });
+        o.rows.push({ di, date, t1:r.t1, t2:r.t2, what: SB(r.s).n, sub:r.s });
       } else if (r.k === "fit"){
         if (!who) return;
         const o = get(who);
@@ -766,7 +792,7 @@ function renderSubjects(){
   const used = new Set();
   activeKeys().forEach(k => T.days[k].rows.forEach(r => { if (r.k === "sub" && r.s) used.add(r.s); }));
   $("#subjTable").innerHTML =
-    `<div class="srow shead"><span>วิชา</span><span>โควตา (คาบ)</span><span>ครูผู้สอน</span><span></span></div>` +
+    `<div class="srow shead"><span>วิชา</span><span>โควตา (คาบ)</span><span>สี</span><span>ครูผู้สอน</span><span></span></div>` +
     T.subjects.map((s, i) => {
       const teas = s.tea.map((tn, j) => `<div class="tearow">
         <input data-sj="${i}" data-tea="${j}" type="text" value="${esc(tn)}" list="teaList"
@@ -777,6 +803,8 @@ function renderSubjects(){
       return `<div class="srow">
         <input data-sj="${i}" data-sf="n" type="text" value="${esc(s.n)}" placeholder="ชื่อวิชา" aria-label="ชื่อวิชา">
         <input data-sj="${i}" data-sf="q" type="number" min="0" max="99" value="${esc(s.q)}" aria-label="โควตาคาบวิชา${esc(s.n)}">
+        <select class="tonesel" data-sj="${i}" data-sf="c" style="${toneCss(s.k)}" aria-label="สีประจำวิชา${esc(s.n)}">
+          ${TONE_KEYS.map(c => `<option value="${c}"${c === s.c ? " selected" : ""}>${c}</option>`).join("")}</select>
         <div class="teal">${teas}
           <button class="btn xs" data-sact="addTea" data-sj="${i}" type="button">+ เพิ่มครูวิชานี้</button></div>
         <button class="x" data-sact="delSub" data-sj="${i}" type="button"
@@ -884,7 +912,7 @@ function rowHTML(dk, ri, r, bad, keys){
   const d = dur(r);
   let mid;
   if (r.k === "sub"){
-    mid = `<select data-a="sub" data-d="${dk}" data-r="${ri}" aria-label="วิชา">
+    mid = `<select data-a="sub" data-d="${dk}" data-r="${ri}" aria-label="วิชา"${r.s ? ` style="${toneCss(r.s)};font-weight:600"` : ""}>
       <option value="">— เลือกวิชา —</option>
       ${SUBJ().map(s => `<option value="${s.k}"${s.k === r.s ? " selected" : ""}>${esc(s.n)}</option>`).join("")}</select>`;
   } else {
@@ -990,6 +1018,9 @@ $("#subjTable").addEventListener("change", e => {
     s.n = e.target.value.trim() || "วิชาใหม่";
   } else if (d.sf === "q"){
     s.q = Math.max(0, parseInt(e.target.value, 10) || 0);
+  } else if (d.sf === "c"){
+    s.c = TONES[e.target.value] ? e.target.value : "เทา";
+    e.target.style.cssText = toneCss(s.k);
   } else if (d.tea != null){
     const j = +d.tea, old = s.tea[j] || "";
     s.tea[j] = e.target.value;
@@ -1200,11 +1231,11 @@ $("#prGrid").onclick = () => {
     return D.rows.map((r, ri) => `<tr>
       ${ri === 0 ? `<td class="c" rowspan="${D.rows.length}"><b>${num(di + 1)}</b><br>วัน${THDAY[dt.getDay()]}<br>${num(thDateA(dt))}</td>` : ""}
       <td class="c">${num(esc(r.t1))}–${num(esc(r.t2))}</td>
-      <td>${rowWhat(r)}</td>
+      <td${r.k === "sub" && r.s ? ` style="${toneCss(r.s)}"` : ""}>${rowWhat(r)}</td>
       <td>${r.k === "br" ? "" : esc(r.w || "")}</td></tr>`).join("");
   }).join("");
   const { c } = counts();
-  const qrow = SUBJ().map(s => `<tr><td>${esc(s.n)}</td><td class="c">${num(c[s.k])} / ${num(s.q)}</td><td>${esc(s.tea.filter(Boolean).join(" · "))}</td></tr>`).join("");
+  const qrow = SUBJ().map(s => `<tr><td style="${toneCss(s.k)}">${esc(s.n)}</td><td class="c">${num(c[s.k])} / ${num(s.q)}</td><td>${esc(s.tea.filter(Boolean).join(" · "))}</td></tr>`).join("");
   sheetEl.innerHTML = orgHead() + `<h1>ตารางติวเข้มปิดภาคเรียน</h1>` + projInfo() + `
     <table><thead><tr><th style="width:24mm">วันที่</th><th style="width:30mm">เวลา</th><th>รายการ</th><th style="width:44mm">ผู้รับผิดชอบ</th></tr></thead>
     <tbody>${body || `<tr><td colspan="4" class="c">ยังไม่ได้จัดตาราง</td></tr>`}</tbody></table>
@@ -1283,7 +1314,8 @@ $("#prCheck").onclick = () => {
     const rows = o.rows.slice().sort((a, b) => a.di - b.di || (tmin(a.t1) - tmin(b.t1)))
       .map((r, j) => `<tr><td class="c">${num(j + 1)}</td>
         <td>วัน${THDAY[r.date.getDay()]}ที่ ${num(thDate(r.date))}</td>
-        <td class="c">${num(esc(r.t1))} – ${num(esc(r.t2))} น.</td><td>${esc(r.what)}</td></tr>`).join("");
+        <td class="c">${num(esc(r.t1))} – ${num(esc(r.t2))} น.</td>
+        <td${r.sub ? ` style="${toneCss(r.sub)}"` : ""}>${esc(r.what)}</td></tr>`).join("");
     const bits = [];
     if (o.periods) bits.push(`สอน ${num(o.periods)} คาบ`);
     if (o.fitDays) bits.push(`ฝึกสมรรถภาพ ${num(o.fitDays)} วัน`);
@@ -1406,7 +1438,8 @@ $("#prPretty").onclick = () => {
           : r.k === "br" ? esc(r.l || "พัก")
           : esc(r.l || "กิจกรรม");
         const who = r.k === "br" ? "" : esc(r.w || "");
-        cells.push(`<td class="slot k-${r.k}" colspan="${span}"><b>${label}</b>${who ? `<span>${who}</span>` : ""}</td>`);
+        const st = r.k === "sub" && r.s ? ` style="${toneCss(r.s)}"` : "";
+        cells.push(`<td class="slot k-${r.k}"${st} colspan="${span}"><b${st ? ` style="color:inherit"` : ""}>${label}</b>${who ? `<span${st ? ` style="color:inherit;opacity:.82"` : ""}>${who}</span>` : ""}</td>`);
         ci += span;
       }
       return `<tr><td class="dcell" style="background:${tone.bg};color:${tone.ink}">วัน${THDAY[d.getDay()]}
