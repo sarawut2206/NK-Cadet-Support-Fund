@@ -387,6 +387,7 @@ footer b{color:#fff}
     <button class="btn" id="prOpen" type="button">กำหนดการวันพิธีเปิด</button>
     <select id="selTea" style="background:var(--ground);border:1px solid var(--rule);border-radius:5px;padding:.38rem .5rem;font-size:.85rem;font-family:var(--ui)"></select>
     <button class="btn" id="prTea" type="button">กำหนดการรายคน</button>
+    <button class="btn" id="prTeaAll" type="button">กำหนดการรายคน (ทุกคน)</button>
     <button class="btn" id="prPay" type="button">ใบสรุปค่าตอบแทน</button>
     <button class="btn" id="prSign" type="button">ใบลงเวลาปฏิบัติงาน</button>
     <button class="btn gold" id="prPretty" type="button">ตารางเรียนแจกนักเรียน (สีสัน)</button>
@@ -1219,9 +1220,8 @@ $("#prOpen").onclick = () => {
 };
 
 /* กำหนดการรายคน */
-function printTeacher(name){
-  const o = stats()[name];
-  if (!o) return alert("ไม่พบชื่อนี้ในตาราง");
+/** แผ่นกำหนดการปฏิบัติงานของครู ๑ คน — คืนค่าเป็น HTML เพื่อใช้พิมพ์เดี่ยวหรือรวมเล่ม */
+function teacherSheet(name, o){
   const rows = o.rows.sort((a, b) => a.di - b.di || (tmin(a.t1) - tmin(b.t1))).map((r, i) =>
     `<tr><td class="c">${num(i + 1)}</td><td>วันที่ ${num(r.di + 1)} · วัน${THDAY[r.date.getDay()]} ${num(thDate(r.date))}</td>
      <td class="c">${num(esc(r.t1))}–${num(esc(r.t2))}</td><td>${esc(r.what)}</td></tr>`).join("");
@@ -1229,7 +1229,7 @@ function printTeacher(name){
   if (o.periods) bits.push(`สอน ${num(o.periods)} คาบ × ${num(money0(Number(T.rate) || 0))} บาท`);
   if (o.fitDays) bits.push(`ฝึกสมรรถภาพ ${num(o.fitDays)} วัน × ${num(money0(Number(T.fitRate) || 0))} บาท`);
   if (o.events)  bits.push(`กิจกรรม/บรรยาย ${num(o.events)} ครั้ง`);
-  sheetEl.innerHTML = orgHead() + `<h1>กำหนดการปฏิบัติงาน</h1>` + projInfo() + `
+  return orgHead() + `<h1>กำหนดการปฏิบัติงาน</h1>` + projInfo() + `
     <p style="margin-top:2mm"><b>ชื่อ–สกุล</b>&nbsp;&nbsp;${esc(name)}&nbsp;&nbsp;&nbsp;<b>หน้าที่</b>&nbsp;&nbsp;${[...o.roles].map(esc).join(" · ")}</p>
     <table><thead><tr><th style="width:12mm">ที่</th><th>วัน</th><th style="width:30mm">เวลา</th><th>รายการ</th></tr></thead><tbody>${rows}</tbody></table>
     <div class="box"><div class="bt">สรุปภาระงานและค่าตอบแทน</div>
@@ -1241,9 +1241,22 @@ function printTeacher(name){
            { role:"หัวหน้าแผนการเรียนเตรียมทหาร–ตำรวจ", sub:"กรรมการและเลขานุการกองทุน", name:S.head },
            { role:"ผู้อำนวยการ" + S.school, sub:"ผู้อนุมัติ", name:S.director }])}
     <p class="foot">หากติดราชการหรือไม่สามารถปฏิบัติงานตามกำหนด ให้แจ้งหัวหน้าแผนการเรียนล่วงหน้าอย่างน้อย ๑ วัน เพื่อจัดผู้สอนแทนหรือสลับคาบ</p>`;
+}
+function printTeacher(name){
+  const o = stats()[name];
+  if (!o) return alert("ไม่พบชื่อนี้ในตาราง");
+  sheetEl.innerHTML = teacherSheet(name, o);
+  doPrint();
+}
+/** พิมพ์กำหนดการของผู้ปฏิบัติงานทุกคนในครั้งเดียว คนละ ๑ หน้า ส่งให้ครูตรวจก่อนเริ่มโครงการ */
+function printAllTeachers(){
+  const map = stats(), names = Object.keys(map).sort((a, b) => a.localeCompare(b, "th"));
+  if (!names.length) return alert("ยังไม่มีชื่อผู้ปฏิบัติงานในตาราง");
+  sheetEl.innerHTML = names.map(n => `<div class="page">${teacherSheet(n, map[n])}</div>`).join("");
   doPrint();
 }
 $("#prTea").onclick = () => { const n = $("#selTea").value; if (!n) return alert("เลือกผู้ปฏิบัติงานจากรายการก่อน"); printTeacher(n); };
+$("#prTeaAll").onclick = printAllTeachers;
 
 /* ใบสรุปค่าตอบแทน */
 $("#prPay").onclick = () => {
