@@ -415,6 +415,8 @@ footer b{color:#fff}
   </div>
   <div class="acts" style="margin-top:0">
     <button class="btn gold" id="prCheck" type="button">ใบตรวจสอบวัน–เวลาสอนรายคน</button>
+    <button class="btn" id="prStuSign" type="button">ใบลงชื่อนักเรียน (รายวัน)</button>
+    <button class="btn" id="prStuCheck" type="button">ใบเช็กชื่อนักเรียน (รายคาบ)</button>
   </div>
   <p class="mini">ต่างจาก “กำหนดการรายคน” ตรงที่ฉบับนี้ย่อให้สั้น ไม่มีบล็อกลายมือชื่อและค่าตอบแทน เหมาะกับการส่งให้ครูตรวจความถูกต้องของวันและเวลา</p>
 </div></section>
@@ -1545,12 +1547,81 @@ function syncTopH(){
 }
 addEventListener("resize", syncTopH);
 
+/* ═══════════ รายชื่อนักเรียน ═══════════
+   ใช้รายชื่อกลางที่วางไว้ในหน้าชุดพิมพ์ก่อน แล้วค่อยใช้รายชื่อในหน้าสมรรถภาพ
+   ถ้าไม่มีทั้งสองที่ จะพิมพ์ตารางเปล่า ๑๕ แถวให้เขียนเอง */
+function roster(){
+  try {
+    const R = JSON.parse(localStorage.getItem("nk_roster_v1") || "null");
+    if (Array.isArray(R) && R.length) return R.map((x, i) => ({ no: i + 1, name: String(x.name || "").trim(), cls: String(x.cls || "").trim() })).filter(x => x.name);
+  } catch (e) {}
+  try {
+    const F = JSON.parse(localStorage.getItem("nk_fit_v1") || "null");
+    if (F && Array.isArray(F.students)) return F.students.filter(x => String(x.name || "").trim()).map((x, i) => ({ no: i + 1, name: String(x.name).trim(), cls: String(x.cls || "").trim() }));
+  } catch (e) {}
+  return [];
+}
+const stuRows = (cols, h) => {
+  const list = roster();
+  const base = list.length ? list : Array.from({ length: Number(T.students) || 15 }, (_, i) => ({ no: i + 1, name: "", cls: "" }));
+  return base.map(x => `<tr style="height:${h}mm"><td class="c">${num(x.no)}</td><td>${esc(x.name)}</td>${cols}</tr>`).join("");
+};
+
+/** ใบลงชื่อนักเรียนเข้าร่วมโครงการ — ๑ วัน ๑ หน้า */
+$("#prStuSign").onclick = () => {
+  const pages = activeKeys().map((dk, di) => {
+    const dt = dObj(dk);
+    return `<div class="page">${orgHead()}<h1>ใบลงชื่อนักเรียนเข้าร่วมโครงการ</h1>
+      <p class="sub">${esc(T.title)}</p>
+      <p class="sub"><b>วันที่ ${num(di + 1)} · วัน${THDAY[dt.getDay()]}ที่ ${num(thDate(dt))}</b> · ${esc(T.room)}</p>
+      <table><thead><tr><th style="width:11mm">ที่</th><th>ชื่อ–สกุล</th><th style="width:26mm">เวลามา</th><th style="width:26mm">เวลากลับ</th><th style="width:36mm">ลายมือชื่อ</th></tr></thead>
+      <tbody>${stuRows(`<td></td><td></td><td></td>`, 9.2)}</tbody></table>
+      <p style="margin-top:2mm"><b>มาเรียน ………… คน &nbsp; ขาด ………… คน &nbsp; ลา ………… คน</b></p>
+      ${sig([{ role:"หัวหน้าแผนการเรียนเตรียมทหาร–ตำรวจ", sub:"ผู้ตรวจ", name:S.head }])}</div>`;
+  }).join("");
+  sheetEl.innerHTML = pages || `<p>ยังไม่ได้จัดตาราง</p>`;
+  doPrint();
+};
+
+/** ใบเช็กชื่อนักเรียนรายคาบ — ๑ คาบ ๑ หน้า ให้ครูถือเข้าห้อง */
+$("#prStuCheck").onclick = () => {
+  const out = [];
+  activeKeys().forEach((dk, di) => {
+    const dt = dObj(dk);
+    T.days[dk].rows.forEach(r => {
+      if (!(r.k === "sub" && r.s) && r.k !== "fit") return;
+      const st = r.k === "sub" ? ` style="${toneCss(r.s)}"` : "";
+      out.push(`<div class="page">${orgHead()}<h1>ใบเช็กชื่อนักเรียนรายคาบ</h1>
+        <p class="sub"><b>วัน${THDAY[dt.getDay()]}ที่ ${num(thDate(dt))}</b> · เวลา ${num(esc(r.t1))}–${num(esc(r.t2))} น. · วิชา <span${st}>&nbsp;${rowWhat(r)}&nbsp;</span></p>
+        <table><thead><tr><th style="width:11mm">ที่</th><th>ชื่อ–สกุล</th><th style="width:34mm">มา / ขาด / ลา</th><th style="width:48mm">หมายเหตุ</th></tr></thead>
+        <tbody>${stuRows(`<td></td><td></td>`, 8.6)}</tbody></table>
+        <p style="margin-top:2mm">ครูผู้สอน ${esc(r.w || "…………………………………………")} &nbsp; ส่งคืนแผนการเรียนหลังจบคาบ</p></div>`);
+    });
+  });
+  sheetEl.innerHTML = out.join("") || `<p>ยังไม่ได้จัดตาราง</p>`;
+  doPrint();
+};
+
 /* ═══════════ เริ่มต้น ═══════════ */
 if (!Object.keys(T.days).length) rebuildAll();
 renderSettings();
 renderAll();
 applyMini();
 syncTopH();
+
+/* โหมดอัตโนมัติ : หน้าชุดพิมพ์เปิดหน้านี้ในกรอบซ่อน แล้วสั่งปุ่มพิมพ์ให้ (?auto=prSign&out=word) */
+(function(){
+  const q = new URLSearchParams(location.search), btn = q.get("auto");
+  if (!btn || !document.getElementById(btn)) return;
+  const done = () => { try { parent.postMessage({ nkKitDone: true, doc: btn }, "*"); } catch (e) {} };
+  const word = q.get("out") === "word";
+  if ($("#outMode")) $("#outMode").value = word ? "word" : "print";
+  window.addEventListener("afterprint", done);
+  (document.fonts ? document.fonts.ready : Promise.resolve()).then(() => setTimeout(() => {
+    document.getElementById(btn).click();
+    if (word) setTimeout(done, 700);
+  }, 500));
+})();
 </script>
 <script src="nav.js"></script>
 </body>

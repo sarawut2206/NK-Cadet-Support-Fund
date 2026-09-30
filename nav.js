@@ -44,6 +44,14 @@
     const first = nav.querySelector("a");
     if (first && first.nextSibling) nav.insertBefore(dd, first.nextSibling); else nav.appendChild(dd);
 
+    /* ลิงก์ชุดพิมพ์ — รวมเอกสารทุกฉบับให้พิมพ์หรือดาวน์โหลดที่เดียว */
+    if (!nav.querySelector('a[href="kit.html"]')) {
+      const k = document.createElement("a");
+      k.href = "kit.html"; k.textContent = "ชุดพิมพ์";
+      if (page === "kit.html") k.setAttribute("aria-current", "page");
+      dd.after(k);
+    }
+
     const trig = dd.querySelector(".nkdd-t");
     trig.addEventListener("click", e => {
       /* แตะครั้งแรกเปิดเมนู แตะซ้ำไปหน้ารวมโครงการ — ใช้งานบนมือถือได้ */

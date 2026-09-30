@@ -1,0 +1,307 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>ชุดพิมพ์ | แผนเตรียมทหาร มัธยมวัดหนองแขม</title>
+<meta name="description" content="รวมเอกสารทุกฉบับของโครงการไว้หน้าเดียว กดพิมพ์หรือดาวน์โหลด Word ได้ทีละฉบับหรือทั้งชุด">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%230E2A56'/><text y='72' x='50' text-anchor='middle' font-size='62' fill='%23FFC72C' font-family='sans-serif' font-weight='bold'>นข</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&family=Bai+Jamjuree:wght@500;600;700&display=swap">
+<style>
+:root{
+  --navy:#10305F; --navy-2:#1B4A8F; --navy-3:#2C63B0;
+  --gold:#F5B722; --gold-2:#FFD152; --gold-ink:#8A6410; --gold-ghost:rgba(245,183,34,.15);
+  --ground:#EDF4FD; --surface:#FFFFFF; --surface-2:#DCE9F9;
+  --ink:#0F2140; --ink-2:#3D5375; --ink-3:#5F7492;
+  --rule:#C7DCF3; --rule-2:#9CBADF;
+  --ok:#1F7A5A; --ok-bg:rgba(31,122,90,.11); --warn:#B45D12; --warn-bg:rgba(180,93,18,.12); --crit:#A32B2B;
+  --ui:'Bai Jamjuree','Sarabun',system-ui,sans-serif; --body:'Sarabun',system-ui,sans-serif;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --ground:#0A1526; --surface:#132034; --surface-2:#1C2B42;
+    --ink:#E6EBF3; --ink-2:#AFBACC; --ink-3:#8391A6; --rule:#26344E; --rule-2:#3E506F;
+    --navy:#0A1830; --navy-2:#22508F; --navy-3:#6EA1E8;
+    --gold:#FFC72C; --gold-ink:#FFC72C; --gold-ghost:rgba(255,199,44,.14);
+    --ok:#5FBF97; --ok-bg:rgba(95,191,151,.14); --warn:#E09550; --warn-bg:rgba(224,149,80,.14); --crit:#E38A8A;
+  }
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--body);font-size:15.5px;line-height:1.7;-webkit-font-smoothing:antialiased}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--navy-3);outline-offset:2px;border-radius:5px}
+.wrap{max-width:62rem;margin-inline:auto;padding-inline:clamp(.9rem,3vw,2rem)}
+p{margin:0}a{color:var(--navy-3)}
+.top{background:var(--navy);color:#fff;border-bottom:3px solid var(--gold);position:sticky;top:0;z-index:40}
+.top-in{display:flex;align-items:center;gap:.9rem;padding:.6rem clamp(.8rem,2vw,1.4rem);flex-wrap:wrap}
+.mark{width:2.35rem;height:2.35rem;flex:none;background:var(--gold);color:var(--navy);display:grid;place-items:center;font-family:var(--ui);font-weight:700;font-size:.8rem;clip-path:polygon(50% 0,100% 24%,100% 76%,50% 100%,0 76%,0 24%)}
+.title b{display:block;font-family:var(--ui);font-weight:600;font-size:.98rem;color:#fff;line-height:1.25}
+.title span{font-size:.76rem;color:#B6C6E0}
+.top .spacer{margin-inline-start:auto}
+.tabs{display:flex;gap:.25rem;flex-wrap:wrap}
+.tabs a{font-family:var(--ui);font-weight:600;font-size:.83rem;text-decoration:none;color:#C6D4EA;padding:.4rem .85rem;border-radius:5px;border:1px solid transparent}
+.tabs a:hover{background:rgba(255,255,255,.1);color:#fff}
+.tabs a[aria-current]{background:var(--gold);color:var(--navy)}
+
+.hero{padding:1.6rem 0 .8rem}
+.eb{font-family:var(--ui);font-weight:600;font-size:.76rem;color:var(--gold-ink)}
+h1{font-family:var(--ui);font-size:clamp(1.5rem,3vw,2rem);margin:.15rem 0 .3rem;line-height:1.3}
+.lede{color:var(--ink-2);max-width:46rem}
+.card{background:var(--surface);border:1px solid var(--rule);border-radius:10px;padding:1rem 1.2rem;margin-bottom:1rem}
+.card h2{font-family:var(--ui);font-size:1rem;margin:0 0 .5rem;display:flex;align-items:center;gap:.5rem;flex-wrap:wrap}
+.btn{font-family:var(--ui);font-weight:600;font-size:.85rem;background:var(--surface);color:var(--ink);border:1px solid var(--rule-2);padding:.42rem .95rem;border-radius:6px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:.3rem;line-height:1.4}
+.btn:hover{border-color:var(--navy-3)}
+.btn.gold{background:var(--gold);border-color:var(--gold);color:#10305F}
+.btn.big{font-size:.98rem;padding:.6rem 1.3rem}
+.btn[disabled]{opacity:.5;cursor:not-allowed}
+[hidden]{display:none!important}
+.chip{font-family:var(--ui);font-weight:600;font-size:.74rem;padding:.12rem .55rem;border-radius:999px}
+.chip.ok{background:var(--ok-bg);color:var(--ok)}
+.chip.warn{background:var(--warn-bg);color:var(--warn)}
+
+.status{display:grid;grid-template-columns:repeat(auto-fit,minmax(13rem,1fr));gap:.6rem;margin-bottom:1rem}
+.st{background:var(--surface);border:1px solid var(--rule);border-radius:10px;padding:.65rem .9rem}
+.st small{display:block;color:var(--ink-3);font-size:.78rem;line-height:1.35}
+.st b{font-family:var(--ui);font-size:1.05rem}
+.st.bad{border-color:var(--warn)}
+
+textarea{width:100%;min-height:8.5rem;background:var(--ground);border:1px solid var(--rule);border-radius:8px;padding:.6rem .75rem;font-size:.92rem}
+.acts{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.6rem;align-items:center}
+.hint{color:var(--ink-3);font-size:.82rem}
+
+.bar{position:sticky;top:5rem;z-index:30;background:var(--surface);border:1px solid var(--gold);border-radius:10px;padding:.7rem 1rem;margin-bottom:1rem;display:flex;gap:.6rem;flex-wrap:wrap;align-items:center;box-shadow:0 6px 18px rgba(14,42,86,.12)}
+.bar .sp{flex:1;min-width:8rem}
+.bar .msg{font-family:var(--ui);font-weight:600;font-size:.88rem;color:var(--ink-2)}
+.grp h3{font-family:var(--ui);font-size:.92rem;margin:.2rem 0 .4rem;color:var(--ink-2)}
+.doc{display:grid;grid-template-columns:auto 1fr auto;gap:.7rem;align-items:center;padding:.5rem .4rem;border-top:1px solid var(--rule)}
+.doc:first-of-type{border-top:none}
+.doc input{width:1.15rem;height:1.15rem;accent-color:var(--ok);cursor:pointer}
+.doc b{font-weight:600}
+.doc small{display:block;color:var(--ink-3);font-size:.8rem;line-height:1.4}
+.doc .go{display:flex;gap:.35rem;flex-wrap:wrap;justify-content:flex-end}
+.doc.run{background:var(--gold-ghost);border-radius:8px}
+.doc.done b::after{content:" ✓";color:var(--ok)}
+#runner{position:fixed;left:-12000px;top:0;width:1000px;height:1400px;border:0;visibility:hidden}
+footer{border-top:1px solid var(--rule);padding:1.2rem 0 2rem;color:var(--ink-3);font-size:.82rem}
+@media (max-width:40rem){.doc{grid-template-columns:auto 1fr}.doc .go{grid-column:1/-1;justify-content:flex-start}}
+</style>
+</head>
+<body>
+
+<header class="top"><div class="top-in">
+  <span class="mark">นข</span>
+  <span class="title"><b>ชุดพิมพ์</b><span>โรงเรียนมัธยมวัดหนองแขม · แผนการเรียนเตรียมทหาร–ตำรวจ</span></span>
+  <span class="spacer"></span>
+  <nav class="tabs">
+    <a href="index.html">ศูนย์เอกสาร</a>
+    <a href="dashboard.html">แดชบอร์ด</a>
+    <a href="ledger.html">ทะเบียนกลาง</a>
+    <a href="fitness.html">สมรรถภาพ</a>
+  </nav>
+</div></header>
+
+<main class="wrap">
+  <div class="hero">
+    <p class="eb">โครงการติวเข้มปิดภาคเรียน ๒๕๖๙</p>
+    <h1>เอกสารทั้งโครงการ กดพิมพ์ที่นี่ที่เดียว</h1>
+    <p class="lede">ติ๊กเลือกเอกสาร แล้วกด <b>พิมพ์ที่เลือก</b> ระบบจะสั่งพิมพ์ให้ทีละฉบับต่อเนื่อง หรือกด <b>ดาวน์โหลด Word ที่เลือก</b> เพื่อเก็บไปแก้ไข — ทุกฉบับดึงชื่อ วันที่ และตารางล่าสุดจากโปรแกรมให้เอง</p>
+  </div>
+
+  <div class="status" id="status"></div>
+
+  <div class="card" id="rosterCard">
+    <h2>รายชื่อนักเรียน <span class="chip" id="rosterChip"></span></h2>
+    <p class="hint" style="margin-bottom:.5rem">วางครั้งเดียว ทุกเอกสารที่มีตารางรายชื่อจะดึงไปใช้เอง · บรรทัดละ ๑ คน รูปแบบ <b>ชื่อ–สกุล|ห้อง</b> · เก็บในเบราว์เซอร์เครื่องนี้เท่านั้น ไม่ถูกส่งออกไปไหน</p>
+    <textarea id="rosterTxt" placeholder="นายสมชาย ใจดี|4&#10;นายสมศักดิ์ ตั้งใจ|4&#10;…" aria-label="รายชื่อนักเรียน"></textarea>
+    <div class="acts">
+      <button class="btn gold" id="rosterSave" type="button">บันทึกรายชื่อ</button>
+      <button class="btn" id="rosterClear" type="button">ล้างรายชื่อ</button>
+      <span class="hint" id="rosterMsg"></span>
+    </div>
+  </div>
+
+  <div class="bar" id="bar">
+    <button class="btn gold big" id="runPrint" type="button">พิมพ์ที่เลือก</button>
+    <button class="btn big" id="runWord" type="button">ดาวน์โหลด Word ที่เลือก</button>
+    <button class="btn" id="stopRun" type="button" hidden>หยุด</button>
+    <span class="sp"></span>
+    <span class="msg" id="msg">เลือกแล้ว 0 ฉบับ</span>
+    <button class="btn" id="selAll" type="button">เลือกทั้งหมด</button>
+    <button class="btn" id="selNone" type="button">ไม่เลือกเลย</button>
+  </div>
+
+  <div id="groups"></div>
+</main>
+
+<footer><div class="wrap">
+  ตอนพิมพ์ให้เลือกกระดาษ A4 และปิด “หัวกระดาษและท้ายกระดาษ” ในหน้าต่างพิมพ์ · ถ้าเบราว์เซอร์ถามว่าอนุญาตให้ดาวน์โหลดหลายไฟล์หรือไม่ ให้กด “อนุญาต”
+</div></footer>
+<iframe id="runner" title="ตัวพิมพ์อัตโนมัติ" aria-hidden="true"></iframe>
+
+<script src="nav.js"></script>
+<script>
+"use strict";
+const $ = s => document.querySelector(s);
+const TH = "๐๑๒๓๔๕๖๗๘๙";
+const num = s => String(s == null ? "" : s).replace(/[0-9]/g, d => TH[d]);
+const esc = s => String(s == null ? "" : s).replace(/[&<>"]/g, c => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;" }[c]));
+const readLS = k => { try { return JSON.parse(localStorage.getItem(k) || "null"); } catch (e) { return null; } };
+
+/* ═══════════ รายการเอกสาร ═══════════
+   i = เอกสารในศูนย์เอกสาร (index.html?doc=…)   t = ปุ่มพิมพ์ในหน้าตารางติว (tutoring.html?auto=…) */
+const GROUPS = [
+  ["วันพิธีเปิดโครงการ", [
+    ["t","prOpen","กำหนดการวันพิธีเปิดโครงการ","ตารางเวลาพิธีเปิดและบรรยาย"],
+    ["i","signparent","ใบลงชื่อผู้ปกครองเข้าร่วมพิธีเปิด","แนวนอน · มีชื่อนักเรียนครบ เว้นช่องให้ผู้ปกครองลงชื่อ"],
+    ["i","speechreport","คำกล่าวรายงาน","หัวหน้าแผนการเรียน · ตัวอักษรโต"],
+    ["i","speechopen","คำกล่าวเปิดงาน","ผู้อำนวยการหรือรองผู้อำนวยการ"],
+    ["i","speechboard","คำกล่าวประธานคณะกรรมการสถานศึกษา","พบผู้ปกครอง"],
+    ["i","speechpta","คำกล่าวนายกสมาคมผู้ปกครองและครู","สั้น ประมาณ ๒ นาที"]
+  ]],
+  ["ตลอดช่วงโครงการ", [
+    ["t","prGrid","ตารางติวรวมทุกวัน","ตารางเวลาทุกวันพร้อมครูผู้สอน"],
+    ["t","prPretty","ตารางเรียนแจกนักเรียน (สีสัน)","แนวนอน · แยกสีตามวิชา ถ่ายสำเนาแจกได้"],
+    ["t","prSign","ใบลงเวลาปฏิบัติงานสอนของครู (รายวัน)","แยกหน้าตามวัน ครูแต่ละคนลงเวลามา–กลับ"],
+    ["t","prStuSign","ใบลงชื่อนักเรียนเข้าร่วมโครงการ (รายวัน)","วันละ ๑ หน้า พร้อมชื่อนักเรียน"],
+    ["t","prStuCheck","ใบเช็กชื่อนักเรียน (รายคาบ)","๑ คาบ ๑ หน้า ให้ครูถือเข้าห้อง"],
+    ["t","prCheck","ใบตรวจสอบวัน–เวลาสอนรายคน","ส่งให้ครูตรวจก่อนเริ่มโครงการ"],
+    ["t","prTeaAll","กำหนดการปฏิบัติงานรายคน (ทุกคน)","คนละ ๑ หน้า พร้อมช่องลงนาม ๓ ฝ่าย"]
+  ]],
+  ["หลังจบพิธีและจบโครงการ", [
+    ["i","thankparent","หนังสือขอบคุณผู้ปกครอง","หัวหน้าแผนการเรียนลงนาม · พิมพ์รายคนได้"],
+    ["i","thankslec","หนังสือขอบคุณวิทยากร","ผู้อำนวยการลงนาม"],
+    ["i","thanksguest","หนังสือขอบคุณผู้มาร่วมงาน","แขกผู้มีเกียรติ"],
+    ["t","prPay","ใบสรุปค่าตอบแทนผู้ปฏิบัติงาน","ใช้ประกอบการเบิกจ่าย"]
+  ]]
+];
+const ALL = GROUPS.flatMap(g => g[1]).map(([kind, id, name, note]) => ({ kind, id, name, note, key: kind + ":" + id }));
+const urlOf = (d, mode) => d.kind === "i"
+  ? `index.html?doc=${d.id}${mode ? "&auto=" + mode : ""}`
+  : `tutoring.html?${mode ? `auto=${d.id}&out=${mode}` : "#step5"}`;
+
+/* ═══════════ สถานะข้อมูล ═══════════ */
+function roster(){
+  const R = readLS("nk_roster_v1");
+  if (Array.isArray(R) && R.length) return R.filter(x => x && x.name);
+  const F = readLS("nk_fit_v1");
+  return F && Array.isArray(F.students) ? F.students.filter(x => x && String(x.name || "").trim()) : [];
+}
+function renderStatus(){
+  const T = readLS("nk_tutor_v2") || {}, S = readLS("nk_settings") || {};
+  const days = Object.keys(T.days || {}).filter(k => T.days[k] && T.days[k].on).length;
+  let slots = 0, named = 0;
+  Object.values(T.days || {}).forEach(d => (d.rows || []).forEach(r => { if (r.k === "sub" && r.s){ slots++; if (String(r.w || "").trim()) named++; } }));
+  const n = roster().length;
+  const box = [
+    [n ? "ok" : "bad", "รายชื่อนักเรียน", n ? `${num(n)} คน` : "ยังไม่มี", n ? "" : "วางรายชื่อในช่องด้านล่าง"],
+    [days ? "ok" : "bad", "ตารางติว", days ? `${num(days)} วัน · ${num(slots)} คาบ` : "ยังไม่ได้จัด", days ? (named < slots ? `ยังไม่ระบุครู ${num(slots - named)} คาบ` : "ระบุครูครบทุกคาบ") : "จัดที่หน้าตารางติว"],
+    ["ok", "หัวหน้าแผนการเรียน", esc(S.head || "นายศราวุธ พิมศร"), "ชื่อในบล็อกลายเซ็น แก้ที่ตั้งค่าโรงเรียน"]
+  ];
+  $("#status").innerHTML = box.map(([c, t, v, s]) => `<div class="st ${c === "bad" ? "bad" : ""}"><small>${t}</small><b>${v}</b><small>${s}</small></div>`).join("");
+  const chip = $("#rosterChip");
+  chip.className = "chip " + (n ? "ok" : "warn");
+  chip.textContent = n ? `มีแล้ว ${num(n)} คน` : "ยังไม่มีรายชื่อ";
+}
+
+/* ═══════════ รายชื่อนักเรียน ═══════════ */
+function loadRosterBox(){
+  const R = readLS("nk_roster_v1");
+  $("#rosterTxt").value = Array.isArray(R) ? R.map(x => x.name + (x.cls ? "|" + x.cls : "")).join("\n") : "";
+}
+$("#rosterSave").onclick = () => {
+  const list = $("#rosterTxt").value.split("\n").map(l => l.trim()).filter(Boolean).map(l => {
+    const [name, cls] = l.split("|").map(x => (x || "").trim());
+    return { name, cls };
+  }).filter(x => x.name);
+  try { localStorage.setItem("nk_roster_v1", JSON.stringify(list)); } catch (e) { return alert("บันทึกไม่สำเร็จ: พื้นที่เก็บข้อมูลเต็ม"); }
+  $("#rosterMsg").textContent = `บันทึกแล้ว ${num(list.length)} คน`;
+  renderStatus();
+};
+$("#rosterClear").onclick = () => {
+  if (!confirm("ล้างรายชื่อที่วางไว้ในหน้านี้?\n(รายชื่อในหน้าสมรรถภาพไม่ถูกลบ)")) return;
+  localStorage.removeItem("nk_roster_v1"); $("#rosterTxt").value = ""; $("#rosterMsg").textContent = "ล้างแล้ว"; renderStatus();
+};
+
+/* ═══════════ รายการและการเลือก ═══════════ */
+const SEL_KEY = "nk_kit_sel";
+let sel = new Set(readLS(SEL_KEY) || ALL.filter(d => GROUPS[0][1].some(x => x[1] === d.id)).map(d => d.key));
+function renderDocs(){
+  $("#groups").innerHTML = GROUPS.map(([title, docs]) => `<div class="card grp"><h3>${title}</h3>
+    ${docs.map(([kind, id, name, note]) => {
+      const d = ALL.find(x => x.key === kind + ":" + id);
+      return `<div class="doc" data-key="${d.key}">
+        <input type="checkbox" data-key="${d.key}" ${sel.has(d.key) ? "checked" : ""} aria-label="เลือก ${esc(name)}">
+        <div><b>${esc(name)}</b><small>${esc(note)}</small></div>
+        <div class="go"><a class="btn" href="${urlOf(d)}" target="_blank" rel="noopener">เปิดดู</a>
+          <button class="btn" data-one="print" data-key="${d.key}" type="button">พิมพ์</button>
+          <button class="btn" data-one="word" data-key="${d.key}" type="button">Word</button></div></div>`;
+    }).join("")}</div>`).join("");
+  $("#groups").querySelectorAll("input[data-key]").forEach(cb => cb.onchange = () => {
+    cb.checked ? sel.add(cb.dataset.key) : sel.delete(cb.dataset.key); saveSel();
+  });
+  $("#groups").querySelectorAll("[data-one]").forEach(b => b.onclick = () => run([ALL.find(d => d.key === b.dataset.key)], b.dataset.one));
+  saveSel();
+}
+function saveSel(){
+  try { localStorage.setItem(SEL_KEY, JSON.stringify([...sel])); } catch (e) {}
+  if (!running) $("#msg").textContent = `เลือกแล้ว ${num(sel.size)} ฉบับ`;
+}
+$("#selAll").onclick = () => { sel = new Set(ALL.map(d => d.key)); renderDocs(); };
+$("#selNone").onclick = () => { sel = new Set(); renderDocs(); };
+
+/* ═══════════ ตัวสั่งพิมพ์ต่อเนื่อง ═══════════
+   เปิดแต่ละเอกสารในกรอบซ่อนของหน้าเดียวกัน ให้หน้านั้นสั่งพิมพ์/บันทึก Word เอง
+   แล้วรอสัญญาณว่าเสร็จ (ปิดหน้าต่างพิมพ์) จึงไปฉบับถัดไป */
+let running = false, queue = [], qi = 0, qmode = "print", timer = null;
+const runner = $("#runner");
+function setRun(on){
+  running = on;
+  ["runPrint", "runWord", "selAll", "selNone"].forEach(id => $("#" + id).disabled = on);
+  $("#stopRun").hidden = !on;
+  document.querySelectorAll("[data-one]").forEach(b => b.disabled = on);
+}
+function run(list, mode){
+  if (running) return;
+  if (!list.length) return alert("ยังไม่ได้เลือกเอกสาร");
+  if (mode === "print" && !roster().length && list.some(d => ["signparent", "prStuSign", "prStuCheck", "thankparent"].includes(d.id)) &&
+      !confirm("ยังไม่มีรายชื่อนักเรียน เอกสารที่ต้องใช้ชื่อจะพิมพ์เป็นตารางเปล่า\nพิมพ์ต่อหรือไม่?")) return;
+  queue = list; qi = 0; qmode = mode; setRun(true); next();
+}
+function next(){
+  document.querySelectorAll(".doc.run").forEach(e => e.classList.remove("run"));
+  if (qi >= queue.length){ finish(); return; }
+  const d = queue[qi];
+  const row = document.querySelector(`.doc[data-key="${d.key}"]`);
+  if (row){ row.classList.add("run"); row.scrollIntoView({ block: "center", behavior: "smooth" }); }
+  $("#msg").textContent = `${qmode === "word" ? "กำลังดาวน์โหลด" : "กำลังพิมพ์"} ${num(qi + 1)} / ${num(queue.length)} · ${d.name}`;
+  clearTimeout(timer);
+  timer = setTimeout(() => advance(d, true), 90000);      /* กันค้าง ถ้าไม่มีสัญญาณกลับมาใน ๙๐ วินาที */
+  runner.src = "about:blank";
+  setTimeout(() => { runner.src = urlOf(d, qmode); }, 80);
+}
+function advance(d, timeout){
+  clearTimeout(timer);
+  const row = document.querySelector(`.doc[data-key="${d.key}"]`);
+  if (row && !timeout) row.classList.add("done");
+  qi++; setTimeout(next, qmode === "word" ? 900 : 500);
+}
+addEventListener("message", e => {
+  if (!running || !e.data || !e.data.nkKitDone) return;
+  advance(queue[qi]);
+});
+function finish(){
+  setRun(false); runner.src = "about:blank";
+  $("#msg").textContent = `เสร็จแล้ว ${num(queue.length)} ฉบับ`;
+}
+$("#stopRun").onclick = () => { clearTimeout(timer); queue = []; finish(); $("#msg").textContent = "หยุดแล้ว"; };
+const pick = () => ALL.filter(d => sel.has(d.key));
+$("#runPrint").onclick = () => run(pick(), "print");
+$("#runWord").onclick = () => run(pick(), "word");
+
+loadRosterBox(); renderStatus(); renderDocs();
+</script>
+</body>
+</html>

@@ -408,6 +408,11 @@ function studentRows(v){
     return { name: (n || "").trim(), cls: (c || "").trim() };
   }).filter(x => x.name);
   const src = typed.length ? typed : (() => {
+    /* รายชื่อกลางที่วางไว้ในหน้าชุดพิมพ์ (nk_roster_v1) ใช้ก่อนรายชื่อในหน้าสมรรถภาพ */
+    try {
+      const R = JSON.parse(localStorage.getItem("nk_roster_v1") || "null");
+      if (Array.isArray(R) && R.length) return R.map(x => ({ name: String(x.name || "").trim(), cls: String(x.cls || "").trim() })).filter(x => x.name);
+    } catch (e) {}
     let F = null;
     try { F = JSON.parse(localStorage.getItem("nk_fit_v1") || "null"); } catch (e) { return []; }
     if (!F || !Array.isArray(F.students)) return [];
@@ -1789,6 +1794,17 @@ $("#btnToggle").onclick = () => $("#app").classList.toggle("showprev");
 
 if (!DOCS[cur]) cur = "memo";
 renderAll();
+
+/* โหมดอัตโนมัติ : หน้าชุดพิมพ์เปิดหน้านี้ในกรอบซ่อน แล้วสั่งพิมพ์หรือบันทึก Word ให้ */
+(function(){
+  const a = new URLSearchParams(location.search).get("auto");
+  if (!a) return;
+  const done = () => { try { parent.postMessage({ nkKitDone: true, doc: cur }, "*"); } catch (e) {} };
+  window.addEventListener("afterprint", done);
+  (document.fonts ? document.fonts.ready : Promise.resolve()).then(() => setTimeout(() => {
+    if (a === "word"){ saveWord(); setTimeout(done, 600); } else doPrint();
+  }, 400));
+})();
 </script>
 <script src="nav.js"></script>
 </body>
