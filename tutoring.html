@@ -225,6 +225,9 @@ footer b{color:#fff}
 
 /* กระดาษแนวนอน */
 .sheet.land{width:297mm}
+.sheet .ckblock{break-inside:avoid;page-break-inside:avoid;margin-top:4mm}
+.sheet .ckname{font-weight:700;font-size:12pt;margin:0 0 1.5mm}
+.sheet .cksum{font-weight:700;font-size:10.5pt;margin:1mm 0 0;overflow:hidden}
 .sheet .page{break-after:page;page-break-after:always}
 .sheet .page:last-child{break-after:auto;page-break-after:auto}
 
@@ -394,6 +397,19 @@ footer b{color:#fff}
   </div>
   <p class="mini">ตารางเรียนแจกนักเรียนพิมพ์เป็นแนวนอน แยกหน้าตามสัปดาห์ ใช้สีประจำวันแบบไทย มีช่องชื่อและชั้นให้เขียน — พิมพ์แล้วถ่ายสำเนาแจกได้เลย</p>
   <p class="mini">ใบสรุปค่าตอบแทนจะระบุขั้นการอนุมัติตามวงเงินให้อัตโนมัติ ตามข้อ ๑๘ ของข้อบังคับกองทุน — คณะกรรมการกองทุนให้ความเห็นชอบ แล้วผู้อำนวยการเป็นผู้อนุมัติ</p>
+</div></section>
+
+<!-- ═══ ๖ ใบตรวจสอบรายคน ═══ -->
+<section><div class="wrap">
+  <div class="hd">
+    <p class="eb">ขั้นที่ ๖</p>
+    <h2>ใบตรวจสอบวัน–เวลาสอนรายคน</h2>
+    <p>รวมทุกคนไว้ในเอกสารเดียว คนละ ๑ บล็อก มีวัน เวลา รายการ จำนวนคาบ และช่องให้ครูกาว่าถูกต้องหรือขอแก้ไข — ส่งให้ครูตรวจก่อนเริ่มโครงการ</p>
+  </div>
+  <div class="acts" style="margin-top:0">
+    <button class="btn gold" id="prCheck" type="button">ใบตรวจสอบวัน–เวลาสอนรายคน</button>
+  </div>
+  <p class="mini">ต่างจาก “กำหนดการรายคน” ตรงที่ฉบับนี้ย่อให้สั้น ไม่มีบล็อกลายมือชื่อและค่าตอบแทน เหมาะกับการส่งให้ครูตรวจความถูกต้องของวันและเวลา</p>
 </div></section>
 
 </main>
@@ -1257,6 +1273,36 @@ function printAllTeachers(){
 }
 $("#prTea").onclick = () => { const n = $("#selTea").value; if (!n) return alert("เลือกผู้ปฏิบัติงานจากรายการก่อน"); printTeacher(n); };
 $("#prTeaAll").onclick = printAllTeachers;
+
+/** ใบตรวจสอบวัน–เวลาสอนรายคน — ทุกคนในเอกสารเดียว ให้ครูกาตรวจแล้วส่งคืน */
+$("#prCheck").onclick = () => {
+  const map = stats(), names = Object.keys(map).sort((a, b) => a.localeCompare(b, "th"));
+  if (!names.length) return alert("ยังไม่มีชื่อผู้ปฏิบัติงานในตาราง");
+  const blocks = names.map((nm, i) => {
+    const o = map[nm];
+    const rows = o.rows.slice().sort((a, b) => a.di - b.di || (tmin(a.t1) - tmin(b.t1)))
+      .map((r, j) => `<tr><td class="c">${num(j + 1)}</td>
+        <td>วัน${THDAY[r.date.getDay()]}ที่ ${num(thDate(r.date))}</td>
+        <td class="c">${num(esc(r.t1))} – ${num(esc(r.t2))} น.</td><td>${esc(r.what)}</td></tr>`).join("");
+    const bits = [];
+    if (o.periods) bits.push(`สอน ${num(o.periods)} คาบ`);
+    if (o.fitDays) bits.push(`ฝึกสมรรถภาพ ${num(o.fitDays)} วัน`);
+    if (o.events)  bits.push(`กิจกรรม ${num(o.events)} ครั้ง`);
+    bits.push(`รวมเวลาปฏิบัติงาน ${num(hFmt(o.hours))} ชั่วโมง`);
+    return `<div class="ckblock">
+      <p class="ckname">${num(i + 1)}.  ${esc(nm)}</p>
+      <table><thead><tr><th style="width:12mm">ที่</th><th>วัน</th><th style="width:32mm">เวลา</th><th>รายการ</th></tr></thead>
+        <tbody>${rows}</tbody></table>
+      <p class="cksum">รวม  ${bits.join("  ·  ")}
+        <span style="float:right">ตรวจสอบแล้ว ถูกต้อง (&nbsp;&nbsp;&nbsp;&nbsp;)&nbsp;&nbsp;&nbsp; ขอแก้ไข (&nbsp;&nbsp;&nbsp;&nbsp;)</span></p>
+    </div>`;
+  }).join("");
+  sheetEl.innerHTML = orgHead() + `<h1>ใบตรวจสอบวัน–เวลาปฏิบัติงานรายคน</h1>` + projInfo() + `
+    <p style="margin-top:2mm">ขอความกรุณาตรวจสอบวันและเวลาของท่าน หากไม่ถูกต้องหรือไม่สะดวก โปรดแจ้งหัวหน้าแผนการเรียนก่อนวันเริ่มโครงการ</p>
+    ${blocks}
+    <p class="foot">คาบละ ๑ ชั่วโมง ๓๐ นาที · วันจันทร์เลิก ๑๒.๐๐ น. เนื่องจากนักเรียนมีเรียนวิชาทหาร (รด.) ช่วงบ่าย · หากติดราชการ โปรดแจ้งล่วงหน้าเพื่อสลับคาบ</p>`;
+  doPrint();
+};
 
 /* ใบสรุปค่าตอบแทน */
 $("#prPay").onclick = () => {
