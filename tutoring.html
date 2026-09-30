@@ -382,20 +382,24 @@ footer b{color:#fff}
 </div></section>
 
 <!-- ═══ ๕ พิมพ์ ═══ -->
-<section><div class="wrap">
+<section id="step5"><div class="wrap">
   <div class="hd">
     <p class="eb">ขั้นที่ ๕</p>
     <h2>พิมพ์เอกสาร</h2>
     <p>หัวเอกสารดึงชื่อโรงเรียน ผู้อำนวยการ หัวหน้าแผน และชื่อกองทุนจากหน้าตั้งค่าโรงเรียนในศูนย์เอกสาร · ตั้งกระดาษ A4 และปิดหัวกระดาษ–ท้ายกระดาษก่อนพิมพ์</p>
   </div>
   <div class="acts" style="margin-top:0">
+    <select id="outMode" aria-label="รูปแบบผลลัพธ์" style="background:var(--ground);border:1px solid var(--rule);border-radius:5px;padding:.38rem .5rem;font-size:.85rem;font-family:var(--ui)">
+      <option value="print">ผลลัพธ์ : พิมพ์ / บันทึก PDF</option>
+      <option value="word">ผลลัพธ์ : บันทึกเป็น Word (.doc)</option>
+    </select>
     <button class="btn gold" id="prGrid" type="button">ตารางติวรวมทุกวัน</button>
     <button class="btn" id="prOpen" type="button">กำหนดการวันพิธีเปิด</button>
     <select id="selTea" style="background:var(--ground);border:1px solid var(--rule);border-radius:5px;padding:.38rem .5rem;font-size:.85rem;font-family:var(--ui)"></select>
     <button class="btn" id="prTea" type="button">กำหนดการรายคน</button>
     <button class="btn" id="prTeaAll" type="button">กำหนดการรายคน (ทุกคน)</button>
     <button class="btn" id="prPay" type="button">ใบสรุปค่าตอบแทน</button>
-    <button class="btn" id="prSign" type="button">ใบลงเวลาปฏิบัติงาน</button>
+    <button class="btn" id="prSign" type="button">ใบลงเวลาปฏิบัติงานสอน (รายวัน)</button>
     <button class="btn gold" id="prPretty" type="button">ตารางเรียนแจกนักเรียน (สีสัน)</button>
   </div>
   <p class="mini">ตารางเรียนแจกนักเรียนพิมพ์เป็นแนวนอน แยกหน้าตามสัปดาห์ ใช้สีประจำวันแบบไทย มีช่องชื่อและชั้นให้เขียน — พิมพ์แล้วถ่ายสำเนาแจกได้เลย</p>
@@ -403,7 +407,7 @@ footer b{color:#fff}
 </div></section>
 
 <!-- ═══ ๖ ใบตรวจสอบรายคน ═══ -->
-<section><div class="wrap">
+<section id="step6"><div class="wrap">
   <div class="hd">
     <p class="eb">ขั้นที่ ๖</p>
     <h2>ใบตรวจสอบวัน–เวลาสอนรายคน</h2>
@@ -1220,7 +1224,39 @@ function doPrint(orient){
   if (!st){ st = document.createElement("style"); st.id = "pagerule"; document.head.appendChild(st); }
   st.textContent = `@media print{@page{size:A4 ${orient};margin:0}}`;
   sheetEl.classList.toggle("land", orient === "landscape");
+  if (($("#outMode") || {}).value === "word") return exportWord(orient);
   window.print();
+}
+/** บันทึกเอกสารที่เพิ่งสร้างเป็นไฟล์ Word (.doc) — ใช้สไตล์เดียวกับแผ่นพิมพ์ */
+function exportWord(orient){
+  const css = [...document.styleSheets].flatMap(ss => { try { return [...ss.cssRules]; } catch (e) { return []; } })
+    .map(r => r.cssText).filter(t => t.startsWith(".sheet")).join(" ");
+  const title = (sheetEl.querySelector("h1") || {}).textContent || "เอกสาร";
+  /* Word ไม่รู้จัก flex และ display:block บน span — แปลงโครงให้เป็นย่อหน้าและตาราง */
+  const root = sheetEl.cloneNode(true);
+  root.querySelectorAll(".org b").forEach(b => b.insertAdjacentHTML("afterend", "<br>"));
+  root.querySelectorAll(".sig").forEach(sg => {
+    const cells = [...sg.children].map(d => `<td style="border:none;text-align:center;vertical-align:top;padding:0 6pt">`
+      + [...d.querySelectorAll("span")].map(sp => `<p style="margin:0;text-align:center">${sp.innerHTML}</p>`).join("") + `</td>`).join("");
+    sg.outerHTML = `<table style="width:100%;border:none;margin-top:14pt"><tr>${cells}</tr></table>`;
+  });
+  root.querySelectorAll(".page").forEach((pg, i) => {
+    if (i) pg.insertAdjacentHTML("beforebegin", `<br clear="all" style="page-break-before:always">`);
+  });
+  const html = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
+<head><meta charset="utf-8"><title>${esc(title)}</title><style>
+@page WordSection1{size:${orient === "landscape" ? "29.7cm 21cm;mso-page-orientation:landscape" : "21cm 29.7cm"};margin:1.5cm 1.5cm 1.5cm 2cm}
+div.WordSection1{page:WordSection1}
+body{font-family:"TH Sarabun New",sans-serif;font-size:15pt}
+table{border-collapse:collapse;width:100%}th,td{border:.5pt solid #444;padding:2pt 4pt;vertical-align:middle}
+${css}
+.WordSection1.sheet{width:auto;min-height:0;padding:0;margin:0}
+.sheet .page{page-break-after:auto}</style></head><body><div class="WordSection1 sheet">${root.innerHTML}</div></body></html>`;
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob(["﻿", html], { type: "application/msword" }));
+  a.download = title.trim().replace(/\s+/g, "_") + ".doc";
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 4000);
 }
 
 /* ตารางรวม */
@@ -1460,22 +1496,33 @@ $("#prPretty").onclick = () => {
 
 /* ใบลงเวลา */
 $("#prSign").onclick = () => {
-  const rows = [];
-  activeKeys().forEach((dk, di) => {
+  const pages = activeKeys().map((dk, di) => {
     const D = T.days[dk], dt = dObj(dk);
-    D.rows.forEach(r => {
-      if (r.k === "br") return;
-      if (r.k === "sub" && !r.s) return;
-      rows.push(`<tr><td>วันที่ ${num(di + 1)} · ${num(thDateA(dt))}</td><td class="c">${num(esc(r.t1))}–${num(esc(r.t2))}</td>
-        <td>${rowWhat(r)}</td><td>${esc(r.w || "")}</td><td></td><td></td></tr>`);
-    });
-  });
-  sheetEl.innerHTML = orgHead() + `<h1>ใบลงเวลาปฏิบัติงาน</h1>` + projInfo() + `
-    <table><thead><tr><th style="width:32mm">วัน</th><th style="width:26mm">เวลา</th><th>รายการ</th><th style="width:34mm">ผู้ปฏิบัติงาน</th><th style="width:26mm">ลายมือชื่อ</th><th style="width:18mm">หมายเหตุ</th></tr></thead>
-    <tbody>${rows.join("") || `<tr><td colspan="6" class="c">ยังไม่ได้จัดตาราง</td></tr>`}</tbody></table>
-    ${sig([{ role:"หัวหน้าแผนการเรียนเตรียมทหาร–ตำรวจ", sub:"ผู้ควบคุมการปฏิบัติงาน", name:S.head },
-           { role:"ผู้อำนวยการ" + S.school, sub:"รับทราบ", name:S.director }])}
-    <p class="foot">ให้ผู้ปฏิบัติงานลงลายมือชื่อทุกครั้งที่ปฏิบัติงานจริง ใช้เป็นหลักฐานประกอบการเบิกจ่ายค่าตอบแทนจากกองทุน</p>`;
+    let no = 0;
+    const body = D.rows.filter(r => r.k === "sub" ? !!r.s : r.k === "fit" || (r.k === "ev" && String(r.w || "").trim()))
+      .map(r => {
+        /* ช่องที่มีครูหลายคน แยกเป็นคนละบรรทัด ให้ทุกคนลงชื่อของตัวเอง */
+        const people = String(r.w || "").split(/\s*,\s*/).map(x => x.trim()).filter(Boolean);
+        const list = people.length ? people : [""];
+        no++;
+        const st = r.k === "sub" && r.s ? ` style="${toneCss(r.s)}"` : "";
+        return list.map((p, i) => `<tr style="height:10mm">
+          ${i === 0 ? `<td class="c" rowspan="${list.length}">${num(no)}</td>
+            <td class="c" rowspan="${list.length}">${num(esc(r.t1))}–${num(esc(r.t2))}</td>
+            <td rowspan="${list.length}"${st}>${rowWhat(r)}</td>` : ""}
+          <td>${esc(p)}</td><td></td><td></td><td></td><td></td></tr>`).join("");
+      }).join("");
+    return `<div class="page">${orgHead()}<h1>ใบลงเวลาปฏิบัติงานสอน</h1>
+      <p class="sub">${esc(T.title)}</p>
+      <p class="sub"><b>วันที่ ${num(di + 1)} · วัน${THDAY[dt.getDay()]}ที่ ${num(thDate(dt))}</b> · ${esc(T.room)}</p>
+      <table><thead><tr><th style="width:10mm">ที่</th><th style="width:25mm">เวลา</th><th style="width:30mm">รายการ</th>
+        <th>ชื่อ–สกุลผู้ปฏิบัติงาน</th><th style="width:16mm">เวลามา</th><th style="width:26mm">ลายมือชื่อ</th>
+        <th style="width:16mm">เวลากลับ</th><th style="width:26mm">ลายมือชื่อ</th></tr></thead>
+      <tbody>${body || `<tr><td colspan="8" class="c">ไม่มีคาบสอนในวันนี้</td></tr>`}</tbody></table>
+      ${sig([{ role:"หัวหน้าแผนการเรียนเตรียมทหาร–ตำรวจ", sub:"ผู้ควบคุมการปฏิบัติงาน", name:S.head }])}
+      <p class="foot">ให้ผู้ปฏิบัติงานลงเวลาและลายมือชื่อทุกครั้งที่ปฏิบัติงานจริง ใช้เป็นหลักฐานประกอบการเบิกจ่ายค่าตอบแทน</p></div>`;
+  }).join("");
+  sheetEl.innerHTML = pages || `<p>ยังไม่ได้จัดตาราง</p>`;
   doPrint();
 };
 
@@ -1504,5 +1551,6 @@ renderAll();
 applyMini();
 syncTopH();
 </script>
+<script src="nav.js"></script>
 </body>
 </html>

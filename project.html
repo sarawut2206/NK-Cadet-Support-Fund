@@ -637,11 +637,26 @@ function blankProject(){
 }
 
 /* ═══════════ สถานะ ═══════════ */
-const KEY = "nk_proj_v1";
+/* แยกข้อมูลตามโครงการ — โครงการติวเข้มใช้คีย์เดิม โครงการใหม่ใช้คีย์ของตัวเอง */
+const PID = new URLSearchParams(location.search).get("p") || "";
+const KEY = PID && PID !== "tutor2569" ? "nk_proj_v1:" + PID : "nk_proj_v1";
+/** โครงการใหม่ที่ยังไม่เคยบันทึก : ตั้งชื่อ วัน และสถานที่ตามที่กรอกไว้ในหน้าโครงการ */
+function seedFromRegistry(d){
+  if (!PID || PID === "tutor2569") return d;
+  let reg = [];
+  try { reg = JSON.parse(localStorage.getItem("nk_projects_v1") || "[]"); } catch (e) {}
+  const r = (Array.isArray(reg) ? reg : []).find(x => x.id === PID);
+  if (!r) return d;
+  if (r.name) d.title = r.name;
+  if (r.start) d.start = r.start;
+  if (r.end) d.end = r.end;
+  if (r.place) d.place = r.place;
+  return d;
+}
 let P = (() => {
   try {
     const raw = JSON.parse(localStorage.getItem(KEY) || "null");
-    if (!raw) return defProject();
+    if (!raw) return seedFromRegistry(defProject());
     const d = Object.assign(defProject(), raw);
     d.docs = Object.assign(defProject().docs, raw.docs || {});
     d.res = Object.assign(defProject().res, raw.res || {});
@@ -2100,5 +2115,20 @@ window.addEventListener("storage", e => {
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { if (doc().toc) fillToc(); });
 })();
 </script>
+<script>
+/* แถบบอกโครงการที่กำลังแก้ไข — แสดงเฉพาะโครงการที่เพิ่มเอง */
+(function(){
+  if (!PID || PID === "tutor2569") return;
+  const bar = document.createElement("div");
+  bar.style.cssText = "background:#FFF3CE;color:#5A4300;border-bottom:1px solid #E8C65A;padding:.45rem 1rem;font-size:.9rem;text-align:center";
+  const b = document.createElement("b"); b.textContent = P.title || "โครงการใหม่";
+  const a = document.createElement("a"); a.href = "projects.html?p=" + encodeURIComponent(PID); a.textContent = "กลับหน้าเอกสารของโครงการ";
+  a.style.cssText = "margin-left:.8rem;color:#10305F;font-weight:600";
+  bar.append("กำลังทำเอกสารของ ", b, a);
+  const top = document.querySelector("header");
+  if (top && top.parentNode) top.parentNode.insertBefore(bar, top.nextSibling);
+})();
+</script>
+<script src="nav.js"></script>
 </body>
 </html>

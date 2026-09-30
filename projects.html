@@ -1,0 +1,336 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>โครงการ | แผนเตรียมทหาร มัธยมวัดหนองแขม</title>
+<meta name="description" content="รวมเอกสารทุกฉบับของแต่ละโครงการไว้ในที่เดียว เรียงตามลำดับการทำงาน ตั้งแต่ขออนุมัติจนถึงรายงานผล">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%230E2A56'/><text y='72' x='50' text-anchor='middle' font-size='62' fill='%23FFC72C' font-family='sans-serif' font-weight='bold'>นข</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&family=Bai+Jamjuree:wght@500;600;700&display=swap">
+<style>
+:root{
+  --navy:#10305F; --navy-2:#1B4A8F; --navy-3:#2C63B0;
+  --gold:#F5B722; --gold-2:#FFD152; --gold-ink:#8A6410; --gold-ghost:rgba(245,183,34,.15);
+  --ground:#EDF4FD; --surface:#FFFFFF; --surface-2:#DCE9F9;
+  --ink:#0F2140; --ink-2:#3D5375; --ink-3:#5F7492;
+  --rule:#C7DCF3; --rule-2:#9CBADF;
+  --ok:#1F7A5A; --ok-bg:rgba(31,122,90,.11);
+  --crit:#A32B2B;
+  --ui:'Bai Jamjuree','Sarabun',system-ui,sans-serif;
+  --body:'Sarabun',system-ui,sans-serif;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --ground:#0A1526; --surface:#132034; --surface-2:#1C2B42;
+    --ink:#E6EBF3; --ink-2:#AFBACC; --ink-3:#8391A6;
+    --rule:#26344E; --rule-2:#3E506F;
+    --navy:#0A1830; --navy-2:#22508F; --navy-3:#6EA1E8;
+    --gold:#FFC72C; --gold-2:#FFD766; --gold-ink:#FFC72C; --gold-ghost:rgba(255,199,44,.14);
+    --ok:#5FBF97; --ok-bg:rgba(95,191,151,.14); --crit:#E38A8A;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#0A1526; --surface:#132034; --surface-2:#1C2B42;
+  --ink:#E6EBF3; --ink-2:#AFBACC; --ink-3:#8391A6;
+  --rule:#26344E; --rule-2:#3E506F;
+  --navy:#0A1830; --navy-2:#22508F; --navy-3:#6EA1E8;
+  --gold:#FFC72C; --gold-2:#FFD766; --gold-ink:#FFC72C; --gold-ghost:rgba(255,199,44,.14);
+  --ok:#5FBF97; --ok-bg:rgba(95,191,151,.14); --crit:#E38A8A;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--body);font-size:15.5px;line-height:1.7;-webkit-font-smoothing:antialiased}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--navy-3);outline-offset:2px;border-radius:5px}
+.wrap{max-width:74rem;margin-inline:auto;padding-inline:clamp(.9rem,3vw,2rem)}
+p{margin:0}
+a{color:var(--navy-3)}
+.top{background:var(--navy);color:#fff;border-bottom:3px solid var(--gold);position:sticky;top:0;z-index:40}
+.top-in{display:flex;align-items:center;gap:.9rem;padding:.6rem clamp(.8rem,2vw,1.4rem);flex-wrap:wrap}
+.mark{width:2.35rem;height:2.35rem;flex:none;background:var(--gold);color:var(--navy);display:grid;place-items:center;font-family:var(--ui);font-weight:700;font-size:.8rem;clip-path:polygon(50% 0,100% 24%,100% 76%,50% 100%,0 76%,0 24%)}
+.title{line-height:1.25;min-width:0}
+.title b{display:block;font-family:var(--ui);font-weight:600;font-size:.98rem;color:#fff}
+.title span{font-size:.76rem;color:#B6C6E0}
+.top .spacer{margin-inline-start:auto}
+.tabs{display:flex;gap:.25rem;flex-wrap:wrap}
+.tabs a{font-family:var(--ui);font-weight:600;font-size:.83rem;text-decoration:none;color:#C6D4EA;padding:.4rem .85rem;border-radius:5px;border:1px solid transparent}
+.tabs a:hover{background:rgba(255,255,255,.1);color:#fff}
+.tabs a[aria-current]{background:var(--gold);color:var(--navy)}
+
+.hero{padding:1.8rem 0 1.1rem}
+.eb{font-family:var(--ui);font-weight:600;font-size:.76rem;color:var(--gold-ink);letter-spacing:.02em}
+h1{font-family:var(--ui);font-size:clamp(1.5rem,3vw,2rem);margin:.15rem 0 .3rem;line-height:1.3}
+.lede{color:var(--ink-2);max-width:48rem}
+
+.grid{display:grid;grid-template-columns:18rem 1fr;gap:1.2rem;align-items:start;padding-bottom:3rem}
+@media (max-width:52rem){.grid{grid-template-columns:1fr}}
+.card{background:var(--surface);border:1px solid var(--rule);border-radius:10px}
+.plist{padding:.5rem;position:sticky;top:5.2rem}
+.plist h2{font-family:var(--ui);font-size:.82rem;color:var(--ink-3);margin:.3rem .5rem .4rem;font-weight:600}
+.pitem{display:block;width:100%;text-align:left;background:none;border:1px solid transparent;border-radius:8px;padding:.6rem .7rem;cursor:pointer;margin-bottom:.2rem}
+.pitem:hover{background:var(--surface-2)}
+.pitem[aria-current="true"]{background:var(--gold-ghost);border-color:var(--gold)}
+.pitem b{display:block;font-family:var(--ui);font-weight:600;font-size:.92rem;line-height:1.35}
+.pitem small{color:var(--ink-3);font-size:.76rem}
+.pbar{height:5px;background:var(--surface-2);border-radius:3px;margin-top:.35rem;overflow:hidden}
+.pbar i{display:block;height:100%;background:var(--ok);border-radius:3px}
+.btn{font-family:var(--ui);font-weight:600;font-size:.84rem;background:var(--surface);color:var(--ink);border:1px solid var(--rule-2);padding:.45rem .9rem;border-radius:6px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:.3rem}
+.btn:hover{border-color:var(--navy-3)}
+.btn.gold{background:var(--gold);border-color:var(--gold);color:#10305F}
+.btn.ghost{border-style:dashed;width:100%;justify-content:center;margin-top:.3rem}
+.btn.danger{color:var(--crit);border-color:transparent;background:none}
+
+.detail{padding:1.2rem 1.3rem}
+.dhead{display:flex;gap:1rem;align-items:flex-start;flex-wrap:wrap;border-bottom:1px solid var(--rule);padding-bottom:.9rem;margin-bottom:.4rem}
+.dhead h2{font-family:var(--ui);font-size:1.3rem;margin:0;line-height:1.35}
+.dhead .meta{color:var(--ink-2);font-size:.9rem;margin-top:.15rem}
+.dhead .acts{margin-inline-start:auto;display:flex;gap:.4rem;flex-wrap:wrap}
+.prog{font-family:var(--ui);font-weight:600;font-size:.85rem;color:var(--ink-2);margin:.7rem 0 .2rem}
+.phase{margin-top:1.2rem}
+.phase h3{font-family:var(--ui);font-size:.98rem;margin:0 0 .45rem;display:flex;align-items:center;gap:.5rem}
+.phase h3 .n{display:inline-grid;place-items:center;width:1.6rem;height:1.6rem;border-radius:50%;background:var(--gold);color:#10305F;font-size:.8rem}
+.doc{display:grid;grid-template-columns:auto 1fr auto;gap:.7rem;align-items:center;padding:.55rem .6rem;border-radius:8px;border:1px solid transparent}
+.doc:hover{background:var(--ground);border-color:var(--rule)}
+.doc input{width:1.15rem;height:1.15rem;accent-color:var(--ok);cursor:pointer}
+.doc b{font-weight:600}
+.doc small{display:block;color:var(--ink-3);font-size:.8rem;line-height:1.4}
+.doc.done b{color:var(--ink-3);text-decoration:line-through}
+.doc .where{font-family:var(--ui);font-size:.72rem;color:var(--ink-3);border:1px solid var(--rule);border-radius:4px;padding:.05rem .35rem;margin-inline-start:.4rem;white-space:nowrap}
+
+.form{display:grid;grid-template-columns:1fr 1fr;gap:.6rem .8rem;margin-top:.8rem}
+.form label{display:block;font-family:var(--ui);font-weight:600;font-size:.78rem;color:var(--ink-2);margin-bottom:.15rem}
+.form input{width:100%;background:var(--ground);border:1px solid var(--rule);border-radius:6px;padding:.45rem .6rem}
+.form .full{grid-column:1/-1}
+.form .row{grid-column:1/-1;display:flex;gap:.5rem;justify-content:flex-end}
+.hint{color:var(--ink-3);font-size:.82rem;margin-top:.6rem}
+footer{border-top:1px solid var(--rule);padding:1.2rem 0 2rem;color:var(--ink-3);font-size:.82rem}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<header class="top"><div class="top-in">
+  <span class="mark">นข</span>
+  <span class="title"><b>โครงการของแผนการเรียน</b><span>โรงเรียนมัธยมวัดหนองแขม · แผนการเรียนเตรียมทหาร–ตำรวจ</span></span>
+  <span class="spacer"></span>
+  <nav class="tabs">
+    <a href="index.html">ศูนย์เอกสาร</a>
+    <a href="project.html">ระบบโครงการ</a>
+    <a href="dashboard.html">แดชบอร์ด</a>
+    <a href="ledger.html">ทะเบียนกลาง</a>
+    <a href="tutoring.html">ตารางติว</a>
+    <a href="fitness.html">สมรรถภาพ</a>
+  </nav>
+</div></header>
+
+<main class="wrap">
+  <div class="hero">
+    <p class="eb">โครงการ</p>
+    <h1>เอกสารทั้งโครงการ ในที่เดียว</h1>
+    <p class="lede">เลือกโครงการทางซ้าย แล้วทำเอกสารตามลำดับจากบนลงล่าง กดชื่อเอกสารเพื่อเปิดหน้าที่ใช้ทำ ติ๊กช่องหน้ารายการเมื่อทำเสร็จ ระบบจะนับความคืบหน้าให้</p>
+  </div>
+  <div class="grid">
+    <aside class="card plist" id="plist" aria-label="รายการโครงการ"></aside>
+    <section class="card detail" id="detail" aria-live="polite"></section>
+  </div>
+</main>
+
+<footer><div class="wrap">
+  รายชื่อโครงการและสถานะเอกสารเก็บไว้ในเบราว์เซอร์เครื่องนี้เท่านั้น ไม่มีการส่งข้อมูลออกไปยังเซิร์ฟเวอร์ใด ๆ
+</div></footer>
+
+<script src="nav.js"></script>
+<script>
+"use strict";
+const $ = s => document.querySelector(s);
+const TH = "๐๑๒๓๔๕๖๗๘๙";
+const num = s => String(s == null ? "" : s).replace(/[0-9]/g, d => TH[d]);
+const esc = s => String(s == null ? "" : s).replace(/[&<>"]/g, c => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;" }[c]));
+const THM = ["มกราคม","กุมภาพันธ์","มีนาคม","เมษายน","พฤษภาคม","มิถุนายน","กรกฎาคม","สิงหาคม","กันยายน","ตุลาคม","พฤศจิกายน","ธันวาคม"];
+const thDate = iso => { const d = new Date(iso + "T00:00:00"); return isNaN(d) ? "" : `${d.getDate()} ${THM[d.getMonth()]} ${d.getFullYear() + 543}`; };
+const { REG_KEY, BUILTIN } = window.NK_PROJECTS;
+
+/* ═══════════ เอกสารของโครงการติวเข้ม (โครงการตั้งต้น) ═══════════ */
+const TUTOR_PHASES = [
+  ["ขออนุมัติและเตรียมการ", [
+    ["memo", "บันทึกข้อความขออนุมัติโครงการ", "เสนอผู้อำนวยการ พร้อมแนบโครงการ ค่าใช้จ่าย และคำสั่ง", "project.html?doc=memo"],
+    ["project", "โครงการฉบับสมบูรณ์", "หลักการ วัตถุประสงค์ เป้าหมาย งบประมาณ การประเมินผล", "project.html?doc=project"],
+    ["budget", "รายละเอียดประมาณการค่าใช้จ่าย", "ค่าตอบแทน ค่าใช้สอย ค่าวัสดุ", "project.html?doc=budget"],
+    ["order", "คำสั่งแต่งตั้งคณะกรรมการ", "อำนวยการ ดำเนินงาน การเรียนการสอน ฝ่ายต่าง ๆ", "project.html?doc=order"],
+    ["room", "บันทึกขออนุญาตใช้ห้องและสถานที่", "ห้องดอกแขม และสนามกีฬา", "project.html?doc=room"],
+    ["timetable", "ตารางติวและกำหนดการ", "จัดคาบ ลงครู ตรวจเวลาชนกัน", "tutoring.html"]
+  ]],
+  ["ประสานงานก่อนวันงาน", [
+    ["inviteparent", "หนังสือเชิญผู้ปกครอง", "ออกในนามแผนการเรียน พิมพ์รายคนได้", "index.html?doc=inviteparent"],
+    ["invitelec", "หนังสือเชิญวิทยากร", "ผู้อำนวยการลงนาม ส่งล่วงหน้า", "index.html?doc=invitelec"],
+    ["checkteach", "ใบตรวจสอบวัน–เวลาสอนรายคน", "ส่งให้ครูแต่ละคนตรวจก่อนเริ่มโครงการ", "tutoring.html#step6"]
+  ]],
+  ["วันพิธีเปิดโครงการ", [
+    ["signparent", "ใบลงชื่อผู้ปกครองเข้าร่วมพิธีเปิด", "มีชื่อนักเรียนครบ เว้นช่องให้ผู้ปกครองลงชื่อ", "index.html?doc=signparent"],
+    ["openplan", "กำหนดการวันพิธีเปิด", "พิมพ์จากตารางติว ขั้นที่ ๕", "tutoring.html#step5"],
+    ["speechboard", "คำกล่าวประธานคณะกรรมการสถานศึกษา", "กล่าวพบผู้ปกครอง ประมาณ ๓ นาที", "index.html?doc=speechboard"],
+    ["speechpta", "คำกล่าวนายกสมาคมผู้ปกครองและครู", "สั้น ประมาณ ๒ นาที", "index.html?doc=speechpta"],
+    ["signin", "ใบลงชื่อนักเรียนเข้าร่วมโครงการ", "ใช้ประกอบรายงานผล", "project.html?doc=signin"]
+  ]],
+  ["ระหว่างจัดโครงการ", [
+    ["signteach", "ใบลงเวลาปฏิบัติงานสอน (รายวัน)", "คนละบรรทัด ลงเวลามา–กลับทุกวัน", "tutoring.html#step5"],
+    ["fitness", "บันทึกผลทดสอบสมรรถภาพ", "ก่อนและหลังโครงการ รายบุคคล", "fitness.html"]
+  ]],
+  ["หลังจบโครงการ", [
+    ["thankparent", "หนังสือขอบคุณผู้ปกครอง", "หัวหน้าแผนการเรียนลงนาม", "index.html?doc=thankparent"],
+    ["thankslec", "หนังสือขอบคุณวิทยากร", "ผู้อำนวยการลงนาม ส่งภายใน ๗ วัน", "index.html?doc=thankslec"],
+    ["thanksguest", "หนังสือขอบคุณผู้มาร่วมงาน", "แขกผู้มีเกียรติ ผู้อำนวยการลงนาม", "index.html?doc=thanksguest"],
+    ["surveyform", "แบบประเมินความพึงพอใจ", "ให้นักเรียนและผู้ปกครองตอบ", "project.html?doc=surveyform"],
+    ["pay", "ใบสรุปค่าตอบแทน", "พิมพ์จากตารางติว ขั้นที่ ๕", "tutoring.html#step5"],
+    ["report", "รายงานผลการดำเนินโครงการ", "เสนอผู้อำนวยการ", "project.html?doc=report"],
+    ["book", "เล่มสรุปโครงการ", "รวมเอกสาร ภาพกิจกรรม และผลการประเมิน", "project.html?doc=book"]
+  ]]
+];
+
+/** เอกสารของโครงการใหม่ — ใช้ระบบโครงการแยกข้อมูลตามรหัสโครงการ */
+const genericPhases = id => {
+  const P = d => `project.html?p=${encodeURIComponent(id)}&doc=${d}`;
+  return [
+    ["ขออนุมัติและเตรียมการ", [
+      ["memo", "บันทึกข้อความขออนุมัติโครงการ", "เสนอผู้อำนวยการ", P("memo")],
+      ["project", "โครงการฉบับสมบูรณ์", "หลักการ วัตถุประสงค์ งบประมาณ", P("project")],
+      ["budget", "รายละเอียดประมาณการค่าใช้จ่าย", "", P("budget")],
+      ["sched", "กำหนดการ", "", P("sched")],
+      ["order", "คำสั่งแต่งตั้งคณะกรรมการ", "", P("order")],
+      ["room", "บันทึกขออนุญาตใช้ห้องและสถานที่", "", P("room")]
+    ]],
+    ["ประสานงานและวันจัดงาน", [
+      ["inviteparent", "หนังสือเชิญผู้ปกครอง", "", "index.html?doc=inviteparent"],
+      ["invitelec", "หนังสือเชิญวิทยากร", "", "index.html?doc=invitelec"],
+      ["signparent", "ใบลงชื่อผู้ปกครอง", "", "index.html?doc=signparent"],
+      ["signin", "ใบลงชื่อผู้เข้าร่วมโครงการ", "", P("signin")]
+    ]],
+    ["หลังจบโครงการ", [
+      ["thankparent", "หนังสือขอบคุณผู้ปกครอง", "", "index.html?doc=thankparent"],
+      ["thankslec", "หนังสือขอบคุณวิทยากร", "", "index.html?doc=thankslec"],
+      ["surveyform", "แบบประเมินความพึงพอใจ", "", P("surveyform")],
+      ["report", "รายงานผลการดำเนินโครงการ", "", P("report")],
+      ["book", "เล่มสรุปโครงการ", "", P("book")]
+    ]]
+  ];
+};
+const WHERE = href => href.startsWith("index") ? "ศูนย์เอกสาร" : href.startsWith("tutoring") ? "ตารางติว"
+  : href.startsWith("fitness") ? "สมรรถภาพ" : "ระบบโครงการ";
+
+/* ═══════════ ทะเบียนโครงการ ═══════════ */
+function readReg(){ try { const r = JSON.parse(localStorage.getItem(REG_KEY) || "[]"); return Array.isArray(r) ? r : []; } catch (e) { return []; } }
+function writeReg(r){ try { localStorage.setItem(REG_KEY, JSON.stringify(r)); } catch (e) {} }
+function allProjects(){
+  const reg = readReg(), ids = new Set(reg.map(p => p.id));
+  return BUILTIN.map(b => Object.assign({}, b, { tutor: true })).filter(b => !ids.has(b.id))
+    .concat(reg.map(p => p.id === "tutor2569" ? Object.assign({ tutor: true }, p) : p)).filter(p => !p.hidden);
+}
+function upsert(p){
+  const reg = readReg(), i = reg.findIndex(x => x.id === p.id);
+  if (i >= 0) reg[i] = Object.assign(reg[i], p); else reg.push(p);
+  writeReg(reg);
+}
+const phasesOf = p => p.tutor ? TUTOR_PHASES : genericPhases(p.id);
+const progress = p => {
+  const all = phasesOf(p).flatMap(ph => ph[1]);
+  const done = all.filter(d => (p.done || {})[d[0]]).length;
+  return { done, total: all.length };
+};
+
+const qs = new URLSearchParams(location.search);
+let cur = qs.get("p") || localStorage.getItem("nk_projects_cur") || "tutor2569";
+let editing = qs.get("new") ? "new" : "";
+
+function renderList(){
+  const ps = allProjects();
+  if (!ps.find(p => p.id === cur)) cur = ps[0] ? ps[0].id : "";
+  $("#plist").innerHTML = `<h2>โครงการทั้งหมด ${num(ps.length)} โครงการ</h2>` + ps.map(p => {
+    const g = progress(p), pc = g.total ? Math.round(g.done / g.total * 100) : 0;
+    return `<button class="pitem" type="button" data-p="${esc(p.id)}" aria-current="${p.id === cur && !editing ? "true" : "false"}">
+      <b>${esc(p.name)}</b><small>${p.year ? "ปีการศึกษา " + num(esc(p.year)) + " · " : ""}เสร็จ ${num(g.done)} / ${num(g.total)} ฉบับ</small>
+      <span class="pbar"><i style="width:${pc}%"></i></span></button>`;
+  }).join("") + `<button class="btn ghost" type="button" id="addP">+ เพิ่มโครงการใหม่</button>`;
+  $("#plist").querySelectorAll("[data-p]").forEach(b => b.onclick = () => {
+    cur = b.dataset.p; editing = ""; localStorage.setItem("nk_projects_cur", cur);
+    history.replaceState(null, "", "?p=" + encodeURIComponent(cur)); render();
+  });
+  $("#addP").onclick = () => { editing = "new"; render(); };
+}
+
+function formHTML(p){
+  const v = p || {};
+  return `<div class="dhead"><div><p class="eb">${p ? "แก้ไขข้อมูลโครงการ" : "เพิ่มโครงการใหม่"}</p>
+      <h2>${p ? esc(p.name) : "โครงการใหม่"}</h2></div></div>
+    <form class="form" id="pform">
+      <div class="full"><label for="fName">ชื่อโครงการ</label><input id="fName" required value="${esc(v.name || "")}" placeholder="เช่น โครงการค่ายเตรียมความพร้อมสอบคัดเลือก"></div>
+      <div><label for="fYear">ปีการศึกษา</label><input id="fYear" value="${esc(v.year || "2569")}" inputmode="numeric"></div>
+      <div><label for="fPlace">สถานที่</label><input id="fPlace" value="${esc(v.place || "")}" placeholder="ห้องดอกแขม โรงเรียนมัธยมวัดหนองแขม"></div>
+      <div><label for="fStart">วันเริ่มโครงการ</label><input id="fStart" type="date" value="${esc(v.start || "")}"></div>
+      <div><label for="fEnd">วันสิ้นสุดโครงการ</label><input id="fEnd" type="date" value="${esc(v.end || "")}"></div>
+      <div class="row"><button class="btn" type="button" id="fCancel">ยกเลิก</button><button class="btn gold" type="submit">บันทึกโครงการ</button></div>
+    </form>
+    <p class="hint">โครงการใหม่จะมีชุดเอกสารของตัวเอง ข้อมูลในระบบโครงการแยกเก็บตามโครงการ ไม่ปนกับโครงการติวเข้ม</p>`;
+}
+
+function render(){
+  renderList();
+  if (window.NK_PROJECTS.refresh) window.NK_PROJECTS.refresh();
+  const el = $("#detail");
+  if (editing){
+    const p = editing === "new" ? null : allProjects().find(x => x.id === editing);
+    el.innerHTML = formHTML(p);
+    $("#fName").focus();
+    $("#fCancel").onclick = () => { editing = ""; render(); };
+    $("#pform").onsubmit = e => {
+      e.preventDefault();
+      const name = $("#fName").value.trim();
+      if (!name) return;
+      const id = p ? p.id : "p" + Date.now().toString(36);
+      upsert({ id, name, year: $("#fYear").value.trim(), place: $("#fPlace").value.trim(),
+               start: $("#fStart").value, end: $("#fEnd").value, done: p ? p.done || {} : {} });
+      cur = id; editing = ""; localStorage.setItem("nk_projects_cur", cur);
+      history.replaceState(null, "", "?p=" + encodeURIComponent(cur)); render();
+    };
+    return;
+  }
+  const p = allProjects().find(x => x.id === cur);
+  if (!p){ el.innerHTML = `<p>ยังไม่มีโครงการ</p>`; return; }
+  const g = progress(p);
+  const when = p.start ? `${num(thDate(p.start))}${p.end && p.end !== p.start ? " – " + num(thDate(p.end)) : ""}`
+    : p.tutor ? "๒ – ๙ ตุลาคม ๒๕๖๙" : "ยังไม่กำหนดวัน";
+  const place = p.place || (p.tutor ? "ห้องดอกแขม และสนามกีฬา โรงเรียนมัธยมวัดหนองแขม" : "");
+  el.innerHTML = `<div class="dhead"><div><p class="eb">${p.year ? "ปีการศึกษา " + num(esc(p.year)) : "โครงการ"}</p>
+      <h2>${esc(p.name)}</h2><p class="meta">${when}${place ? " · " + esc(place) : ""}</p></div>
+      <div class="acts">${p.tutor ? `<a class="btn" href="tutoring.html">ตารางติว</a>` : ""}
+        <a class="btn" href="project.html${p.tutor ? "" : "?p=" + encodeURIComponent(p.id)}">ระบบโครงการ</a>
+        <button class="btn" type="button" id="editP">แก้ไขข้อมูล</button>
+        ${p.tutor ? "" : `<button class="btn danger" type="button" id="delP">ลบโครงการ</button>`}</div></div>
+    <p class="prog">ทำเสร็จแล้ว ${num(g.done)} จาก ${num(g.total)} ฉบับ</p>
+    <div class="pbar"><i style="width:${g.total ? g.done / g.total * 100 : 0}%"></i></div>
+    ${phasesOf(p).map(([title, docs], i) => `<div class="phase"><h3><span class="n">${num(i + 1)}</span>${esc(title)}</h3>
+      ${docs.map(([k, n, d, href]) => {
+        const done = !!(p.done || {})[k];
+        return `<div class="doc${done ? " done" : ""}">
+          <input type="checkbox" data-k="${k}"${done ? " checked" : ""} aria-label="ทำ${esc(n)}เสร็จแล้ว">
+          <div><a href="${href}"><b>${esc(n)}</b></a><span class="where">${WHERE(href)}</span>${d ? `<small>${esc(d)}</small>` : ""}</div>
+          <a class="btn" href="${href}">เปิด</a></div>`;
+      }).join("")}</div>`).join("")}`;
+  el.querySelectorAll("input[data-k]").forEach(cb => cb.onchange = () => {
+    const done = Object.assign({}, p.done || {}, { [cb.dataset.k]: cb.checked });
+    upsert(Object.assign({ id: p.id, name: p.name, year: p.year }, { done }));
+    render();
+  });
+  $("#editP").onclick = () => { editing = p.id; render(); };
+  const del = $("#delP");
+  if (del) del.onclick = () => {
+    if (!confirm(`ลบ “${p.name}” ออกจากรายการโครงการ?\nข้อมูลในระบบโครงการของโครงการนี้จะถูกลบด้วย`)) return;
+    writeReg(readReg().filter(x => x.id !== p.id));
+    try { localStorage.removeItem("nk_proj_v1:" + p.id); } catch (e) {}
+    cur = "tutor2569"; render();
+  };
+}
+render();
+</script>
+</body>
+</html>
