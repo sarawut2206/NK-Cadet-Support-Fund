@@ -371,9 +371,10 @@ const DEF_S = {
   tel: "02-429-3402",
   plan: "แผนการเรียนเตรียมทหาร–ตำรวจ",
   fund: "กองทุนสนับสนุนการจัดการเรียนการสอน แผนการเรียนเตรียมทหาร ตำรวจ โรงเรียนมัธยมวัดหนองแขม",
-  director: "นายสุริยันต์ เหล่ามะลึก", head: "", year: "2569", thaiDigits: "1"
+  director: "นายสุริยันต์ เหล่ามะลึก", head: "นายศราวุธ พิมศร", year: "2569", thaiDigits: "1"
 };
 let S = (() => { try { return Object.assign({}, DEF_S, JSON.parse(localStorage.getItem("nk_settings") || "{}")); } catch (e) { return Object.assign({}, DEF_S); } })();
+if (!S.head) S.head = DEF_S.head;   /* ค่าว่างที่บันทึกไว้เดิมให้ใช้ชื่อหัวหน้าแผนการเรียนตั้งต้น */
 if (!S.director) S.director = DEF_S.director;   /* ค่าที่บันทึกไว้เดิมอาจเป็นค่าว่าง */
 const num = s => S.thaiDigits === "1" ? thNum(s) : String(s ?? "");
 /** ข้อความผู้ใช้ → HTML ปลอดภัย + เลขไทย */
