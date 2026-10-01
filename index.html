@@ -150,6 +150,15 @@ button,input,select,textarea{font:inherit;color:inherit}
 .sheet small{font-size:13pt;line-height:1.4;display:block}
 .sheet .chk{display:inline-block;width:4.2mm;height:4.2mm;border:1.1px solid #000;margin-inline-end:1.6mm;vertical-align:-.5mm}
 .sheet .cut{border-top:1.4px dashed #000;margin:5mm 0 3mm;text-align:center;font-size:12.5pt;color:#333;padding-top:1.5mm}
+/* หนังสือที่พิมพ์รายคน : ขนาดตัวอักษรทั้งฉบับอิงจากกล่องนี้ (ตั้งต้น ๑๖) และ ๑ คนต่อ ๑ หน้าเสมอ */
+.sheet .letter{break-after:page;page-break-after:always}
+.sheet .letter:last-child{break-after:auto;page-break-after:auto}
+.sheet .letter .org{font-size:1em}
+.sheet .letter .org b{font-size:1.12em}
+.sheet .letter .sig,.sheet .letter .ftr{font-size:1em}
+.sheet .letter .fld,.sheet .letter .extdate{font-size:1em}
+@media screen{.sheet .letter + .letter{border-top:2px dashed #7C97BC;margin-top:12mm;padding-top:12mm;position:relative}
+  .sheet .letter + .letter::before{content:"หน้าถัดไป";position:absolute;top:-3.2mm;left:50%;transform:translateX(-50%);background:#fff;padding:0 4mm;font:600 11pt/1 var(--ui);color:#5F7492}}
 .sheet .cert{border:3px double #0E2A56;padding:12mm;min-height:180mm;display:flex;flex-direction:column;justify-content:center;text-align:center}
 .sheet .cert .cn{font-size:30pt;font-weight:700;color:#0E2A56;margin-bottom:3mm}
 .sheet .cert .who{font-size:26pt;font-weight:700;margin:5mm 0;border-bottom:1px dotted #666;padding-bottom:2mm;display:inline-block;min-width:120mm}
@@ -932,6 +941,8 @@ thankparent: {
       o:[["one","ฉบับเดียว เรียนผู้ปกครองทุกท่าน"], ["each","พิมพ์รายคน ระบุชื่อนักเรียนในแต่ละฉบับ"]] },
     { k:"students", l:"รายชื่อนักเรียน (ใช้เมื่อพิมพ์รายคน)", t:"textarea", ph:"เว้นว่างไว้ = ดึงรายชื่อจากหน้าสมรรถภาพในเครื่องนี้",
       hint:"บรรทัดละ ๑ คน รูปแบบ ชื่อ–สกุล|ห้อง" },
+    { k:"fsz", l:"ขนาดตัวอักษรทั้งฉบับ (pt)", t:"select", d:"16",
+      o:[["16","๑๖ (มาตรฐานงานสารบรรณ)"], ["17","๑๗"], ["18","๑๘ (อ่านง่าย)"]] },
     { k:"note", l:"ข้อความเพิ่มเติม (ถ้ามี)", t:"textarea", ph:"เช่น แจ้งกำหนดส่งรายงานสรุปผล หรือกิจกรรมครั้งต่อไป" }
   ],
   r(v){
@@ -946,9 +957,9 @@ thankparent: {
       <p class="ind">จึงเรียนมาเพื่อทราบ และขอขอบคุณมา ณ โอกาสนี้</p>
       <p class="ctr" style="margin-top:6mm">ขอแสดงความนับถือ</p>
       ${sig([{ role:"หัวหน้า" + S.plan, name:S.head }])}`;
-    if (v.mode === "each" && list.length)
-      return list.map((st, i) => `<div${i ? ` style="break-before:page"` : ""}>${copy(st)}</div>`).join("");
-    return copy(null);
+    const wrap = (html) => `<div class="letter" style="font-size:${Number(v.fsz) || 16}pt">${html}</div>`;
+    if (v.mode === "each" && list.length) return list.map(st => wrap(copy(st))).join("");
+    return wrap(copy(null));
   }
 },
 
