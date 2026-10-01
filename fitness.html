@@ -191,6 +191,15 @@ footer b{color:#fff}
 .sheet .rep th,.sheet .rep td{padding:.5mm .8mm;vertical-align:middle}
 .sheet .rep td small,.sheet .rep th small{font-size:8.5pt;font-weight:400}
 .sheet .rep .g,.sheet .cmp .g{background:#E8F3EA}
+.sheet .fitrep h1{font-size:17pt}
+.sheet .fitrep .org{margin-bottom:1mm}
+.sheet .fitrep .hr{margin:1.2mm 0 2mm}
+.sheet .fitrep .rep{font-size:10pt;margin:1mm 0}
+.sheet .fitrep .rep th,.sheet .fitrep .rep td{padding:.25mm .6mm;line-height:1.15}
+.sheet .fitrep p{margin-top:1mm!important}
+.sheet .fitrep .box,.sheet .fitrep .lines{margin-top:1.2mm;padding:1mm 2.6mm;min-height:0;font-size:11.5pt}
+.sheet .fitrep .sig{margin-top:3mm}
+.sheet .fitrep .foot{margin-top:1.5mm;font-size:9.5pt}
 .sheet .ind{text-indent:12mm;line-height:1.5}
 .sheet p.st{font-weight:700;font-size:12.5pt;margin:3mm 0 .8mm}
 .sheet .sc6{font-size:11pt;margin:0}
@@ -318,6 +327,21 @@ footer b{color:#fff}
   <div class="cards" id="cards"></div>
 </div></section>
 
+<!-- ═══ วิชาการ : ทดสอบหลังเรียน ═══ -->
+<section id="acad"><div class="wrap">
+  <div class="hd">
+    <p class="eb">วิชาการ</p>
+    <h2>ผลทดสอบหลังเรียน ๗ รายวิชา</h2>
+    <p>ทดสอบเมื่อเรียนครบ เพื่อบอกว่าขณะนี้นักเรียนอยู่ระดับใดในแต่ละวิชา (ไม่ได้วัดพัฒนาการ) · คะแนนเต็มวิชาละ ๑๕ · กรอกคะแนนแล้วระบบบอกระดับให้ทันที
+      และนำไปแสดงในรายงานถึงผู้ปกครองฉบับเดียวกับผลสมรรถภาพ</p>
+  </div>
+  <div class="acts" style="margin-top:0;margin-bottom:.6rem">
+    <div class="field" style="min-width:11rem"><label for="aDate">วันที่สอบ</label><input id="aDate" type="date"></div>
+  </div>
+  <div class="tblwrap"><table class="grid" id="agrid"></table></div>
+  <p class="mini" id="aCrit"></p>
+</div></section>
+
 <!-- ═══ ๕ พิมพ์ ═══ -->
 <section><div class="wrap">
   <div class="hd">
@@ -342,6 +366,8 @@ footer b{color:#fff}
       <button class="btn gold" id="prPost" type="button">แบบบันทึกผล ครั้งที่ ๒ (วันสุดท้าย)</button>
       <button class="btn" id="prCompare" type="button">รายงานผลเปรียบเทียบก่อน–หลัง</button>
       <button class="btn" id="prCrit" type="button">เกณฑ์การให้คะแนน ๘ สถานี (แจกผู้ปกครอง)</button>
+      <button class="btn" id="prAcadSheet" type="button">แบบบันทึกคะแนนทดสอบหลังเรียน</button>
+      <button class="btn" id="prAcadClass" type="button">สรุปผลทดสอบหลังเรียนทั้งห้อง</button>
       <select id="outMode" aria-label="รูปแบบผลลัพธ์" style="background:var(--ground);border:1px solid var(--rule);border-radius:5px;padding:.38rem .5rem;font-size:.85rem;font-family:var(--ui)">
         <option value="print">ผลลัพธ์ : พิมพ์ / บันทึก PDF</option><option value="word">ผลลัพธ์ : บันทึกเป็น Word (.doc)</option></select>
     </div>
@@ -486,7 +512,7 @@ const newId = p => p + Math.random().toString(36).slice(2, 8);
 function defData(){
   const students = Array.from({ length: 15 }, (_, i) => ({ id: "s" + (i + 1), name: "", cls: "" }));
   const r0 = { id: "r" + Date.now().toString(36), date: iso(new Date()), note: "" };
-  return { students, rounds: [r0], cur: r0.id, res: {}, cmt: {} };
+  return { students, rounds: [r0], cur: r0.id, res: {}, cmt: {}, acad: { date: "", s: {} } };
 }
 let F = (() => {
   const raw = JSON.parse(localStorage.getItem(KEY) || "null");
@@ -496,6 +522,7 @@ let F = (() => {
   if (!Array.isArray(d.rounds) || !d.rounds.length) { const x = defData(); d.rounds = x.rounds; d.cur = x.cur; }
   if (!d.rounds.some(r => r.id === d.cur)) d.cur = d.rounds[0].id;
   d.res ||= {}; d.cmt ||= {};
+  d.acad ||= { date: "", s: {} }; d.acad.s ||= {};
   return d;
 })();
 const save = () => localStorage.setItem(KEY, JSON.stringify(F));
@@ -663,7 +690,7 @@ function renderKPI(){
   $("#selStu").innerHTML = F.students.map((s, i) => `<option value="${s.id}">${num(i + 1)}. ${esc(s.name || "— ยังไม่ระบุชื่อ —")}</option>`).join("");
 }
 
-function renderAll(){ sortRounds(); renderRounds(); renderGrid(); renderCards(); renderKPI(); }
+function renderAll(){ sortRounds(); renderRounds(); renderGrid(); renderCards(); renderKPI(); renderAcad(); }
 
 /* ═══════════ อีเวนต์ ═══════════ */
 $("#btnPaste").onclick = () => {
@@ -832,14 +859,14 @@ function pageFor(s, i){
       const dp = pb - pa, dd = b - a;
       dev = Math.abs(dd) < sameEps(t) ? "คงที่" : ((higherBetter(t) ? dd > 0 : dd < 0) ? "ดีขึ้น " : "ลดลง ") + num(fmtT(t, Math.abs(dd))) + (dp ? ` (${dp > 0 ? "+" : "−"}${num(Math.abs(dp))} คะแนน)` : "");
     }
-    return `<tr><td>${num(k + 1)}. ${esc(t.n)}</td><td class="c">${critText(t)}</td><td class="c">${cell(a, pa)}</td><td class="c">${cell(b, pb)}</td><td class="c">${dev}</td></tr>`;
+    return `<tr><td>${num(k + 1)}. ${esc(t.n)} <small>(${critShort(t).replace("ผ่าน ", "")})</small></td><td class="c">${cell(a, pa)}</td><td class="c">${cell(b, pb)}</td><td class="c">${dev}</td></tr>`;
   }).join("");
   const scL = scoreOf(last.id, s.id);
   const devHead = done.length >= 2 ? `เทียบครั้งที่ ${num(fi)} กับครั้งที่ ${num(li)}` : done.length === 1 ? `มีผลเพียงครั้งที่ ${num(li)} ครั้งเดียว` : "ยังไม่มีผลทดสอบ";
 
   return `<div class="page fitrep">
     ${orgHead()}
-    <h1>รายงานผลการทดสอบสมรรถภาพทางกาย ๘ สถานี</h1>
+    <h1>${aAny() ? "รายงานผลสมรรถภาพทางกายและผลทดสอบหลังเรียน" : "รายงานผลการทดสอบสมรรถภาพทางกาย ๘ สถานี"}</h1>
     <p class="sub">แจ้งผู้ปกครองเพื่อทราบ · ปีการศึกษา ${num(S.year)}</p>
     <p style="margin-top:1.5mm"><b>ชื่อ–สกุลนักเรียน</b>&nbsp; ${esc(s.name || "…………………………………………………")}
       &nbsp;&nbsp;<b>เลขที่</b> ${num(i + 1)} &nbsp;&nbsp;<b>ชั้น</b> ${esc(s.cls || "…………")}</p>
@@ -848,8 +875,9 @@ function pageFor(s, i){
       ${TESTS.map((t, k) => `<th>${num(k + 1)}. ${esc(t.sn)}<br><small>${unitShort(t)}</small></th>`).join("")}<th style="width:11mm">ผ่าน</th><th style="width:13mm">รวม<br><small>/${num(FULL)}</small></th></tr></thead>
       <tbody>${rows}</tbody></table>
     <p style="margin-top:1.5mm"><b>สรุปรายสถานี</b> ${esc(devHead)}</p>
-    <table class="rep"><thead><tr><th>สถานี</th><th style="width:40mm">เกณฑ์ผ่าน</th><th style="width:30mm">ครั้งที่ ${num(fi)}</th><th style="width:30mm">ครั้งที่ ${num(li)}</th><th style="width:38mm">พัฒนาการ</th></tr></thead>
+    <table class="rep"><thead><tr><th>สถานี (เกณฑ์ผ่าน)</th><th style="width:30mm">ครั้งที่ ${num(fi)}</th><th style="width:30mm">ครั้งที่ ${num(li)}</th><th style="width:38mm">พัฒนาการ</th></tr></thead>
       <tbody>${devs}</tbody></table>
+    ${acadBlock(s)}
     <div class="box"><div class="bt">สรุปผลครั้งที่ ${num(li)} : คะแนนรวม ${scL.done ? num(scL.pts) + " จาก " + num(FULL) : "—"} · ผ่าน ${scCell(scL)} สถานี · ${verdictOf(scL)}</div>
       <b>ความเห็นของครูผู้ฝึก</b> ${esc(F.cmt[s.id] || "") || "…………………………………………………………………………………………………………………………………………"}</div>
     <div class="lines"><b>ความเห็นของผู้ปกครอง</b> ……………………………………………………………………………………………………………………</div>
@@ -1060,6 +1088,130 @@ $("#prCrit").onclick = () => {
   <div class="page"><h1 style="font-size:16pt">ตารางเทียบคะแนน สถานีที่ ๕–๘</h1>${TESTS.slice(4).map((t, k) => scoreTbl(t, k + 4)).join("")}
     <p class="foot" style="margin-top:3mm">ที่มา : ${SRC} · ${OWN}</p></div>`;
   doPrint();
+};
+
+/* ═══════════ ทดสอบหลังเรียน ๗ รายวิชา ═══════════
+   ไม่ได้วัดพัฒนาการ — บอกเพียงว่าขณะนี้นักเรียนอยู่ระดับใดในแต่ละวิชา · คะแนนเต็มวิชาละ ๑๕ */
+const SUBJ = [["tha","ภาษาไทย"], ["math","คณิตศาสตร์"], ["eng","ภาษาอังกฤษ"], ["soc","สังคมศึกษา"], ["phy","ฟิสิกส์"], ["che","เคมี"], ["bio","ชีววิทยา"]];
+const AFULL = 15, ATOTAL = AFULL * SUBJ.length;
+/* ระดับ : ร้อยละของคะแนนเต็ม */
+const LV = [[80, "ดีมาก"], [70, "ดี"], [60, "พอใช้"], [0, "ต้องเสริม"]];
+const levelOf = x => x == null ? null : LV.find(([p]) => x / AFULL * 100 >= p - 1e-9)[1];
+const lvCls = l => l === "ดีมาก" || l === "ดี" ? "pass" : l === "ต้องเสริม" ? "fail" : "";
+/** เกณฑ์ระดับเป็นช่วงคะแนนจริง เช่น ๑๒–๑๕ */
+const lvText = () => LV.map(([p, n], i) => {
+  const lo = Math.ceil(AFULL * p / 100 * 2) / 2, hi = i ? Math.ceil(AFULL * LV[i - 1][0] / 100 * 2) / 2 - 0.5 : AFULL;
+  return i === LV.length - 1 ? `${n} ต่ำกว่า ${num(Math.ceil(AFULL * LV[i - 1][0] / 100 * 2) / 2)}` : `${n} ${num(lo)}${hi > lo ? "–" + num(hi) : ""}`;
+}).join(" · ") + ` คะแนน (ร้อยละ ${LV.slice(0, -1).map(([p]) => num(p)).join(" / ")})`;
+function parseScore(s){
+  s = String(s ?? "").trim();
+  if (!s) return null;
+  const v = Number(s.replace(",", "."));
+  return isFinite(v) && v >= 0 && v <= AFULL ? v : NaN;
+}
+const aGet = (sid, k) => { const o = F.acad.s[sid]; return o && o[k] != null ? o[k] : null; };
+function aSum(sid){
+  let n = 0, sum = 0;
+  SUBJ.forEach(([k]) => { const x = aGet(sid, k); if (x != null){ n++; sum += x; } });
+  return { n, sum, pct: n ? sum / (n * AFULL) * 100 : null };
+}
+const aAny = () => F.students.some(s => aSum(s.id).n > 0);
+const fmtA = x => x == null ? "—" : num(String(Math.round(x * 10) / 10));
+/** วิชาที่ควรเสริม (ระดับพอใช้ลงมา) เรียงจากคะแนนน้อยไปมาก */
+const weakOf = sid => SUBJ.map(([k, n]) => [n, aGet(sid, k)]).filter(([, x]) => x != null && x / AFULL * 100 < LV[1][0]).sort((a, b) => a[1] - b[1]).map(([n]) => n);
+
+function renderAcad(){
+  $("#aDate").value = F.acad.date || "";
+  const head = `<thead><tr><th class="no">ที่</th><th class="nm">ชื่อ–สกุล</th>
+    ${SUBJ.map(([, n]) => `<th class="sep">${esc(n)}<small>เต็ม ${num(AFULL)}</small></th>`).join("")}
+    <th class="sep">รวม<small>เต็ม ${num(ATOTAL)}</small></th><th>ร้อยละ</th></tr></thead>`;
+  const body = F.students.map((s, i) => {
+    const cells = SUBJ.map(([k, n]) => {
+      const x = aGet(s.id, k), l = levelOf(x);
+      return `<td class="sep ${lvCls(l)}"><input data-as="${s.id}" data-ak="${k}" type="text" inputmode="decimal" value="${x != null ? x : ""}" placeholder="/${AFULL}"
+        aria-label="${esc(n)} ${esc(s.name || "เลขที่ " + (i + 1))}"><small class="pt">${l || "&nbsp;"}</small></td>`;
+    }).join("");
+    const a = aSum(s.id);
+    return `<tr><td class="no">${num(i + 1)}</td><td class="nm" style="font-size:.85rem">${esc(s.name || "— ยังไม่ระบุชื่อ —")}</td>${cells}
+      <td class="sc sep">${a.n ? fmtA(a.sum) : "—"}</td><td class="sc">${a.n ? num(Math.round(a.pct)) + "%" : "—"}</td></tr>`;
+  }).join("");
+  $("#agrid").innerHTML = head + `<tbody>${body}</tbody>`;
+  $("#aCrit").innerHTML = `ระดับ — ${lvText()} · ชื่อนักเรียนแก้ได้ในขั้นที่ ๓`;
+  $("#agrid").querySelectorAll("input").forEach(el => el.addEventListener("change", e => {
+    const { as, ak } = e.target.dataset, v = parseScore(e.target.value);
+    if (Number.isNaN(v)){ alert(`คะแนนต้องอยู่ระหว่าง ๐ ถึง ${AFULL}`); e.target.value = aGet(as, ak) ?? ""; return; }
+    const o = F.acad.s[as] ||= {};
+    if (v == null) delete o[ak]; else o[ak] = v;
+    if (!Object.keys(o).length) delete F.acad.s[as];
+    save(); renderAcad();
+  }));
+}
+$("#aDate").onchange = e => { F.acad.date = e.target.value; save(); };
+
+/** ส่วนผลวิชาการในรายงานรายบุคคล */
+function acadBlock(s){
+  if (!aAny()) return "";
+  const a = aSum(s.id), weak = weakOf(s.id);
+  const d = F.acad.date ? dObj(F.acad.date) : null;
+  return `<p style="margin-top:1.5mm"><b>ผลทดสอบหลังเรียนรายวิชา</b> (คะแนนเต็มวิชาละ ${num(AFULL)}${d && !isNaN(d) ? ` · ทดสอบวันที่ ${num(thDate(d))}` : ""}) บอกระดับปัจจุบันของแต่ละวิชา</p>
+    <table class="rep"><thead><tr><th style="width:17mm"></th>${SUBJ.map(([, n]) => `<th>${esc(n)}</th>`).join("")}<th style="width:18mm">รวม<br><small>/${num(ATOTAL)}</small></th></tr></thead>
+      <tbody><tr><td class="c">คะแนน</td>${SUBJ.map(([k]) => `<td class="c">${fmtA(aGet(s.id, k))}</td>`).join("")}<td class="c"><b>${a.n ? fmtA(a.sum) : "—"}</b></td></tr>
+      <tr><td class="c">ระดับ</td>${SUBJ.map(([k]) => { const l = levelOf(aGet(s.id, k)); return `<td class="c${l === "ดีมาก" || l === "ดี" ? " g" : ""}">${l || "—"}</td>`; }).join("")}<td class="c">${a.n ? num(Math.round(a.pct)) + "%" : "—"}</td></tr></tbody></table>
+    <p style="font-size:10.5pt;margin:.6mm 0 0">ระดับ : ${lvText()}${a.n ? ` · <b>วิชาที่ควรเสริม :</b> ${weak.length ? weak.join(" ") : "ไม่มี (ทุกวิชาอยู่ในระดับดีขึ้นไป)"}` : ""}</p>`;
+}
+
+/** แบบบันทึกคะแนนทดสอบหลังเรียน (ใบเปล่ามีชื่อ) */
+$("#prAcadSheet").onclick = () => {
+  const d = F.acad.date ? dObj(F.acad.date) : null;
+  const rows = F.students.map((s, i) => `<tr style="height:8.6mm"><td class="c">${num(i + 1)}</td><td class="nm">${esc(s.name || "")}</td>${SUBJ.map(() => "<td></td>").join("")}<td></td></tr>`).join("");
+  sheetEl.dataset.file = "แบบบันทึกคะแนนทดสอบหลังเรียน 7 วิชา";
+  sheetEl.innerHTML = `<div class="page">${orgHead()}
+    <h1>แบบบันทึกคะแนนทดสอบหลังเรียน ๗ รายวิชา</h1>
+    <p class="sub">${esc(PP.name)} · คะแนนเต็มวิชาละ ${num(AFULL)} · วันที่สอบ ${d && !isNaN(d) ? num(thDate(d)) : "……… / ……… / …………"}</p>
+    <table class="rep"><thead><tr><th style="width:9mm">ที่</th><th>ชื่อ–สกุล</th>${SUBJ.map(([, n]) => `<th style="width:15mm">${esc(n)}<br><small>/${num(AFULL)}</small></th>`).join("")}<th style="width:15mm">รวม<br><small>/${num(ATOTAL)}</small></th></tr></thead>
+      <tbody>${rows}</tbody></table>
+    <p style="font-size:11pt;margin-top:1.5mm">ระดับ : ${lvText()} · ระบบคิดระดับให้เมื่อกรอกคะแนนในหน้าสมรรถภาพ ส่วนผลทดสอบหลังเรียน</p>
+    ${sig([{ role:"ครูผู้คุมสอบ" }, { role:"ครูผู้ตรวจและบันทึกคะแนน" }, { role:"หัวหน้าแผนการเรียนเตรียมทหาร–ตำรวจ", name:S.head }])}
+  </div>`;
+  doPrint();
+};
+
+/** สรุปผลทดสอบหลังเรียนทั้งห้อง */
+$("#prAcadClass").onclick = () => {
+  if (!aAny()) return alert("ยังไม่ได้กรอกคะแนนทดสอบหลังเรียน");
+  const d = F.acad.date ? dObj(F.acad.date) : null;
+  const rows = F.students.map((s, i) => {
+    const a = aSum(s.id);
+    return `<tr><td>${num(i + 1)}</td><td class="nm">${esc(s.name || "")}</td>
+      ${SUBJ.map(([k]) => { const x = aGet(s.id, k), l = levelOf(x); return `<td${l === "ดีมาก" || l === "ดี" ? ' class="g"' : ""}>${fmtA(x)}${l ? `<br><small>${l}</small>` : ""}</td>`; }).join("")}
+      <td><b>${a.n ? fmtA(a.sum) : "—"}</b></td><td>${a.n ? num(Math.round(a.pct)) + "%" : "—"}</td></tr>`;
+  }).join("");
+  const per = SUBJ.map(([k, n]) => {
+    const xs = F.students.map(s => aGet(s.id, k)).filter(x => x != null);
+    const cnt = LV.map(([, l]) => xs.filter(x => levelOf(x) === l).length);
+    const avg = xs.length ? xs.reduce((a, b) => a + b, 0) / xs.length : null;
+    return { n, avg, html: `<tr><td style="text-align:left">${esc(n)}</td><td>${num(xs.length)}</td><td>${avg != null ? fmtA(avg) : "—"}</td><td>${avg != null ? num(Math.round(avg / AFULL * 100)) + "%" : "—"}</td>
+      <td>${levelOf(avg) || "—"}</td>${cnt.map(c => `<td>${num(c)}</td>`).join("")}</tr>` };
+  });
+  const weakSubj = per.filter(p => p.avg != null).sort((a, b) => a.avg - b.avg).slice(0, 3).map(p => p.n);
+  sheetEl.dataset.file = "สรุปผลทดสอบหลังเรียน 7 วิชา ทั้งห้อง";
+  sheetEl.innerHTML = `<div class="page">${miniHead()}
+    <h1>สรุปผลทดสอบหลังเรียน ๗ รายวิชา</h1>
+    <p class="sub">${esc(PP.name)} · คะแนนเต็มวิชาละ ${num(AFULL)}${d && !isNaN(d) ? ` · ทดสอบวันที่ ${num(thDate(d))}` : ""} · นักเรียน ${num(F.students.length)} คน</p>
+    <table class="cmp"><thead><tr><th style="width:7mm">ที่</th><th>ชื่อ–สกุล</th>${SUBJ.map(([, n]) => `<th style="width:20mm">${esc(n)}</th>`).join("")}<th style="width:16mm">รวม<br><small>/${num(ATOTAL)}</small></th><th style="width:14mm">ร้อยละ</th></tr></thead>
+      <tbody>${rows}</tbody></table>
+    <p style="font-size:10pt;margin:.6mm 0 0">ช่องสีเขียว = ระดับดีขึ้นไป · ระดับ : ${lvText()}</p>
+  </div>
+  <div class="page">${miniHead()}
+    <h1>สรุปรายวิชา</h1>
+    <table class="cmp"><thead><tr><th>วิชา</th><th style="width:18mm">สอบ (คน)</th><th style="width:22mm">คะแนนเฉลี่ย</th><th style="width:18mm">ร้อยละ</th><th style="width:22mm">ระดับเฉลี่ย</th>
+      ${LV.map(([, l]) => `<th style="width:20mm">${l} (คน)</th>`).join("")}</tr></thead>
+      <tbody>${per.map(p => p.html).join("")}</tbody></table>
+    <div class="box"><div class="bt">ข้อสังเกต</div>วิชาที่คะแนนเฉลี่ยของห้องต่ำที่สุด : ${weakSubj.length ? weakSubj.join(" · ") : "—"} — ควรจัดการติวเสริมเป็นลำดับแรก
+      · รายชื่อนักเรียนที่ควรเสริมแต่ละวิชา ดูได้จากช่องที่ไม่ใช่สีเขียวในหน้าก่อน</div>
+    ${sig([{ role:"หัวหน้าแผนการเรียนเตรียมทหาร–ตำรวจ", name:S.head }, { role:"ผู้อำนวยการ" + S.school, name:S.director }])}
+  </div>`;
+  doPrint("landscape");
 };
 
 /* ═══════════ เริ่มต้น ═══════════ */
