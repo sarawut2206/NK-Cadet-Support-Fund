@@ -185,6 +185,18 @@ footer b{color:#fff}
 .sheet.land h1{font-size:17pt}
 .sheet .fieldtbl{font-size:11pt}
 .sheet .fieldtbl tbody td{height:6.2mm;padding:.4mm 1.2mm}
+.grid td small.pt{display:block;font-family:var(--ui);font-size:.68rem;color:var(--ink-3);margin-top:.1rem;white-space:nowrap}
+.grid td.fail small.pt{color:var(--crit,#B42318);font-weight:600}
+.sheet .rep{font-size:10.5pt}
+.sheet .rep th,.sheet .rep td{padding:.5mm .8mm;vertical-align:middle}
+.sheet .rep td small,.sheet .rep th small{font-size:8.5pt;font-weight:400}
+.sheet .rep .g,.sheet .cmp .g{background:#E8F3EA}
+.sheet .ind{text-indent:12mm;line-height:1.5}
+.sheet p.st{font-weight:700;font-size:12.5pt;margin:3mm 0 .8mm}
+.sheet .sc6{font-size:11pt;margin:0}
+.sheet .sc6 td{padding:.5mm 1mm;text-align:center;height:6mm;vertical-align:middle}
+.sheet .sc6 td.v{background:#F2F4F7;width:16mm}
+.sheet .sc6 td.p{font-weight:700;width:13mm}
 .panel.pp{margin-top:.9rem;border-left:4px solid var(--gold,#FFC72C)}
 .sheet .ppt{font-size:11pt}
 .sheet .ppt thead th{padding:.6mm .8mm;line-height:1.2}
@@ -195,7 +207,8 @@ footer b{color:#fff}
 .sheet .ppt tbody td{height:7.4mm;padding:.3mm 1mm;vertical-align:middle}
 .sheet .ppt td.nm{white-space:nowrap}
 .sheet .ppt .pv{display:block;font-size:8.5pt;color:#8a8a8a;line-height:1}
-.sheet .cmp{font-size:10pt}
+.sheet .cmp{font-size:10pt;line-height:1.12}
+.sheet .cmp td small{font-size:8pt}
 .sheet .cmp th,.sheet .cmp td{padding:.5mm .7mm;text-align:center;vertical-align:middle}
 .sheet .cmp td.nm{text-align:left;white-space:nowrap}
 .sheet .cmp .g{background:#E8F3EA}
@@ -225,10 +238,10 @@ footer b{color:#fff}
   <div class="bandgrid">
     <div class="kpi"><div class="l">นักเรียน</div><div class="v" id="kStu">—</div><div class="s" id="kStuSub">คน</div></div>
     <div class="kpi"><div class="l">รอบทดสอบ</div><div class="v" id="kRound">—</div><div class="s" id="kRoundSub">ครั้ง</div></div>
-    <div class="kpi"><div class="l">ผ่านครบทุกรายการ</div><div class="v good" id="kFull">—</div><div class="s" id="kFullSub">คน · รอบล่าสุด</div></div>
-    <div class="kpi"><div class="l">ผ่านเฉลี่ย</div><div class="v" id="kAvg">—</div><div class="s" id="kAvgSub">รายการ · รอบล่าสุด</div></div>
-    <div class="kpi"><div class="l">พัฒนาการดีขึ้น</div><div class="v good" id="kUp">—</div><div class="s">คน เทียบรอบก่อนหน้า</div></div>
-    <div class="kpi"><div class="l">ต้องเร่งพัฒนา</div><div class="v bad" id="kLow">—</div><div class="s">คน · ผ่านไม่ถึง ๒ รายการ</div></div>
+    <div class="kpi"><div class="l">ผ่านทุกสถานีที่ทดสอบ</div><div class="v good" id="kFull">—</div><div class="s" id="kFullSub">คน · รอบล่าสุด</div></div>
+    <div class="kpi"><div class="l">คะแนนรวมเฉลี่ย</div><div class="v" id="kAvg">—</div><div class="s" id="kAvgSub">คะแนน</div></div>
+    <div class="kpi"><div class="l">พัฒนาการดีขึ้น</div><div class="v good" id="kUp">—</div><div class="s">คน · คะแนนรวมเพิ่มจากครั้งก่อน</div></div>
+    <div class="kpi"><div class="l">ต้องเร่งพัฒนา</div><div class="v bad" id="kLow">—</div><div class="s">คน · มีสถานีที่ยังไม่ผ่าน</div></div>
   </div>
 </div></div>
 
@@ -288,7 +301,8 @@ footer b{color:#fff}
   <div class="hd">
     <p class="eb">ขั้นที่ ๓</p>
     <h2>บันทึกผลทดสอบ <span id="curRound" style="font-weight:400;color:var(--ink-2)"></span></h2>
-    <p>ท่าดันพื้น ดึงข้อ และลุก–นั่ง กรอกได้ทั้ง <b>จำนวนครั้งที่ทำได้</b> และ <b>เวลาที่ทำครบตามเกณฑ์</b> (ถ้าทำครบ) · เวลาพิมพ์เป็น นาที:วินาที เช่น <code>3:20</code> · วิ่ง ๕๐ เมตร พิมพ์เป็นวินาที เช่น <code>7.8</code> · ช่องที่ผ่านเกณฑ์จะเป็นสีเขียว ไม่ผ่านเป็นสีแดง</p>
+    <p>ทดสอบ ๘ สถานีตามเกณฑ์เตรียมทหาร · นั่งงอตัวและยืนกระโดดไกลพิมพ์เป็นเซนติเมตร · ลุก–นั่งและดึงข้อพิมพ์จำนวนครั้ง · วิ่งเก็บของ วิ่ง ๕๐ ม. และว่ายน้ำพิมพ์เป็นวินาที เช่น <code>10.35</code>
+      · วิ่ง ๑,๐๐๐ ม. พิมพ์เป็น นาที.วินาที เช่น <code>4.12</code> · ระบบคิดคะแนนสถานีละ ๑๐๐ ให้ทันที ช่องสีเขียว = ผ่าน สีแดง = ไม่ผ่าน · สถานีที่ไม่ได้ทดสอบให้เว้นว่าง</p>
   </div>
   <div class="tblwrap"><table class="grid" id="grid"></table></div>
   <p class="mini" id="critLine"></p>
@@ -327,6 +341,7 @@ footer b{color:#fff}
       <button class="btn gold" id="prPre" type="button">แบบบันทึกผล ครั้งที่ ๑ (ก่อนเริ่มโครงการ)</button>
       <button class="btn gold" id="prPost" type="button">แบบบันทึกผล ครั้งที่ ๒ (วันสุดท้าย)</button>
       <button class="btn" id="prCompare" type="button">รายงานผลเปรียบเทียบก่อน–หลัง</button>
+      <button class="btn" id="prCrit" type="button">เกณฑ์การให้คะแนน ๘ สถานี (แจกผู้ปกครอง)</button>
       <select id="outMode" aria-label="รูปแบบผลลัพธ์" style="background:var(--ground);border:1px solid var(--rule);border-radius:5px;padding:.38rem .5rem;font-size:.85rem;font-family:var(--ui)">
         <option value="print">ผลลัพธ์ : พิมพ์ / บันทึก PDF</option><option value="word">ผลลัพธ์ : บันทึกเป็น Word (.doc)</option></select>
     </div>
@@ -372,39 +387,53 @@ if (!S.director) S.director = SCHOOL_DEF.director;
 if (!S.head) S.head = SCHOOL_DEF.head;   /* ค่าว่างที่บันทึกไว้เดิมให้ใช้ชื่อหัวหน้าแผนการเรียนตั้งต้น */   /* ค่าที่บันทึกไว้เดิมอาจเป็นค่าว่าง */
 const num = s => S.thaiDigits === "1" ? thNum(s) : String(s ?? "");
 
-/* ═══════════ รายการทดสอบ ═══════════ */
+/* ═══════════ รายการทดสอบ : ๘ สถานี ═══════════
+   เกณฑ์และตารางคะแนนตามระเบียบการทั่วไปและวิธีการสมัครเข้าเป็นนักเรียนเตรียมทหาร (ในส่วนของกองทัพอากาศ)
+   ประจำปีการศึกษา ๒๕๖๕ ผนวก ง · แต่ละสถานีเต็ม ๑๐๐ คะแนน รวม ๘๐๐ · ต่ำกว่าแถวสุดท้ายของตาราง = ไม่ผ่าน
+   tbl = [ค่า, คะแนน] เรียงจากผลดีที่สุดลงไปจนถึงเกณฑ์ผ่าน · ผลที่อยู่ระหว่างช่องได้คะแนนของช่องที่ต่ำกว่า */
+const SRC = "ระเบียบการทั่วไปและวิธีการสมัครเข้าเป็นนักเรียนเตรียมทหาร (ในส่วนของกองทัพอากาศ) ประจำปีการศึกษา ๒๕๖๕ ผนวก ง";
+const steps = (n, f) => Array.from({ length: n }, (_, i) => f(i));
+const r2 = x => Math.round(x * 100) / 100;
 const TESTS = [
-  { k:"pu", n:"ท่าดันพื้น",        sn:"ดันพื้น",   type:"reps", target:100, limit:240, unit:"ครั้ง" },
-  { k:"pl", n:"ท่าดึงข้อ",         sn:"ดึงข้อ",    type:"reps", target:20,  limit:240, unit:"ครั้ง" },
-  { k:"su", n:"ท่าลุก–นั่ง",       sn:"ลุก–นั่ง",  type:"reps", target:100, limit:240, unit:"ครั้ง" },
-  { k:"rl", n:"วิ่ง ๑,๐๐๐ เมตร",   sn:"วิ่ง ๑,๐๐๐ ม.", type:"ms", limit:360, unit:"" },
-  { k:"rs", n:"วิ่ง ๕๐ เมตร",      sn:"วิ่ง ๕๐ ม.",   type:"sec", limit:8,  unit:"วินาที" },
-  /* วิ่งเก็บของ ๑๐ เมตร (Shuttle Run) วัดความคล่องแคล่วว่องไวและการกลับตัว — เกณฑ์ต่างกันตามหน่วยงาน (ราว ๑๒–๑๓ วินาที) */
-  { k:"sh", n:"วิ่งเก็บของ ๑๐ เมตร", sn:"วิ่งเก็บของ", type:"sec", limit:12.4, unit:"วินาที" },
-  /* นั่งงอตัว (Sit and Reach) วัดความอ่อนตัว เป็นเซนติเมตร — ยังไม่กำหนดเกณฑ์ จึงบันทึกผลอย่างเดียว ไม่นับผ่าน/ไม่ผ่าน */
-  { k:"sr", n:"นั่งงอตัวไปข้างหน้า (ความอ่อนตัว)", sn:"นั่งงอตัว", type:"cm", target:null, unit:"ซม." }
+  { k:"sr", n:"นั่งงอตัว", sn:"นั่งงอตัว", type:"cm", hb:true, how:"นั่งเหยียดขา เข่าตึง ก้มตัวไปข้างหน้าให้ไกลที่สุด ค้าง ๒ วินาที",
+    tbl:[[20,100],[19,95],[18,90],[17,85],[16,80],[15,75],[14,70],[13,66],[12,62],[11,58],[10,54],[9,50],[8,45],[7,40],[6,35],[5,30],[4,24],[3,18],[2,12],[1,6]] },
+  { k:"lj", n:"ยืนกระโดดไกล", sn:"ยืนกระโดดไกล", type:"cm", hb:true, how:"ยืนหลังเส้น กระโดดด้วยเท้าทั้งสองข้างพร้อมกัน วัดถึงส้นเท้าที่ใกล้เส้นที่สุด",
+    tbl: steps(50, i => [240 - i, 100 - 2 * i]) },
+  { k:"s3", n:"ลุก–นั่ง (๓๐ วินาที)", sn:"ลุก–นั่ง ๓๐ วิ.", type:"cnt", hb:true, how:"นับจำนวนครั้งที่ทำได้ถูกต้องภายใน ๓๐ วินาที",
+    tbl: steps(20, i => [30 - i, 100 - 5 * i]) },
+  { k:"sh", n:"วิ่งเก็บของ", sn:"วิ่งเก็บของ", type:"sec", dp:2, how:"ระยะ ๑๐ เมตร ไม้ ๒ ท่อน วางหลังเส้น ห้ามโยน",
+    tbl: steps(25, i => [r2(10 + i / 10), 100 - 4 * i]) },
+  { k:"rs", n:"วิ่ง ๕๐ เมตร", sn:"วิ่ง ๕๐ ม.", type:"sec", dp:2, how:"ออกตัวจากท่ายืน จับเวลาถึงเส้นชัย",
+    tbl: [[6.2,100],[6.3,98],[6.4,96],[6.5,94],[6.6,92],[6.7,90],[6.8,88],[6.9,84]].concat(steps(20, i => [r2(7 + i / 10), 80 - 4 * i])) },
+  { k:"pl", n:"ดึงข้อราวเดี่ยว", sn:"ดึงข้อ", type:"cnt", hb:true, how:"นับครั้งที่คางพ้นราวและเหยียดแขนสุดทุกครั้ง",
+    tbl: steps(20, i => [20 - i, 100 - 5 * i]) },
+  /* ตารางต้นฉบับข้ามจาก ๔.๒๘ (๓๔ คะแนน) ไป ๕.๐๐ (๓๒ คะแนน) — ใช้ตามต้นฉบับ */
+  { k:"rl", n:"วิ่ง ๑,๐๐๐ เมตร", sn:"วิ่ง ๑,๐๐๐ ม.", type:"ms", how:"จับเวลาเป็น นาที.วินาที",
+    tbl: steps(34, i => [202 + 2 * i, 100 - 2 * i]).concat(steps(12, i => [300 + 2 * i, 32 - 2 * i])) },
+  { k:"sw", n:"ว่ายน้ำ ๕๐ เมตร", sn:"ว่ายน้ำ ๕๐ ม.", type:"sec", dp:0, how:"ว่ายท่าใดก็ได้ จับเวลาถึงปลายสระ",
+    tbl: steps(36, i => [35 + i, 100 - 2 * i]).concat([[72,28],[74,26],[76,24],[78,22],[80,20]]) }
 ];
 const TB = Object.fromEntries(TESTS.map(t => [t.k, t]));
-/** รายการที่มีเกณฑ์ผ่าน — ใช้นับ “ผ่าน … จาก …” */
-const NS = TESTS.filter(t => t.type !== "cm" || t.target != null).length;
+const NS = TESTS.length;
+const FULL = NS * 100;
 
-/* เวลา : "3:20" หรือ "3.20" → 200 วินาที */
+/* เวลา : "3.22" หรือ "3:22" → 202 วินาที · "5.2" = ๕ นาที ๒๐ วินาที */
 function parseMS(s){
   s = String(s ?? "").trim();
   if (!s) return null;
   const m = s.match(/^(\d{1,3})[:.](\d{1,2})$/);
-  if (m){ const mm = +m[1], ss = +m[2]; return ss > 59 ? null : mm * 60 + ss; }
+  if (m){ const mm = +m[1], ss = m[2].length === 1 ? +m[2] * 10 : +m[2]; return ss > 59 ? null : mm * 60 + ss; }
   if (/^\d{1,4}$/.test(s)) return +s;      // ใส่เป็นวินาทีล้วนก็ได้
   return null;
 }
-const fmtMS = v => v == null ? "" : `${Math.floor(v / 60)}:${String(Math.round(v % 60)).padStart(2, "0")}`;
+const fmtMS = v => v == null ? "" : `${Math.floor(v / 60)}.${String(Math.round(v % 60)).padStart(2, "0")}`;
 function parseSec(s){
   s = String(s ?? "").trim();
   if (!s) return null;
   const v = Number(s.replace(",", "."));
   return isFinite(v) && v > 0 ? v : null;
 }
-const fmtSec = v => v == null ? "" : (Math.round(v * 10) / 10).toFixed(1);
+const fmtSec = (v, dp) => v == null ? "" : Number(v).toFixed(dp == null ? 2 : dp);
 /* ระยะ (ซม.) ติดลบได้ ถ้าปลายนิ้วไม่ถึงปลายเท้า */
 function parseCm(s){
   s = String(s ?? "").trim();
@@ -413,54 +442,39 @@ function parseCm(s){
   return isFinite(v) ? v : null;
 }
 const fmtCm = v => v == null ? "" : String(Math.round(v * 10) / 10);
-/** แสดงค่าตามชนิดรายการ */
-const fmtT = (t, x) => t.type === "ms" ? fmtMS(x) : t.type === "sec" ? fmtSec(x) : t.type === "cm" ? fmtCm(x) : String(Math.round(x));
-/** เกณฑ์แบบสั้นสำหรับหัวตาราง */
-const critShort = t => t.type === "ms" ? "ไม่เกิน " + num(fmtMS(t.limit)) + " น."
-  : t.type === "sec" ? "ไม่เกิน " + num(t.limit) + " วิ."
-  : t.type === "cm" ? (t.target != null ? "ไม่น้อยกว่า " + num(t.target) + " ซม." : "บันทึกผล")
-  : num(t.target) + " " + t.unit;
-const unitLabel = t => t.type === "ms" ? "นาที:วินาที" : t.type === "sec" ? "วินาที" : t.type === "cm" ? "เซนติเมตร" : t.unit;
 const parseInt0 = s => { const v = parseInt(String(s ?? "").trim(), 10); return isFinite(v) && v >= 0 ? v : null; };
-
+const parseFor = (t, s) => t.type === "cnt" ? parseInt0(s) : t.type === "cm" ? parseCm(s) : t.type === "sec" ? parseSec(s) : parseMS(s);
+/** แสดงค่าตามชนิดรายการ */
+const fmtT = (t, x) => x == null ? "" : t.type === "ms" ? fmtMS(x) : t.type === "sec" ? fmtSec(x, t.dp) : t.type === "cm" ? fmtCm(x) : String(Math.round(x));
+const unitShort = t => ({ cm:"ซม.", cnt:"ครั้ง", sec:"วิ.", ms:"น." })[t.type];
+const unitWord  = t => ({ cm:"เซนติเมตร", cnt:"ครั้ง", sec:"วินาที", ms:"นาที" })[t.type];
+const unitLabel = t => ({ cm:"เซนติเมตร", cnt:"ครั้ง", sec:"วินาที", ms:"นาที.วินาที" })[t.type];
+const passLim = t => t.tbl[t.tbl.length - 1][0];
 /** ข้อความเกณฑ์ */
-const critText = t => t.type === "reps" ? `${num(t.target)} ${t.unit} ภายใน ${num(fmtMS(t.limit))} นาที`
-  : t.type === "ms" ? `ภายใน ${num(fmtMS(t.limit))} นาที`
-  : t.type === "cm" ? (t.target != null ? `ไม่น้อยกว่า ${num(t.target)} ซม.` : "บันทึกผล (ยังไม่กำหนดเกณฑ์)")
-  : `ภายใน ${num(t.limit)} วินาที`;
+const fullText = t => `${num(fmtT(t, t.tbl[0][0]))} ${unitWord(t)}`;
+const critText = t => `${t.hb ? "ไม่น้อยกว่า" : "ไม่เกิน"} ${num(fmtT(t, passLim(t)))} ${unitWord(t)}`;
+const critShort = t => `ผ่าน ${t.hb ? "≥" : "≤"} ${num(fmtT(t, passLim(t)))} ${unitShort(t)}`;
 
+/** ค่าที่บันทึก (ครั้งเก็บใน r ที่เหลือเก็บใน t) */
+const valOf = (t, c) => !c ? null : (t.type === "cnt" ? c.r : c.t) ?? null;
+/** คะแนนของสถานี ๐–๑๐๐ · ๐ = ไม่ผ่าน · null = ยังไม่มีผล */
+function ptsOf(t, x){
+  if (x == null) return null;
+  for (const [v, p] of t.tbl) if (t.hb ? x >= v - 1e-9 : x <= v + 1e-9) return p;
+  return 0;
+}
+const ptsC = (t, c) => ptsOf(t, valOf(t, c));
 /** ผ่านหรือไม่ · null = ยังไม่มีข้อมูล */
-function passOf(t, v){
-  if (!v) return null;
-  if (t.type === "reps"){
-    if (v.r == null && v.t == null) return null;
-    if (v.t != null && v.r == null) return v.t <= t.limit;          // ระบุเฉพาะเวลาที่ทำครบ
-    if (v.r == null) return null;
-    return v.r >= t.target && (v.t == null || v.t <= t.limit);
-  }
-  if (t.type === "cm") return v.t == null || t.target == null ? null : v.t >= t.target;
-  if (v.t == null) return null;
-  return v.t <= t.limit;
-}
-/** ค่าที่ใช้เทียบแนวโน้ม + ทิศทางที่ดี */
-function trendVal(t, v){
-  if (!v) return null;
-  if (t.type === "reps") return v.r != null ? v.r : null;
-  return v.t != null ? v.t : null;
-}
-const higherBetter = t => t.type === "reps" || t.type === "cm";
+function passOf(t, c){ const p = ptsC(t, c); return p == null ? null : p > 0; }
+const trendVal = (t, c) => valOf(t, c);
+const higherBetter = t => !!t.hb;
 /** แสดงผลเป็นข้อความ */
-function showVal(t, v){
-  if (!v) return "";
-  if (t.type === "reps"){
-    const a = v.r != null ? num(v.r) + " " + t.unit : "";
-    const b = v.t != null ? num(fmtMS(v.t)) + " น." : "";
-    return [a, b].filter(Boolean).join(" · ");
-  }
-  if (t.type === "ms") return v.t != null ? num(fmtMS(v.t)) + " น." : "";
-  if (t.type === "cm") return v.t != null ? num(fmtCm(v.t)) + " ซม." : "";
-  return v.t != null ? num(fmtSec(v.t)) + " วิ." : "";
+function showVal(t, c){
+  const x = valOf(t, c);
+  return x == null ? "" : num(fmtT(t, x)) + " " + unitShort(t);
 }
+const allPass = sc => sc.done > 0 && sc.pass === sc.done;
+const sameEps = t => t.type === "sec" ? 0.005 : 0.5;
 
 /* ═══════════ ข้อมูล ═══════════ */
 const KEY = "nk_fit_v1";
@@ -525,13 +539,14 @@ const prevRound = () => { const i = roundIdx(F.cur); return i > 0 ? F.rounds[i -
 function sortRounds(){
   F.rounds.sort((a, b) => (a.date || "").localeCompare(b.date || ""));
 }
-/** จำนวนรายการที่ผ่านของนักเรียนในรอบหนึ่ง */
+/** ผลรวมของนักเรียนในรอบหนึ่ง : ผ่านกี่สถานี จากที่ทดสอบกี่สถานี และคะแนนรวม */
 function scoreOf(rid, sid){
   const v = getRes(rid, sid);
-  let p = 0, done = 0;
-  TESTS.forEach(t => { const r = passOf(t, v && v[t.k]); if (r !== null){ done++; if (r) p++; } });
-  return { pass: p, done };
+  let p = 0, done = 0, pts = 0;
+  TESTS.forEach(t => { const x = ptsC(t, v && v[t.k]); if (x !== null){ done++; pts += x; if (x > 0) p++; } });
+  return { pass: p, done, pts };
 }
+const scCell = sc => sc.done ? `${num(sc.pass)}/${num(sc.done)}` : "—";
 
 /* ═══════════ วาดหน้าจอ ═══════════ */
 function renderRounds(){
@@ -552,34 +567,29 @@ function renderGrid(){
   const rid = F.cur;
   const head = `<thead><tr>
     <th class="no">ที่</th><th class="nm">ชื่อ–สกุล / ห้อง</th>
-    ${TESTS.map((t, i) => t.type === "reps"
-      ? `<th class="${i ? "sep" : "sep"}">${esc(t.sn)}<small>${num(t.target)} ${t.unit}</small></th><th>เวลาที่ทำครบ<small>ไม่เกิน ${num(fmtMS(t.limit))} น.</small></th>`
-      : `<th class="sep">${esc(t.sn)}<small>${critShort(t)}</small></th>`).join("")}
-    <th class="sep">ผ่าน</th></tr></thead>`;
+    ${TESTS.map((t, i) => `<th class="sep">${num(i + 1)}. ${esc(t.sn)}<small>${critShort(t)}</small></th>`).join("")}
+    <th class="sep">ผ่าน</th><th>คะแนนรวม<small>เต็ม ${num(FULL)}</small></th></tr></thead>`;
   const body = F.students.map((s, i) => {
     const v = getRes(rid, s.id) || {};
     const cells = TESTS.map(t => {
-      const cur = v[t.k] || {};
-      const p = passOf(t, v[t.k]);
-      const cls = p === true ? "pass" : p === false ? "fail" : "";
-      if (t.type === "reps"){
-        return `<td class="sep ${cls}"><input data-s="${s.id}" data-t="${t.k}" data-f="r" type="text" inputmode="numeric" value="${cur.r != null ? cur.r : ""}" placeholder="ครั้ง" aria-label="${esc(t.sn)} จำนวนครั้ง ${esc(s.name || "เลขที่ " + (i + 1))}"></td>
-                <td class="${cls}"><input data-s="${s.id}" data-t="${t.k}" data-f="t" type="text" inputmode="text" value="${cur.t != null ? fmtMS(cur.t) : ""}" placeholder="ม:วิ" aria-label="${esc(t.sn)} เวลาที่ทำครบ"></td>`;
-      }
-      const val = cur.t != null ? (t.type === "ms" ? fmtMS(cur.t) : t.type === "cm" ? fmtCm(cur.t) : fmtSec(cur.t)) : "";
-      return `<td class="sep ${cls}"><input data-s="${s.id}" data-t="${t.k}" data-f="t" type="text" value="${val}" placeholder="${t.type === "ms" ? "ม:วิ" : t.type === "cm" ? "ซม." : "วินาที"}" aria-label="${esc(t.n)}"></td>`;
+      const c = v[t.k], x = valOf(t, c), p = ptsOf(t, x);
+      const cls = p == null ? "" : p > 0 ? "pass" : "fail";
+      return `<td class="sep ${cls}"><input data-s="${s.id}" data-t="${t.k}" data-f="${t.type === "cnt" ? "r" : "t"}" type="text"
+        inputmode="${t.type === "cnt" ? "numeric" : "decimal"}" value="${x != null ? fmtT(t, x) : ""}" placeholder="${t.type === "ms" ? "น.วิ" : unitShort(t)}"
+        aria-label="${esc(t.n)} ${esc(s.name || "เลขที่ " + (i + 1))}"><small class="pt">${p == null ? "&nbsp;" : p > 0 ? num(p) + " คะแนน" : "ไม่ผ่าน"}</small></td>`;
     }).join("");
     const sc = scoreOf(rid, s.id);
-    const scCls = sc.done === 0 ? "i" : sc.pass === NS ? "g" : sc.pass >= 3 ? "w" : "r";
+    const scCls = sc.done === 0 ? "i" : allPass(sc) ? "g" : sc.done - sc.pass <= 2 ? "w" : "r";
     return `<tr>
       <td class="no">${num(i + 1)}</td>
       <td class="nm"><input class="nameinp" data-s="${s.id}" data-f="name" type="text" value="${esc(s.name)}" placeholder="ชื่อ–สกุล" aria-label="ชื่อนักเรียนเลขที่ ${i + 1}">
         <input class="nameinp" data-s="${s.id}" data-f="cls" type="text" value="${esc(s.cls)}" placeholder="ห้อง" style="margin-top:.15rem;font-size:.76rem" aria-label="ห้อง"></td>
       ${cells}
-      <td class="sc sep ${scCls}">${sc.done ? num(sc.pass) + " / " + num(NS) : "—"}</td></tr>`;
+      <td class="sc sep ${scCls}">${scCell(sc)}</td><td class="sc">${sc.done ? num(sc.pts) : "—"}</td></tr>`;
   }).join("");
   $("#grid").innerHTML = head + `<tbody>${body}</tbody>`;
-  $("#critLine").innerHTML = "เกณฑ์ผ่าน — " + TESTS.map(t => `<b>${esc(t.n)}</b> ${critText(t)}`).join(" · ");
+  $("#critLine").innerHTML = "เกณฑ์ผ่าน — " + TESTS.map((t, i) => `<b>${num(i + 1)}. ${esc(t.n)}</b> ${critText(t)} (เต็ม ${fullText(t)})`).join(" · ")
+    + `<br>ที่มา : ${SRC} · ผลที่อยู่ระหว่างช่องในตารางคะแนนได้คะแนนของช่องที่ต่ำกว่า · สถานีที่ไม่ได้ทดสอบให้เว้นว่าง`;
 
   $("#grid").querySelectorAll("input").forEach(el => el.addEventListener("change", e => {
     const { s, t, f } = e.target.dataset;
@@ -588,11 +598,7 @@ function renderGrid(){
       if (st){ st[f] = e.target.value; save(); renderAll(); }
       return;
     }
-    const T = TB[t];
-    let val;
-    if (f === "r") val = parseInt0(e.target.value);
-    else val = T.type === "sec" ? parseSec(e.target.value) : T.type === "cm" ? parseCm(e.target.value) : parseMS(e.target.value);
-    setRes(F.cur, s, t, f, val);
+    setRes(F.cur, s, t, f, parseFor(TB[t], e.target.value));
     renderAll();
   }));
 }
@@ -602,25 +608,24 @@ function renderCards(){
   $("#cards").innerHTML = F.students.map((s, i) => {
     const v = getRes(rid, s.id), pv = prev ? getRes(prev.id, s.id) : null;
     const sc = scoreOf(rid, s.id);
-    const scCls = sc.done === 0 ? "flat" : sc.pass === NS ? "up" : sc.pass >= 3 ? "" : "down";
+    const scCls = sc.done === 0 ? "flat" : allPass(sc) ? "up" : sc.done - sc.pass <= 2 ? "" : "down";
     const items = TESTS.map(t => {
       const now = trendVal(t, v && v[t.k]), old = pv ? trendVal(t, pv[t.k]) : null;
       let tr = `<span class="tr flat">—</span>`;
       if (now != null && old != null){
         const d = now - old;
         const better = higherBetter(t) ? d > 0 : d < 0;
-        const same = Math.abs(d) < (t.type === "sec" ? 0.05 : 0.5);
-        const txt = fmtT(t, Math.abs(d));
+        const same = Math.abs(d) < sameEps(t);
         tr = same ? `<span class="tr flat">▬ คงที่</span>`
-          : `<span class="tr ${better ? "up" : "down"}">${better ? "▲" : "▼"} ${num(txt)}</span>`;
+          : `<span class="tr ${better ? "up" : "down"}">${better ? "▲" : "▼"} ${num(fmtT(t, Math.abs(d)))}</span>`;
       }
-      const p = passOf(t, v && v[t.k]);
+      const p = ptsC(t, v && v[t.k]);
       return `<div class="it"><span>${esc(t.sn)}</span>
-        <span class="val ${p === true ? "up" : p === false ? "down" : "flat"}">${showVal(t, v && v[t.k]) || "—"}</span>${tr}</div>`;
+        <span class="val ${p == null ? "flat" : p > 0 ? "up" : "down"}">${showVal(t, v && v[t.k]) || "—"}${p != null ? ` · ${p > 0 ? num(p) + " คะแนน" : "ไม่ผ่าน"}` : ""}</span>${tr}</div>`;
     }).join("");
     return `<article class="card">
       <div class="ch"><b>${num(i + 1)}. ${esc(s.name || "— ยังไม่ระบุชื่อ —")}</b>
-        <span class="sc ${scCls}">${sc.done ? num(sc.pass) + "/" + num(NS) : "—"}</span></div>
+        <span class="sc ${scCls}">${sc.done ? `${num(sc.pts)} คะแนน · ผ่าน ${scCell(sc)}` : "—"}</span></div>
       <div class="items">${items}</div>
       <textarea class="cmt" data-cmt="${s.id}" placeholder="ความเห็นของครูผู้ฝึก (จะไปปรากฏในรายงานถึงผู้ปกครอง)">${esc(F.cmt[s.id] || "")}</textarea></article>`;
   }).join("");
@@ -640,19 +645,17 @@ function renderKPI(){
   const c = curRound(), d = c.date ? dObj(c.date) : null;
   $("#kRoundSub").textContent = d && !isNaN(d) ? `ครั้ง · ดูครั้งที่ ${num(roundIdx(F.cur) + 1)} (${num(thDateA(d))})` : "ครั้ง";
   const scores = F.students.map(s => scoreOf(rid, s.id)).filter(x => x.done > 0);
-  const full = scores.filter(x => x.pass === NS).length;
-  const low = scores.filter(x => x.pass < 2).length;
-  $("#kFull").textContent = scores.length ? num(full) : "—";
+  $("#kFull").textContent = scores.length ? num(scores.filter(allPass).length) : "—";
   $("#kFullSub").textContent = scores.length ? `คน · จากที่ทดสอบแล้ว ${num(scores.length)} คน` : "คน · ยังไม่มีผล";
-  $("#kAvg").textContent = scores.length ? num((scores.reduce((a, x) => a + x.pass, 0) / scores.length).toFixed(1)) : "—";
-  $("#kAvgSub").textContent = `รายการ จาก ${num(NS)} · รอบล่าสุด`;
+  $("#kAvg").textContent = scores.length ? num(Math.round(scores.reduce((a, x) => a + x.pts, 0) / scores.length)) : "—";
+  $("#kAvgSub").textContent = `คะแนน จากเต็ม ${num(FULL)} · รอบที่เลือก`;
   let up = 0;
   if (prev) F.students.forEach(s => {
     const a = scoreOf(prev.id, s.id), b = scoreOf(rid, s.id);
-    if (a.done && b.done && b.pass > a.pass) up++;
+    if (a.done && b.done && b.pts > a.pts) up++;
   });
   $("#kUp").textContent = prev ? num(up) : "—";
-  $("#kLow").textContent = scores.length ? num(low) : "—";
+  $("#kLow").textContent = scores.length ? num(scores.filter(x => x.pass < x.done).length) : "—";
   $("#selStu").innerHTML = F.students.map((s, i) => `<option value="${s.id}">${num(i + 1)}. ${esc(s.name || "— ยังไม่ระบุชื่อ —")}</option>`).join("");
 }
 
@@ -792,79 +795,64 @@ p{margin:0}.WordSection1.sheet{line-height:1.15}.sheet h1{font-size:17pt;margin:
   setTimeout(() => URL.revokeObjectURL(a.href), 4000);
 }
 
-/** รายงานพัฒนาการรายบุคคล ๑ หน้า */
+const miniHead = () => `<p class="sub" style="font-size:12pt">${esc(S.school)} · ${esc(S.plan)}</p>`;
+/** ค่าและคะแนนในช่องตาราง : “ค่า” บรรทัดบน “คะแนน” บรรทัดล่าง */
+function vpCell(t, c, opt){
+  const x = valOf(t, c), p = ptsOf(t, x);
+  if (x == null) return `<td class="c">—</td>`;
+  return `<td class="c${p > 0 && opt !== "plain" ? " g" : ""}">${num(fmtT(t, x))}<br><small>${p > 0 ? num(p) : "ไม่ผ่าน"}</small></td>`;
+}
+const verdictOf = sc => !sc.done ? "ยังไม่มีผลทดสอบ"
+  : allPass(sc) ? (sc.done === NS ? "ผ่านเกณฑ์ครบทั้ง ๘ สถานี" : `ผ่านเกณฑ์ทุกสถานีที่ทดสอบ (${num(sc.done)} สถานี)`)
+  : sc.done - sc.pass <= 2 ? "ผ่านเกณฑ์เป็นส่วนใหญ่ ควรเน้นสถานีที่ยังไม่ผ่านเป็นพิเศษ"
+  : "ยังไม่ผ่านเกณฑ์หลายสถานี ต้องเพิ่มความถี่ในการฝึกและติดตามอย่างใกล้ชิด";
+
+/** รายงานพัฒนาการรายบุคคล ๑ หน้า (แจ้งผู้ปกครอง) */
 function pageFor(s, i){
   const rows = F.rounds.map((r, ri) => {
-    const v = getRes(r.id, s.id);
-    const d = r.date ? dObj(r.date) : null;
-    const prev = ri > 0 ? getRes(F.rounds[ri - 1].id, s.id) : null;
-    const cells = TESTS.map(t => {
-      const txt = showVal(t, v && v[t.k]);
-      const p = passOf(t, v && v[t.k]);
-      let arrow = "";
-      const now = trendVal(t, v && v[t.k]), old = prev ? trendVal(t, prev[t.k]) : null;
-      if (now != null && old != null){
-        const dd = now - old;
-        const same = Math.abs(dd) < (t.type === "sec" ? 0.05 : 0.5);
-        arrow = same ? " ▬" : ((higherBetter(t) ? dd > 0 : dd < 0) ? " ▲" : " ▼");
-      }
-      return `<td class="c">${txt ? (p ? "<span class='P'>" + txt + "</span>" : txt) + arrow : "—"}</td>`;
-    }).join("");
-    const sc = scoreOf(r.id, s.id);
-    return `<tr><td class="c">ครั้งที่ ${num(ri + 1)}<br>${d && !isNaN(d) ? num(thDateA(d)) : ""}</td>${cells}
-      <td class="c">${sc.done ? num(sc.pass) + "/" + num(NS) : "—"}</td></tr>`;
+    const v = getRes(r.id, s.id), d = r.date ? dObj(r.date) : null, sc = scoreOf(r.id, s.id);
+    return `<tr><td class="c">ครั้งที่ ${num(ri + 1)}<br><small>${d && !isNaN(d) ? num(thDateA(d)) : ""}</small></td>
+      ${TESTS.map(t => vpCell(t, v && v[t.k])).join("")}
+      <td class="c">${scCell(sc)}</td><td class="c"><b>${sc.done ? num(sc.pts) : "—"}</b></td></tr>`;
   }).join("");
 
-  // สรุปพัฒนาการ — เทียบเฉพาะรอบที่นักเรียนคนนี้มีผลจริง
   const done = F.rounds.filter(r => { const v = getRes(r.id, s.id); return v && Object.keys(v).length; });
-  const first = done[0] || F.rounds[0];
-  const last  = done[done.length - 1] || F.rounds[0];
-  const fi = F.rounds.findIndex(r => r.id === first.id) + 1;
-  const li = F.rounds.findIndex(r => r.id === last.id) + 1;
-  const devs = TESTS.map(t => {
-    const a = done.length ? trendVal(t, getRes(first.id, s.id)?.[t.k]) : null;
-    const b = done.length ? trendVal(t, getRes(last.id, s.id)?.[t.k]) : null;
-    if (a == null || b == null || done.length < 2)
-      return `<tr><td>${esc(t.n)}</td><td class="c">${a != null ? num(fmtT(t, a)) : "—"}</td>
-        <td class="c">${b != null ? num(fmtT(t, b)) : "—"}</td>
-        <td class="c">${done.length < 2 ? "ต้องมีผลอย่างน้อย ๒ รอบ" : "ยังไม่มีข้อมูลรายการนี้"}</td></tr>`;
-    const d = b - a, better = higherBetter(t) ? d > 0 : d < 0;
-    const same = Math.abs(d) < (t.type === "sec" ? 0.05 : 0.5);
-    const fmt = x => fmtT(t, x);
-    return `<tr><td>${esc(t.n)}</td><td class="c">${num(fmt(a))}</td><td class="c">${num(fmt(b))}</td>
-      <td class="c">${same ? "คงที่" : (better ? "ดีขึ้น " : "ลดลง ") + num(fmt(Math.abs(d)))}</td></tr>`;
+  const first = done[0] || F.rounds[0], last = done[done.length - 1] || F.rounds[0];
+  const fi = F.rounds.findIndex(r => r.id === first.id) + 1, li = F.rounds.findIndex(r => r.id === last.id) + 1;
+  const devs = TESTS.map((t, k) => {
+    const ca = getRes(first.id, s.id)?.[t.k], cb = getRes(last.id, s.id)?.[t.k];
+    const a = valOf(t, ca), b = valOf(t, cb), pa = ptsOf(t, a), pb = ptsOf(t, b);
+    const cell = (x, p) => x == null ? "—" : `${num(fmtT(t, x))} ${unitShort(t)} (${p > 0 ? num(p) : "ไม่ผ่าน"})`;
+    let dev = done.length < 2 ? "ต้องมีผล ๒ ครั้ง" : "—";
+    if (done.length >= 2 && a != null && b != null){
+      const dp = pb - pa, dd = b - a;
+      dev = Math.abs(dd) < sameEps(t) ? "คงที่" : ((higherBetter(t) ? dd > 0 : dd < 0) ? "ดีขึ้น " : "ลดลง ") + num(fmtT(t, Math.abs(dd))) + (dp ? ` (${dp > 0 ? "+" : "−"}${num(Math.abs(dp))} คะแนน)` : "");
+    }
+    return `<tr><td>${num(k + 1)}. ${esc(t.n)}</td><td class="c">${critText(t)}</td><td class="c">${cell(a, pa)}</td><td class="c">${cell(b, pb)}</td><td class="c">${dev}</td></tr>`;
   }).join("");
-
   const scL = scoreOf(last.id, s.id);
-  const devHead = done.length >= 2 ? `จากครั้งที่ ${num(fi)} ถึงครั้งที่ ${num(li)}`
-    : done.length === 1 ? `มีผลเพียงครั้งที่ ${num(li)} รอบเดียว` : "ยังไม่มีผลทดสอบ";
-  const verdict = !scL.done ? "ยังไม่มีผลทดสอบ"
-    : scL.pass === NS ? "ผ่านเกณฑ์ครบทุกรายการ อยู่ในระดับพร้อมสอบ"
-    : scL.pass >= 3 ? "ผ่านเกณฑ์เป็นส่วนใหญ่ ควรเน้นรายการที่ยังไม่ผ่านเป็นพิเศษ"
-    : "ยังผ่านเกณฑ์น้อยกว่าครึ่ง ต้องเพิ่มความถี่ในการฝึกและติดตามอย่างใกล้ชิด";
+  const devHead = done.length >= 2 ? `เทียบครั้งที่ ${num(fi)} กับครั้งที่ ${num(li)}` : done.length === 1 ? `มีผลเพียงครั้งที่ ${num(li)} ครั้งเดียว` : "ยังไม่มีผลทดสอบ";
 
-  return `<div class="page">
+  return `<div class="page fitrep">
     ${orgHead()}
-    <h1>รายงานผลการทดสอบสมรรถภาพร่างกาย</h1>
+    <h1>รายงานผลการทดสอบสมรรถภาพทางกาย ๘ สถานี</h1>
     <p class="sub">แจ้งผู้ปกครองเพื่อทราบ · ปีการศึกษา ${num(S.year)}</p>
-    <p style="margin-top:2mm"><b>ชื่อ–สกุลนักเรียน</b>&nbsp; ${esc(s.name || "…………………………………………………")}
+    <p style="margin-top:1.5mm"><b>ชื่อ–สกุลนักเรียน</b>&nbsp; ${esc(s.name || "…………………………………………………")}
       &nbsp;&nbsp;<b>เลขที่</b> ${num(i + 1)} &nbsp;&nbsp;<b>ชั้น</b> ${esc(s.cls || "…………")}</p>
-    <p style="margin-top:2mm"><b>ผลการทดสอบแต่ละรอบ</b> (▲ ดีขึ้น · ▬ คงที่ · ▼ ลดลง เทียบรอบก่อนหน้า · ตัวหนา = ผ่านเกณฑ์)</p>
-    <table><thead><tr><th style="width:24mm">รอบ / วันที่</th>
-      ${TESTS.map(t => `<th>${esc(t.sn)}</th>`).join("")}<th style="width:16mm">ผ่าน</th></tr></thead>
+    <p style="margin-top:1.5mm"><b>ผลแต่ละครั้ง</b> (บรรทัดบน = ผลที่ทำได้ · บรรทัดล่าง = คะแนนเต็ม ๑๐๐ · ช่องสีเขียว = ผ่านเกณฑ์)</p>
+    <table class="rep"><thead><tr><th style="width:17mm">ครั้ง</th>
+      ${TESTS.map((t, k) => `<th>${num(k + 1)}. ${esc(t.sn)}<br><small>${unitShort(t)}</small></th>`).join("")}<th style="width:11mm">ผ่าน</th><th style="width:13mm">รวม<br><small>/${num(FULL)}</small></th></tr></thead>
       <tbody>${rows}</tbody></table>
-    <p style="margin-top:2mm"><b>สรุปพัฒนาการ</b> ${esc(devHead)}</p>
-    <table><thead><tr><th>รายการทดสอบ</th><th style="width:26mm">ครั้งที่ ${num(fi)}</th><th style="width:26mm">ครั้งที่ ${num(li)}</th><th style="width:38mm">พัฒนาการ</th></tr></thead>
+    <p style="margin-top:1.5mm"><b>สรุปรายสถานี</b> ${esc(devHead)}</p>
+    <table class="rep"><thead><tr><th>สถานี</th><th style="width:40mm">เกณฑ์ผ่าน</th><th style="width:30mm">ครั้งที่ ${num(fi)}</th><th style="width:30mm">ครั้งที่ ${num(li)}</th><th style="width:38mm">พัฒนาการ</th></tr></thead>
       <tbody>${devs}</tbody></table>
-    <div class="box"><div class="bt">ความเห็นของครูผู้ฝึก</div>
-      ${esc(F.cmt[s.id] || "") || "…………………………………………………………………………………………………………………………………………………………"}
-      <div style="margin-top:1.5mm">ผลครั้งที่ ${num(li)} ผ่าน ${scL.done ? num(scL.pass) + " จาก " + num(NS) : "—"} รายการ · ${verdict}</div>
-    </div>
-    <div class="lines"><b>ความเห็นของผู้ปกครอง</b><br>…………………………………………………………………………………………………………………………<br>…………………………………………………………………………………………………………………………</div>
+    <div class="box"><div class="bt">สรุปผลครั้งที่ ${num(li)} : คะแนนรวม ${scL.done ? num(scL.pts) + " จาก " + num(FULL) : "—"} · ผ่าน ${scCell(scL)} สถานี · ${verdictOf(scL)}</div>
+      <b>ความเห็นของครูผู้ฝึก</b> ${esc(F.cmt[s.id] || "") || "…………………………………………………………………………………………………………………………………………"}</div>
+    <div class="lines"><b>ความเห็นของผู้ปกครอง</b> ……………………………………………………………………………………………………………………</div>
     ${sig([{ role:"ครูผู้ควบคุมการทดสอบ" },
            { role:"หัวหน้าแผนการเรียนเตรียมทหาร–ตำรวจ", name:S.head },
            { role:"ผู้ปกครอง", sub:"ลงนามรับทราบ" }])}
-    <p class="foot">เกณฑ์ในรายงานนี้เป็นเกณฑ์เป้าหมายของแผนการเรียน สำหรับการสอบคัดเลือกจริงให้ยึดระเบียบการฉบับทางการของแต่ละเหล่าในปีที่สอบ · ข้อมูลสุขภาพและสมรรถภาพเป็นข้อมูลส่วนบุคคล โรงเรียนเปิดเผยเฉพาะต่อผู้ปกครองของนักเรียนผู้นั้น</p>
+    <p class="foot">เกณฑ์และคะแนนตาม${SRC} · สถานีละ ๑๐๐ คะแนน ต่ำกว่าเกณฑ์ผ่านถือว่าไม่ผ่าน · ข้อมูลสมรรถภาพเป็นข้อมูลส่วนบุคคล โรงเรียนเปิดเผยเฉพาะต่อผู้ปกครองของนักเรียนผู้นั้น</p>
   </div>`;
 }
 
@@ -878,75 +866,54 @@ $("#prOne").onclick = () => {
 $("#prAll").onclick = () => {
   const list = F.students.filter(s => s.name.trim());
   if (!list.length) return alert("ยังไม่ได้กรอกชื่อนักเรียน — กรอกในขั้นที่ ๑ หรือขั้นที่ ๓ ก่อน");
+  sheetEl.dataset.file = "รายงานผลสมรรถภาพถึงผู้ปกครอง ทุกคน";
   sheetEl.innerHTML = F.students.map((s, i) => s.name.trim() ? pageFor(s, i) : "").join("");
   doPrint();
 };
+
+/** สรุปผลทั้งห้องของรอบที่เลือก */
 $("#prClass").onclick = () => {
   const r = curRound(), d = r.date ? dObj(r.date) : null, prev = prevRound();
   const rows = F.students.map((s, i) => {
     const v = getRes(r.id, s.id), sc = scoreOf(r.id, s.id);
-    const cells = TESTS.map(t => {
-      const p = passOf(t, v && v[t.k]), txt = showVal(t, v && v[t.k]);
-      return `<td class="c">${txt ? (p ? "<span class='P'>" + txt + "</span>" : txt) : "—"}</td>`;
-    }).join("");
     let tr = "—";
-    if (prev){
-      const a = scoreOf(prev.id, s.id);
-      if (a.done && sc.done) tr = sc.pass > a.pass ? "▲ ดีขึ้น" : sc.pass < a.pass ? "▼ ลดลง" : "▬ คงที่";
-    }
-    return `<tr><td class="c">${num(i + 1)}</td><td>${esc(s.name || "")}</td><td class="c">${esc(s.cls || "")}</td>
-      ${cells}<td class="c">${sc.done ? num(sc.pass) + "/" + num(NS) : "—"}</td><td class="c">${tr}</td></tr>`;
+    if (prev){ const a = scoreOf(prev.id, s.id); if (a.done && sc.done) tr = sc.pts > a.pts ? "▲ " + num(sc.pts - a.pts) : sc.pts < a.pts ? "▼ " + num(a.pts - sc.pts) : "▬"; }
+    return `<tr><td class="c">${num(i + 1)}</td><td class="nm">${esc(s.name || "")}</td>
+      ${TESTS.map(t => vpCell(t, v && v[t.k])).join("")}<td class="c">${scCell(sc)}</td><td class="c"><b>${sc.done ? num(sc.pts) : "—"}</b></td><td class="c">${tr}</td></tr>`;
+  }).join("");
+  const per = TESTS.map((t, k) => {
+    let p = 0, dn = 0, sum = 0;
+    F.students.forEach(s => { const x = ptsC(t, getRes(r.id, s.id)?.[t.k]); if (x !== null){ dn++; sum += x; if (x > 0) p++; } });
+    return `<tr><td>${num(k + 1)}. ${esc(t.n)}</td><td class="c">${critText(t)}</td><td class="c">${num(p)} / ${num(dn)}</td>
+      <td class="c">${dn ? num(Math.round(p / dn * 100)) + "%" : "—"}</td><td class="c">${dn ? num(Math.round(sum / dn)) : "—"}</td></tr>`;
   }).join("");
   const scores = F.students.map(s => scoreOf(r.id, s.id)).filter(x => x.done > 0);
-  const perTest = TESTS.map(t => {
-    let p = 0, dn = 0;
-    F.students.forEach(s => { const x = passOf(t, getRes(r.id, s.id)?.[t.k]); if (x !== null){ dn++; if (x) p++; } });
-    return `<tr><td>${esc(t.n)}</td><td class="c">${critText(t)}</td><td class="c">${num(p)} / ${num(dn || 0)}</td>
-      <td class="c">${dn ? num(Math.round(p / dn * 100)) + "%" : "—"}</td></tr>`;
-  }).join("");
-  sheetEl.innerHTML = `<div class="page">${orgHead()}
-    <h1>สรุปผลการทดสอบสมรรถภาพร่างกาย</h1>
-    <p class="sub">ครั้งที่ ${num(roundIdx(F.cur) + 1)}${d && !isNaN(d) ? ` · วัน${THDAY[d.getDay()]}ที่ ${num(thDate(d))}` : ""} · นักเรียน ${num(F.students.length)} คน</p>
-    ${r.note ? `<p class="sub">หมายเหตุ ${esc(r.note)}</p>` : ""}
-    <table><thead><tr><th style="width:10mm">ที่</th><th>ชื่อ–สกุล</th><th style="width:16mm">ห้อง</th>
-      ${TESTS.map(t => `<th>${esc(t.sn)}</th>`).join("")}<th style="width:14mm">ผ่าน</th><th style="width:18mm">แนวโน้ม</th></tr></thead>
+  sheetEl.dataset.file = "สรุปผลสมรรถภาพทั้งห้อง ครั้งที่" + (roundIdx(F.cur) + 1);
+  sheetEl.innerHTML = `<div class="page">${miniHead()}
+    <h1>สรุปผลการทดสอบสมรรถภาพทางกาย ๘ สถานี</h1>
+    <p class="sub">ครั้งที่ ${num(roundIdx(F.cur) + 1)}${d && !isNaN(d) ? ` · วัน${THDAY[d.getDay()]}ที่ ${num(thDate(d))}` : ""} · นักเรียน ${num(F.students.length)} คน${r.note ? " · " + esc(r.note) : ""}</p>
+    <table class="cmp"><thead><tr><th style="width:7mm">ที่</th><th>ชื่อ–สกุล</th>
+      ${TESTS.map((t, k) => `<th>${num(k + 1)}. ${esc(t.sn)}<br><small>${unitShort(t)}</small></th>`).join("")}<th style="width:11mm">ผ่าน</th><th style="width:12mm">รวม</th><th style="width:14mm">เทียบครั้งก่อน</th></tr></thead>
       <tbody>${rows}</tbody></table>
-    <p style="margin-top:2mm"><b>สรุปรายรายการ</b></p>
-    <table><thead><tr><th>รายการทดสอบ</th><th style="width:50mm">เกณฑ์ผ่าน</th><th style="width:24mm">ผ่าน / ทดสอบ</th><th style="width:20mm">ร้อยละ</th></tr></thead>
-      <tbody>${perTest}</tbody></table>
+    <p style="font-size:10pt;margin:.6mm 0 0">บรรทัดบน = ผลที่ทำได้ · บรรทัดล่าง = คะแนน (เต็ม ๑๐๐) · ช่องสีเขียว = ผ่านเกณฑ์ · รวมเต็ม ${num(FULL)} คะแนน</p>
+  </div>
+  <div class="page">${orgHead()}
+    <h1>สรุปผลรายสถานี ครั้งที่ ${num(roundIdx(F.cur) + 1)}</h1>
+    <table class="cmp"><thead><tr><th>สถานี</th><th style="width:46mm">เกณฑ์ผ่าน</th><th style="width:26mm">ผ่าน / ทดสอบ</th><th style="width:20mm">ร้อยละ</th><th style="width:26mm">คะแนนเฉลี่ย</th></tr></thead>
+      <tbody>${per}</tbody></table>
     <div class="box"><div class="bt">ภาพรวม</div>
-      ทดสอบแล้ว ${num(scores.length)} คน · ผ่านครบทุกรายการ ${num(scores.filter(x => x.pass === NS).length)} คน ·
-      ผ่านเฉลี่ย ${scores.length ? num((scores.reduce((a, x) => a + x.pass, 0) / scores.length).toFixed(1)) : "—"} จาก ${num(NS)} รายการ ·
-      ต้องเร่งพัฒนา (ผ่านน้อยกว่า ๒ รายการ) ${num(scores.filter(x => x.pass < 2).length)} คน
-    </div>
+      ทดสอบแล้ว ${num(scores.length)} คน · ผ่านทุกสถานีที่ทดสอบ ${num(scores.filter(allPass).length)} คน ·
+      คะแนนรวมเฉลี่ย ${scores.length ? num(Math.round(scores.reduce((a, x) => a + x.pts, 0) / scores.length)) : "—"} จาก ${num(FULL)} ·
+      มีสถานีที่ยังไม่ผ่าน ${num(scores.filter(x => x.pass < x.done).length)} คน</div>
     ${sig([{ role:"ครูผู้ควบคุมการทดสอบ" },
            { role:"หัวหน้าแผนการเรียนเตรียมทหาร–ตำรวจ", name:S.head },
            { role:"ผู้อำนวยการ" + S.school, name:S.director }])}
-  </div>`;
-  doPrint("landscape");
-};
-$("#prBlank").onclick = () => {
-  const r = curRound(), d = r.date ? dObj(r.date) : null;
-  const rows = F.students.map((s, i) => `<tr><td class="c">${num(i + 1)}</td><td>${esc(s.name || "")}</td><td class="c">${esc(s.cls || "")}</td>
-    ${TESTS.map(t => t.type === "reps" ? `<td></td><td></td>` : `<td></td>`).join("")}<td></td></tr>`).join("");
-  sheetEl.innerHTML = `<div class="page">${orgHead()}
-    <h1>ใบบันทึกผลทดสอบสมรรถภาพภาคสนาม</h1>
-    <p class="sub">ครั้งที่ ${num(roundIdx(F.cur) + 1)} · วันที่ ${d && !isNaN(d) ? num(thDate(d)) : "……… / ……… / …………"} · สถานที่ …………………………………………</p>
-    <table class="fieldtbl"><thead>
-      <tr><th rowspan="2" style="width:9mm">ที่</th><th rowspan="2">ชื่อ–สกุล</th><th rowspan="2" style="width:14mm">ห้อง</th>
-        ${TESTS.map(t => t.type === "reps"
-          ? `<th colspan="2">${esc(t.sn)} <span style="font-weight:400">(${num(t.target)} ${t.unit} / ${num(fmtMS(t.limit))} น.)</span></th>`
-          : `<th rowspan="2">${esc(t.sn)}<br><span style="font-weight:400">${critShort(t)}</span></th>`).join("")}
-        <th rowspan="2" style="width:12mm">ผ่าน</th></tr>
-      <tr>${TESTS.filter(t => t.type === "reps").map(() => `<th style="width:14mm">ครั้ง</th><th style="width:16mm">เวลา</th>`).join("")}</tr>
-    </thead><tbody>${rows}</tbody></table>
-    <p class="foot">ท่าดันพื้น ดึงข้อ และลุก–นั่ง ให้บันทึกจำนวนครั้งที่ทำได้ หากทำครบตามเกณฑ์ก่อนหมดเวลาให้บันทึกเวลาที่ทำครบไว้ด้วย · นักเรียนที่มีข้อจำกัดด้านสุขภาพให้งดทดสอบและบันทึกเหตุผลไว้</p>
-    ${sig([{ role:"ครูผู้ควบคุมการทดสอบ" }, { role:"ครูผู้บันทึกผล" }])}
+    <p class="foot">เกณฑ์และคะแนนตาม${SRC}</p>
   </div>`;
   doPrint("landscape");
 };
 
-/* ═══════════ โครงการติวเข้ม : แบบบันทึกก่อน–หลัง และรายงานเปรียบเทียบ ═══════════ */
+/* ═══════════ แบบบันทึกภาคสนาม (ใช้ร่วมกันทั้งใบเปล่าและใบก่อน–หลังโครงการ) ═══════════ */
 const roundOn = d => F.rounds.find(r => r.date === d) || null;
 /** เวลาฝึกสมรรถภาพของวันนั้นจากตารางติว (ถ้ามี) */
 function fitTime(dk){
@@ -958,110 +925,136 @@ function fitTime(dk){
 }
 const fmtOf = (t, x) => x == null ? "" : fmtT(t, x);
 
-/** แบบบันทึกผลภาคสนาม : which = "pre" | "post" */
-function ppSheet(which){
-  const dk = which === "pre" ? PP.pre : PP.post, d = dObj(dk);
-  const preR = roundOn(PP.pre);
-  const tm = fitTime(dk) || (which === "pre" ? PP.preTime : PP.postTime);
-  const prevCell = (s, t, f) => {
-    if (which !== "post" || !preR) return "";
-    const v = getRes(preR.id, s.id), c = v && v[t.k];
-    if (!c || c[f] == null) return "";
-    return `<span class="pv">เดิม ${num(f === "r" ? c.r : fmtOf(t, c.t))}</span>`;
+function fieldSheet(o){
+  const d = o.date ? dObj(o.date) : null;
+  const prevCell = (s, t) => {
+    if (!o.prev) return "";
+    const x = valOf(t, getRes(o.prev.id, s.id)?.[t.k]);
+    return x == null ? "" : `<span class="pv">เดิม ${num(fmtT(t, x))}</span>`;
   };
   const rows = F.students.map((s, i) => `<tr><td class="c">${num(i + 1)}</td><td class="nm">${esc(s.name || "")}</td><td></td>
-    ${TESTS.map(t => t.type === "reps" ? `<td>${prevCell(s, t, "r")}</td><td>${prevCell(s, t, "t")}</td>` : `<td>${prevCell(s, t, "t")}</td>`).join("")}
-    <td></td><td></td></tr>`).join("");
-  sheetEl.dataset.file = which === "pre" ? "แบบบันทึกผลทดสอบสมรรถภาพ ครั้งที่1 ก่อนโครงการ" : "แบบบันทึกผลทดสอบสมรรถภาพ ครั้งที่2 วันสุดท้าย";
-  const label = which === "pre" ? "ครั้งที่ ๑ — ทดสอบก่อนเริ่มโครงการ" : "ครั้งที่ ๒ — ทดสอบหลังจบโครงการ (วันสุดท้าย)";
+    ${TESTS.map(t => `<td>${prevCell(s, t)}</td>`).join("")}<td></td></tr>`).join("");
+  sheetEl.dataset.file = o.file;
   sheetEl.innerHTML = `<div class="page ppdoc">
-    <p class="sub" style="font-size:12pt">${esc(S.school)} · ${esc(S.plan)} · ${esc(PP.name)}</p>
-    <h1>แบบบันทึกผลการทดสอบสมรรถภาพทางกาย &nbsp;<span style="font-weight:400;font-size:15pt">${label}</span></h1>
-    <p class="sub">วัน${THDAY[d.getDay()]}ที่ ${num(thDate(d))} · เวลา ${tm ? num(tm) + " น." : "………………… น."} · สถานที่ ……………………………………… · นักเรียน ${num(F.students.length)} คน</p>
+    <p class="sub" style="font-size:12pt">${esc(S.school)} · ${esc(S.plan)}${o.proj ? " · " + esc(PP.name) : ""}</p>
+    <h1>แบบบันทึกผลการทดสอบสมรรถภาพทางกาย ๘ สถานี &nbsp;<span style="font-weight:400;font-size:15pt">${o.label}</span></h1>
+    <p class="sub">${d && !isNaN(d) ? `วัน${THDAY[d.getDay()]}ที่ ${num(thDate(d))}` : "วันที่ ……… / ……… / …………"} · เวลา ${o.time ? num(o.time) + " น." : "………………… น."} · สถานที่ ……………………………………… · นักเรียน ${num(F.students.length)} คน</p>
     <table class="ppt"><thead>
-      <tr><th rowspan="2" style="width:8mm">ที่</th><th rowspan="2" style="width:46mm">ชื่อ–สกุล</th><th rowspan="2" style="width:15mm">ความพร้อม<small>พร้อม / งด</small></th>
-        ${TESTS.map(t => t.type === "reps"
-          ? `<th colspan="2">${esc(t.sn)}<small>เกณฑ์ ${num(t.target)} ${t.unit} ใน ${num(fmtMS(t.limit))} น.</small></th>`
-          : `<th rowspan="2" style="width:17mm">${esc(t.sn)}<small>${critShort(t)}</small><small>(${unitLabel(t)})</small></th>`).join("")}
-        <th rowspan="2" style="width:13mm">ผ่าน<small>… / ${num(NS)}</small></th><th rowspan="2" style="width:19mm">หมายเหตุ</th></tr>
-      <tr>${TESTS.filter(t => t.type === "reps").map(() => `<th style="width:13mm">ครั้ง</th><th style="width:15mm">เวลาครบ</th>`).join("")}</tr>
+      <tr><th style="width:8mm">ที่</th><th style="width:44mm">ชื่อ–สกุล</th><th style="width:14mm">ความพร้อม<small>พร้อม / งด</small></th>
+        ${TESTS.map((t, k) => `<th style="width:22mm">${num(k + 1)}. ${esc(t.sn)}<small>${critShort(t)}</small><small>(${unitLabel(t)})</small></th>`).join("")}
+        <th>หมายเหตุ</th></tr>
     </thead><tbody>${rows}</tbody></table>
-    <div class="tip"><b>วิธีบันทึก</b> ป่วย/บาดเจ็บให้ “งด” พร้อมเหตุผล · อบอุ่นร่างกาย ๑๐ นาที พักระหว่างรายการ ๓–๕ นาที
-      · ดันพื้น ดึงข้อ ลุก–นั่ง บันทึก<b>จำนวนครั้ง</b> ถ้าครบเกณฑ์ให้บันทึก<b>เวลาที่ทำครบ</b>
-      · <b>วิ่งเก็บของ</b> ๑๐ ม. ไม้ ๒ ท่อน วางหลังเส้น ห้ามโยน · <b>นั่งงอตัว</b> ถอดรองเท้า เข่าตึง ค้าง ๒ วินาที บันทึก ซม. (ไม่ถึงปลายเท้าติดลบ)
-      · เวียนศีรษะ แน่นหน้าอก ให้หยุดทันที · ส่งคืนหัวหน้าแผนการเรียนในวันเดียวกัน</div>
+    <div class="tip"><b>วิธีบันทึก</b> ป่วย/บาดเจ็บให้ “งด” พร้อมเหตุผล · อบอุ่นร่างกาย ๑๐ นาที พักระหว่างสถานี ๓–๕ นาที · นั่งงอตัวและยืนกระโดดไกลบันทึกเป็น ซม.
+      · ลุก–นั่งนับครั้งใน ๓๐ วินาที · วิ่งเก็บของ ๑๐ ม. ไม้ ๒ ท่อน วางหลังเส้น ห้ามโยน · วิ่ง ๑,๐๐๐ ม. บันทึกเป็น นาที.วินาที เช่น ๔.๑๒
+      · สถานีที่ไม่ได้ทดสอบให้เว้นว่าง · เวียนศีรษะ แน่นหน้าอก ให้หยุดทันที · ระบบคิดคะแนนให้เมื่อกรอกผลในหน้าสมรรถภาพ</div>
     ${sig([{ role:"ครูผู้ควบคุมการทดสอบ" }, { role:"ครูผู้บันทึกผล" }, { role:"หัวหน้าแผนการเรียนเตรียมทหาร–ตำรวจ", name:S.head }])}
   </div>`;
   doPrint("landscape");
 }
+$("#prBlank").onclick = () => {
+  const r = curRound();
+  fieldSheet({ date: r.date, label: `ครั้งที่ ${num(roundIdx(F.cur) + 1)}`, file: "แบบบันทึกผลทดสอบสมรรถภาพ ครั้งที่" + (roundIdx(F.cur) + 1) });
+};
+function ppSheet(which){
+  const pre = which === "pre";
+  fieldSheet({ date: pre ? PP.pre : PP.post, proj: true, prev: pre ? null : roundOn(PP.pre),
+    time: fitTime(pre ? PP.pre : PP.post) || (pre ? PP.preTime : PP.postTime),
+    label: pre ? "ครั้งที่ ๑ — ก่อนเริ่มโครงการ" : "ครั้งที่ ๒ — วันสุดท้ายของโครงการ",
+    file: pre ? "แบบบันทึกผลทดสอบสมรรถภาพ ครั้งที่1 ก่อนโครงการ" : "แบบบันทึกผลทดสอบสมรรถภาพ ครั้งที่2 วันสุดท้าย" });
+}
 $("#prPre").onclick = () => ppSheet("pre");
 $("#prPost").onclick = () => ppSheet("post");
 
-/** รายงานเปรียบเทียบผลก่อน–หลังโครงการ */
+/** รายงานเปรียบเทียบผลก่อน–หลังโครงการ (คะแนน) */
 $("#prCompare").onclick = () => {
   const A = roundOn(PP.pre), B = roundOn(PP.post);
   if (!A || !B) return alert("ไม่พบรอบทดสอบวันที่ ๒ หรือ ๙ ตุลาคม ในขั้นที่ ๒");
   const dA = dObj(A.date), dB = dObj(B.date);
-  sheetEl.dataset.file = "รายงานผลทดสอบสมรรถภาพ ก่อน-หลังโครงการ";
-  const arrow = (t, a, b) => {
-    if (a == null || b == null) return "";
-    const dd = b - a, same = Math.abs(dd) < (t.type === "sec" ? 0.05 : 0.5);
-    return same ? "▬" : ((higherBetter(t) ? dd > 0 : dd < 0) ? "▲ " : "▼ ") + num(fmtOf(t, Math.abs(dd)));
-  };
   const rows = F.students.map((s, i) => {
     const va = getRes(A.id, s.id), vb = getRes(B.id, s.id);
     const cells = TESTS.map(t => {
-      const a = trendVal(t, va && va[t.k]), b = trendVal(t, vb && vb[t.k]);
-      const pa = passOf(t, va && va[t.k]), pb = passOf(t, vb && vb[t.k]);
-      const ar = arrow(t, a, b);
-      return `<td${pa ? ' class="g"' : ""}>${a != null ? num(fmtOf(t, a)) : "—"}</td><td${pb ? ' class="g"' : ""}>${b != null ? num(fmtOf(t, b)) : "—"}${ar ? `<br><small>${ar}</small>` : ""}</td>`;
+      const pa = ptsC(t, va && va[t.k]), pb = ptsC(t, vb && vb[t.k]);
+      const ar = pa != null && pb != null ? (pb > pa ? `<br><small>▲ ${num(pb - pa)}</small>` : pb < pa ? `<br><small>▼ ${num(pa - pb)}</small>` : `<br><small>▬</small>`) : "";
+      const show = p => p == null ? "—" : p > 0 ? num(p) : "ไม่ผ่าน";
+      return `<td${pa > 0 ? ' class="g"' : ""}>${show(pa)}</td><td${pb > 0 ? ' class="g"' : ""}>${show(pb)}${ar}</td>`;
     }).join("");
     const sa = scoreOf(A.id, s.id), sb = scoreOf(B.id, s.id);
     return `<tr><td>${num(i + 1)}</td><td class="nm">${esc(s.name || "")}</td>${cells}
-      <td>${sa.done ? num(sa.pass) : "—"} → ${sb.done ? num(sb.pass) : "—"}</td></tr>`;
+      <td>${sa.done ? num(sa.pts) : "—"}</td><td><b>${sb.done ? num(sb.pts) : "—"}</b></td></tr>`;
   }).join("");
-  const per = TESTS.map(t => {
+  const per = TESTS.map((t, k) => {
     let n = 0, sa = 0, sb = 0, up = 0, passA = 0, passB = 0, doneA = 0, doneB = 0;
     F.students.forEach(s => {
-      const va = getRes(A.id, s.id)?.[t.k], vb = getRes(B.id, s.id)?.[t.k];
-      const a = trendVal(t, va), b = trendVal(t, vb);
-      const pa = passOf(t, va), pb = passOf(t, vb);
-      if (pa !== null){ doneA++; if (pa) passA++; }
-      if (pb !== null){ doneB++; if (pb) passB++; }
-      if (a != null && b != null){ n++; sa += a; sb += b; if (higherBetter(t) ? b > a : b < a) up++; }
+      const pa = ptsC(t, getRes(A.id, s.id)?.[t.k]), pb = ptsC(t, getRes(B.id, s.id)?.[t.k]);
+      if (pa !== null){ doneA++; if (pa > 0) passA++; }
+      if (pb !== null){ doneB++; if (pb > 0) passB++; }
+      if (pa != null && pb != null){ n++; sa += pa; sb += pb; if (pb > pa) up++; }
     });
-    const ma = n ? sa / n : null, mb = n ? sb / n : null;
-    return `<tr><td style="text-align:left">${esc(t.n)}</td><td>${critText(t)}</td>
-      <td>${ma != null ? num(fmtOf(t, ma)) : "—"}</td><td>${mb != null ? num(fmtOf(t, mb)) : "—"}</td><td>${arrow(t, ma, mb) || "—"}</td>
+    const ma = n ? Math.round(sa / n) : null, mb = n ? Math.round(sb / n) : null;
+    return `<tr><td style="text-align:left">${num(k + 1)}. ${esc(t.n)}</td><td>${critText(t)}</td>
+      <td>${ma != null ? num(ma) : "—"}</td><td>${mb != null ? num(mb) : "—"}</td><td>${ma != null ? (mb > ma ? "▲ " : mb < ma ? "▼ " : "▬ ") + num(Math.abs(mb - ma)) : "—"}</td>
       <td>${num(passA)} / ${num(doneA)}</td><td>${num(passB)} / ${num(doneB)}</td><td>${n ? num(up) + " / " + num(n) : "—"}</td></tr>`;
   }).join("");
   const scA = F.students.map(s => scoreOf(A.id, s.id)).filter(x => x.done), scB = F.students.map(s => scoreOf(B.id, s.id)).filter(x => x.done);
   let better = 0, both = 0;
-  F.students.forEach(s => { const a = scoreOf(A.id, s.id), b = scoreOf(B.id, s.id); if (a.done && b.done){ both++; if (b.pass > a.pass) better++; } });
-  const avg = arr => arr.length ? num((arr.reduce((x, y) => x + y.pass, 0) / arr.length).toFixed(1)) : "—";
-  sheetEl.innerHTML = `<div class="page">${orgHead()}
+  F.students.forEach(s => { const a = scoreOf(A.id, s.id), b = scoreOf(B.id, s.id); if (a.done && b.done){ both++; if (b.pts > a.pts) better++; } });
+  const avg = arr => arr.length ? num(Math.round(arr.reduce((x, y) => x + y.pts, 0) / arr.length)) : "—";
+  sheetEl.dataset.file = "รายงานผลทดสอบสมรรถภาพ ก่อน-หลังโครงการ";
+  sheetEl.innerHTML = `<div class="page">${miniHead()}
     <h1>รายงานผลการทดสอบสมรรถภาพทางกาย ก่อน–หลังโครงการ</h1>
     <p class="sub">${esc(PP.name)} · ครั้งที่ ๑ วันที่ ${num(thDate(dA))} · ครั้งที่ ๒ วันที่ ${num(thDate(dB))} · นักเรียน ${num(F.students.length)} คน</p>
     <table class="cmp"><thead>
-      <tr><th rowspan="2" style="width:7mm">ที่</th><th rowspan="2">ชื่อ–สกุล</th>${TESTS.map(t => `<th colspan="2">${esc(t.sn)}</th>`).join("")}<th rowspan="2" style="width:16mm">ผ่าน<br>ก่อน → หลัง</th></tr>
-      <tr>${TESTS.map(() => `<th style="width:12mm">ก่อน</th><th style="width:17mm">หลัง</th>`).join("")}</tr>
+      <tr><th rowspan="2" style="width:7mm">ที่</th><th rowspan="2">ชื่อ–สกุล</th>${TESTS.map((t, k) => `<th colspan="2">${num(k + 1)}. ${esc(t.sn)}</th>`).join("")}<th colspan="2">คะแนนรวม</th></tr>
+      <tr>${TESTS.map(() => `<th style="width:10mm">ก่อน</th><th style="width:13mm">หลัง</th>`).join("")}<th style="width:11mm">ก่อน</th><th style="width:11mm">หลัง</th></tr>
     </thead><tbody>${rows}</tbody></table>
-    <p style="font-size:10pt;margin:.6mm 0 0">ช่องสีเขียว = ผ่านเกณฑ์ · ใต้ผลครั้งหลัง ▲ ดีขึ้น ▬ คงที่ ▼ ลดลง พร้อมส่วนต่าง · ดันพื้น ดึงข้อ ลุก–นั่ง เทียบจำนวนครั้ง · วิ่งเทียบเวลา · นั่งงอตัวเทียบระยะ (ซม.) ยังไม่กำหนดเกณฑ์ผ่าน</p>
+    <p style="font-size:10pt;margin:.6mm 0 0">ตัวเลขเป็นคะแนนของแต่ละสถานี (เต็ม ๑๐๐) รวมเต็ม ${num(FULL)} · ช่องสีเขียว = ผ่านเกณฑ์ · ใต้คะแนนครั้งหลัง ▲ เพิ่มขึ้น ▬ เท่าเดิม ▼ ลดลง</p>
   </div>
   <div class="page">${orgHead()}
     <h1>สรุปผลการทดสอบสมรรถภาพทางกาย ก่อน–หลังโครงการ</h1>
     <p class="sub">${esc(PP.name)}</p>
-    <table class="cmp"><thead><tr><th>รายการทดสอบ</th><th style="width:48mm">เกณฑ์ผ่าน</th><th style="width:22mm">เฉลี่ยก่อน</th><th style="width:22mm">เฉลี่ยหลัง</th>
-      <th style="width:24mm">เปลี่ยนแปลง</th><th style="width:24mm">ผ่านก่อน</th><th style="width:24mm">ผ่านหลัง</th><th style="width:26mm">ดีขึ้น (คน)</th></tr></thead>
+    <table class="cmp"><thead><tr><th>สถานี</th><th style="width:46mm">เกณฑ์ผ่าน</th><th style="width:22mm">คะแนนเฉลี่ยก่อน</th><th style="width:22mm">คะแนนเฉลี่ยหลัง</th>
+      <th style="width:22mm">เปลี่ยนแปลง</th><th style="width:22mm">ผ่านก่อน</th><th style="width:22mm">ผ่านหลัง</th><th style="width:24mm">คะแนนเพิ่มขึ้น (คน)</th></tr></thead>
       <tbody>${per}</tbody></table>
     <div class="box"><div class="bt">ภาพรวม</div>
-      ครั้งที่ ๑ ทดสอบ ${num(scA.length)} คน ผ่านเฉลี่ย ${avg(scA)} จาก ${num(NS)} รายการ · ผ่านครบทุกรายการ ${num(scA.filter(x => x.pass === NS).length)} คน<br>
-      ครั้งที่ ๒ ทดสอบ ${num(scB.length)} คน ผ่านเฉลี่ย ${avg(scB)} จาก ${num(NS)} รายการ · ผ่านครบทุกรายการ ${num(scB.filter(x => x.pass === NS).length)} คน<br>
-      นักเรียนที่ผ่านเกณฑ์เพิ่มขึ้นจากครั้งที่ ๑ : ${num(better)} คน จากที่ทดสอบครบทั้งสองครั้ง ${num(both)} คน</div>
+      ครั้งที่ ๑ ทดสอบ ${num(scA.length)} คน คะแนนรวมเฉลี่ย ${avg(scA)} จาก ${num(FULL)} · ผ่านทุกสถานีที่ทดสอบ ${num(scA.filter(allPass).length)} คน<br>
+      ครั้งที่ ๒ ทดสอบ ${num(scB.length)} คน คะแนนรวมเฉลี่ย ${avg(scB)} จาก ${num(FULL)} · ผ่านทุกสถานีที่ทดสอบ ${num(scB.filter(allPass).length)} คน<br>
+      นักเรียนที่คะแนนรวมเพิ่มขึ้น ${num(better)} คน จากที่ทดสอบครบทั้งสองครั้ง ${num(both)} คน</div>
     <div class="lines"><b>ข้อสังเกตและข้อเสนอแนะของครูผู้ฝึก</b><br>…………………………………………………………………………………………………………………………………………………………………………………………<br>…………………………………………………………………………………………………………………………………………………………………………………………</div>
     ${sig([{ role:"ครูผู้ควบคุมการทดสอบ" }, { role:"หัวหน้าแผนการเรียนเตรียมทหาร–ตำรวจ", name:S.head }, { role:"ผู้อำนวยการ" + S.school, name:S.director }])}
+    <p class="foot">เกณฑ์และคะแนนตาม${SRC}</p>
   </div>`;
   doPrint("landscape");
+};
+
+/** เกณฑ์การให้คะแนน ๘ สถานี — แจกผู้ปกครอง */
+$("#prCrit").onclick = () => {
+  const sum = TESTS.map((t, k) => `<tr><td>${num(k + 1)}. ${esc(t.n)}</td><td>${esc(t.how)}</td><td class="c">${fullText(t)}</td><td class="c">${critText(t)}</td></tr>`).join("");
+  const scoreTbl = (t, k) => {
+    const per = 6, rows = [];
+    for (let i = 0; i < t.tbl.length; i += per) rows.push(t.tbl.slice(i, i + per));
+    return `<p class="st">สถานีที่ ${num(k + 1)} ${esc(t.n)} <span style="font-weight:400">(${unitLabel(t)} → คะแนน · ${t.hb ? "น้อยกว่า" : "มากกว่า"} ${num(fmtT(t, passLim(t)))} ไม่ผ่าน)</span></p>
+      <table class="sc6"><tbody>${rows.map(r => `<tr>${r.map(([v, p]) => `<td class="v">${num(fmtT(t, v))}</td><td class="p">${num(p)}</td>`).join("")}${"<td></td><td></td>".repeat(per - r.length)}</tr>`).join("")}</tbody></table>`;
+  };
+  sheetEl.dataset.file = "เกณฑ์การให้คะแนนสมรรถภาพ 8 สถานี (แจ้งผู้ปกครอง)";
+  sheetEl.innerHTML = `<div class="page">${orgHead()}
+    <h1>เกณฑ์การทดสอบสมรรถภาพทางกาย ๘ สถานี</h1>
+    <p class="sub">แจ้งผู้ปกครองเพื่อทราบ · ${esc(PP.name)}</p>
+    <p class="ind" style="margin-top:2mm">แผนการเรียนเตรียมทหาร–ตำรวจ ใช้เกณฑ์การทดสอบพลศึกษา ๘ สถานี ตาม${SRC} เป็นมาตรฐานในการวัดผลนักเรียน
+      เพื่อให้นักเรียนและผู้ปกครองเห็นระดับความพร้อมเทียบกับการสอบคัดเลือกจริง โดยทดสอบ ๒ ครั้ง คือ <b>ครั้งที่ ๑ วันศุกร์ที่ ๒ ตุลาคม ๒๕๖๙</b> (ก่อนเริ่มโครงการ)
+      และ <b>ครั้งที่ ๒ วันศุกร์ที่ ๙ ตุลาคม ๒๕๖๙</b> (วันสุดท้ายของโครงการ) แล้วแจ้งผลรายบุคคลให้ผู้ปกครองทราบ</p>
+    <table class="rep" style="margin-top:2.5mm"><thead><tr><th style="width:44mm">สถานีทดสอบ</th><th>วิธีทดสอบโดยย่อ</th><th style="width:30mm">คะแนนเต็ม ๑๐๐</th><th style="width:36mm">เกณฑ์ผ่าน</th></tr></thead>
+      <tbody>${sum}</tbody></table>
+    <div class="box"><div class="bt">การคิดคะแนน</div>
+      ๑. แต่ละสถานีมีคะแนนเต็ม ๑๐๐ คะแนน รวม ๘ สถานี ${num(FULL)} คะแนน คิดจากตารางคะแนนในหน้าถัดไป<br>
+      ๒. ผลที่ต่ำกว่าเกณฑ์ผ่านถือว่า “ไม่ผ่าน” สถานีนั้น ได้ ๐ คะแนน<br>
+      ๓. ผลที่อยู่ระหว่างช่องในตาราง ได้คะแนนของช่องที่ต่ำกว่า เช่น วิ่ง ๕๐ เมตร ๖.๓๕ วินาที ได้คะแนนเท่ากับ ๖.๔๐ วินาที<br>
+      ๔. สถานีที่โรงเรียนไม่ได้ทดสอบ (เช่น ว่ายน้ำ หากไม่มีสระ) จะแสดงเป็น “—” และไม่นำมาคิดว่าไม่ผ่าน</div>
+    <p class="foot">ตัวเลขเกณฑ์อ้างอิงจากระเบียบการปีการศึกษา ๒๕๖๕ ใช้เพื่อการฝึกและติดตามพัฒนาการ สำหรับการสมัครสอบจริงให้ยึดระเบียบการฉบับทางการของเหล่าและปีที่สมัครสอบเสมอ</p>
+  </div>
+  <div class="page"><h1 style="font-size:16pt">ตารางเทียบคะแนน สถานีที่ ๑–๔</h1>${TESTS.slice(0, 4).map((t, k) => scoreTbl(t, k)).join("")}</div>
+  <div class="page"><h1 style="font-size:16pt">ตารางเทียบคะแนน สถานีที่ ๕–๘</h1>${TESTS.slice(4).map((t, k) => scoreTbl(t, k + 4)).join("")}
+    <p class="foot" style="margin-top:3mm">ที่มา : ${SRC}</p></div>`;
+  doPrint();
 };
 
 /* ═══════════ เริ่มต้น ═══════════ */
@@ -1085,7 +1078,6 @@ renderAll();
     if (word) setTimeout(done, 700);
   }, 500));
 })();
-
 </script>
 <script src="nav.js"></script>
 </body>
