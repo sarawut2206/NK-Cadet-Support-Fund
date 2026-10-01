@@ -200,6 +200,10 @@ footer b{color:#fff}
 .sheet .fitrep .box,.sheet .fitrep .lines{margin-top:1.2mm;padding:1mm 2.6mm;min-height:0;font-size:11.5pt}
 .sheet .fitrep .sig{margin-top:3mm}
 .sheet .fitrep .foot{margin-top:1.5mm;font-size:9.5pt}
+.sheet .cut{text-align:center;font-size:9.5pt;color:#555;margin:3mm 0 1.5mm;letter-spacing:.2px}
+.sheet .slip{border:.8pt dashed #000;padding:1.5mm 3mm;font-size:11.5pt;line-height:1.45}
+.sheet .slip .bt{font-weight:700}
+.sheet .fitrep .box .bt{font-weight:700}
 .sheet .ind{text-indent:12mm;line-height:1.5}
 .sheet p.st{font-weight:700;font-size:12.5pt;margin:3mm 0 .8mm}
 .sheet .sc6{font-size:11pt;margin:0}
@@ -838,53 +842,57 @@ const verdictOf = sc => !sc.done ? "ยังไม่มีผลทดสอ�
   : sc.done - sc.pass <= 2 ? "ผ่านเกณฑ์เป็นส่วนใหญ่ ควรเน้นสถานีที่ยังไม่ผ่านเป็นพิเศษ"
   : "ยังไม่ผ่านเกณฑ์หลายสถานี ต้องเพิ่มความถี่ในการฝึกและติดตามอย่างใกล้ชิด";
 
-/** รายงานพัฒนาการรายบุคคล ๑ หน้า (แจ้งผู้ปกครอง) */
-function pageFor(s, i){
-  const rows = F.rounds.map((r, ri) => {
-    const v = getRes(r.id, s.id), d = r.date ? dObj(r.date) : null, sc = scoreOf(r.id, s.id);
-    return `<tr><td class="c">ครั้งที่ ${num(ri + 1)}<br><small>${d && !isNaN(d) ? num(thDateA(d)) : ""}</small></td>
-      ${TESTS.map(t => vpCell(t, v && v[t.k])).join("")}
-      <td class="c">${scCell(sc)}</td><td class="c"><b>${sc.done ? num(sc.pts) : "—"}</b></td></tr>`;
-  }).join("");
+/** สถานีที่ควรเสริมจากผลครั้งล่าสุด : ไม่ผ่าน หรือได้ต่ำกว่า ๖๐ คะแนน เรียงจากคะแนนน้อยไปมาก */
+function weakStations(rid, sid){
+  const v = getRes(rid, sid);
+  return TESTS.map(t => [t.n, ptsC(t, v && v[t.k])]).filter(([, p]) => p != null && p < 60).sort((a, b) => a[1] - b[1])
+    .map(([n, p]) => n + (p > 0 ? ` (${num(p)})` : " (ไม่ผ่าน)"));
+}
 
-  const done = F.rounds.filter(r => { const v = getRes(r.id, s.id); return v && Object.keys(v).length; });
-  const first = done[0] || F.rounds[0], last = done[done.length - 1] || F.rounds[0];
-  const fi = F.rounds.findIndex(r => r.id === first.id) + 1, li = F.rounds.findIndex(r => r.id === last.id) + 1;
-  const devs = TESTS.map((t, k) => {
-    const ca = getRes(first.id, s.id)?.[t.k], cb = getRes(last.id, s.id)?.[t.k];
-    const a = valOf(t, ca), b = valOf(t, cb), pa = ptsOf(t, a), pb = ptsOf(t, b);
-    const cell = (x, p) => x == null ? "—" : `${num(fmtT(t, x))} ${unitShort(t)} (${p > 0 ? num(p) : "ไม่ผ่าน"})`;
-    let dev = done.length < 2 ? "ต้องมีผล ๒ ครั้ง" : "—";
-    if (done.length >= 2 && a != null && b != null){
-      const dp = pb - pa, dd = b - a;
-      dev = Math.abs(dd) < sameEps(t) ? "คงที่" : ((higherBetter(t) ? dd > 0 : dd < 0) ? "ดีขึ้น " : "ลดลง ") + num(fmtT(t, Math.abs(dd))) + (dp ? ` (${dp > 0 ? "+" : "−"}${num(Math.abs(dp))} คะแนน)` : "");
-    }
-    return `<tr><td>${num(k + 1)}. ${esc(t.n)} <small>(${critShort(t).replace("ผ่าน ", "")})</small></td><td class="c">${cell(a, pa)}</td><td class="c">${cell(b, pb)}</td><td class="c">${dev}</td></tr>`;
-  }).join("");
+/** รายงานผลรายบุคคล ๑ หน้า (แจ้งผู้ปกครอง) พร้อมแบบตอบกลับ
+    ตรงกับที่แจ้งในคำกล่าวรายงาน : คะแนนสมรรถภาพทั้งสองครั้ง · ระดับรายวิชา · รายการที่ควรเสริม · ความเห็นครู · ช่องความเห็นผู้ปกครองส่งกลับ */
+function pageFor(s, i){
+  const A = roundOn(PP.pre) || F.rounds[0], B = roundOn(PP.post) || F.rounds[F.rounds.length - 1];
+  const rounds = A.id === B.id ? [A] : [A, B];
+  const rowOf = (r, label) => {
+    const v = getRes(r.id, s.id), sc = scoreOf(r.id, s.id), d = r.date ? dObj(r.date) : null;
+    return `<tr><td class="c">${label}<br><small>${d && !isNaN(d) ? num(thDateA(d)) : ""}</small></td>
+      ${TESTS.map(t => vpCell(t, v && v[t.k])).join("")}<td class="c">${scCell(sc)}</td><td class="c"><b>${sc.done ? num(sc.pts) : "—"}</b></td></tr>`;
+  };
+  const labels = ["ครั้งที่ ๑", "ครั้งที่ ๒"];
+  let change = "";
+  if (rounds.length === 2){
+    const va = getRes(A.id, s.id), vb = getRes(B.id, s.id), sa = scoreOf(A.id, s.id), sb = scoreOf(B.id, s.id);
+    const cell = (pa, pb) => pa == null || pb == null ? "—" : pb > pa ? `▲ ${num(pb - pa)}` : pb < pa ? `▼ ${num(pa - pb)}` : "▬";
+    change = `<tr><td class="c"><small>คะแนน<br>เปลี่ยนแปลง</small></td>${TESTS.map(t => `<td class="c">${cell(ptsC(t, va && va[t.k]), ptsC(t, vb && vb[t.k]))}</td>`).join("")}
+      <td></td><td class="c"><b>${sa.done && sb.done ? cell(sa.pts, sb.pts) : "—"}</b></td></tr>`;
+  }
+  const last = rounds.slice().reverse().find(r => scoreOf(r.id, s.id).done) || rounds[rounds.length - 1];
   const scL = scoreOf(last.id, s.id);
-  const devHead = done.length >= 2 ? `เทียบครั้งที่ ${num(fi)} กับครั้งที่ ${num(li)}` : done.length === 1 ? `มีผลเพียงครั้งที่ ${num(li)} ครั้งเดียว` : "ยังไม่มีผลทดสอบ";
+  const wS = weakStations(last.id, s.id), wA = weakOf(s.id);
+  const dots = "…………………………………………………………………………………………………………………………………………………………";
 
   return `<div class="page fitrep">
     ${orgHead()}
-    <h1>${aAny() ? "รายงานผลสมรรถภาพทางกายและผลทดสอบหลังเรียน" : "รายงานผลการทดสอบสมรรถภาพทางกาย ๘ สถานี"}</h1>
-    <p class="sub">แจ้งผู้ปกครองเพื่อทราบ · ปีการศึกษา ${num(S.year)}</p>
-    <p style="margin-top:1.5mm"><b>ชื่อ–สกุลนักเรียน</b>&nbsp; ${esc(s.name || "…………………………………………………")}
-      &nbsp;&nbsp;<b>เลขที่</b> ${num(i + 1)} &nbsp;&nbsp;<b>ชั้น</b> ${esc(s.cls || "…………")}</p>
-    <p style="margin-top:1.5mm"><b>ผลแต่ละครั้ง</b> (บรรทัดบน = ผลที่ทำได้ · บรรทัดล่าง = คะแนนเต็ม ๑๐๐ · ช่องสีเขียว = ผ่านเกณฑ์)</p>
+    <h1>รายงานผลรายบุคคล ${esc(PP.name)}</h1>
+    <p class="sub">แจ้งผู้ปกครองเพื่อทราบ · ${esc(S.plan)}</p>
+    <p><b>ชื่อ–สกุลนักเรียน</b>&nbsp; ${esc(s.name || "…………………………………………………")} &nbsp;&nbsp;<b>เลขที่</b> ${num(i + 1)} &nbsp;&nbsp;<b>ชั้น</b> ${esc(s.cls || "…………")}</p>
+    <p><b>๑. ผลทดสอบสมรรถภาพทางกาย ๘ สถานี</b> (บรรทัดบน = ผลที่ทำได้ · บรรทัดล่าง = คะแนนเต็ม ๑๐๐ · ช่องสีเขียว = ผ่านเกณฑ์)</p>
     <table class="rep"><thead><tr><th style="width:17mm">ครั้ง</th>
       ${TESTS.map((t, k) => `<th>${num(k + 1)}. ${esc(t.sn)}<br><small>${unitShort(t)}</small></th>`).join("")}<th style="width:11mm">ผ่าน</th><th style="width:13mm">รวม<br><small>/${num(FULL)}</small></th></tr></thead>
-      <tbody>${rows}</tbody></table>
-    <p style="margin-top:1.5mm"><b>สรุปรายสถานี</b> ${esc(devHead)}</p>
-    <table class="rep"><thead><tr><th>สถานี (เกณฑ์ผ่าน)</th><th style="width:30mm">ครั้งที่ ${num(fi)}</th><th style="width:30mm">ครั้งที่ ${num(li)}</th><th style="width:38mm">พัฒนาการ</th></tr></thead>
-      <tbody>${devs}</tbody></table>
+      <tbody>${rounds.map((r, k) => rowOf(r, labels[k])).join("")}${change}</tbody></table>
     ${acadBlock(s)}
-    <div class="box"><div class="bt">สรุปผลครั้งที่ ${num(li)} : คะแนนรวม ${scL.done ? num(scL.pts) + " จาก " + num(FULL) : "—"} · ผ่าน ${scCell(scL)} สถานี · ${verdictOf(scL)}</div>
-      <b>ความเห็นของครูผู้ฝึก</b> ${esc(F.cmt[s.id] || "") || "…………………………………………………………………………………………………………………………………………"}</div>
-    <div class="lines"><b>ความเห็นของผู้ปกครอง</b> ……………………………………………………………………………………………………………………</div>
-    ${sig([{ role:"ครูผู้ควบคุมการทดสอบ" },
-           { role:"หัวหน้าแผนการเรียนเตรียมทหาร–ตำรวจ", name:S.head },
-           { role:"ผู้ปกครอง", sub:"ลงนามรับทราบ" }])}
-    <p class="foot">เกณฑ์และคะแนนตาม${SRC} (${OWN}) · สถานีละ ๑๐๐ คะแนน ต่ำกว่าเกณฑ์ผ่านถือว่าไม่ผ่าน · ข้อมูลสมรรถภาพเป็นข้อมูลส่วนบุคคล โรงเรียนเปิดเผยเฉพาะต่อผู้ปกครองของนักเรียนผู้นั้น</p>
+    <div class="box"><div class="bt">๓. รายการที่ควรเสริม</div>
+      <b>ด้านร่างกาย :</b> ${scL.done ? (wS.length ? wS.join(" · ") : "ไม่มี — ทุกสถานีได้ ๖๐ คะแนนขึ้นไป") : "รอผลทดสอบ"}<br>
+      <b>ด้านวิชาการ :</b> ${aSum(s.id).n ? (wA.length ? wA.join(" · ") : "ไม่มี — ทุกวิชาอยู่ในระดับดีขึ้นไป") : "รอผลทดสอบหลังเรียน"}</div>
+    <div class="box"><div class="bt">๔. ความเห็นของครูผู้ฝึก</div>${esc(F.cmt[s.id] || "") || dots + "<br>" + dots}</div>
+    ${sig([{ role:"ครูผู้ฝึก / ครูผู้ควบคุมการทดสอบ" }, { role:"หัวหน้าแผนการเรียนเตรียมทหาร–ตำรวจ", name:S.head }])}
+    <div class="cut">✂ ……………………………………………… ตัดตามรอยประ แล้วส่งคืนแผนการเรียน ……………………………………………… ✂</div>
+    <div class="slip"><div class="bt">แบบตอบกลับของผู้ปกครอง · ส่งคืน${esc(S.plan)}</div>
+      ข้าพเจ้าได้รับทราบผลของ ${esc(s.name || "……………………………………………")} เลขที่ ${num(i + 1)} แล้ว<br>
+      <b>ความเห็น / สิ่งที่อยากให้แผนการเรียนช่วยเสริม</b><br>${dots}<br>${dots}
+      <div style="text-align:right;margin-top:1.5mm">ลงชื่อ …………………………………… ผู้ปกครอง &nbsp; วันที่ ……… / ……… / …………</div></div>
+    <p class="foot">เกณฑ์สมรรถภาพอ้างอิงระเบียบการสมัครเตรียมทหาร (ทอ.) ๒๕๖๕ ผนวก ง · สถานีที่ ๘ ดันพื้นใช้แทนว่ายน้ำ (เกณฑ์ของแผนการเรียน) · ข้อมูลส่วนบุคคล เปิดเผยเฉพาะผู้ปกครอง</p>
   </div>`;
 }
 
@@ -1148,16 +1156,15 @@ function renderAcad(){
 }
 $("#aDate").onchange = e => { F.acad.date = e.target.value; save(); };
 
-/** ส่วนผลวิชาการในรายงานรายบุคคล */
+/** ส่วนผลวิชาการในรายงานรายบุคคล — แสดงเสมอ ถ้ายังไม่สอบจะเป็นช่องว่าง “—” */
 function acadBlock(s){
-  if (!aAny()) return "";
-  const a = aSum(s.id), weak = weakOf(s.id);
+  const a = aSum(s.id);
   const d = F.acad.date ? dObj(F.acad.date) : null;
-  return `<p style="margin-top:1.5mm"><b>ผลทดสอบหลังเรียนรายวิชา</b> (คะแนนเต็มวิชาละ ${num(AFULL)}${d && !isNaN(d) ? ` · ทดสอบวันที่ ${num(thDate(d))}` : ""}) บอกระดับปัจจุบันของแต่ละวิชา</p>
+  return `<p><b>๒. ผลทดสอบหลังเรียน ๗ รายวิชา</b> (คะแนนเต็มวิชาละ ${num(AFULL)}${d && !isNaN(d) ? ` · ทดสอบวันที่ ${num(thDate(d))}` : ""}) บอกระดับปัจจุบันของแต่ละวิชา</p>
     <table class="rep"><thead><tr><th style="width:17mm"></th>${SUBJ.map(([, n]) => `<th>${esc(n)}</th>`).join("")}<th style="width:18mm">รวม<br><small>/${num(ATOTAL)}</small></th></tr></thead>
       <tbody><tr><td class="c">คะแนน</td>${SUBJ.map(([k]) => `<td class="c">${fmtA(aGet(s.id, k))}</td>`).join("")}<td class="c"><b>${a.n ? fmtA(a.sum) : "—"}</b></td></tr>
       <tr><td class="c">ระดับ</td>${SUBJ.map(([k]) => { const l = levelOf(aGet(s.id, k)); return `<td class="c${l === "ดีมาก" || l === "ดี" ? " g" : ""}">${l || "—"}</td>`; }).join("")}<td class="c">${a.n ? num(Math.round(a.pct)) + "%" : "—"}</td></tr></tbody></table>
-    <p style="font-size:10.5pt;margin:.6mm 0 0">ระดับ : ${lvText()}${a.n ? ` · <b>วิชาที่ควรเสริม :</b> ${weak.length ? weak.join(" ") : "ไม่มี (ทุกวิชาอยู่ในระดับดีขึ้นไป)"}` : ""}</p>`;
+    <p style="font-size:10pt;margin:.4mm 0 0!important">ระดับ : ${lvText()}</p>`;
 }
 
 /** แบบบันทึกคะแนนทดสอบหลังเรียน (ใบเปล่ามีชื่อ) */
