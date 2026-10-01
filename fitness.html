@@ -344,6 +344,23 @@ footer b{color:#fff}
   </div>
   <div class="tblwrap"><table class="grid" id="agrid"></table></div>
   <p class="mini" id="aCrit"></p>
+  <div class="panel" id="akPanel" style="margin-top:.8rem">
+    <h3 style="margin:0 0 .3rem">ตรวจคำตอบรายข้อจากไฟล์เฉลย (ไม่บังคับ)</h3>
+    <p class="mini" style="margin:0 0 .5rem">เฉลยไม่อยู่ในเว็บ — นำเข้าไฟล์จากเครื่องครู แล้วพิมพ์คำตอบของนักเรียนทีละข้อจากกระดาษคำตอบ ระบบตรวจ คิดคะแนนลงตารางด้านบน
+      และบอกหัวข้อที่นักเรียนแต่ละคนและทั้งห้องยังอ่อน เพื่อจัดติวเสริมให้ตรงจุด</p>
+    <div class="acts" style="margin-top:0">
+      <span id="akStat" class="mini" style="flex:1;min-width:16rem"></span>
+      <button class="btn" id="akImport" type="button">นำเข้าไฟล์เฉลย (.json)</button>
+      <input type="file" id="akFile" accept="application/json,.json" hidden>
+      <button class="btn danger" id="akClear" type="button">ลบเฉลยออกจากเครื่องนี้</button>
+    </div>
+    <div id="akEntry" hidden>
+      <div class="acts"><div class="field" style="min-width:11rem"><label for="akSubj">วิชา</label><select id="akSubj"></select></div>
+        <span class="mini">พิมพ์ตัวเลือกที่นักเรียนตอบ (1–5 · ก–ง · A–D) ช่องละ ๑ ตัว ระบบเลื่อนไปช่องถัดไปให้ · เว้นว่าง = ไม่ได้ตอบ · สีเขียวถูก สีแดงผิด</span></div>
+      <div class="tblwrap"><table class="grid" id="akGrid"></table></div>
+      <p class="mini" id="akTopic"></p>
+    </div>
+  </div>
 </div></section>
 
 <!-- ═══ ๕ พิมพ์ ═══ -->
@@ -372,6 +389,7 @@ footer b{color:#fff}
       <button class="btn" id="prCrit" type="button">เกณฑ์การให้คะแนน ๘ สถานี (แจกผู้ปกครอง)</button>
       <button class="btn" id="prAcadSheet" type="button">แบบบันทึกคะแนนทดสอบหลังเรียน</button>
       <button class="btn" id="prAcadClass" type="button">สรุปผลทดสอบหลังเรียนทั้งห้อง</button>
+      <button class="btn" id="prAcadItems" type="button">วิเคราะห์ผลรายข้อและรายหัวข้อ</button>
       <select id="outMode" aria-label="รูปแบบผลลัพธ์" style="background:var(--ground);border:1px solid var(--rule);border-radius:5px;padding:.38rem .5rem;font-size:.85rem;font-family:var(--ui)">
         <option value="print">ผลลัพธ์ : พิมพ์ / บันทึก PDF</option><option value="word">ผลลัพธ์ : บันทึกเป็น Word (.doc)</option></select>
     </div>
@@ -526,7 +544,7 @@ let F = (() => {
   if (!Array.isArray(d.rounds) || !d.rounds.length) { const x = defData(); d.rounds = x.rounds; d.cur = x.cur; }
   if (!d.rounds.some(r => r.id === d.cur)) d.cur = d.rounds[0].id;
   d.res ||= {}; d.cmt ||= {};
-  d.acad ||= { date: "", s: {} }; d.acad.s ||= {};
+  d.acad ||= { date: "", s: {} }; d.acad.s ||= {}; d.acad.r ||= {};
   return d;
 })();
 const save = () => localStorage.setItem(KEY, JSON.stringify(F));
@@ -694,7 +712,7 @@ function renderKPI(){
   $("#selStu").innerHTML = F.students.map((s, i) => `<option value="${s.id}">${num(i + 1)}. ${esc(s.name || "— ยังไม่ระบุชื่อ —")}</option>`).join("");
 }
 
-function renderAll(){ sortRounds(); renderRounds(); renderGrid(); renderCards(); renderKPI(); renderAcad(); }
+function renderAll(){ sortRounds(); renderRounds(); renderGrid(); renderCards(); renderKPI(); renderAcad(); akRender(); }
 
 /* ═══════════ อีเวนต์ ═══════════ */
 $("#btnPaste").onclick = () => {
@@ -1156,6 +1174,142 @@ function renderAcad(){
 }
 $("#aDate").onchange = e => { F.acad.date = e.target.value; save(); };
 
+/* ═══════════ ตรวจคำตอบรายข้อจากไฟล์เฉลย ═══════════
+   เฉลยไม่อยู่ในโค้ดของเว็บ — ครูนำเข้าไฟล์ .json จากเครื่องตัวเอง เก็บไว้เฉพาะในเบราว์เซอร์เครื่องนี้ (nk_acad_key_v1)
+   คำตอบของนักเรียนเก็บใน F.acad.r[รหัสนักเรียน][วิชา] = อาร์เรย์ ๑๕ ช่อง · ตรวจแล้วเขียนคะแนนลง F.acad.s ให้เอง */
+const AKEY = "nk_acad_key_v1";
+let AK = (() => { try { return JSON.parse(localStorage.getItem(AKEY) || "null"); } catch (e) { return null; } })();
+F.acad.r ||= {};
+const TH2AR = s => String(s ?? "").replace(/[๐-๙]/g, d => "๐๑๒๓๔๕๖๗๘๙".indexOf(d));
+/** ทำคำตอบให้อยู่รูปเดียวกัน : เลขไทย → อารบิก · a–d → A–D · ช่องว่าง = ไม่ตอบ */
+const normAns = s => { const c = TH2AR(String(s ?? "").trim()).slice(0, 1).toUpperCase(); return c || null; };
+const akSubj = k => AK && AK.subjects && AK.subjects[k];
+let akCur = null;
+
+function akScore(sid, k){
+  const key = akSubj(k), r = F.acad.r[sid] && F.acad.r[sid][k];
+  if (!key || !r || !r.some(Boolean)) return null;
+  return key.reduce((n, q, i) => n + (normAns(r[i]) === normAns(q.ans) ? 1 : 0), 0);
+}
+/** ร้อยละตอบถูกรายหัวข้อของนักเรียนหนึ่งคนในวิชาหนึ่ง */
+function akTopics(sid, k){
+  const key = akSubj(k), r = F.acad.r[sid] && F.acad.r[sid][k];
+  if (!key || !r || !r.some(Boolean)) return [];
+  const t = {};
+  key.forEach((q, i) => { const o = t[q.topic] ||= { n: 0, ok: 0 }; o.n++; if (normAns(r[i]) === normAns(q.ans)) o.ok++; });
+  return Object.entries(t).map(([topic, o]) => ({ topic, ...o, pct: o.ok / o.n * 100 }));
+}
+/** หัวข้อที่ควรเสริมของนักเรียน : ตอบถูกไม่ถึงครึ่งของหัวข้อนั้น */
+const akWeak = sid => SUBJ.flatMap(([k, n]) => akTopics(sid, k).filter(x => x.pct < 50).map(x => `${n} : ${x.topic}`));
+
+function akRender(){
+  const has = !!(AK && AK.subjects);
+  $("#akStat").innerHTML = has
+    ? `<b>มีเฉลยแล้ว</b> · ${esc(AK.name || "")} · ${num(Object.keys(AK.subjects).length)} วิชา (เก็บเฉพาะในเบราว์เซอร์เครื่องนี้)`
+    : "ยังไม่มีเฉลยในเครื่องนี้ — กด “นำเข้าไฟล์เฉลย” แล้วเลือกไฟล์ <code>เฉลย_นำเข้าโปรแกรม_2569.json</code> จากโฟลเดอร์ชุดทดสอบหลังเรียน";
+  $("#akClear").hidden = !has;
+  $("#akEntry").hidden = !has;
+  if (!has) return;
+  const ks = SUBJ.filter(([k]) => akSubj(k));
+  if (!akCur || !akSubj(akCur)) akCur = ks[0][0];
+  $("#akSubj").innerHTML = ks.map(([k, n]) => `<option value="${k}"${k === akCur ? " selected" : ""}>${esc(n)}</option>`).join("");
+  const key = akSubj(akCur);
+  const head = `<thead><tr><th class="no">ที่</th><th class="nm">ชื่อ–สกุล</th>
+    ${key.map((q, i) => `<th>${num(i + 1)}<small>${esc(q.labels || "")}</small></th>`).join("")}<th class="sep">ถูก<small>/${num(key.length)}</small></th></tr></thead>`;
+  const body = F.students.map((s, si) => {
+    const r = (F.acad.r[s.id] && F.acad.r[s.id][akCur]) || [];
+    const cells = key.map((q, i) => {
+      const a = normAns(r[i]), cls = a == null ? "" : a === normAns(q.ans) ? "pass" : "fail";
+      return `<td class="${cls}" style="padding:.15rem"><input class="ak" data-s="${s.id}" data-i="${i}" maxlength="1" value="${esc(r[i] || "")}" style="width:2rem;padding:.15rem" aria-label="ข้อ ${i + 1} ${esc(s.name || "")}"></td>`;
+    }).join("");
+    const sc = akScore(s.id, akCur);
+    return `<tr><td class="no">${num(si + 1)}</td><td class="nm" style="font-size:.85rem">${esc(s.name || "— ยังไม่ระบุชื่อ —")}</td>${cells}<td class="sc sep">${sc == null ? "—" : num(sc)}</td></tr>`;
+  }).join("");
+  $("#akGrid").innerHTML = head + `<tbody>${body}</tbody>`;
+  akTopicLine();
+
+  const inputs = [...$("#akGrid").querySelectorAll("input.ak")];
+  inputs.forEach((el, idx) => {
+    el.addEventListener("input", e => {
+      const { s, i } = e.target.dataset;
+      const rr = (F.acad.r[s] ||= {});
+      const arr = (rr[akCur] ||= Array(key.length).fill(null));
+      arr[+i] = normAns(e.target.value);
+      if (!arr.some(Boolean)) delete rr[akCur];
+      const sc = akScore(s, akCur);
+      const o = F.acad.s[s] ||= {};
+      if (sc == null) delete o[akCur]; else o[akCur] = sc;
+      if (!Object.keys(o).length) delete F.acad.s[s];
+      save();
+      if (e.target.value && inputs[idx + 1]) inputs[idx + 1].focus();
+      /* ระบายสีช่องทันทีโดยไม่วาดตารางใหม่ ให้พิมพ์ต่อได้ลื่น */
+      const td = e.target.parentElement, a = arr[+i];
+      td.className = a == null ? "" : a === normAns(key[+i].ans) ? "pass" : "fail";
+      e.target.closest("tr").lastElementChild.textContent = sc == null ? "—" : num(sc);
+      akTopicLine();
+    });
+    el.addEventListener("keydown", e => { if (e.key === "Backspace" && !e.target.value && inputs[idx - 1]) inputs[idx - 1].focus(); });
+    el.addEventListener("change", () => { renderAcad(); });
+  });
+}
+/** สรุปรายหัวข้อของห้องในวิชาที่เลือก */
+function akTopicLine(){
+  const t = {};
+  F.students.forEach(s => akTopics(s.id, akCur).forEach(x => { const o = t[x.topic] ||= { n: 0, ok: 0 }; o.n += x.n; o.ok += x.ok; }));
+  const rows = Object.entries(t).map(([k, o]) => [k, o.ok / o.n * 100]).sort((a, b) => a[1] - b[1]);
+  $("#akTopic").innerHTML = rows.length ? "ทั้งห้องตอบถูกรายหัวข้อ (น้อย → มาก) : " + rows.map(([k, p]) => `<b>${esc(k)}</b> ${num(Math.round(p))}%`).join(" · ") : "ยังไม่ได้กรอกคำตอบของวิชานี้";
+}
+$("#akSubj").onchange = e => { akCur = e.target.value; akRender(); };
+$("#akImport").onclick = () => $("#akFile").click();
+$("#akFile").onchange = e => {
+  const f = e.target.files[0]; if (!f) return;
+  const rd = new FileReader();
+  rd.onload = () => {
+    try {
+      const o = JSON.parse(rd.result);
+      if (!o.subjects || !Object.values(o.subjects).every(a => Array.isArray(a) && a.every(q => q.ans != null))) throw new Error("ไม่ใช่ไฟล์เฉลยของโปรแกรมนี้");
+      localStorage.setItem(AKEY, JSON.stringify(o)); AK = o; akCur = null;
+      akRender(); alert("นำเข้าเฉลยเรียบร้อย — เฉลยเก็บเฉพาะในเบราว์เซอร์เครื่องนี้");
+    } catch (err){ alert("นำเข้าไม่สำเร็จ: " + err.message); }
+  };
+  rd.readAsText(f); e.target.value = "";
+};
+$("#akClear").onclick = () => {
+  if (!confirm("ลบเฉลยออกจากเครื่องนี้?\nคำตอบและคะแนนที่กรอกไว้ยังอยู่ครบ")) return;
+  localStorage.removeItem(AKEY); AK = null; akRender();
+};
+
+/** วิเคราะห์ผลรายข้อและรายหัวข้อ — วิชาละ ๑ หน้า */
+$("#prAcadItems").onclick = () => {
+  if (!AK) return alert("ยังไม่ได้นำเข้าไฟล์เฉลย");
+  const pages = SUBJ.filter(([k]) => akSubj(k) && F.students.some(s => akScore(s.id, k) != null)).map(([k, n]) => {
+    const key = akSubj(k);
+    const took = F.students.filter(s => akScore(s.id, k) != null);
+    const qrows = key.map((q, i) => {
+      const ok = took.filter(s => normAns(F.acad.r[s.id][k][i]) === normAns(q.ans)).length, p = ok / took.length * 100;
+      return `<tr><td class="c">${num(i + 1)}</td><td>${esc(q.topic)}</td><td class="c">${num(ok)} / ${num(took.length)}</td><td class="c">${num(Math.round(p))}%</td>
+        <td class="c${p < 50 ? "" : " g"}">${p >= 80 ? "ง่าย" : p >= 50 ? "ปานกลาง" : "ยาก — ควรสอนซ้ำ"}</td></tr>`;
+    }).join("");
+    const tp = {};
+    key.forEach(q => tp[q.topic] = { n: 0, ok: 0, weak: [] });
+    took.forEach(s => akTopics(s.id, k).forEach(x => { tp[x.topic].n += x.n; tp[x.topic].ok += x.ok; if (x.pct < 50) tp[x.topic].weak.push(s.name || "เลขที่ " + (F.students.indexOf(s) + 1)); }));
+    const trows = Object.entries(tp).sort((a, b) => a[1].ok / a[1].n - b[1].ok / b[1].n).map(([t, o]) =>
+      `<tr><td>${esc(t)}</td><td class="c">${num(Math.round(o.ok / o.n * 100))}%</td><td>${o.weak.length ? o.weak.map(esc).join(" · ") : "—"}</td></tr>`).join("");
+    const avg = took.reduce((a, s) => a + akScore(s.id, k), 0) / took.length;
+    return `<div class="page">${miniHead()}
+      <h1>วิเคราะห์ผลทดสอบหลังเรียน วิชา${esc(n)}</h1>
+      <p class="sub">${esc(PP.name)} · ผู้สอบ ${num(took.length)} คน · คะแนนเฉลี่ย ${fmtA(avg)} จาก ${num(key.length)} (${levelOf(avg / key.length * AFULL) || "—"})</p>
+      <table class="rep"><thead><tr><th style="width:11mm">ข้อ</th><th>หัวข้อ</th><th style="width:24mm">ตอบถูก (คน)</th><th style="width:18mm">ร้อยละ</th><th style="width:34mm">ระดับความยาก</th></tr></thead><tbody>${qrows}</tbody></table>
+      <p style="margin-top:2mm"><b>สรุปรายหัวข้อ</b> (เรียงจากที่ห้องตอบถูกน้อยที่สุด) และรายชื่อนักเรียนที่ตอบถูกไม่ถึงครึ่งในหัวข้อนั้น — ใช้จัดกลุ่มติวเสริมให้ตรงจุด</p>
+      <table class="rep"><thead><tr><th style="width:62mm">หัวข้อ</th><th style="width:18mm">ห้องตอบถูก</th><th>นักเรียนที่ควรเสริม</th></tr></thead><tbody>${trows}</tbody></table>
+    </div>`;
+  });
+  if (!pages.length) return alert("ยังไม่ได้กรอกคำตอบรายข้อของวิชาใด");
+  sheetEl.dataset.file = "วิเคราะห์ผลทดสอบหลังเรียน รายข้อและรายหัวข้อ";
+  sheetEl.innerHTML = pages.join("");
+  doPrint();
+};
+
 /** ส่วนผลวิชาการในรายงานรายบุคคล — แสดงเสมอ ถ้ายังไม่สอบจะเป็นช่องว่าง “—” */
 function acadBlock(s){
   const a = aSum(s.id);
@@ -1164,7 +1318,8 @@ function acadBlock(s){
     <table class="rep"><thead><tr><th style="width:17mm"></th>${SUBJ.map(([, n]) => `<th>${esc(n)}</th>`).join("")}<th style="width:18mm">รวม<br><small>/${num(ATOTAL)}</small></th></tr></thead>
       <tbody><tr><td class="c">คะแนน</td>${SUBJ.map(([k]) => `<td class="c">${fmtA(aGet(s.id, k))}</td>`).join("")}<td class="c"><b>${a.n ? fmtA(a.sum) : "—"}</b></td></tr>
       <tr><td class="c">ระดับ</td>${SUBJ.map(([k]) => { const l = levelOf(aGet(s.id, k)); return `<td class="c${l === "ดีมาก" || l === "ดี" ? " g" : ""}">${l || "—"}</td>`; }).join("")}<td class="c">${a.n ? num(Math.round(a.pct)) + "%" : "—"}</td></tr></tbody></table>
-    <p style="font-size:10pt;margin:.4mm 0 0!important">ระดับ : ${lvText()}</p>`;
+    <p style="font-size:10pt;margin:.4mm 0 0!important">ระดับ : ${lvText()}</p>
+    ${(() => { const w = akWeak(s.id); return w.length ? `<p style="font-size:10.5pt;margin:.4mm 0 0!important"><b>หัวข้อที่ตอบถูกไม่ถึงครึ่ง :</b> ${w.slice(0, 8).map(esc).join(" · ")}${w.length > 8 ? " และอื่น ๆ" : ""}</p>` : ""; })()}`;
 }
 
 /** แบบบันทึกคะแนนทดสอบหลังเรียน (ใบเปล่ามีชื่อ) */
