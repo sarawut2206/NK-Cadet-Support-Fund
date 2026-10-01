@@ -1760,6 +1760,16 @@ function wordBody(){
     el.replaceWith(p);
   });
 
+  /* หนังสือที่พิมพ์รายคน (.letter) : ขนาดตัวอักษรเท่ากันทั้งฉบับ และ ๑ คนต่อ ๑ หน้า
+     Word ไม่อ่าน break-after ของ CSS จึงใส่ตัวคั่นหน้าแบบที่ Word รู้จักก่อนฉบับที่ ๒ เป็นต้นไป */
+  root.querySelectorAll(".letter").forEach((el, i) => {
+    const fs = parseFloat(el.style.fontSize) || 16;
+    el.style.fontSize = fs + "pt";
+    el.querySelectorAll("table, td, p, span, .org").forEach(x => { x.style.fontSize = fs + "pt"; });
+    el.querySelectorAll(".org b").forEach(x => { x.style.fontSize = (fs + 2) + "pt"; });
+    if (i) el.insertAdjacentHTML("beforebegin", `<br clear="all" style="page-break-before:always;mso-break-type:page-break">`);
+  });
+
   return root.innerHTML;
 }
 
