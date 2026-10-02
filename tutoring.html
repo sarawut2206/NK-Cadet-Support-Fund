@@ -398,12 +398,14 @@ footer b{color:#fff}
     <select id="selTea" style="background:var(--ground);border:1px solid var(--rule);border-radius:5px;padding:.38rem .5rem;font-size:.85rem;font-family:var(--ui)"></select>
     <button class="btn" id="prTea" type="button">กำหนดการรายคน</button>
     <button class="btn" id="prTeaAll" type="button">กำหนดการรายคน (ทุกคน)</button>
-    <button class="btn" id="prPay" type="button">ใบสรุปค่าตอบแทน</button>
+    <button class="btn" id="prPay" type="button">ใบสรุปค่าตอบแทนรายคน (ทุกคน)</button>
+    <button class="btn" id="prPayOne" type="button">ใบสรุปค่าตอบแทน (คนที่เลือก)</button>
+    <button class="btn" id="prPaySum" type="button">สรุปค่าตอบแทนรวม</button>
     <button class="btn" id="prSign" type="button">ใบลงเวลาปฏิบัติงานสอน (รายวัน)</button>
     <button class="btn gold" id="prPretty" type="button">ตารางเรียนแจกนักเรียน (สีสัน)</button>
   </div>
   <p class="mini">ตารางเรียนแจกนักเรียนพิมพ์เป็นแนวนอน แยกหน้าตามสัปดาห์ ใช้สีประจำวันแบบไทย มีช่องชื่อและชั้นให้เขียน — พิมพ์แล้วถ่ายสำเนาแจกได้เลย</p>
-  <p class="mini">ใบสรุปค่าตอบแทนจะระบุขั้นการอนุมัติตามวงเงินให้อัตโนมัติ ตามข้อ ๑๘ ของข้อบังคับกองทุน — คณะกรรมการกองทุนให้ความเห็นชอบ แล้วผู้อำนวยการเป็นผู้อนุมัติ</p>
+  <p class="mini">ใบสรุปค่าตอบแทนรายคนดึงทุกคาบ วันฝึก และกิจกรรมของผู้นั้นจากตาราง พร้อมอัตราและจำนวนเงินรายรายการ คนละ ๑ หน้า มีช่องลงนามผู้รับเงิน · สรุปค่าตอบแทนรวมจะระบุขั้นการอนุมัติตามวงเงินให้อัตโนมัติ ตามข้อ ๑๘ ของข้อบังคับกองทุน — คณะกรรมการกองทุนให้ความเห็นชอบ แล้วผู้อำนวยการเป็นผู้อนุมัติ</p>
 </div></section>
 
 <!-- ═══ ๖ ใบตรวจสอบรายคน ═══ -->
@@ -769,19 +771,19 @@ function stats(){
         const o = get(who || "(ยังไม่ระบุครู)");
         o.roles.add(SB(r.s).n); o.periods++; o.hours += dur(r);
         o.pay += Number(T.rate) || 0;
-        o.rows.push({ di, date, t1:r.t1, t2:r.t2, what: SB(r.s).n, sub:r.s });
+        o.rows.push({ di, date, t1:r.t1, t2:r.t2, what: SB(r.s).n, sub:r.s, h: dur(r), amt: Number(T.rate) || 0, unit:"คาบ" });
       } else if (r.k === "fit"){
         if (!who) return;
         const o = get(who);
         o.roles.add("ฝึกสมรรถภาพร่างกาย"); o.fitDays++; o.hours += dur(r);
         o.pay += Number(T.fitRate) || 0;
-        o.rows.push({ di, date, t1:r.t1, t2:r.t2, what: r.l || "ฝึกสมรรถภาพร่างกาย" });
+        o.rows.push({ di, date, t1:r.t1, t2:r.t2, what: r.l || "ฝึกสมรรถภาพร่างกาย", h: dur(r), amt: Number(T.fitRate) || 0, unit:"วัน" });
       } else if (r.k === "ev"){
         if (!who) return;
         const o = get(who);
         o.roles.add(r.l || "กิจกรรมพิเศษ"); o.events++; o.hours += dur(r);
         o.pay += evAmt(r);
-        o.rows.push({ di, date, t1:r.t1, t2:r.t2, what: r.l || "กิจกรรมพิเศษ" });
+        o.rows.push({ di, date, t1:r.t1, t2:r.t2, what: r.l || "กิจกรรมพิเศษ", h: dur(r), amt: evAmt(r), unit:"ครั้ง" });
       }
     });
   });
@@ -1375,8 +1377,45 @@ $("#prCheck").onclick = () => {
   doPrint();
 };
 
-/* ใบสรุปค่าตอบแทน */
+/* ใบสรุปค่าตอบแทนรายคน — ๑ คน ๑ หน้า ข้อมูลทุกรายการมาจากตาราง */
+function paySheet(name, o){
+  const rows = o.rows.slice().sort((a, b) => a.di - b.di || (tmin(a.t1) - tmin(b.t1))).map((r, i) =>
+    `<tr><td class="c">${num(i + 1)}</td><td>วัน${THDAY[r.date.getDay()]}ที่ ${num(thDate(r.date))}</td>
+     <td class="c">${num(esc(r.t1))}–${num(esc(r.t2))}</td><td${r.sub ? ` style="${toneCss(r.sub)}"` : ""}>${esc(r.what)}</td>
+     <td class="c">${num(hFmt(r.h || 0))}</td><td class="n">${num(money(r.amt || 0))}</td></tr>`).join("");
+  const bits = [];
+  if (o.periods) bits.push(`ค่าสอน ${num(o.periods)} คาบ × ${num(money0(Number(T.rate) || 0))} บาท`);
+  if (o.fitDays) bits.push(`ครูฝึกสมรรถภาพ ${num(o.fitDays)} วัน × ${num(money0(Number(T.fitRate) || 0))} บาท`);
+  if (o.events)  bits.push(`กิจกรรม/บรรยาย ${num(o.events)} ครั้ง`);
+  return orgHead() + `<h1>ใบสรุปค่าตอบแทนผู้ปฏิบัติงาน (รายบุคคล)</h1>` + projInfo() + `
+    <p style="margin-top:2mm"><b>ชื่อ–สกุล</b>&nbsp;&nbsp;${esc(name)}&nbsp;&nbsp;&nbsp;<b>หน้าที่</b>&nbsp;&nbsp;${[...o.roles].map(esc).join(" · ")}</p>
+    <table><thead><tr><th style="width:10mm">ที่</th><th>วัน</th><th style="width:28mm">เวลา</th><th>รายการ</th><th style="width:16mm">ชั่วโมง</th><th style="width:26mm">จำนวนเงิน (บาท)</th></tr></thead>
+      <tbody>${rows}
+        <tr><td colspan="4" style="text-align:right;font-weight:700">รวม</td><td class="c" style="font-weight:700">${num(hFmt(o.hours))}</td><td class="n" style="font-weight:700">${num(money(o.pay))}</td></tr>
+        <tr><td colspan="6" class="c">(${bahtText(o.pay)})</td></tr></tbody></table>
+    <div class="box"><div class="bt">รายละเอียดการคำนวณ</div>${bits.join(" · ")}<br>
+      เบิกจ่ายจาก${esc(S.fund)} ตามขั้นการอนุมัติในข้อ ๑๘ ของข้อบังคับกองทุน</div>
+    <p style="margin-top:3mm">ข้าพเจ้าได้ปฏิบัติงานตามรายการข้างต้นจริง และได้รับเงินค่าตอบแทนจำนวน ${num(money(o.pay))} บาท (${bahtText(o.pay)}) ไว้ถูกต้องแล้ว</p>
+    ${sig([{ role:"ผู้รับเงิน", name },
+           { role:"ผู้จ่ายเงิน" },
+           { role:"หัวหน้าแผนการเรียนเตรียมทหาร–ตำรวจ", sub:"ผู้ตรวจสอบ", name:S.head }])}
+    <p class="foot">แนบใบลงเวลาปฏิบัติงานของวันที่ระบุไว้ประกอบการเบิกจ่าย · ยอดเงินคำนวณจากตารางติวและอัตราที่ตั้งไว้ในขั้นที่ ๑</p>`;
+}
 $("#prPay").onclick = () => {
+  const map = stats(), names = Object.keys(map).filter(n => n !== "(ยังไม่ระบุครู)").sort((a, b) => a.localeCompare(b, "th"));
+  if (!names.length) return alert("ยังไม่มีชื่อผู้ปฏิบัติงานในตาราง");
+  sheetEl.innerHTML = names.map(n => `<div class="page">${paySheet(n, map[n])}</div>`).join("");
+  doPrint();
+};
+$("#prPayOne").onclick = () => {
+  const n = $("#selTea").value, o = stats()[n];
+  if (!n || !o) return alert("เลือกผู้ปฏิบัติงานจากรายการก่อน");
+  sheetEl.innerHTML = paySheet(n, o);
+  doPrint();
+};
+
+/* สรุปค่าตอบแทนรวม (ใช้เสนออนุมัติ) */
+$("#prPaySum").onclick = () => {
   const map = stats(), names = Object.keys(map).sort((a, b) => a.localeCompare(b, "th"));
   let total = 0;
   const rows = names.map((n, i) => {
