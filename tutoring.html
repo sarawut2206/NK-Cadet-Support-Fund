@@ -987,7 +987,17 @@ function renderTeachers(){
       <td><button class="btn xs" data-pr="${esc(n)}" type="button">พิมพ์กำหนดการ</button></td></tr>`;
   }).join("") : `<tr><td colspan="8" style="color:var(--ink-3)">ยังไม่ได้ลงตาราง — เริ่มที่ปุ่ม “เติมวิชาตามโควตา” บนแถบโควตาในขั้นที่ ๓</td></tr>`;
   $("#teaBody").querySelectorAll("[data-pr]").forEach(b => b.onclick = () => printTeacher(b.dataset.pr));
-  $("#selTea").innerHTML = `<option value="">— เลือกผู้ปฏิบัติงาน —</option>` + names.map(n => `<option value="${esc(n)}">${esc(n)}</option>`).join("");
+  /* รายการเลือกใช้ลำดับ (index) แทนข้อความชื่อ — ไม่พึ่งการเทียบตัวอักษร จึงไม่พังเมื่อชื่อมีเว้นวรรคซ้อน/อักขระพิเศษ
+     และจำชื่อที่เลือกไว้ข้ามการวาดตารางใหม่ (ไม่เด้งกลับเป็น “เลือกผู้ปฏิบัติงาน”) */
+  const keep = selTeaName();
+  teaNames = names;
+  $("#selTea").innerHTML = `<option value="">— เลือกผู้ปฏิบัติงาน —</option>` + names.map((n, i) => `<option value="${i}"${n === keep ? " selected" : ""}>${esc(n)}</option>`).join("");
+}
+let teaNames = [];
+/** ชื่อผู้ปฏิบัติงานที่เลือกอยู่ในรายการ (ว่าง = ยังไม่ได้เลือก) */
+function selTeaName(){
+  const v = $("#selTea").value;
+  return v === "" ? "" : (teaNames[Number(v)] || "");
 }
 
 function renderKPI(){
@@ -1343,7 +1353,7 @@ function printAllTeachers(){
   sheetEl.innerHTML = names.map(n => `<div class="page">${teacherSheet(n, map[n])}</div>`).join("");
   doPrint();
 }
-$("#prTea").onclick = () => { const n = $("#selTea").value; if (!n) return alert("เลือกผู้ปฏิบัติงานจากรายการก่อน"); printTeacher(n); };
+$("#prTea").onclick = () => { const n = selTeaName(); if (!n) return alert("เลือกผู้ปฏิบัติงานจากรายการก่อน"); printTeacher(n); };
 $("#prTeaAll").onclick = printAllTeachers;
 
 /** ใบตรวจสอบวัน–เวลาสอนรายคน — ทุกคนในเอกสารเดียว ให้ครูกาตรวจแล้วส่งคืน */
@@ -1408,7 +1418,7 @@ $("#prPay").onclick = () => {
   doPrint();
 };
 $("#prPayOne").onclick = () => {
-  const n = $("#selTea").value, o = stats()[n];
+  const n = selTeaName(), o = stats()[n];
   if (!n) return alert("เลือกผู้ปฏิบัติงานจากรายการก่อน");
   if (!o) return alert("ไม่พบชื่อนี้ในตาราง — ลองเลือกชื่อใหม่อีกครั้ง");
   sheetEl.innerHTML = paySheet(n, o);
