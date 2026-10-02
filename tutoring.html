@@ -987,7 +987,7 @@ function renderTeachers(){
       <td><button class="btn xs" data-pr="${esc(n)}" type="button">พิมพ์กำหนดการ</button></td></tr>`;
   }).join("") : `<tr><td colspan="8" style="color:var(--ink-3)">ยังไม่ได้ลงตาราง — เริ่มที่ปุ่ม “เติมวิชาตามโควตา” บนแถบโควตาในขั้นที่ ๓</td></tr>`;
   $("#teaBody").querySelectorAll("[data-pr]").forEach(b => b.onclick = () => printTeacher(b.dataset.pr));
-  $("#selTea").innerHTML = `<option value="">— เลือกผู้ปฏิบัติงาน —</option>` + names.map(n => `<option>${esc(n)}</option>`).join("");
+  $("#selTea").innerHTML = `<option value="">— เลือกผู้ปฏิบัติงาน —</option>` + names.map(n => `<option value="${esc(n)}">${esc(n)}</option>`).join("");
 }
 
 function renderKPI(){
@@ -1409,7 +1409,8 @@ $("#prPay").onclick = () => {
 };
 $("#prPayOne").onclick = () => {
   const n = $("#selTea").value, o = stats()[n];
-  if (!n || !o) return alert("เลือกผู้ปฏิบัติงานจากรายการก่อน");
+  if (!n) return alert("เลือกผู้ปฏิบัติงานจากรายการก่อน");
+  if (!o) return alert("ไม่พบชื่อนี้ในตาราง — ลองเลือกชื่อใหม่อีกครั้ง");
   sheetEl.innerHTML = paySheet(n, o);
   doPrint();
 };
