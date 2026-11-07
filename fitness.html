@@ -342,6 +342,9 @@ footer b{color:#fff}
   <div class="acts" style="margin-top:0;margin-bottom:.6rem">
     <div class="field" style="min-width:11rem"><label for="aDate">วันที่สอบ</label><input id="aDate" type="date"></div>
     <button class="btn" id="aCsv" type="button">ส่งออกคะแนน (CSV สำหรับ Google Sheets)</button>
+    <button class="btn" id="aGs" type="button">ส่งคะแนนขึ้น Google Sheets</button>
+    <button class="btn" id="aGsCfg" type="button">ตั้งค่า Google Sheets</button>
+    <span id="aGsStat" class="mini" style="flex:1;min-width:14rem"></span>
   </div>
   <div class="tblwrap"><table class="grid" id="agrid"></table></div>
   <p class="mini" id="aCrit"></p>
@@ -1175,13 +1178,41 @@ function renderAcad(){
 }
 $("#aDate").onchange = e => { F.acad.date = e.target.value; save(); };
 /** ส่งออกคะแนนหลังเรียนเป็น CSV (UTF-8 BOM) เปิดใน Google Sheets / Excel ได้ทันที — ไฟล์อยู่ในเครื่องผู้ใช้เท่านั้น */
-$("#aCsv").onclick = () => {
-  const q = v => `"${String(v ?? "").replace(/"/g, '""')}"`;
+function acadRows(){
   const rows = [["เลขที่", "ชื่อ-สกุล", ...SUBJ.map(([, n]) => n), "รวม", "ร้อยละ", "วิชาที่ควรเสริม"]];
   F.students.forEach((s, i) => {
     const a = aSum(s.id);
     rows.push([i + 1, s.name || "", ...SUBJ.map(([k]) => aGet(s.id, k) ?? ""), a.n ? a.sum : "", a.n ? Math.round(a.pct * 10) / 10 : "", weakOf(s.id).join(", ")]);
   });
+  return rows;
+}
+/** ส่งคะแนนไปที่ Google Sheets ของครู (Apps Script Web App) — URL และรหัสเก็บในเบราว์เซอร์เครื่องนี้เท่านั้น ไม่อยู่ในเว็บ */
+const GSKEY = "nk_gs_v1";
+const gsCfg = () => { try { return JSON.parse(localStorage.getItem(GSKEY) || "{}"); } catch (e) { return {}; } };
+$("#aGsCfg").onclick = () => {
+  const c = gsCfg();
+  const url = prompt("วาง URL ของ Web App (ลงท้าย /exec) ที่ได้จาก Apps Script:", c.url || "");
+  if (url == null) return;
+  const key = prompt("รหัสผ่านที่ตั้งไว้ใน Apps Script (ตัวแปร SECRET):", c.key || "");
+  if (key == null) return;
+  localStorage.setItem(GSKEY, JSON.stringify({ url: url.trim(), key: key.trim() }));
+  $("#aGsStat").textContent = "ตั้งค่าแล้ว — กด “ส่งคะแนนขึ้น Google Sheets” ได้เลย";
+};
+$("#aGs").onclick = async () => {
+  const c = gsCfg(), st = $("#aGsStat");
+  if (!c.url || !c.key){ st.textContent = "ยังไม่ได้ตั้งค่า — กด “ตั้งค่า Google Sheets” ก่อน"; return; }
+  if (!aAny() && !confirm("ยังไม่มีคะแนนที่กรอกไว้เลย ส่งตารางว่างไปทับชีตเดิมหรือไม่?")) return;
+  if (!confirm("ส่งชื่อนักเรียนและคะแนนไปที่ Google Sheets ของคุณ แทนที่ข้อมูลเดิมในแท็บ “คะแนนหลังเรียน”?")) return;
+  st.textContent = "กำลังส่ง…";
+  try {
+    const r = await fetch(c.url, { method: "POST", body: JSON.stringify({ key: c.key, date: F.acad.date || "", rows: acadRows() }) });
+    const j = await r.json();
+    st.textContent = j.ok ? `ส่งแล้ว ${j.n} แถว · ${new Date().toLocaleTimeString("th-TH")}` : "ส่งไม่สำเร็จ: " + (j.err || "ไม่ทราบสาเหตุ");
+  } catch (e){ st.textContent = "ส่งไม่สำเร็จ: " + e.message + " (ตรวจ URL และสิทธิ์ Anyone ของ Web App)"; }
+};
+$("#aCsv").onclick = () => {
+  const q = v => `"${String(v ?? "").replace(/"/g, '""')}"`;
+  const rows = acadRows();
   const a = document.createElement("a");
   a.href = URL.createObjectURL(new Blob(["﻿" + rows.map(r => r.map(q).join(",")).join("\r\n")], { type: "text/csv;charset=utf-8" }));
   a.download = `คะแนนหลังเรียน_${F.acad.date || "ยังไม่ระบุวันที่"}.csv`;
