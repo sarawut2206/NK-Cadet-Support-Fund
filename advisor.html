@@ -1,0 +1,451 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ความเห็นนักเรียน | แผนเตรียมทหาร มัธยมวัดหนองแขม</title>
+<meta name="description" content="แดชบอร์ดบันทึกความเห็นของครูที่ปรึกษาและผู้ปกครองรายบุคคล ดึงรายชื่อนักเรียนจากโปรแกรม พิมพ์เป็นแบบฟอร์มคนละ ๑ หน้า">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%230E2A56'/><text y='72' x='50' text-anchor='middle' font-size='62' fill='%23FFC72C'>น</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&family=Bai+Jamjuree:wght@500;600;700&display=swap">
+<style>
+:root{
+  --navy:#10305F; --navy-2:#1B4A8F; --navy-3:#2C63B0;
+  --gold:#F5B722; --gold-2:#FFD152; --gold-ink:#8A6410; --gold-ghost:rgba(245,183,34,.15);
+  --ground:#EDF4FD; --surface:#FFFFFF; --surface-2:#DCE9F9;
+  --ink:#0F2140; --ink-2:#3D5375; --ink-3:#5F7492;
+  --rule:#C7DCF3; --rule-2:#9CBADF;
+  --ok:#1F7A5A; --ok-bg:rgba(31,122,90,.12);
+  --warn:#B45D12; --warn-bg:rgba(180,93,18,.12);
+  --crit:#A32B2B; --crit-bg:rgba(163,43,43,.11);
+  --idle:#6E7C93; --idle-bg:rgba(110,124,147,.10);
+  --ui:'Bai Jamjuree','Sarabun',system-ui,sans-serif;
+  --body:'Sarabun',system-ui,sans-serif;
+  --doc:'TH SarabunPSK','TH Sarabun New','Sarabun',system-ui,serif;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --ground:#0A1526; --surface:#132034; --surface-2:#1C2B42;
+    --ink:#E6EBF3; --ink-2:#AFBACC; --ink-3:#8391A6;
+    --rule:#26344E; --rule-2:#3E506F;
+    --navy:#0A1830; --navy-2:#22508F; --navy-3:#6EA1E8;
+    --gold:#FFC72C; --gold-2:#FFD766; --gold-ink:#FFC72C; --gold-ghost:rgba(255,199,44,.14);
+    --ok:#5FBF97; --ok-bg:rgba(95,191,151,.16);
+    --warn:#E09550; --warn-bg:rgba(224,149,80,.16);
+    --crit:#E38A8A; --crit-bg:rgba(227,138,138,.16);
+    --idle:#8391A6; --idle-bg:rgba(131,145,166,.13);
+  }
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--body);font-size:15.5px;line-height:1.7;-webkit-font-smoothing:antialiased}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--navy-3);outline-offset:2px;border-radius:5px}
+.wrap{max-width:84rem;margin-inline:auto;padding-inline:clamp(.9rem,3vw,2rem)}
+p{margin:0}
+a{color:var(--navy-3)}
+
+.top{background:var(--navy);color:#fff;border-bottom:3px solid var(--gold);position:sticky;top:0;z-index:40}
+.top-in{display:flex;align-items:center;gap:.9rem;padding:.6rem clamp(.8rem,2vw,1.4rem);flex-wrap:wrap}
+.mark{width:2.35rem;height:2.35rem;flex:none;background:var(--gold);color:var(--navy);display:grid;place-items:center;font-family:var(--ui);font-weight:700;font-size:.8rem;border-radius:6px}
+.title{line-height:1.25;min-width:0}
+.title b{display:block;font-family:var(--ui);font-weight:600;font-size:.98rem;color:#fff}
+.title span{font-size:.76rem;color:#B6C6E0}
+.top .spacer{margin-inline-start:auto}
+.tabs{display:flex;gap:.25rem;flex-wrap:wrap}
+.tabs a{font-family:var(--ui);font-weight:600;font-size:.83rem;text-decoration:none;color:#C6D4EA;padding:.4rem .8rem;border-radius:5px;border:1px solid transparent}
+.tabs a:hover{background:rgba(255,255,255,.1);color:#fff}
+.tabs a[aria-current]{background:var(--gold);color:var(--navy)}
+
+.band{background:var(--navy);color:#fff;padding:1.2rem 0 1.5rem}
+.bandgrid{display:grid;gap:1px;background:rgba(255,255,255,.16);grid-template-columns:repeat(auto-fit,minmax(10rem,1fr));border:1px solid rgba(255,255,255,.16);border-radius:10px;overflow:hidden}
+.kpi{background:var(--navy);padding:.9rem 1.05rem}
+.kpi .l{font-family:var(--ui);font-size:.71rem;font-weight:600;letter-spacing:.06em;color:#93A9CC}
+.kpi .v{font-family:var(--ui);font-weight:700;font-size:1.55rem;line-height:1.15;color:var(--gold-2);font-variant-numeric:tabular-nums;margin-top:.1rem}
+.kpi .s{font-size:.78rem;color:#9DB0CE;line-height:1.5}
+
+section{padding:1.7rem 0}
+section + section{border-top:1px solid var(--rule)}
+.hd{margin-bottom:1rem}
+.hd .eb{font-family:var(--ui);font-size:.72rem;font-weight:600;letter-spacing:.1em;color:var(--gold-ink);margin-bottom:.3rem}
+.hd h2{font-family:var(--ui);font-weight:700;font-size:clamp(1.2rem,2.6vw,1.5rem);margin:0 0 .35rem;line-height:1.3}
+.hd p{font-size:.93rem;color:var(--ink-2);max-width:76ch}
+
+.panel{background:var(--surface);border:1px solid var(--rule);border-radius:10px;padding:1rem 1.1rem;box-shadow:0 1px 3px rgba(16,48,95,.07)}
+.grid4{display:grid;gap:.65rem .85rem;grid-template-columns:repeat(auto-fit,minmax(10rem,1fr))}
+.field label{display:block;font-family:var(--ui);font-weight:600;font-size:.77rem;color:var(--ink-2);margin-bottom:.18rem}
+.field input,.field select,.field textarea{width:100%;background:var(--ground);border:1px solid var(--rule);border-radius:5px;padding:.38rem .5rem;font-size:.9rem}
+.field textarea{min-height:3.4rem;resize:vertical;line-height:1.5}
+.acts{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.9rem;align-items:center}
+.btn{font-family:var(--ui);font-weight:600;font-size:.85rem;border:1px solid var(--rule-2);background:transparent;color:var(--navy-3);padding:.4rem .9rem;border-radius:5px;cursor:pointer}
+.btn:hover{background:var(--gold-ghost)}
+.btn.gold{background:var(--gold);border-color:var(--gold);color:#10305F}
+.btn.gold:hover{background:var(--gold-2)}
+.btn.xs{font-size:.75rem;padding:.2rem .55rem}
+.btn.danger{color:var(--crit);border-color:var(--crit)}
+.note{font-size:.84rem;line-height:1.6;color:var(--ink-2);background:var(--warn-bg);border:1px solid var(--rule);border-inline-start:4px solid var(--warn);border-radius:8px;padding:.6rem .85rem;margin-top:.8rem}
+.note b{color:var(--ink)}
+.mini{font-size:.81rem;color:var(--ink-3);line-height:1.6;margin-top:.6rem}
+
+/* ภาพรวมรายคน */
+.tblwrap{overflow-x:auto;background:var(--surface);border:1px solid var(--rule);border-radius:10px;box-shadow:0 1px 3px rgba(16,48,95,.07)}
+table.ov{border-collapse:collapse;width:100%;font-size:.88rem;min-width:46rem}
+.ov th,.ov td{border-bottom:1px solid var(--rule);padding:.35rem .5rem;text-align:center;vertical-align:middle}
+.ov thead th{font-family:var(--ui);font-weight:600;font-size:.76rem;background:var(--surface-2);color:var(--ink-2)}
+.ov td.nm{text-align:start;min-width:11rem}
+.ov tr.sel td{background:var(--gold-ghost)}
+.ov input.sid{width:6.2rem;text-align:center;background:var(--ground);border:1px solid var(--rule);border-radius:5px;padding:.2rem .3rem}
+.chip{display:inline-block;font-family:var(--ui);font-weight:600;font-size:.75rem;padding:.05rem .55rem;border-radius:999px;background:var(--idle-bg);color:var(--idle);white-space:nowrap}
+.chip.ok{background:var(--ok-bg);color:var(--ok)} .chip.warn{background:var(--warn-bg);color:var(--warn)}
+
+/* ฟอร์มกรอก */
+.edhead{display:flex;gap:.6rem;align-items:center;flex-wrap:wrap;margin-bottom:.8rem}
+.edhead b{font-family:var(--ui);font-size:1.1rem}
+table.ed{border-collapse:collapse;width:100%;background:var(--surface);border:1px solid var(--rule);border-radius:10px;overflow:hidden;margin-bottom:1rem;font-size:.9rem}
+.ed th,.ed td{border:1px solid var(--rule);padding:.4rem .5rem;vertical-align:top}
+.ed thead th{font-family:var(--ui);font-weight:600;font-size:.8rem;background:var(--surface-2);color:var(--ink-2);text-align:center}
+.ed td.tp{width:25%;font-weight:600;font-size:.85rem}
+.ed td.tp .chips{display:flex;flex-wrap:wrap;gap:.2rem;margin-top:.3rem}
+.ed .pc{font-family:var(--body);font-weight:400;font-size:.72rem;border:1px solid var(--rule-2);background:var(--ground);color:var(--ink-2);border-radius:999px;padding:0 .5rem;cursor:pointer}
+.ed .pc:hover{background:var(--gold-ghost)}
+.ed textarea{width:100%;min-height:3.4rem;resize:vertical;background:var(--ground);border:1px solid var(--rule);border-radius:5px;padding:.3rem .45rem;font-size:.88rem;line-height:1.5}
+.ed .cnt{font-size:.7rem;color:var(--ink-3);text-align:end}
+.ed .cnt.over{color:var(--warn);font-weight:600}
+
+/* กระดาษพิมพ์ */
+#sheetWrap{display:none}
+@media print{
+  @page{size:A4 portrait;margin:0}
+  body > *:not(#sheetWrap){display:none!important}
+  #sheetWrap{display:block}
+  body{background:#fff}
+}
+.sheet{font-family:var(--doc);color:#000;background:#fff;width:210mm;padding:11mm 15mm 8mm;margin:0 auto;font-size:14pt;line-height:1.25}
+.sheet .page{min-height:277mm;break-after:page;page-break-after:always}
+.sheet .page:last-child{break-after:auto;page-break-after:auto;min-height:0}
+.sheet .ln{font-size:15pt;margin:0 0 1.2mm}
+.sheet .ln u{text-decoration:none;border-bottom:.6pt dotted #000;padding:0 3mm;min-width:20mm;display:inline-block;text-align:center}
+.sheet .ttl{font-size:16pt;font-weight:700;text-align:center;margin:1.5mm 0 3mm}
+.sheet table{border-collapse:collapse;width:100%;font-size:14pt;margin:0 0 4.5mm}
+.sheet th,.sheet td{border:.6pt solid #000;padding:.8mm 2mm;vertical-align:middle}
+.sheet thead th{background:#EDEDED;font-weight:700;text-align:center}
+.sheet td.tp{width:30%}
+.sheet tbody td{height:12mm;line-height:1.15}
+.sheet.blank tbody td{height:13.4mm}
+.sheet tr.sg td{height:13mm}
+.sheet .sgn{font-size:12.5pt;text-align:center;margin-top:5mm}
+</style>
+</head>
+<body>
+
+<header class="top"><div class="top-in">
+  <span class="mark">นข</span>
+  <span class="title"><b>ความเห็นนักเรียน</b><span>แผนการเรียนเตรียมทหาร–ตำรวจ · โรงเรียนมัธยมวัดหนองแขม</span></span>
+  <span class="spacer"></span>
+  <nav class="tabs">
+    <a href="index.html">ศูนย์เอกสาร</a>
+    <a href="project.html">ระบบโครงการ</a>
+    <a href="dashboard.html">แดชบอร์ด</a>
+    <a href="ledger.html">ทะเบียนกลาง</a>
+    <a href="tutoring.html">ตารางติว</a>
+    <a href="fitness.html">สมรรถภาพ</a>
+    <a href="advisor.html" aria-current="page">ความเห็นนักเรียน</a>
+  </nav>
+</div></header>
+
+<div class="band"><div class="wrap"><div class="bandgrid" id="kpis"></div></div></div>
+
+<main class="wrap">
+
+<section>
+  <div class="hd"><div class="eb">ขั้นที่ ๑</div><h2>ตั้งค่าและดึงรายชื่อนักเรียน</h2>
+    <p>รายชื่อดึงมาจากทะเบียนรายชื่อกลางในโปรแกรม (หน้า “ชุดพิมพ์”) หรือจากหน้า “สมรรถภาพ” อัตโนมัติ เลขที่เรียงตามลำดับรายชื่อ</p></div>
+  <div class="panel">
+    <div class="grid4">
+      <div class="field"><label for="fLevel">ชั้นมัธยมศึกษาปีที่</label><input id="fLevel" inputmode="numeric" placeholder="เช่น ๔"></div>
+      <div class="field"><label for="fRoom">ห้อง</label><input id="fRoom" inputmode="numeric" placeholder="เช่น ๑"></div>
+      <div class="field"><label for="fYear">ปีการศึกษา</label><input id="fYear" inputmode="numeric"></div>
+      <div class="field"><label for="fAdv">ชื่อครูที่ปรึกษา (พิมพ์ใต้เส้นลงชื่อ ไม่บังคับ)</label><input id="fAdv" placeholder="เว้นว่าง = ลงลายมือเอง"></div>
+    </div>
+    <div class="acts">
+      <button class="btn gold" id="btnSync" type="button">ดึงรายชื่อจากโปรแกรมอีกครั้ง</button>
+      <span class="mini" id="syncMsg" style="margin:0"></span>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="hd"><div class="eb">ขั้นที่ ๒</div><h2>ภาพรวมรายคน</h2>
+    <p>ครูกรอกครบ = ทุกหัวข้อ ยกเว้น “อื่น ๆ” · ติ๊ก “ได้รับแล้ว” เมื่อผู้ปกครองส่งแบบฟอร์มคืน · กดชื่อเพื่อกรอกความเห็น</p></div>
+  <div class="tblwrap"><table class="ov" id="ov"></table></div>
+</section>
+
+<section id="editor">
+  <div class="hd"><div class="eb">ขั้นที่ ๓</div><h2>กรอกความเห็น</h2></div>
+  <div id="edBox"></div>
+</section>
+
+<section>
+  <div class="hd"><div class="eb">ขั้นที่ ๔</div><h2>พิมพ์และส่งออก</h2>
+    <p>แบบฟอร์มคนละ ๑ หน้า A4 ตามแบบ “ความเห็นเกี่ยวกับนักเรียน” ตารางครูที่ปรึกษา และตารางผู้ปกครอง ภาคเรียนที่ ๑–๒</p></div>
+  <div class="panel">
+    <div class="grid4">
+      <div class="field"><label for="fMode">ข้อความในแบบฟอร์ม</label>
+        <select id="fMode"><option value="filled">ใส่ความเห็นที่กรอกไว้</option><option value="blank">ฟอร์มว่าง (มีชื่อ) ให้เขียนเอง</option></select></div>
+      <div class="field"><label for="fWho">พิมพ์ให้</label>
+        <select id="fWho"><option value="all">นักเรียนทุกคน</option><option value="one">เฉพาะคนที่เลือกอยู่</option></select></div>
+    </div>
+    <div class="acts">
+      <button class="btn gold" id="btnPrint" type="button">พิมพ์ / บันทึกเป็น PDF</button>
+      <button class="btn" id="btnWord" type="button">ดาวน์โหลด Word</button>
+      <button class="btn" id="btnBackup" type="button">ส่งออกข้อมูล (ไฟล์สำรอง)</button>
+      <button class="btn" id="btnRestore" type="button">นำเข้าไฟล์สำรอง</button>
+      <input type="file" id="fileRestore" accept="application/json,.json" hidden>
+    </div>
+    <div class="note"><b>ข้อมูลส่วนบุคคล</b> ชื่อนักเรียนและความเห็นเก็บอยู่ใน <code>localStorage</code> ของเบราว์เซอร์เครื่องนี้เท่านั้น ไม่ถูกส่งขึ้นเว็บ
+      หากเปลี่ยนเครื่องหรือล้างข้อมูลเบราว์เซอร์ข้อมูลจะหาย ควรกด “ส่งออกข้อมูล” เก็บไว้เป็นระยะ และอย่านำไฟล์สำรองขึ้นที่สาธารณะ</div>
+  </div>
+</section>
+
+</main>
+
+<footer><div class="wrap"><b>ความเห็นนักเรียน</b> · แผนการเรียนเตรียมทหาร–ตำรวจ โรงเรียนมัธยมวัดหนองแขม</div></footer>
+<div id="sheetWrap"></div>
+
+<script>
+"use strict";
+const $ = s => document.querySelector(s);
+const TH = "๐๑๒๓๔๕๖๗๘๙";
+const num = s => String(s == null ? "" : s).replace(/[0-9]/g, d => TH[d]);
+const esc = s => String(s == null ? "" : s).replace(/[&<>"]/g, c => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;" }[c]));
+
+const KEY = "nk_advisor_v1";
+const TT = [["resp","หน้าที่รับผิดชอบทางโรงเรียน"], ["study","ความเอาใจใส่ต่อการเรียน"], ["rel","ความสัมพันธ์กับครูและเพื่อน"],
+            ["free","การใช้เวลาว่าง"], ["char","อุปนิสัย/บุคลิกภาพ"], ["health","สุขภาพ"], ["other","อื่น ๆ"]];
+const PT = [["resp","หน้าที่รับผิดชอบทางบ้าน"], ["study","ความเอาใจใส่ต่อการเรียน"], ["rel","ความสัมพันธ์กับบุคคลอื่นในบ้าน"],
+            ["free","การใช้เวลาว่าง"], ["char","อุปนิสัย/บุคลิกภาพ"], ["health","สุขภาพ"], ["other","อื่น ๆ"]];
+const NEED = TT.length - 1;                  /* ไม่นับ “อื่น ๆ” */
+const PRESET = {
+  resp:   ["มีความรับผิดชอบดี", "รับผิดชอบดีมาก", "ควรกำกับดูแลเพิ่มเติม"],
+  study:  ["ตั้งใจเรียนดี", "ตั้งใจเรียนดีมาก", "ส่งงานตรงเวลา", "ควรเพิ่มความสม่ำเสมอ"],
+  rel:    ["เข้ากับเพื่อนได้ดี", "เป็นที่รักของเพื่อนและครู", "ควรมีส่วนร่วมกับเพื่อนมากขึ้น"],
+  free:   ["อ่านหนังสือ", "ออกกำลังกาย เล่นกีฬา", "เล่นโทรศัพท์", "ช่วยงานที่บ้าน"],
+  char:   ["เรียบร้อย สุภาพ", "มีน้ำใจ", "มีระเบียบวินัย", "ค่อนข้างเงียบ"],
+  health: ["แข็งแรง", "แข็งแรงดี", "มีโรคประจำตัว (ระบุ)"],
+  other:  []
+};
+const WARN_LEN = 70;                         /* เกินนี้อาจทำให้ฟอร์มล้นหน้า */
+
+const D = (() => {
+  let o = null; try { o = JSON.parse(localStorage.getItem(KEY) || "null"); } catch (e) {}
+  o = o && typeof o === "object" ? o : {};
+  return Object.assign({ year: "2569", level: "", room: "", adv: "", mode: "filled", who: "all", s: {} }, o);
+})();
+const save = () => { try { localStorage.setItem(KEY, JSON.stringify(D)); } catch (e) { alert("บันทึกไม่สำเร็จ: พื้นที่เก็บข้อมูลเต็ม"); } };
+const rec = n => (D.s[n] ||= { sid: "", t: { 1: {}, 2: {} }, p: { 1: {}, 2: {} }, back: { 1: false, 2: false } });
+
+/* ── รายชื่อจากโปรแกรม ── */
+const readLS = k => { try { return JSON.parse(localStorage.getItem(k) || "null"); } catch (e) { return null; } };
+let roster = [];
+function loadRoster(){
+  const R = readLS("nk_roster_v1");
+  let list = Array.isArray(R) ? R.filter(x => x && String(x.name || "").trim()).map(x => ({ name: String(x.name).trim(), cls: String(x.cls || "").trim() })) : [];
+  let from = "ทะเบียนรายชื่อกลาง";
+  if (!list.length){
+    const F = readLS("nk_fit_v1");
+    list = F && Array.isArray(F.students) ? F.students.filter(x => x && String(x.name || "").trim()).map(x => ({ name: String(x.name).trim(), cls: String(x.cls || "").trim() })) : [];
+    from = "หน้าสมรรถภาพ";
+  }
+  roster = list;
+  /* ชั้น/ห้องว่างอยู่ → เดาจากช่อง “ห้อง” ของรายชื่อ เช่น ม.4/1 */
+  if (!D.level && !D.room){
+    const m = list.map(x => x.cls.match(/(\d)\s*\/\s*(\d+)/)).find(Boolean);
+    if (m){ D.level = m[1]; D.room = m[2]; save(); }
+  }
+  $("#syncMsg").textContent = list.length ? `ดึงแล้ว ${num(list.length)} คน (จาก${from})` : "ยังไม่พบรายชื่อ — วางรายชื่อที่หน้า “ชุดพิมพ์” หรือกรอกที่หน้า “สมรรถภาพ” ก่อน";
+}
+
+/* ── ความคืบหน้า ── */
+const filled = (o, list) => list.slice(0, NEED).filter(([k]) => String((o || {})[k] || "").trim()).length;
+const prog = n => { const r = D.s[n]; return { t1: filled(r && r.t[1], TT), t2: filled(r && r.t[2], TT), b1: !!(r && r.back[1]), b2: !!(r && r.back[2]) }; };
+const chip = (x, total) => `<span class="chip ${x >= total ? "ok" : x ? "warn" : ""}">${num(x)}/${num(total)}</span>`;
+let cur = 0;
+
+function renderKpi(){
+  const n = roster.length;
+  let c1 = 0, c2 = 0, b1 = 0, b2 = 0;
+  roster.forEach(r => { const p = prog(r.name); if (p.t1 >= NEED) c1++; if (p.t2 >= NEED) c2++; if (p.b1) b1++; if (p.b2) b2++; });
+  const k = (l, v, s) => `<div class="kpi"><div class="l">${l}</div><div class="v">${v}</div><div class="s">${s}</div></div>`;
+  $("#kpis").innerHTML =
+    k("นักเรียนในรายชื่อ", num(n), n ? "ดึงจากโปรแกรม" : "ยังไม่มีรายชื่อ") +
+    k("ครูกรอกครบ ภาคเรียนที่ ๑", `${num(c1)}/${num(n)}`, n ? `ค้าง ${num(n - c1)} คน` : "") +
+    k("ครูกรอกครบ ภาคเรียนที่ ๒", `${num(c2)}/${num(n)}`, n ? `ค้าง ${num(n - c2)} คน` : "") +
+    k("ผู้ปกครองส่งคืน ภาคเรียนที่ ๑", `${num(b1)}/${num(n)}`, "ตามที่ติ๊กไว้") +
+    k("ผู้ปกครองส่งคืน ภาคเรียนที่ ๒", `${num(b2)}/${num(n)}`, "ตามที่ติ๊กไว้");
+}
+function renderOv(){
+  if (!roster.length){ $("#ov").innerHTML = `<tbody><tr><td style="padding:1.2rem;color:var(--ink-3)">ยังไม่มีรายชื่อนักเรียน</td></tr></tbody>`; return; }
+  $("#ov").innerHTML = `<thead><tr><th>เลขที่</th><th>ชื่อ–สกุล</th><th>เลขประจำตัว</th><th>ครู ภาคเรียนที่ ๑</th><th>ครู ภาคเรียนที่ ๒</th>
+    <th>ผู้ปกครองส่งคืน ภ.๑</th><th>ผู้ปกครองส่งคืน ภ.๒</th><th></th></tr></thead><tbody>` +
+    roster.map((r, i) => { const p = prog(r.name), o = D.s[r.name];
+      return `<tr class="${i === cur ? "sel" : ""}"><td>${num(i + 1)}</td><td class="nm">${esc(r.name)}</td>
+        <td><input class="sid" data-sid="${i}" value="${esc(o ? o.sid : "")}" inputmode="numeric" aria-label="เลขประจำตัว ${esc(r.name)}"></td>
+        <td>${chip(p.t1, NEED)}</td><td>${chip(p.t2, NEED)}</td>
+        <td><input type="checkbox" data-back="${i}|1" ${p.b1 ? "checked" : ""} aria-label="ผู้ปกครองส่งคืน ภาค ๑ ${esc(r.name)}"></td>
+        <td><input type="checkbox" data-back="${i}|2" ${p.b2 ? "checked" : ""} aria-label="ผู้ปกครองส่งคืน ภาค ๒ ${esc(r.name)}"></td>
+        <td><button class="btn xs" data-go="${i}" type="button">กรอกความเห็น</button></td></tr>`; }).join("") + "</tbody>";
+}
+$("#ov").addEventListener("input", e => {
+  if (e.target.dataset.sid != null){ rec(roster[+e.target.dataset.sid].name).sid = e.target.value.trim(); save(); }
+});
+$("#ov").addEventListener("change", e => {
+  if (e.target.dataset.back != null){
+    const [i, t] = e.target.dataset.back.split("|");
+    rec(roster[+i].name).back[t] = e.target.checked; save(); renderKpi(); renderOv();
+  }
+});
+$("#ov").addEventListener("click", e => {
+  const b = e.target.closest("[data-go]");
+  if (b){ cur = +b.dataset.go; renderEd(); renderOv(); $("#editor").scrollIntoView({ behavior: "smooth" }); }
+});
+
+/* ── ฟอร์มกรอก ── */
+function edTable(kind, name){
+  const list = kind === "t" ? TT : PT, o = rec(name)[kind];
+  const head = kind === "t" ? "ความเห็นของครูที่ปรึกษา" : "ความเห็นของผู้ปกครอง (ครูพิมพ์แทนได้ ถ้าผู้ปกครองเขียนส่งคืนมา)";
+  return `<table class="ed"><thead><tr><th rowspan="2" style="width:25%">เรื่อง</th><th colspan="2">${head}</th></tr>
+    <tr><th>ภาคเรียนที่ ๑</th><th>ภาคเรียนที่ ๒</th></tr></thead><tbody>` +
+    list.map(([k, label]) => `<tr data-row="${kind}|${k}"><td class="tp">${label}
+      ${kind === "t" && PRESET[k].length ? `<div class="chips">${PRESET[k].map(t => `<button class="pc" type="button" data-pre="${esc(t)}">${esc(t)}</button>`).join("")}</div>` : ""}</td>
+      ${[1, 2].map(t => `<td><textarea data-k="${kind}|${t}|${k}" rows="2" aria-label="${label} ภาค ${t}">${esc((o[t] || {})[k] || "")}</textarea><div class="cnt"></div></td>`).join("")}</tr>`).join("") +
+    "</tbody></table>";
+}
+function renderEd(){
+  if (!roster.length){ $("#edBox").innerHTML = `<div class="panel" style="color:var(--ink-3)">ยังไม่มีรายชื่อนักเรียน</div>`; return; }
+  cur = Math.max(0, Math.min(cur, roster.length - 1));
+  const name = roster[cur].name;
+  $("#edBox").innerHTML = `<div class="edhead"><button class="btn xs" id="prev" type="button">◀ คนก่อนหน้า</button>
+    <b>เลขที่ ${num(cur + 1)} · ${esc(name)}</b><button class="btn xs" id="next" type="button">คนถัดไป ▶</button>
+    <button class="btn xs" id="copy12" type="button">คัดลอกภาค ๑ → ภาค ๒ (เฉพาะช่องที่ว่าง)</button>
+    <button class="btn xs danger" id="clr" type="button">ล้างความเห็นคนนี้</button></div>
+    ${edTable("t", name)}${edTable("p", name)}
+    <p class="mini">ข้อความแต่ละช่องควรสั้นกะทัดรัด (ประมาณไม่เกิน ${num(WARN_LEN)} ตัวอักษร) เพื่อให้พิมพ์ลงแบบฟอร์มได้พอดี ๑ หน้า · คลิกข้อความแนะนำเพื่อเติมลงช่องที่กำลังแก้ (ถ้าไม่ได้เลือกช่อง จะเติมภาคเรียนที่ ๑)</p>`;
+  $("#edBox").querySelectorAll("textarea").forEach(cnt);
+}
+function cnt(ta){
+  const n = ta.value.length, c = ta.nextElementSibling;
+  c.textContent = n ? num(n) + " ตัวอักษร" : ""; c.classList.toggle("over", n > WARN_LEN);
+}
+const lastTa = {};   /* แถว → ช่องที่แก้ล่าสุด */
+$("#edBox").addEventListener("focusin", e => { if (e.target.matches("textarea")) lastTa[e.target.closest("tr").dataset.row] = e.target; });
+$("#edBox").addEventListener("input", e => {
+  const ta = e.target; if (!ta.matches("textarea")) return;
+  const [kind, t, k] = ta.dataset.k.split("|"), o = rec(roster[cur].name)[kind];
+  (o[t] ||= {})[k] = ta.value;
+  if (!ta.value.trim()) delete o[t][k];
+  cnt(ta); save(); renderKpi(); renderOv();
+});
+$("#edBox").addEventListener("click", e => {
+  const pre = e.target.closest("[data-pre]");
+  if (pre){
+    const row = pre.closest("tr"), ta = lastTa[row.dataset.row] || row.querySelector("textarea");
+    ta.value = ta.value.trim() ? ta.value.trim().replace(/[,\s]+$/, "") + ", " + pre.dataset.pre : pre.dataset.pre;
+    ta.dispatchEvent(new Event("input", { bubbles: true })); ta.focus();
+    return;
+  }
+  const id = e.target.id;
+  if (id === "prev"){ cur--; renderEd(); renderOv(); }
+  else if (id === "next"){ cur++; renderEd(); renderOv(); }
+  else if (id === "copy12"){
+    const r = rec(roster[cur].name);
+    ["t", "p"].forEach(kd => { Object.entries(r[kd][1] || {}).forEach(([k, v]) => { if (!String((r[kd][2] || {})[k] || "").trim()) (r[kd][2] ||= {})[k] = v; }); });
+    save(); renderEd(); renderKpi(); renderOv();
+  } else if (id === "clr"){
+    if (!confirm(`ล้างความเห็นทั้งหมดของ ${roster[cur].name}?`)) return;
+    const r = rec(roster[cur].name); r.t = { 1: {}, 2: {} }; r.p = { 1: {}, 2: {} };
+    save(); renderEd(); renderKpi(); renderOv();
+  }
+});
+
+/* ── ตั้งค่า ── */
+const setF = (id, key) => { $(id).value = num(D[key] || ""); $(id).oninput = e => { D[key] = e.target.value.replace(/[๐-๙]/g, c => TH.indexOf(c)).trim(); save(); }; };
+setF("#fLevel", "level"); setF("#fRoom", "room"); setF("#fYear", "year");
+$("#fAdv").value = D.adv || ""; $("#fAdv").oninput = e => { D.adv = e.target.value.trim(); save(); };
+$("#fMode").value = D.mode; $("#fMode").onchange = e => { D.mode = e.target.value; save(); };
+$("#fWho").value = D.who; $("#fWho").onchange = e => { D.who = e.target.value; save(); };
+$("#btnSync").onclick = () => { loadRoster(); cur = 0; $("#fLevel").value = num(D.level); $("#fRoom").value = num(D.room); renderAll(); };
+
+/* ── แบบฟอร์มพิมพ์ ── */
+function opTable(kind, name, blank){
+  const list = kind === "t" ? TT : PT, o = rec(name)[kind];
+  const title = kind === "t" ? "ความเห็นของครูที่ปรึกษา" : "ความเห็นของผู้ปกครอง";
+  const val = (t, k) => blank ? "" : esc(((o[t] || {})[k] || "")).replace(/\n/g, "<br>");
+  const adv = kind === "t" && D.adv && !blank ? `<div class="sgn">(${esc(D.adv)})</div>` : "";
+  return `<table><thead><tr><th rowspan="2" style="width:30%">เรื่อง</th><th colspan="2">${title}</th></tr><tr><th>ภาคเรียนที่ ๑</th><th>ภาคเรียนที่ ๒</th></tr></thead><tbody>` +
+    list.map(([k, label]) => `<tr><td class="tp">${label}</td><td>${val(1, k)}</td><td>${val(2, k)}</td></tr>`).join("") +
+    `<tr class="sg"><td class="tp">${kind === "t" ? "ลงชื่อครูที่ปรึกษา" : "ลงชื่อผู้ปกครอง"}</td><td>${adv}</td><td>${adv}</td></tr></tbody></table>`;
+}
+function pageFor(i, blank){
+  const r = roster[i], o = rec(r.name);
+  return `<div class="page"><p class="ln">ชื่อ <u>${esc(r.name)}</u> เลขประจำตัว <u>${esc(num(o.sid))}</u> เลขที่ <u>${num(i + 1)}</u></p>
+    <p class="ttl">ความเห็นเกี่ยวกับนักเรียน ชั้นมัธยมศึกษาปีที่ <u style="min-width:10mm">${esc(num(D.level))}</u> ห้อง <u style="min-width:10mm">${esc(num(D.room))}</u> ปีการศึกษา <u style="min-width:16mm">${esc(num(D.year))}</u></p>
+    ${opTable("t", r.name, blank)}${opTable("p", r.name, blank)}</div>`;
+}
+function sheetsHTML(){
+  if (!roster.length) return "";
+  const blank = D.mode === "blank", idx = D.who === "one" ? [Math.min(cur, roster.length - 1)] : roster.map((_, i) => i);
+  return idx.map(i => pageFor(i, blank)).join("");
+}
+$("#btnPrint").onclick = () => {
+  const h = sheetsHTML(); if (!h) return alert("ยังไม่มีรายชื่อนักเรียน");
+  $("#sheetWrap").innerHTML = `<div class="sheet ${D.mode === "blank" ? "blank" : ""}">${h}</div>`;
+  window.print();
+};
+$("#btnWord").onclick = () => {
+  const h = sheetsHTML(); if (!h) return alert("ยังไม่มีรายชื่อนักเรียน");
+  const pages = h.split('<div class="page">').slice(1).map(x => x.replace(/<\/div>\s*$/, ""));
+  const css = `@page WordSection1{size:21cm 29.7cm;margin:1.3cm 1.6cm}div.WordSection1{page:WordSection1}
+body{font-family:"TH Sarabun New",sans-serif;font-size:14pt}p{margin:0 0 2pt;font-size:15pt}u{text-decoration:none;border-bottom:.6pt dotted #000;padding:0 8pt}
+.ttl{font-size:16pt;font-weight:bold;text-align:center;margin:3pt 0 5pt}
+table{border-collapse:collapse;width:100%;margin-bottom:8pt}th,td{border:.6pt solid #000;padding:1pt 4pt;vertical-align:middle;font-size:14pt}
+thead th{background:#EDEDED}tbody td{height:${D.mode === "blank" ? "13mm" : "11.5mm"}}tr.sg td{height:13mm}.sgn{font-size:12.5pt;text-align:center;margin-top:10pt}`;
+  const body = pages.map(p => `<div>${p}</div>`).join('<br clear="all" style="page-break-before:always;mso-break-type:page-break">');
+  const html = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40"><head><meta charset="utf-8"><!--[if gte mso 9]><xml><w:WordDocument><w:View>Print</w:View></w:WordDocument></xml><![endif]--><style>${css}</style></head><body><div class="WordSection1">${body}</div></body></html>`;
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob(["﻿", html], { type: "application/msword" }));
+  a.download = `ความเห็นนักเรียน_${D.mode === "blank" ? "ฟอร์มว่าง_" : ""}${D.year || ""}.doc`;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+};
+
+/* ── ไฟล์สำรอง ── */
+$("#btnBackup").onclick = () => {
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([JSON.stringify(D, null, 2)], { type: "application/json" }));
+  a.download = `สำรอง_ความเห็นนักเรียน_${new Date().toISOString().slice(0, 10)}.json`;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+};
+$("#btnRestore").onclick = () => $("#fileRestore").click();
+$("#fileRestore").onchange = e => {
+  const f = e.target.files[0]; if (!f) return;
+  const rd = new FileReader();
+  rd.onload = () => {
+    try {
+      const o = JSON.parse(rd.result);
+      if (!o || typeof o !== "object" || typeof o.s !== "object") throw new Error("ไม่ใช่ไฟล์สำรองของหน้านี้");
+      if (!confirm("นำเข้าข้อมูลจากไฟล์ แทนที่ข้อมูลความเห็นทั้งหมดในเครื่องนี้?")) return;
+      Object.assign(D, o); save(); location.reload();
+    } catch (err){ alert("นำเข้าไม่สำเร็จ: " + err.message); }
+  };
+  rd.readAsText(f); e.target.value = "";
+};
+
+function renderAll(){ renderKpi(); renderOv(); renderEd(); }
+loadRoster();
+$("#fLevel").value = num(D.level); $("#fRoom").value = num(D.room);
+renderAll();
+</script>
+<script src="nav.js"></script>
+</body>
+</html>

@@ -52,6 +52,13 @@
       dd.after(k);
     }
 
+    /* ลิงก์ความเห็นนักเรียน — แบบฟอร์มความเห็นครูที่ปรึกษา/ผู้ปกครอง */
+    if (!nav.querySelector('a[href="advisor.html"]')) {
+      const v = document.createElement("a");
+      v.href = "advisor.html"; v.textContent = "ความเห็นนักเรียน";
+      (nav.querySelector('a[href="kit.html"]') || dd).after(v);
+    }
+
     const trig = dd.querySelector(".nkdd-t");
     trig.addEventListener("click", e => {
       /* แตะครั้งแรกเปิดเมนู แตะซ้ำไปหน้ารวมโครงการ — ใช้งานบนมือถือได้ */
