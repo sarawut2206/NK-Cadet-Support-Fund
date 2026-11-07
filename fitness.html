@@ -341,6 +341,7 @@ footer b{color:#fff}
   </div>
   <div class="acts" style="margin-top:0;margin-bottom:.6rem">
     <div class="field" style="min-width:11rem"><label for="aDate">วันที่สอบ</label><input id="aDate" type="date"></div>
+    <button class="btn" id="aCsv" type="button">ส่งออกคะแนน (CSV สำหรับ Google Sheets)</button>
   </div>
   <div class="tblwrap"><table class="grid" id="agrid"></table></div>
   <p class="mini" id="aCrit"></p>
@@ -1173,6 +1174,19 @@ function renderAcad(){
   }));
 }
 $("#aDate").onchange = e => { F.acad.date = e.target.value; save(); };
+/** ส่งออกคะแนนหลังเรียนเป็น CSV (UTF-8 BOM) เปิดใน Google Sheets / Excel ได้ทันที — ไฟล์อยู่ในเครื่องผู้ใช้เท่านั้น */
+$("#aCsv").onclick = () => {
+  const q = v => `"${String(v ?? "").replace(/"/g, '""')}"`;
+  const rows = [["เลขที่", "ชื่อ-สกุล", ...SUBJ.map(([, n]) => n), "รวม", "ร้อยละ", "วิชาที่ควรเสริม"]];
+  F.students.forEach((s, i) => {
+    const a = aSum(s.id);
+    rows.push([i + 1, s.name || "", ...SUBJ.map(([k]) => aGet(s.id, k) ?? ""), a.n ? a.sum : "", a.n ? Math.round(a.pct * 10) / 10 : "", weakOf(s.id).join(", ")]);
+  });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob(["﻿" + rows.map(r => r.map(q).join(",")).join("\r\n")], { type: "text/csv;charset=utf-8" }));
+  a.download = `คะแนนหลังเรียน_${F.acad.date || "ยังไม่ระบุวันที่"}.csv`;
+  document.body.appendChild(a); a.click(); a.remove();
+};
 
 /* ═══════════ ตรวจคำตอบรายข้อจากไฟล์เฉลย ═══════════
    เฉลยไม่อยู่ในโค้ดของเว็บ — ครูนำเข้าไฟล์ .json จากเครื่องตัวเอง เก็บไว้เฉพาะในเบราว์เซอร์เครื่องนี้ (nk_acad_key_v1)
