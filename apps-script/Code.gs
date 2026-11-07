@@ -86,6 +86,7 @@ function handle(p) {
     else if (action === 'delete')   out = ok(deleteRow(p.table, p.id, p.user));
     else if (action === 'nextNo')   out = ok({ no: nextNumber(p.type) });
     else if (action === 'summary')  out = ok(summary());
+    else if (action === 'saveScores') out = ok(saveScores(p));
     else throw new Error('ไม่รู้จักคำสั่ง: ' + action);
   } catch (err) {
     out = { ok: false, error: String(err && err.message ? err.message : err) };
@@ -361,6 +362,32 @@ function summary() {
     documents: docTotal, byDocType: byType, pendingDocuments: pending,
     updatedAt: Utilities.formatDate(new Date(), 'Asia/Bangkok', 'yyyy-MM-dd HH:mm')
   };
+}
+
+/* ═══════════════ คะแนนหลังเรียน (จากหน้า fitness.html) ═══════════════ */
+
+/** เขียนตารางคะแนนทั้งชุดลงแท็บ "คะแนนหลังเรียน" (ส่งซ้ำได้ ไม่เกิดแถวซ้ำ) — แถวแรกคือหัวตาราง */
+function saveScores(p) {
+  var rows = p.rows;
+  if (typeof rows === 'string') rows = JSON.parse(rows);
+  if (!rows || !rows.length || !rows[0].length) throw new Error('ไม่มีข้อมูลคะแนน');
+  var lock = LockService.getScriptLock();
+  lock.waitLock(20000);
+  try {
+    var ss = book();
+    var sh = ss.getSheetByName('คะแนนหลังเรียน') || ss.insertSheet('คะแนนหลังเรียน');
+    sh.clear();
+    var w = rows[0].length;
+    sh.getRange(1, 1, rows.length, w).setValues(rows);
+    sh.getRange(1, 1, 1, w).setBackground('#10305F').setFontColor('#FFFFFF').setFontWeight('bold').setWrap(true);
+    sh.setFrozenRows(1);
+    var stamp = Utilities.formatDate(new Date(), 'Asia/Bangkok', 'yyyy-MM-dd HH:mm');
+    sh.getRange(rows.length + 2, 1).setValue('บันทึกเมื่อ ' + stamp + ' โดย ' + (p.user || '-') + (p.date ? ' · วันที่สอบ ' + p.date : ''));
+    log('บันทึกคะแนน', 'คะแนนหลังเรียน', '', (rows.length - 1) + ' คน', p.user);
+    return { n: rows.length - 1, at: stamp };
+  } finally {
+    lock.releaseLock();
+  }
 }
 
 /* ═══════════════ เมนูในสเปรดชีต ═══════════════ */
