@@ -142,6 +142,14 @@ table.t{border-collapse:collapse;width:100%;font-size:.88rem}
 .sheet h3{font-size:16pt;margin:3mm 0 1mm}
 .sheet .box{border:.8pt solid #000;padding:2mm 4mm;margin:2mm 0 3mm;font-size:14.5pt}
 .sheet .foot{font-size:11pt;color:#333;margin-top:3mm}
+.sheet .cls .card b{font-size:24pt}
+.sheet .cls .card{padding:1mm 4mm}
+.sheet .cls .bar i{height:4.5mm}
+.sheet .cls .bar{margin:.4mm 0}
+.sheet .cls table{margin:1mm 0 2mm}
+.sheet .cls th,.sheet .cls td{padding:.4mm 2mm}
+.sheet .cls h3{margin:2mm 0 .5mm}
+.sheet .cls .box{margin:1.5mm 0}
 .sheet .hb{display:flex;align-items:center;gap:3mm;margin:1.2mm 0;font-size:14pt}
 .sheet .hb .lb{width:50mm;font-size:13.5pt;line-height:1.1}
 .sheet .hb .tk{position:relative;flex:1;min-width:0;height:7mm;background:#E6EAF1;border:.6pt solid #888}
@@ -484,20 +492,30 @@ const warnLine = () => {
 };
 const progLine = () => PROGS.filter(([p]) => verified(p)).map(([p, n]) => `${n}: ${yrs(p).map(([y]) => `ม.${num(y)} ≥ ${f2(D.rules[p][y].min)}`).join(" · ")}`).join("<br>");
 function classSheet(){
-  const vals = roster.map((_, i) => cumLatest(i + 1)).filter(v => v != null), avg = vals.reduce((a, b) => a + b, 0) / (vals.length || 1);
+  const vals = roster.map((_, i) => cumLatest(i + 1)).filter(v => v != null), n = roster.length;
+  const avg = vals.reduce((a, b) => a + b, 0) / (vals.length || 1);
   const rows = distRows(), mx = Math.max(1, ...rows.map(r => r[1]));
-  const progTbl = PROGS.filter(([p]) => verified(p)).map(([p, n]) => {
-    const save0 = D.prog; D.prog = p; const rs = cntRows(); D.prog = save0;
-    return `<h3>${n}</h3><table><thead><tr><th>ชั้นที่สอบ</th><th>เกณฑ์</th><th>ผ่าน/ปลอดภัย</th><th>ทำได้ (ต้องได้ ≤ ๓.๕๐)</th><th>ต้องเร่ง (๓.๕๑–๔.๐๐)</th><th>เกินเอื้อม/ไม่ถึง</th><th>เกรดที่ต้องได้</th></tr></thead><tbody>` +
-      rs.map(([yn, , c, r, rg]) => `<tr><td>${yn}</td><td align="center">≥ ${f2(r.min)}</td><td align="center"><b>${num(c.pass)}</b></td><td align="center">${num(c.need)}</td><td align="center">${num(c.hard)}</td><td align="center">${num(c.out + c.fail)}</td><td align="center">${rngTxt(rg)}</td></tr>`).join("") + "</tbody></table>"; }).join("");
-  return `<div class="page"><h1>ภาพรวมผลการเรียนและสิทธิ์สอบ</h1><p class="sub">แผนการเรียนเตรียมทหาร–ตำรวจ · โรงเรียนมัธยมวัดหนองแขม · นักเรียน ${num(roster.length)} คน (ไม่ระบุชื่อ)</p>${warnLine()}
+  const gs = groupsOf(), g4 = gs.find(g => g.y === "4");
+  const ok4 = g4 ? roster.filter((_, i) => evalRule(i + 1, g4.rule).st === "pass").length : 0;
+  const later = gs.filter(g => g.y !== "4").map(g => { const c = { ok: 0, hard: 0, out: 0 }, rs = [];
+    roster.forEach((_, i) => { const e = evalRule(i + 1, g.rule); c[e.st === "hard" ? "hard" : (e.st === "out" || e.st === "fail") ? "out" : "ok"]++; if (e.r != null) rs.push(e.r); });
+    return { g, c, rg: rs.length ? [Math.min(...rs), Math.max(...rs)] : null }; });
+  const apply = g4 ? g4.progs.map(p => `<b>${LONGN[p]}</b> ปิดรับ ${CLOSE_TXT[p]}`).join(" · ") : "";
+  const keep = ["ชั้นที่สมัครได้", "แผนการเรียน", "ปิดรับสมัคร", "ค่าสมัคร", "สอบวิชาการ"];
+  const cmp = `<table><thead>${`<tr>${CMP[0].map(h => `<th>${h}</th>`).join("")}</tr>`}</thead><tbody>${CMP.slice(1).filter(r => keep.includes(r[0])).map(r => `<tr>${r.map((c, i) => `<td${i ? "" : ' style="font-weight:700"'}>${c}</td>`).join("")}</tr>`).join("")}</tbody></table>`;
+  const nm = x => x.g.progs.map(p => SHORT[p]).join(" / ");
+  return `<div class="page cls"><h1>ภาพรวมห้อง ม.๔ : เกรดเฉลี่ยและสิทธิ์สอบ</h1><p class="sub">แผนการเรียนเตรียมทหาร–ตำรวจ · โรงเรียนมัธยมวัดหนองแขม · นักเรียน ${num(n)} คน (ไม่ระบุชื่อ) · โครงการช้างเผือกและฉลามขาว ปีการศึกษา ๒๕๗๐</p>
     <div class="row2"><div class="card">เกรดเฉลี่ยห้อง<b>${f2(avg)}</b></div><div class="card">สูงสุด<b>${f2(Math.max(...vals))}</b></div><div class="card">ต่ำสุด<b>${f2(Math.min(...vals))}</b></div></div>
-    <h3>การกระจายของเกรดเฉลี่ยสะสมล่าสุด</h3>${rows.map(([l, n]) => `<div class="bar"><span style="width:30mm">${l}</span><i style="width:${n / mx * 90}mm"></i><b>${num(n)} คน</b></div>`).join("")}
-    <h3 style="margin-top:5mm">มีสิทธิ์สอบกี่คน (ตามเกณฑ์ที่ตั้งไว้)</h3>${progTbl}
-    <p class="foot">ผ่าน/ปลอดภัย = ถึงเกณฑ์แล้วหรือแทบแน่นอน · ทำได้ = เกรดที่ต้องได้ในภาคเรียนที่เหลือไม่เกิน ๓.๕๐ · ต้องเร่ง = ต้องได้ ๓.๕๑–๔.๐๐ ต่อเทอมที่เหลือ · เกินเอื้อม = ต้องได้เกิน ๔.๐๐ จึงเป็นไปไม่ได้ · เกณฑ์ที่ใช้:<br>${progLine()}</p></div>
-    <div class="page"><h1>เปรียบเทียบโครงการช้างเผือกและฉลามขาว</h1><p class="sub">ปีการศึกษา ๒๕๗๐ · ข้อมูลจากเอกสารประกาศ/ระเบียบการของแต่ละโครงการ</p>${cmpHTML("")}
-      <div class="box"><b>ข้อสังเกต</b><br>เกรดเฉลี่ยตามเกณฑ์เหมือนกันทั้งสองโครงการ (ม.๔ ภาคเรียนที่ ๑ และ ม.๕ สะสม ๓ ภาคเรียน ≥ ๓.๕๐) ต่างกันที่ ฉลามขาวไม่รับ ม.๖ และต้องเป็นแผนการเรียนวิทยาศาสตร์–คณิตศาสตร์<br>วันสอบวิชาการไม่ชนกัน (ช้างเผือก ๕ ธ.ค. · ฉลามขาว ๖ ธ.ค. ๒๕๖๙) และทั้งสองโครงการสอบที่มหาวิทยาลัยธรรมศาสตร์ ศูนย์รังสิต<br>ค่าใช้จ่ายรอบสอง: ฉลามขาว ๑,๙๘๐ บาท (ตรวจร่างกาย ๑,๘๓๐ · วิภาววิสัย ๕๐ · ตรวจประวัติอาชญากร ๑๐๐) · ช้างเผือกยกเว้นค่าตรวจร่างกาย<br>ต้องเตรียมเอกสาร ปพ.๗ และ ปพ.๑ ที่แสดงเกรดตามเกณฑ์ ส่งในวันรายงานตัวสอบรอบสอง</div>
-      <p class="foot">ตรวจรายละเอียดฉบับเต็ม เช่น พิกัดส่วนสูง/น้ำหนัก อายุ และสุขภาพ จากระเบียบการของโครงการก่อนสมัครทุกครั้ง</p></div>`;
+    <div class="box" style="border-width:1.6pt"><div style="font-size:19pt"><b>รอบนี้ สมัครได้ ${num(ok4)} คน จาก ${num(n)} คน</b></div>
+      <div>(เกรดภาคเรียนที่ ๑ ตั้งแต่ ${g4 ? f2(g4.rule.min) : "๓.๕๐"} ขึ้นไป) · ${apply}</div></div>
+    <h3>เกรดเฉลี่ยของนักเรียนแต่ละคน แบ่งเป็นช่วง</h3>
+    ${rows.map(([l, k]) => `<div class="bar"><span style="width:30mm">${l}</span><i style="width:${k / mx * 90}mm"></i><b>${num(k)} คน</b></div>`).join("")}
+    <h3 style="margin-top:2mm">ปีถัดไป ถ้าตั้งใจเรียน จะสอบได้อีกกี่คน</h3>
+    <table><thead><tr><th>ชั้นที่สอบ</th><th>รักษาเกรดให้ได้ ≤ ๓.๕๐ ต่อเทอมก็พอ</th><th>ต้องได้ ๓.๕๑–๔.๐๐ ต่อเทอม (ต้องเร่ง)</th><th>ถึงเกณฑ์ไม่ได้ในรอบนั้น</th><th>เกรดที่ต้องได้ต่อเทอม</th></tr></thead><tbody>
+    ${later.map(x => `<tr><td style="font-weight:700">ม.${num(x.g.y)}<br><span style="font-size:.85em;font-weight:400">${nm(x)}</span></td><td align="center"><b style="font-size:1.3em">${num(x.c.ok)}</b> คน</td><td align="center"><b style="font-size:1.3em">${num(x.c.hard)}</b> คน</td><td align="center"><b style="font-size:1.3em">${num(x.c.out)}</b> คน</td><td align="center">${rngTxt(x.rg)}</td></tr>`).join("")}</tbody></table>
+    <h3>เปรียบเทียบสองโครงการ</h3>${cmp}
+    <div class="box" style="margin-top:2mm"><b>ข้อสรุป</b> รอบนี้สมัครได้ ${num(ok4)} คน · ${later.map(x => `ม.${num(x.g.y)} (${nm(x)}): ยังมีทาง ${num(x.c.ok + x.c.hard)} คน โดยต้องเร่งเกรด ${num(x.c.hard)} คน`).join(" · ")} · ฉลามขาวต้องเป็นแผนวิทย์–คณิต (ตรวจกับโรงเรียน) · <span style="font-size:.85em">ตัวเลขชั้นถัดไปเป็นการคาดการณ์ สมมติว่าเกณฑ์ปีหน้าเหมือนปีนี้</span></div>
+</div>`;
 }
 function hbar(label, v, kind){
   /* v = เกรด ; kind "now" = เทียบเกณฑ์ ; "req" = เกรดที่ต้องได้ (ต่ำ = ง่าย) */
