@@ -98,6 +98,7 @@ table.t{border-collapse:collapse;width:100%;font-size:.88rem}
 .bar{display:grid;grid-template-columns:8.5rem 1fr 3rem;align-items:center;gap:.6rem;font-size:.88rem}
 .bar i{display:block;height:1.15rem;border-radius:4px;background:var(--navy-3);min-width:2px}
 .two{display:grid;gap:1rem;grid-template-columns:repeat(auto-fit,minmax(20rem,1fr))}
+.plan td.fx{background:var(--gold-ghost)} .plan td.vr{font-weight:700;font-size:1rem} .plan td.no{color:var(--crit);font-weight:700}
 .progtabs{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:.8rem}
 .rulegrid{display:grid;gap:.7rem;grid-template-columns:repeat(auto-fit,minmax(21rem,1fr))}
 .rule{border:1px solid var(--rule);border-radius:8px;padding:.7rem .8rem;background:var(--ground)}
@@ -124,9 +125,9 @@ table.t{border-collapse:collapse;width:100%;font-size:.88rem}
 .sheet th,.sheet td{border:.6pt solid #000;padding:1mm 2mm;vertical-align:middle}
 .sheet thead th{background:#EDEDED}
 .sheet .big{font-size:40pt;font-weight:700;line-height:1}
-.sheet .row2{display:flex;gap:6mm;margin-bottom:4mm}
+.sheet .row2{display:flex;gap:6mm;margin-bottom:2.5mm}
 .sheet .card{flex:1;border:.8pt solid #000;padding:2mm 4mm;text-align:center}
-.sheet .card b{display:block;font-size:34pt;line-height:1.05}
+.sheet .card b{display:block;font-size:30pt;line-height:1.05}
 .sheet .bar{display:flex;align-items:center;gap:3mm;margin:1mm 0;font-size:14pt}
 .sheet .bar i{display:block;height:6mm;background:#10305F}
 .sheet h3{font-size:16pt;margin:3mm 0 1mm}
@@ -140,7 +141,15 @@ table.t{border-collapse:collapse;width:100%;font-size:.88rem}
 .sheet .hb b{width:27mm;flex:none;text-align:right;font-size:14pt;padding-right:1mm}
 .sheet .tick{display:flex;justify-content:space-between;margin:0 31mm 1mm 53mm;font-size:10.5pt;color:#444}
 .sheet .sm{font-size:12pt;color:#333}
-.sheet .plan td{font-size:13.5pt}
+.sheet .plan td{font-size:15pt;text-align:center}
+.sheet .plan th{font-size:14pt}
+.sheet .plan td.fx{background:#FFF1CC}
+.sheet .plan td.vr{font-weight:700;font-size:17pt}
+.sheet .plan td.no{color:#A32B2B;font-weight:700}
+.sheet .goal{border:1.4pt solid #000;padding:2mm 4mm;margin:2mm 0 3mm}
+.sheet .goal .gt{font-size:13.5pt;color:#333}
+.sheet .goal .gl{font-size:17pt;font-weight:700;margin-top:1mm}
+.sheet .goal .gl span{display:inline-block;border:1pt solid #000;border-radius:2mm;padding:0 3mm;margin:0 2mm 0 0;background:#EAF5EE}
 
 </style>
 </head>
@@ -438,21 +447,18 @@ function whatIfRows(no, y){
 function renderWhatIf(){
   const no = D.sel, name = roster[no - 1];
   if (!name){ $("#whatif").innerHTML = ""; return; }
-  $("#whatif").innerHTML = `<div class="panel"><h3 style="margin:0 0 .6rem;font-family:var(--ui);font-size:1.05rem">ตารางสมมติ · เลขที่ ${num(no)} ${esc(name)}</h3><div class="two">` +
-    yrs(D.prog).map(([y, yn]) => { const w = whatIfRows(no, y);
-      if (!w) return `<div><b>${yn}</b><p class="mini">${evalRule(no, D.rules[D.prog][y]).st === "none" ? "ยังไม่ได้ตั้งภาคเรียนที่นับ" : "ภาคเรียนที่นับออกผลครบแล้ว ไม่มีอะไรให้สมมติ"}</p></div>`;
-      const last = w.rest.length === 0;
-      return `<div><b>${yn}</b> <span class="mini">(เกณฑ์ ≥ ${f2(w.T)})</span>
-        <div class="tblwrap" style="box-shadow:none;margin-top:.4rem"><table class="t"><thead><tr><th>ถ้า ${TNAME[w.u1]} ได้</th><th>${last ? "เกรดสะสมที่ได้" : "ภาคเรียนที่เหลือ (" + w.rest.map(t => TNAME[t]).join(", ") + ") ต้องได้ ≥"}</th></tr></thead><tbody>` +
-        w.rows.map(r => { const bad = last ? r.cum < w.T - 1e-9 : r.need > 4 + 1e-9, safe = !last && r.need <= 0;
-          return `<tr><td>${f2(r.g)}</td><td class="${bad ? "" : ""}">${last ? `${f2(r.cum)} ${r.cum >= w.T - 1e-9 ? "✔" : "✖"}` : bad ? "<span class='chip bad'>ทำไม่ได้</span>" : safe ? "<span class='chip ok'>ผ่านแน่นอน</span>" : `<b>${f2(r.need)}</b>`}</td></tr>`; }).join("") +
-        "</tbody></table></div></div>"; }).join("") + "</div></div>";
+  const body = yrs(D.prog).map(([y, yn]) => { const r = D.rules[D.prog][y], e = evalRule(no, r);
+    if (e.st === "none") return `<div><b>${yn}</b><p class="mini">ยังไม่ได้ตั้งภาคเรียนที่นับ</p></div>`;
+    if (!e.unk || !e.unk.length) return `<div><b>${yn}</b><p class="mini">ภาคเรียนที่นับออกผลครบแล้ว (เกรดสะสม ${f2(e.cum)} ${e.st === "pass" ? "✔ ผ่านเกณฑ์" : "✖ ไม่ถึงเกณฑ์ " + f2(r.min)})</p></div>`;
+    return `<div class="tblwrap" style="box-shadow:none;padding:.4rem">${planHTML(no, r, `<b>${yn}</b> <span class="mini">(เกณฑ์ ≥ ${f2(r.min)})</span>`, "t")}</div>`; }).join("");
+  $("#whatif").innerHTML = `<div class="panel"><h3 style="margin:0 0 .3rem;font-family:var(--ui);font-size:1.05rem">เป้าเกรดรายภาคเรียน · เลขที่ ${num(no)} ${esc(name)}</h3>
+    <p class="mini" style="margin:0 0 .6rem">ช่องสีเหลือง = เกรดที่ตั้งเป้าไว้ · ตัวหนา “≥” = เกรดอย่างน้อยที่ต้องได้เพื่อให้ถึงเกณฑ์ · แผนที่ ๑ คือได้เท่ากันทุกเทอม</p><div class="two">${body}</div></div>`;
 }
 
 /* ── พิมพ์ ── */
 const warnLine = () => {
   const ok = PROGS.filter(([p]) => verified(p)), bad = PROGS.filter(([p]) => !verified(p));
-  return (ok.length ? `<div class="warnline" style="background:#E8F5EE">เกณฑ์ ${ok.map(p => p[1]).join(" และ ")} ตรวจกับเอกสารโครงการ ปีการศึกษา ๒๕๗๐ · ผลของชั้นถัดไปคือการคาดการณ์ โดยสมมติว่าเกณฑ์เดิมใช้ต่อ</div>` : "") +
+  return (ok.length ? `<div class="warnline" style="background:#E8F5EE;font-size:11pt;padding:.6mm 3mm">เกณฑ์ตรวจกับเอกสารโครงการปีการศึกษา ๒๕๗๐ · ม.๕ และ ม.๖ เป็นการคาดการณ์ (สมมติว่าเกณฑ์ปีหน้าเหมือนปีนี้)</div>` : "") +
     (bad.length ? `<div class="warnline"><b>หมายเหตุ</b> เกณฑ์ของ ${bad.map(p => p[1]).join(", ")} ต่างจากเอกสารโครงการที่ตรวจไว้ ใช้ประกอบการวางแผนเท่านั้น</div>` : "");
 };
 const progLine = () => PROGS.filter(([p]) => verified(p)).map(([p, n]) => `${n}: ${yrs(p).map(([y]) => `ม.${num(y)} ≥ ${f2(D.rules[p][y].min)}`).join(" · ")}`).join("<br>");
@@ -505,10 +511,9 @@ function advice(no){
     if (e.st === "none" || !e.unk || !e.unk.length) return;
     if (e.st === "out") L.push(`${nm}: ต้องได้ ${f2(e.r)} ต่อเทอม ซึ่งเกิน ๔.๐๐ จึงถึงเกณฑ์ไม่ได้ในรอบนี้ ให้ตั้งเป้ารอบถัดไป`);
     else if (e.st === "hard") L.push(`${nm}: ต้องได้เฉลี่ยไม่ต่ำกว่า ${f2(e.r)} ต่อเทอม (สูงกว่าเกณฑ์) ต้องรักษาเกรดสูงต่อเนื่องและติดตามทุกภาคเรียน`);
-    else L.push(`${nm}: รักษาเกรดเฉลี่ยให้ไม่ต่ำกว่า ${f2(Math.max(e.r, 0))} ต่อเทอมก็ถึงเกณฑ์`); });
-  if (!L.length && !groupsOf().length) return "";
-  L.push("วิชาที่มีหน่วยกิตมากมีผลต่อเกรดเฉลี่ยมากกว่า ควรให้น้ำหนักกับวิชาเหล่านั้นก่อน และตรวจเกรดทุกภาคเรียนเทียบกับเป้า");
-  return `<div class="box"><b>แนวทาง</b><br>${L.map(esc).join("<br>")}</div>`;
+    });
+  if (!L.length) return "";
+  return `<div class="box" style="margin:1.5mm 0 2mm;padding:1.5mm 3mm;font-size:13.5pt"><b>แนวทาง</b><br>${L.map(esc).join("<br>")}</div>`;
 }
 function oneSheet(no){
   const name = roster[no - 1], cu = cumLatest(no);
@@ -523,28 +528,38 @@ function oneSheet(no){
   const later = gs.filter(g => g.y !== "4").map(g => [g, evalRule(no, g.rule)]).filter(([, e]) => e.st !== "none");
   const lab = g => `ม.${num(g.y)} (${gName(g)})`;
   const bars = later.map(([g, e]) => e.unk && e.unk.length ? hbar(`${lab(g)} ต้องได้เฉลี่ย`, e.r, "req") : hbar(`${lab(g)} เกรดสะสม`, e.cum, "now")).join("");
-  const plan = later.map(([g]) => { const w = whatIfRows2(no, g.rule); if (!w) return "";
-    const cells = w.rows.filter(r => [4, 3.75, 3.5].includes(r.g)).map(r => { const bad = w.rest.length ? r.need > 4 + 1e-9 : r.cum < w.T - 1e-9;
-      return `<td align="center">${w.rest.length ? (bad ? "ทำไม่ได้" : r.need <= 0 ? "ผ่านแน่นอน" : "≥ " + f2(r.need)) : f2(r.cum) + (bad ? " ✖" : " ✔")}</td>`; }).join("");
-    return `<tr><td>${lab(g)}<br><span class="sm">เทอมที่เหลือ: ${w.rest.length ? w.rest.map(t => TNAME[t]).join(", ") : "—"}</span></td>${cells}</tr>`; }).join("");
+  const goal = later.filter(([, e]) => e.unk && e.unk.length).map(([g]) => { const w = termPlans(no, g.rule), pl = w.plans[0];
+    return `<div class="gl">สอบ ม.${num(g.y)} (${gName(g)}) : ${pl.cells.map(c => c.kind === "no" ? `<span style="background:#FBE0E0">${TNAME[c.t]} ทำไม่ได้</span>` : c.kind === "ok" ? `<span>${TNAME[c.t]} ได้เท่าไรก็ผ่าน</span>` : `<span>${TNAME[c.t]} ≥ ${f2(c.v)}</span>`).join("")}</div>`; }).join("");
+  const plan = later.map(([g]) => planHTML(no, g.rule, `ถ้าจะสอบ ม.${num(g.y)} (${gName(g)})`, "")).join("");
   const T0 = g4[0] ? g4[0].rule.min : 3.5;
   return `<div class="page"><h1>${esc(name)}</h1><p class="sub">เลขที่ ${num(no)}${D.sid[no] ? " · เลขประจำตัว " + esc(num(D.sid[no])) : ""} · สรุปเกรดเฉลี่ยและสิทธิ์สอบโครงการช้างเผือกและฉลามขาว · แผนการเรียนเตรียมทหาร–ตำรวจ โรงเรียนมัธยมวัดหนองแขม</p>${warnLine()}
     <div class="row2"><div class="card">เกรดเฉลี่ยสะสมล่าสุด<b>${cu != null ? f2(cu) : "—"}</b><span class="sm">${hist || "ยังไม่มีเกรด"}</span></div><div class="card">เกรดเฉลี่ยห้อง<b>${f2(avg)}</b><span class="sm">${cu != null ? (cu >= avg ? "สูงกว่าค่าเฉลี่ยห้อง " : "ต่ำกว่าค่าเฉลี่ยห้อง ") + f2(Math.abs(cu - avg)) : ""}</span></div></div>
     ${now}
-    <h3>คาดการณ์ ม.๕ และ ม.๖ : เกรดที่ต้องได้ในภาคเรียนที่เหลือ</h3>
-    <div class="sm" style="margin:0">เส้นประ = เกณฑ์ ${f2(T0)} · แถบแสดงเกรดเฉลี่ยที่ต้องได้ต่อภาคเรียนที่เหลือ (ยิ่งยาว = ยิ่งยาก)</div>
-    <div class="tick"><span>๒.๐๐</span><span>๓.๐๐</span><span>๔.๐๐</span></div>
-    ${hbar("ตอนนี้ (เกรดสะสม)", cu, "now")}${bars}
-    ${plan ? `<h3>ตัวอย่างแผนเกรดรายภาคเรียน</h3><table class="plan"><thead><tr><th>ชั้นที่สอบ</th><th>ถ้าภาคเรียนถัดไปได้ ๔.๐๐ ภาคเรียนที่เหลือต้อง</th><th>ถ้าได้ ๓.๗๕ ต้อง</th><th>ถ้าได้ ๓.๕๐ ต้อง</th></tr></thead><tbody>${plan}</tbody></table>` : ""}
+    ${goal ? `<div class="goal"><div class="gt">เป้าหมายง่าย ๆ — ถ้าจะสอบ ให้ได้เกรดอย่างน้อยเท่านี้ในแต่ละภาคเรียน (ได้เท่ากันทุกเทอม)</div>${goal}</div>` : ""}
+    ${plan ? `<h3>ถ้าอยากเผื่อไว้ ลองแผนอื่น (สีเหลือง = เกรดที่ตั้งเป้า · ตัวหนา ≥ = อย่างน้อยที่ต้องได้)</h3>${plan}` : ""}
     ${advice(no)}
-    <p class="foot">คำนวณถ่วงน้ำหนักด้วยหน่วยกิต ปัดขึ้น ๒ ตำแหน่ง · ภาคเรียนที่ยังไม่ออกผลถือว่าได้เกรดเท่ากันทุกเทอมที่เหลือ · ผล ม.๕ และ ม.๖ เป็นการคาดการณ์ โดยสมมติว่าเกณฑ์ปีถัดไปเหมือนเอกสารปีนี้ · ฉลามขาวไม่รับ ม.๖ · ข้อมูลส่วนบุคคล เปิดเผยเฉพาะผู้ปกครอง</p></div>`;
+    <p class="foot">คำนวณถ่วงน้ำหนักด้วยหน่วยกิต ปัดขึ้น ๒ ตำแหน่ง · ฉลามขาวไม่รับ ม.๖ · ข้อมูลส่วนบุคคล เปิดเผยเฉพาะผู้ปกครอง</p></div>`;
 }
-/** ตารางสมมติจากกฎโดยตรง (ใช้ร่วมกับการรวมโครงการ) */
-function whatIfRows2(no, rule){
+/** แผนเกรดรายภาคเรียนที่ยังไม่ออกผล : ได้เท่ากันทุกเทอม / เร่งช่วงต้น ๔.๐๐ / เร่งปานกลาง ๓.๗๕ */
+function termPlans(no, rule){
   const e = evalRule(no, rule);
   if (!e.unk || !e.unk.length || e.st === "none") return null;
-  const u1 = e.unk[0], c1 = cred(u1), rest = e.unk.slice(1), Cr = rest.reduce((a, t) => a + cred(t), 0), T = Number(rule.min), tot = e.Ck + e.Cu;
-  return { u1, rest, T, rows: [4, 3.75, 3.5].map(g => ({ g, need: rest.length ? Math.ceil(((T * tot - e.S - g * c1) / Cr) * 100 - 1e-9) / 100 : null, cum: rest.length ? null : Math.round(((e.S + g * c1) / tot) * 100) / 100 })) };
+  const U = e.unk, T = Number(rule.min), tot = e.Ck + e.Cu, k = U.length;
+  const mk = (label, m, g) => {
+    const fixed = U.slice(0, m), rest = U.slice(m);
+    const Sf = fixed.reduce((a, t) => a + g * cred(t), 0), Cr = rest.reduce((a, t) => a + cred(t), 0);
+    const need = Math.ceil(((T * tot - e.S - Sf) / Cr) * 100 - 1e-9) / 100;
+    return { label, cells: U.map((t, i) => i < m ? { t, kind: "fx", g } : { t, kind: need > 4 + 1e-9 ? "no" : need <= 0 ? "ok" : "vr", v: need }) };
+  };
+  const plans = [mk("ได้เท่ากันทุกเทอม", 0, 0)];
+  if (k >= 2){ const m = Math.ceil(k / 2); plans.push(mk(`เร่งช่วงแรก (${m} เทอมแรกได้ ๔.๐๐)`, m, 4)); plans.push(mk(`เร่งปานกลาง (${m} เทอมแรกได้ ๓.๗๕)`, m, 3.75)); }
+  return { U, plans, T };
+}
+const planCell = c => c.kind === "fx" ? `<td class="fx">ได้ ${f2(c.g)}</td>` : c.kind === "no" ? `<td class="no">ทำไม่ได้</td>` : c.kind === "ok" ? `<td>ผ่านแน่นอน</td>` : `<td class="vr">≥ ${f2(c.v)}</td>`;
+function planHTML(no, rule, title, cls){
+  const w = termPlans(no, rule); if (!w) return "";
+  return `<div style="font-weight:700;margin:2mm 0 1mm">${title}</div><table class="plan ${cls || ""}"><thead><tr><th style="text-align:left">แผน</th>${w.U.map(t => `<th>${TNAME[t]} ควรได้</th>`).join("")}</tr></thead><tbody>` +
+    w.plans.map(pl => `<tr><td style="text-align:left">${pl.label}</td>${pl.cells.map(planCell).join("")}</tr>`).join("") + "</tbody></table>";
 }
 const printHTML = h => { $("#sheetWrap").innerHTML = `<div class="sheet">${h}</div>`; window.print(); };
 $("#pClass").onclick = () => roster.length ? printHTML(classSheet()) : alert("ยังไม่มีข้อมูล");
