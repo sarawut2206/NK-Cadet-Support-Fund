@@ -183,6 +183,7 @@ table.t{border-collapse:collapse;width:100%;font-size:.88rem}
   <div class="hd"><div class="eb">ขั้นที่ ๒</div><h2>ตั้งเกณฑ์สิทธิ์สอบ</h2>
     <p>กำหนดเกรดเฉลี่ยขั้นต่ำ และภาคเรียนที่ใช้นับ ของแต่ละโครงการและแต่ละชั้นที่สอบ ค่าตั้งต้นมาจากตัวอย่างที่ครูยกมา (เกณฑ์ ๓.๕๐ นับถึงภาคเรียนที่ ๑ ของชั้นที่สอบ) <b>ต้องแก้ให้ตรงเอกสารหลักเกณฑ์จริงของโครงการช้างเผือกและฉลามขาวก่อนนำเสนอ</b></p></div>
   <div class="progtabs" id="progTabs"></div>
+  <div class="tblwrap" style="margin-bottom:.8rem"><div id="cmpBox"></div></div>
   <div id="progInfo" style="margin-bottom:.8rem"></div>
   <div class="rulegrid" id="rules"></div>
   <div class="note bad" id="confNote"></div>
@@ -242,12 +243,22 @@ const D = (() => {
   PROGS.forEach(([p]) => { d.rules[p] ||= defRules()[p]; YEARS.forEach(([y]) => { d.rules[p][y] ||= defRules()[p][y]; }); });
   return d;
 })();
-/** เกณฑ์โครงการช้างเผือก ตรวจกับ “ประกาศคณะอนุกรรมการโครงการช้างเผือก ประจำปีการศึกษา ๒๕๗๐” ลงวันที่ ๒๖ ต.ค. ๒๕๖๙ */
-const CP_SRC = "ประกาศคณะอนุกรรมการโครงการช้างเผือก ประจำปีการศึกษา ๒๕๗๐ (ลงวันที่ ๒๖ ต.ค. ๒๕๖๙)";
+/** เกณฑ์ตรวจกับเอกสารจริงของแต่ละโครงการ */
+const SRC = {
+  cp: "ประกาศคณะอนุกรรมการโครงการช้างเผือก ประจำปีการศึกษา ๒๕๗๐ (ลงวันที่ ๒๖ ต.ค. ๒๕๖๙)",
+  ws: "ระเบียบการทั่วไปและวิธีสอบคัดเลือก โครงการฉลามขาว (ทร.) ประจำปีการศึกษา ๒๕๗๐"
+};
+const OFFICIAL = {
+  cp: "ม.๔ ภาคเรียนที่ ๑ ≥ ๓.๕๐ · ม.๕ สะสม ๓ ภาคเรียน ≥ ๓.๕๐ · ม.๖ สะสม ๕ ภาคเรียน ≥ ๓.๕๐",
+  ws: "ม.๔ ภาคเรียนที่ ๑ ≥ ๓.๕๐ · ม.๕ สะสม ๓ ภาคเรียน ≥ ๓.๕๐ (ไม่รับ ม.๖)"
+};
+const YEARS_OF = { cp: ["4", "5", "6"], ws: ["4", "5"] };       /* ชั้นที่โครงการรับสมัคร */
+const yrs = p => YEARS.filter(([y]) => YEARS_OF[p].includes(y));
 const sameSet = (a, b) => a.length === b.length && a.every(x => b.includes(x));
-const cpMatches = () => YEARS.every(([y]) => { const r = D.rules.cp[y]; return Number(r.min) === 3.5 && sameSet(r.terms, DEF_TERMS[y]); });
-const verified = p => p === "cp" ? cpMatches() : !!D.conf[p];
-const CP_CLOSE = new Date("2026-11-22T16:00:00+07:00");
+const progMatches = p => yrs(p).every(([y]) => { const r = D.rules[p][y]; return Number(r.min) === 3.5 && sameSet(r.terms, DEF_TERMS[y]); });
+const verified = progMatches;
+const CLOSE = { cp: new Date("2026-11-22T16:00:00+07:00"), ws: new Date("2026-11-23T16:00:00+07:00") };
+const CLOSE_TXT = { cp: "๒๒ พ.ย. ๒๕๖๙ ๑๖.๐๐ น.", ws: "๒๓ พ.ย. ๒๕๖๙ ๑๖.๐๐ น." };
 const save = () => { try { localStorage.setItem(KEY, JSON.stringify(D)); } catch (e) { alert("บันทึกไม่สำเร็จ: พื้นที่เก็บข้อมูลเต็ม"); } };
 
 /* ── รายชื่อ ── */
@@ -344,23 +355,17 @@ $("#gtab").addEventListener("change", e => {
 
 function renderRules(){
   $("#progTabs").innerHTML = PROGS.map(([p, n]) => `<button class="btn ${D.prog === p ? "on" : ""}" data-prog="${p}" type="button">${n}</button>`).join("");
-  $("#rules").innerHTML = YEARS.map(([y, yn]) => { const r = D.rules[D.prog][y];
+  $("#rules").innerHTML = yrs(D.prog).map(([y, yn]) => { const r = D.rules[D.prog][y];
     return `<div class="rule"><h4>${yn}</h4>
       <div class="field"><label>เกรดเฉลี่ยขั้นต่ำ</label><input class="thr" data-min="${y}" value="${num(Number(r.min).toFixed(2))}" inputmode="decimal"></div>
       <div class="ck"><span style="width:100%;font-size:.76rem;color:var(--ink-3)">นับเกรดจากภาคเรียน:</span>${TERMS.map(([k, n]) => `<label><input type="checkbox" data-term="${y}|${k}" ${r.terms.includes(k) ? "checked" : ""}> ${n}</label>`).join("")}</div>
       <textarea data-note="${y}" placeholder="เงื่อนไขอื่นจากเอกสาร (ถ้ามี) เช่น เกรดวิชาเฉพาะ อายุ ส่วนสูง">${esc(r.note || "")}</textarea></div>`; }).join("");
-  const cn = $("#confNote");
-  if (D.prog === "cp"){
-    const ok = cpMatches();
-    cn.className = "note" + (ok ? "" : " bad");
-    cn.style.borderInlineStartColor = ok ? "var(--ok)" : "";
-    cn.innerHTML = ok ? `<b>ตรวจแล้ว</b> เกณฑ์ตรงกับ${CP_SRC}` : `<b>ต่างจากประกาศ</b> ค่าที่ตั้งไว้ไม่ตรงกับ${CP_SRC} (ประกาศ: ม.๔ ภาคเรียนที่ ๑ ≥ ๓.๕๐ · ม.๕ สะสม ๓ ภาคเรียน ≥ ๓.๕๐ · ม.๖ สะสม ๕ ภาคเรียน ≥ ๓.๕๐) <button class="btn xs" id="resetCp" type="button">ตั้งกลับเป็นค่าตามประกาศ</button>`;
-  } else {
-    cn.className = "note bad"; cn.style.borderInlineStartColor = "";
-    cn.innerHTML = D.conf[D.prog] ? `<label style="cursor:pointer"><input type="checkbox" id="conf" checked> ตรวจเกณฑ์กับเอกสารหลักเกณฑ์ของโครงการแล้ว</label>`
-      : `<b>ยังเป็นค่าตั้งต้น</b> เกณฑ์ของโครงการนี้ยังไม่ได้ตรวจกับเอกสารหลักเกณฑ์จริง (รอเอกสารประกาศ) เอกสารที่พิมพ์จะมีข้อความเตือนจนกว่าจะติ๊กช่องนี้ <label style="cursor:pointer;display:block;margin-top:.3rem"><input type="checkbox" id="conf"> ตรวจเกณฑ์กับเอกสารหลักเกณฑ์ของโครงการแล้ว</label>`;
-  }
+  const cn = $("#confNote"), ok = progMatches(D.prog);
+  cn.className = "note" + (ok ? "" : " bad");
+  cn.style.borderInlineStartColor = ok ? "var(--ok)" : "";
+  cn.innerHTML = ok ? `<b>ตรวจแล้ว</b> เกณฑ์ตรงกับ${SRC[D.prog]}` : `<b>ต่างจากเอกสารโครงการ</b> ค่าที่ตั้งไว้ไม่ตรงกับ${SRC[D.prog]} (เอกสาร: ${OFFICIAL[D.prog]}) <button class="btn xs" id="resetProg" type="button">ตั้งกลับเป็นค่าตามเอกสาร</button>`;
   renderInfo();
+  $("#cmpBox").innerHTML = cmpHTML("t");
 }
 $("#progTabs").addEventListener("click", e => { const b = e.target.closest("[data-prog]"); if (b){ D.prog = b.dataset.prog; save(); renderAll(); } });
 $("#rules").addEventListener("change", e => {
@@ -368,31 +373,35 @@ $("#rules").addEventListener("change", e => {
   if (t.dataset.min){ const v = parseFloat(String(t.value).replace(/[๐-๙]/g, c => TH.indexOf(c))); if (isFinite(v) && v >= 0 && v <= 4) r(t.dataset.min).min = v; }
   else if (t.dataset.term){ const [y, k] = t.dataset.term.split("|"); const a = r(y).terms; if (t.checked){ if (!a.includes(k)) a.push(k); } else { const i = a.indexOf(k); if (i >= 0) a.splice(i, 1); } }
   else if (t.dataset.note != null){ r(t.dataset.note).note = t.value; }
-  D.conf[D.prog] = false; save(); renderAll();
+  save(); renderAll();
 });
-$("#confNote").addEventListener("change", e => { if (e.target.id === "conf"){ D.conf[D.prog] = e.target.checked; save(); renderRules(); } });
-$("#confNote").addEventListener("click", e => { if (e.target.id === "resetCp"){ D.rules.cp = defRules().cp; save(); renderAll(); } });
+$("#confNote").addEventListener("click", e => { if (e.target.id === "resetProg"){ D.rules[D.prog] = defRules()[D.prog]; save(); renderAll(); } });
+const INFO = {
+  cp: { t: "โครงการช้างเผือก (กองทัพอากาศ) ปีการศึกษา ๒๕๗๐",
+    when: "สมัครทางอินเทอร์เน็ต ๒๗ ต.ค. – ๒๒ พ.ย. ๒๕๖๙ (๑๖.๐๐ น.) · ชำระ ๕๐๐ บาท ภายใน ๒๓ พ.ย. ๒๓.๕๙ น.<br>สอบวิชาการ ส. ๕ ธ.ค. ๒๕๖๙ ๐๙.๐๐–๑๒.๐๐ น. ม.ธรรมศาสตร์ ศูนย์รังสิต · ประกาศผล ๘ ธ.ค.<br>รอบสอง ๑๐–๑๓ ธ.ค. (ความถนัด · พลศึกษา · ตรวจร่างกาย · สัมภาษณ์) · ประกาศผล ๑๗ ธ.ค. · ทำสัญญา ๒๖ ธ.ค.",
+    who: "รับ ๓๐ คน · นักเรียนชาย ม.๔–๖ ทุกแผนการเรียน · อายุ ๑๖–๑๘ ปี (เกิด ๑ ม.ค. ๒๕๕๒ – ๓๑ ธ.ค. ๒๕๕๔) · สัญชาติไทย · สุขภาพสมบูรณ์ · ผู้ผ่านเกณฑ์ต้องจบ ม.๔ ก่อนเข้าเป็นนักเรียนเตรียมทหาร<br>เอกสารรายงานตัว: ปพ.๗ และ ปพ.๑ แสดงเกรดตามเกณฑ์ · สำเนาบัตรประชาชนและทะเบียนบ้านของผู้สมัคร บิดา มารดา<br>สิทธิประโยชน์: ยกเว้นค่าตรวจร่างกาย · คำแนะนำสอบรอบสอง · เงินสนับสนุน ๓๘,๐๐๐ บาท" },
+  ws: { t: "โครงการฉลามขาว (กองทัพเรือ โควตาพิเศษ) ปีการศึกษา ๒๕๗๐",
+    when: "สมัครทางอินเทอร์เน็ต ๓ พ.ย. – ๒๓ พ.ย. ๒๕๖๙ (๑๖.๐๐ น.) admission-rtna.navy.mi.th · ชำระ ๖๕๐ บาท ภายใน ๒๔ พ.ย. ๒๓.๕๙ น.<br>สอบวิชาการ อา. ๖ ธ.ค. ๒๕๖๙ ๐๙.๐๐–๑๒.๓๐ น. ม.ธรรมศาสตร์ ศูนย์รังสิต · แจ้งผล ๑๖ ธ.ค. · ประกาศผล/รายงานตัว ๒๐ ธ.ค.<br>รอบสอง ๒๑–๒๓ ธ.ค. (ตรวจร่างกาย · สุขภาพจิต · วิภาววิสัย · พลศึกษา · สัมภาษณ์) ค่ารอบสอง ๑,๙๘๐ บาท · ประกาศผล ๕ ม.ค. ๒๕๗๐ · ๑๐ ม.ค. ๒๕๗๐",
+    who: "รับ ๑๖ คน · นักเรียนชาย <b>ม.๔–ม.๕ เท่านั้น (ไม่รับ ม.๖)</b> · <b>ต้องเป็นแผนการเรียนวิทยาศาสตร์–คณิตศาสตร์</b> ตามหลักสูตร สพฐ. (ไม่ใช่สายอาชีวะ) · อายุ ๑๖–๑๘ ปี · ส่วนสูง/น้ำหนักขั้นต่ำ (อายุ ๑๖ = ๑๕๙ ซม./๔๗ กก. · ๑๗ = ๑๖๑/๔๙ · ๑๘ = ๑๖๓/๕๑)<br>สอบวิชาการ ๙๐๐ คะแนน: คณิต ๓๐๐ · วิทย์ ๓๐๐ · อังกฤษ ๒๐๐ · ไทยและสังคม ๑๐๐ (คณิต/วิทย์/อังกฤษ ผ่านร้อยละ ๕๐)<br>สิทธิประโยชน์: เงินสนับสนุน ๕๐,๐๐๐ บาท/ปี (๒ ปี) ต้องประพฤติดีและรักษาเกรดสะสม ≥ ๓.๕๐" }
+};
 function renderInfo(){
-  const el = $("#progInfo");
-  if (D.prog !== "cp"){ el.innerHTML = `<div class="panel"><b>โครงการฉลามขาว (ทร.)</b><p class="mini">ยังไม่มีเอกสารประกาศ/ระเบียบการ ใส่เอกสารแล้วจะตั้งเกณฑ์ให้ตรง</p></div>`; return; }
-  const ms = CP_CLOSE - new Date(), days = Math.floor(ms / 86400000);
+  const el = $("#progInfo"), i = INFO[D.prog];
+  const ms = CLOSE[D.prog] - new Date(), days = Math.floor(ms / 86400000);
   const left = ms <= 0 ? `<span class="chip bad">ปิดรับสมัครแล้ว</span>` : days > 0 ? `<span class="chip warn">เหลืออีก ${num(days)} วัน</span>` : `<span class="chip bad">ปิดรับสมัครวันนี้ ๑๖.๐๐ น.</span>`;
-  el.innerHTML = `<div class="panel"><b>โครงการช้างเผือก ปีการศึกษา ๒๕๗๐</b> ${left}
-    <div class="two" style="margin-top:.6rem;font-size:.88rem;line-height:1.65">
-      <div><b>กำหนดการ</b><br>สมัครทางอินเทอร์เน็ต ๒๗ ต.ค. – ๒๒ พ.ย. ๒๕๖๙ (๑๖.๐๐ น.) · ชำระ ๕๐๐ บาท ภายใน ๒๓ พ.ย. ๒๓.๕๙ น.<br>
-        สอบวิชาการ ส. ๕ ธ.ค. ๒๕๖๙ ๐๙.๐๐–๑๒.๐๐ น. ม.ธรรมศาสตร์ ศูนย์รังสิต · ประกาศผล ๘ ธ.ค.<br>
-        รอบสอง ๑๐–๑๓ ธ.ค. (ความถนัด · พลศึกษา · ตรวจร่างกาย · สัมภาษณ์) · ประกาศผล ๑๗ ธ.ค. · ทำสัญญา ๒๖ ธ.ค.</div>
-      <div><b>คุณสมบัติสำคัญ</b><br>รับ ๓๐ คน · นักเรียนชาย ม.๔–๖ · อายุ ๑๖–๑๘ ปี (เกิด ๑ ม.ค. ๒๕๕๒ – ๓๑ ธ.ค. ๒๕๕๔) · สัญชาติไทย · สุขภาพสมบูรณ์ · ผู้ผ่านเกณฑ์ต้องจบ ม.๔ ก่อนเข้าเป็นนักเรียนเตรียมทหาร<br>
-        เอกสารรายงานตัว: ปพ.๗ และ ปพ.๑ แสดงเกรดตามเกณฑ์ · สำเนาบัตรประชาชนและทะเบียนบ้านของผู้สมัคร บิดา มารดา<br>
-        สิทธิประโยชน์: ยกเว้นค่าตรวจร่างกาย · คำแนะนำสอบรอบสอง · เงินสนับสนุน ๓๘,๐๐๐ บาท</div></div>
-    <p class="mini">ที่มา: ${CP_SRC} · เกณฑ์เกรดนับถึงภาคเรียนที่ ๑ ปีการศึกษา ๒๕๖๙ ของชั้นที่กำลังเรียน · ดูรายละเอียดเต็มในระเบียบการที่ preadmission.nkrafa.com</p></div>`;
+  el.innerHTML = `<div class="panel"><b>${i.t}</b> ${left}
+    <div class="two" style="margin-top:.6rem;font-size:.88rem;line-height:1.65"><div><b>กำหนดการ</b><br>${i.when}</div><div><b>คุณสมบัติสำคัญ</b><br>${i.who}</div></div>
+    <p class="mini">ที่มา: ${SRC[D.prog]} · เกรดนับถึงภาคเรียนที่ ๑ ปีการศึกษา ๒๕๖๙ ของชั้นที่กำลังเรียน</p></div>`;
 }
+const CMP = [["", "ช้างเผือก (ทอ.)", "ฉลามขาว (ทร.)"], ["จำนวนที่รับ", "๓๐ คน", "๑๖ คน"], ["ชั้นที่สมัครได้", "ม.๔ · ม.๕ · ม.๖", "ม.๔ · ม.๕ (ไม่รับ ม.๖)"],
+  ["แผนการเรียน", "ไม่จำกัด", "ต้องเป็นวิทย์–คณิต"], ["เกรดเฉลี่ย", "≥ ๓.๕๐ (นับตามชั้น)", "≥ ๓.๕๐ (นับตามชั้น)"], ["ปิดรับสมัคร", "๒๒ พ.ย. ๖๙ ๑๖.๐๐ น.", "๒๓ พ.ย. ๖๙ ๑๖.๐๐ น."],
+  ["ค่าสมัคร", "๕๐๐ บาท", "๖๕๐ บาท"], ["สอบวิชาการ", "ส. ๕ ธ.ค. ๖๙", "อา. ๖ ธ.ค. ๖๙"], ["เงินสนับสนุน", "๓๘,๐๐๐ บาท", "๕๐,๐๐๐ บาท/ปี (๒ ปี)"]];
+const cmpHTML = (cls) => `<table${cls ? ` class="${cls}"` : ""}><thead><tr>${CMP[0].map(h => `<th>${h}</th>`).join("")}</tr></thead><tbody>${CMP.slice(1).map(r => `<tr>${r.map((c, i) => `<td${i ? "" : ' style="font-weight:600"'}>${c}</td>`).join("")}</tr>`).join("")}</tbody></table>`;
 
 const bands = [["≥ ๓.๕๐", v => v >= 3.5], ["๓.๐๐–๓.๔๙", v => v >= 3 && v < 3.5], ["๒.๕๐–๒.๙๙", v => v >= 2.5 && v < 3], ["๒.๐๐–๒.๔๙", v => v >= 2 && v < 2.5], ["ต่ำกว่า ๒.๐๐", v => v < 2]];
 function distRows(){ const vals = roster.map((_, i) => cumLatest(i + 1)).filter(v => v != null).map(v => Math.round(v * 100) / 100);
   return bands.map(([l, f]) => [l, vals.filter(f).length]); }
 function cntRows(){
-  return YEARS.map(([y, yn]) => { const c = { pass: 0, need: 0, hard: 0, out: 0, fail: 0, none: 0 }; const rs = [];
+  return yrs(D.prog).map(([y, yn]) => { const c = { pass: 0, need: 0, hard: 0, out: 0, fail: 0, none: 0 }; const rs = [];
     roster.forEach((_, i) => { const e = evalRule(i + 1, D.rules[D.prog][y]); c[e.st === "safe" ? "pass" : e.st]++; if (e.r != null && e.st !== "safe") rs.push(e.r); });
     return [yn, y, c, D.rules[D.prog][y], rs.length ? [Math.min(...rs), Math.max(...rs)] : null]; });
 }
@@ -405,10 +414,10 @@ function renderDist(){
     cntRows().map(([yn, , c, r, rg]) => `<tr><td class="nm">${yn}</td><td>≥ ${f2(r.min)}</td><td><b>${num(c.pass)}</b></td><td>${num(c.need)}</td><td>${num(c.hard)}</td><td>${num(c.out + c.fail)}</td><td>${rngTxt(rg)}</td></tr>`).join("") + "</tbody>";
 }
 function renderElig(){
-  $("#elig").innerHTML = `<thead><tr><th>เลขที่</th><th>ชื่อ–สกุล</th><th>เกรดสะสม</th>${YEARS.map(([, n]) => `<th>${n}</th>`).join("")}</tr></thead><tbody>` +
+  $("#elig").innerHTML = `<thead><tr><th>เลขที่</th><th>ชื่อ–สกุล</th><th>เกรดสะสม</th>${yrs(D.prog).map(([, n]) => `<th>${n}</th>`).join("")}</tr></thead><tbody>` +
     roster.map((n, i) => { const no = i + 1, cu = cumLatest(no);
       return `<tr class="${no === D.sel ? "sel" : ""}" data-sel="${no}" style="cursor:pointer"><td>${num(no)}</td><td class="nm">${esc(n)}</td><td><b>${cu != null ? f2(cu) : "—"}</b></td>` +
-        YEARS.map(([y]) => `<td class="cells">${cellHTML(evalRule(no, D.rules[D.prog][y]))}</td>`).join("") + "</tr>"; }).join("") + "</tbody>";
+        yrs(D.prog).map(([y]) => `<td class="cells">${cellHTML(evalRule(no, D.rules[D.prog][y]))}</td>`).join("") + "</tr>"; }).join("") + "</tbody>";
   renderWhatIf();
 }
 $("#elig").addEventListener("click", e => { const tr = e.target.closest("[data-sel]"); if (tr){ D.sel = +tr.dataset.sel; save(); renderGrid(); renderElig(); } });
@@ -430,7 +439,7 @@ function renderWhatIf(){
   const no = D.sel, name = roster[no - 1];
   if (!name){ $("#whatif").innerHTML = ""; return; }
   $("#whatif").innerHTML = `<div class="panel"><h3 style="margin:0 0 .6rem;font-family:var(--ui);font-size:1.05rem">ตารางสมมติ · เลขที่ ${num(no)} ${esc(name)}</h3><div class="two">` +
-    YEARS.map(([y, yn]) => { const w = whatIfRows(no, y);
+    yrs(D.prog).map(([y, yn]) => { const w = whatIfRows(no, y);
       if (!w) return `<div><b>${yn}</b><p class="mini">${evalRule(no, D.rules[D.prog][y]).st === "none" ? "ยังไม่ได้ตั้งภาคเรียนที่นับ" : "ภาคเรียนที่นับออกผลครบแล้ว ไม่มีอะไรให้สมมติ"}</p></div>`;
       const last = w.rest.length === 0;
       return `<div><b>${yn}</b> <span class="mini">(เกณฑ์ ≥ ${f2(w.T)})</span>
@@ -442,11 +451,11 @@ function renderWhatIf(){
 
 /* ── พิมพ์ ── */
 const warnLine = () => {
-  const bad = PROGS.filter(([p]) => !verified(p)).map(p => p[1]);
-  const okc = verified("cp") ? `<div class="warnline" style="background:#E8F5EE">เกณฑ์โครงการช้างเผือกตรวจกับ${CP_SRC} · ม.๕ และ ม.๖ คือการคาดการณ์รอบถัดไป โดยสมมติว่าเกณฑ์เดิมใช้ต่อ</div>` : "";
-  return okc + (bad.length && !verified("cp") && !PROGS.some(([p]) => verified(p)) ? `<div class="warnline"><b>หมายเหตุ</b> เกณฑ์ของ ${bad.join(", ")} ยังเป็นค่าตั้งต้น ยังไม่ได้ตรวจกับเอกสารหลักเกณฑ์ ใช้ประกอบการวางแผนเท่านั้น</div>` : "");
+  const ok = PROGS.filter(([p]) => verified(p)), bad = PROGS.filter(([p]) => !verified(p));
+  return (ok.length ? `<div class="warnline" style="background:#E8F5EE">เกณฑ์ ${ok.map(p => p[1]).join(" และ ")} ตรวจกับเอกสารโครงการ ปีการศึกษา ๒๕๗๐ · ผลของชั้นถัดไปคือการคาดการณ์ โดยสมมติว่าเกณฑ์เดิมใช้ต่อ</div>` : "") +
+    (bad.length ? `<div class="warnline"><b>หมายเหตุ</b> เกณฑ์ของ ${bad.map(p => p[1]).join(", ")} ต่างจากเอกสารโครงการที่ตรวจไว้ ใช้ประกอบการวางแผนเท่านั้น</div>` : "");
 };
-const progLine = () => PROGS.filter(([p]) => verified(p)).map(([p, n]) => `${n}: ${YEARS.map(([y]) => `ม.${num(y)} ≥ ${f2(D.rules[p][y].min)}`).join(" · ")}`).join("<br>");
+const progLine = () => PROGS.filter(([p]) => verified(p)).map(([p, n]) => `${n}: ${yrs(p).map(([y]) => `ม.${num(y)} ≥ ${f2(D.rules[p][y].min)}`).join(" · ")}`).join("<br>");
 function classSheet(){
   const vals = roster.map((_, i) => cumLatest(i + 1)).filter(v => v != null), avg = vals.reduce((a, b) => a + b, 0) / (vals.length || 1);
   const rows = distRows(), mx = Math.max(1, ...rows.map(r => r[1]));
@@ -458,7 +467,10 @@ function classSheet(){
     <div class="row2"><div class="card">เกรดเฉลี่ยห้อง<b>${f2(avg)}</b></div><div class="card">สูงสุด<b>${f2(Math.max(...vals))}</b></div><div class="card">ต่ำสุด<b>${f2(Math.min(...vals))}</b></div></div>
     <h3>การกระจายของเกรดเฉลี่ยสะสมล่าสุด</h3>${rows.map(([l, n]) => `<div class="bar"><span style="width:30mm">${l}</span><i style="width:${n / mx * 90}mm"></i><b>${num(n)} คน</b></div>`).join("")}
     <h3 style="margin-top:5mm">มีสิทธิ์สอบกี่คน (ตามเกณฑ์ที่ตั้งไว้)</h3>${progTbl}
-    <p class="foot">ผ่าน/ปลอดภัย = ถึงเกณฑ์แล้วหรือแทบแน่นอน · ทำได้ = เกรดที่ต้องได้ในภาคเรียนที่เหลือไม่เกิน ๓.๕๐ · ต้องเร่ง = ต้องได้ ๓.๕๑–๔.๐๐ ต่อเทอมที่เหลือ · เกินเอื้อม = ต้องได้เกิน ๔.๐๐ จึงเป็นไปไม่ได้ · เกณฑ์ที่ใช้:<br>${progLine()}</p></div>`;
+    <p class="foot">ผ่าน/ปลอดภัย = ถึงเกณฑ์แล้วหรือแทบแน่นอน · ทำได้ = เกรดที่ต้องได้ในภาคเรียนที่เหลือไม่เกิน ๓.๕๐ · ต้องเร่ง = ต้องได้ ๓.๕๑–๔.๐๐ ต่อเทอมที่เหลือ · เกินเอื้อม = ต้องได้เกิน ๔.๐๐ จึงเป็นไปไม่ได้ · เกณฑ์ที่ใช้:<br>${progLine()}</p></div>
+    <div class="page"><h1>เปรียบเทียบโครงการช้างเผือกและฉลามขาว</h1><p class="sub">ปีการศึกษา ๒๕๗๐ · ข้อมูลจากเอกสารประกาศ/ระเบียบการของแต่ละโครงการ</p>${cmpHTML("")}
+      <div class="box"><b>ข้อสังเกต</b><br>เกรดเฉลี่ยตามเกณฑ์เหมือนกันทั้งสองโครงการ (ม.๔ ภาคเรียนที่ ๑ และ ม.๕ สะสม ๓ ภาคเรียน ≥ ๓.๕๐) ต่างกันที่ ฉลามขาวไม่รับ ม.๖ และต้องเป็นแผนการเรียนวิทยาศาสตร์–คณิตศาสตร์<br>วันสอบวิชาการไม่ชนกัน (ช้างเผือก ๕ ธ.ค. · ฉลามขาว ๖ ธ.ค. ๒๕๖๙) และทั้งสองโครงการสอบที่มหาวิทยาลัยธรรมศาสตร์ ศูนย์รังสิต<br>ค่าใช้จ่ายรอบสอง: ฉลามขาว ๑,๙๘๐ บาท (ตรวจร่างกาย ๑,๘๓๐ · วิภาววิสัย ๕๐ · ตรวจประวัติอาชญากร ๑๐๐) · ช้างเผือกยกเว้นค่าตรวจร่างกาย<br>ต้องเตรียมเอกสาร ปพ.๗ และ ปพ.๑ ที่แสดงเกรดตามเกณฑ์ ส่งในวันรายงานตัวสอบรอบสอง</div>
+      <p class="foot">ตรวจรายละเอียดฉบับเต็ม เช่น พิกัดส่วนสูง/น้ำหนัก อายุ และสุขภาพ จากระเบียบการของโครงการก่อนสมัครทุกครั้ง</p></div>`;
 }
 function hbar(label, v, kind){
   /* v = เกรด ; kind "now" = เทียบเกณฑ์ ; "req" = เกรดที่ต้องได้ (ต่ำ = ง่าย) */
@@ -467,13 +479,34 @@ function hbar(label, v, kind){
   const txt = kind === "now" ? f2(v) : v > 4 ? `${f2(v)} (เกิน ๔.๐๐)` : f2(Math.max(v, 0));
   return `<div class="hb"><span class="lb">${label}</span><div class="tk"><i style="width:${pos(Math.min(v, 4))}%;background:${col}"></i><u style="left:${pos(3.5)}%"></u></div><b>${txt}</b></div>`;
 }
+const SHORT = { cp: "ช้างเผือก", ws: "ฉลามขาว" };
+const LONGN = { cp: "ช้างเผือก (ทอ.)", ws: "ฉลามขาว (ทร.)" };
+const APPLY = {
+  cp: "สมัครภายใน ๒๒ พ.ย. ๒๕๖๙ ๑๖.๐๐ น. · ค่าสมัคร ๕๐๐ บาท · สอบวิชาการ ๕ ธ.ค. ๒๕๖๙",
+  ws: "สมัครภายใน ๒๓ พ.ย. ๒๕๖๙ ๑๖.๐๐ น. · ค่าสมัคร ๖๕๐ บาท · สอบวิชาการ ๖ ธ.ค. ๒๕๖๙ · ต้องเป็นแผนวิทย์–คณิต (ตรวจกับโรงเรียน)"
+};
+/** รวมโครงการที่ใช้เกณฑ์เดียวกันในชั้นเดียวกัน (เช่น ม.๕ ของช้างเผือกและฉลามขาว) เพื่อไม่ให้เอกสารซ้ำซ้อน */
+function groupsOf(){
+  const out = [];
+  YEARS.forEach(([y, yn]) => {
+    const g = {};
+    PROGS.filter(([p]) => verified(p) && YEARS_OF[p].includes(y)).forEach(([p]) => {
+      const r = D.rules[p][y], key = r.min + "|" + r.terms.slice().sort().join(",");
+      (g[key] ||= { y, yn, progs: [], rule: r }).progs.push(p);
+    });
+    Object.values(g).forEach(x => out.push(x));
+  });
+  return out;
+}
+const gName = g => g.progs.map(p => SHORT[p]).join(" / ");
 function advice(no){
-  if (!verified("cp")) return "";
-  const L = [], nm = y => y === "5" ? "ม.๕" : "ม.๖";
-  ["5", "6"].forEach(y => { const e = evalRule(no, D.rules.cp[y]); if (e.st === "none" || !e.unk || !e.unk.length) return;
-    if (e.st === "out") L.push(`${nm(y)}: ต้องได้ ${f2(e.r)} ต่อเทอม ซึ่งเกิน ๔.๐๐ จึงถึงเกณฑ์ไม่ได้ในรอบนี้ ให้ตั้งเป้ารอบถัดไป`);
-    else if (e.st === "hard") L.push(`${nm(y)}: ต้องได้เฉลี่ยไม่ต่ำกว่า ${f2(e.r)} ต่อเทอม (สูงกว่าเกณฑ์) ต้องรักษาเกรดสูงต่อเนื่องและติดตามทุกภาคเรียน`);
-    else L.push(`${nm(y)}: รักษาเกรดเฉลี่ยให้ไม่ต่ำกว่า ${f2(Math.max(e.r, 0))} ต่อเทอมก็ถึงเกณฑ์`); });
+  const L = [];
+  groupsOf().filter(g => g.y !== "4").forEach(g => { const e = evalRule(no, g.rule); const nm = `ม.${num(g.y)} (${gName(g)})`;
+    if (e.st === "none" || !e.unk || !e.unk.length) return;
+    if (e.st === "out") L.push(`${nm}: ต้องได้ ${f2(e.r)} ต่อเทอม ซึ่งเกิน ๔.๐๐ จึงถึงเกณฑ์ไม่ได้ในรอบนี้ ให้ตั้งเป้ารอบถัดไป`);
+    else if (e.st === "hard") L.push(`${nm}: ต้องได้เฉลี่ยไม่ต่ำกว่า ${f2(e.r)} ต่อเทอม (สูงกว่าเกณฑ์) ต้องรักษาเกรดสูงต่อเนื่องและติดตามทุกภาคเรียน`);
+    else L.push(`${nm}: รักษาเกรดเฉลี่ยให้ไม่ต่ำกว่า ${f2(Math.max(e.r, 0))} ต่อเทอมก็ถึงเกณฑ์`); });
+  if (!L.length && !groupsOf().length) return "";
   L.push("วิชาที่มีหน่วยกิตมากมีผลต่อเกรดเฉลี่ยมากกว่า ควรให้น้ำหนักกับวิชาเหล่านั้นก่อน และตรวจเกรดทุกภาคเรียนเทียบกับเป้า");
   return `<div class="box"><b>แนวทาง</b><br>${L.map(esc).join("<br>")}</div>`;
 }
@@ -481,30 +514,37 @@ function oneSheet(no){
   const name = roster[no - 1], cu = cumLatest(no);
   const avg = roster.map((_, i) => cumLatest(i + 1)).filter(v => v != null).reduce((a, b, _, arr) => a + b / arr.length, 0);
   const hist = TERMS.filter(([k]) => gOf(no, k) != null).map(([k, n]) => `${n}: <em style="font-style:normal;font-weight:700">${f2(gOf(no, k))}</em>`).join(" · ");
-  const parts = PROGS.map(([p, pn]) => {
-    if (!verified(p)) return "";
-    const es = YEARS.map(([y, yn]) => [y, yn, evalRule(no, D.rules[p][y]), D.rules[p][y]]);
-    const e4 = es[0][2];
-    const now = e4.st === "pass" ? `<div class="box"><b>รอบนี้ (ปีการศึกษา ๒๕๖๙): ✔ เกรดภาคเรียนที่ ๑ = ${f2(e4.cum)} ผ่านเกณฑ์ ≥ ${f2(D.rules[p]["4"].min)}</b>${p === "cp" ? "<br>สมัครทางอินเทอร์เน็ตภายใน ๒๒ พ.ย. ๒๕๖๙ ๑๖.๐๐ น. · ชำระ ๕๐๐ บาทภายใน ๒๓ พ.ย. · สอบวิชาการ ๕ ธ.ค. ๒๕๖๙ (ตรวจอายุ ๑๖–๑๘ ปีและคุณสมบัติอื่นตามประกาศ)" : ""}</div>`
-      : `<div class="box"><b>รอบนี้ (ปีการศึกษา ๒๕๖๙): ✖ เกรดภาคเรียนที่ ๑ = ${f2(e4.cum)} ยังต่ำกว่าเกณฑ์ ${f2(D.rules[p]["4"].min)} อยู่ ${f2(D.rules[p]["4"].min - e4.cum)}</b><br>ยังสมัครรอบนี้ไม่ได้ ให้ตั้งเป้าสอบรอบ ม.๕ หรือ ม.๖ ตามด้านล่าง</div>`;
-    const bars = es.slice(1).map(([y, yn, e]) => e.st === "none" ? "" : e.unk && e.unk.length
-      ? hbar(`${yn.replace(/ \(.*$/, "")} ต้องได้เฉลี่ย`, e.r, "req")
-      : hbar(`${yn.replace(/ \(.*$/, "")} เกรดสะสม`, e.cum, "now")).join("");
-    const plan = es.slice(1).map(([y, yn, e]) => { const w = whatIfRows(no, y); if (!w) return "";
-      const pick = w.rows.filter(r => [4, 3.75, 3.5].includes(r.g));
-      const cells = pick.map(r => { const bad = w.rest.length ? r.need > 4 + 1e-9 : r.cum < w.T - 1e-9;
-        return `<td align="center">${w.rest.length ? (bad ? "ทำไม่ได้" : r.need <= 0 ? "ผ่านแน่นอน" : "≥ " + f2(r.need)) : f2(r.cum) + (bad ? " ✖" : " ✔")}</td>`; }).join("");
-      return `<tr><td>${yn.replace(/ \(.*$/, "")}<br><span class="sm">เทอมที่เหลือ: ${w.rest.length ? w.rest.map(t => TNAME[t]).join(", ") : "—"}</span></td>${cells}</tr>`; }).join("");
-    return `<h3>${pn}</h3>${now}
-      <div class="sm" style="margin:2mm 0 0">เส้นประ = เกณฑ์ ${f2(D.rules[p]["4"].min)} · แถบแสดงเกรดที่ต้องได้เฉลี่ยในภาคเรียนที่เหลือ (ยิ่งยาว = ยิ่งยาก)</div>
-      <div class="tick"><span>๒.๐๐</span><span>๓.๐๐</span><span>๔.๐๐</span></div>
-      ${hbar("ตอนนี้ (เกรดสะสม)", cu, "now")}${bars}
-      ${plan ? `<h3>ตัวอย่างแผนเกรดรายภาคเรียน</h3><table class="plan"><thead><tr><th>ชั้นที่สอบ</th><th>ถ้าภาคเรียนถัดไปได้ ๔.๐๐ ภาคเรียนที่เหลือต้อง</th><th>ถ้าได้ ๓.๗๕ ต้อง</th><th>ถ้าได้ ๓.๕๐ ต้อง</th></tr></thead><tbody>${plan}</tbody></table>` : ""}`; }).join("");
-  return `<div class="page"><h1>${esc(name)}</h1><p class="sub">เลขที่ ${num(no)}${D.sid[no] ? " · เลขประจำตัว " + esc(num(D.sid[no])) : ""} · สรุปเกรดเฉลี่ยและสิทธิ์สอบ · แผนการเรียนเตรียมทหาร–ตำรวจ โรงเรียนมัธยมวัดหนองแขม</p>${warnLine()}
+  const gs = groupsOf(), g4 = gs.filter(g => g.y === "4");
+  /* รอบนี้ (ม.๔) */
+  const now = g4.map(g => { const e = evalRule(no, g.rule), T = g.rule.min;
+    return e.st === "pass"
+      ? `<div class="box"><b>รอบนี้ (ปีการศึกษา ๒๕๖๙): ✔ เกรดภาคเรียนที่ ๑ = ${f2(e.cum)} ผ่านเกณฑ์ ≥ ${f2(T)} ของโครงการ${gName(g)}</b>${g.progs.map(p => `<br>${LONGN[p]}: ${APPLY[p]}`).join("")}${g.progs.length > 1 ? "<br>วันสอบวิชาการของสองโครงการไม่ชนกัน · ตรวจอายุ ๑๖–๑๘ ปีและคุณสมบัติอื่นตามเอกสารโครงการ" : "<br>ตรวจอายุ ๑๖–๑๘ ปีและคุณสมบัติอื่นตามเอกสารโครงการ"}</div>`
+      : `<div class="box"><b>รอบนี้ (ปีการศึกษา ๒๕๖๙): ✖ เกรดภาคเรียนที่ ๑ = ${f2(e.cum)} ยังต่ำกว่าเกณฑ์ ${f2(T)} อยู่ ${f2(T - e.cum)} (โครงการ${gName(g)})</b><br>ยังสมัครรอบนี้ไม่ได้ ให้ตั้งเป้าสอบรอบ ม.๕${gs.some(g => g.y === "6") ? " หรือ ม.๖" : ""} ตามด้านล่าง</div>`; }).join("");
+  const later = gs.filter(g => g.y !== "4").map(g => [g, evalRule(no, g.rule)]).filter(([, e]) => e.st !== "none");
+  const lab = g => `ม.${num(g.y)} (${gName(g)})`;
+  const bars = later.map(([g, e]) => e.unk && e.unk.length ? hbar(`${lab(g)} ต้องได้เฉลี่ย`, e.r, "req") : hbar(`${lab(g)} เกรดสะสม`, e.cum, "now")).join("");
+  const plan = later.map(([g]) => { const w = whatIfRows2(no, g.rule); if (!w) return "";
+    const cells = w.rows.filter(r => [4, 3.75, 3.5].includes(r.g)).map(r => { const bad = w.rest.length ? r.need > 4 + 1e-9 : r.cum < w.T - 1e-9;
+      return `<td align="center">${w.rest.length ? (bad ? "ทำไม่ได้" : r.need <= 0 ? "ผ่านแน่นอน" : "≥ " + f2(r.need)) : f2(r.cum) + (bad ? " ✖" : " ✔")}</td>`; }).join("");
+    return `<tr><td>${lab(g)}<br><span class="sm">เทอมที่เหลือ: ${w.rest.length ? w.rest.map(t => TNAME[t]).join(", ") : "—"}</span></td>${cells}</tr>`; }).join("");
+  const T0 = g4[0] ? g4[0].rule.min : 3.5;
+  return `<div class="page"><h1>${esc(name)}</h1><p class="sub">เลขที่ ${num(no)}${D.sid[no] ? " · เลขประจำตัว " + esc(num(D.sid[no])) : ""} · สรุปเกรดเฉลี่ยและสิทธิ์สอบโครงการช้างเผือกและฉลามขาว · แผนการเรียนเตรียมทหาร–ตำรวจ โรงเรียนมัธยมวัดหนองแขม</p>${warnLine()}
     <div class="row2"><div class="card">เกรดเฉลี่ยสะสมล่าสุด<b>${cu != null ? f2(cu) : "—"}</b><span class="sm">${hist || "ยังไม่มีเกรด"}</span></div><div class="card">เกรดเฉลี่ยห้อง<b>${f2(avg)}</b><span class="sm">${cu != null ? (cu >= avg ? "สูงกว่าค่าเฉลี่ยห้อง " : "ต่ำกว่าค่าเฉลี่ยห้อง ") + f2(Math.abs(cu - avg)) : ""}</span></div></div>
-    ${parts}
+    ${now}
+    <h3>คาดการณ์ ม.๕ และ ม.๖ : เกรดที่ต้องได้ในภาคเรียนที่เหลือ</h3>
+    <div class="sm" style="margin:0">เส้นประ = เกณฑ์ ${f2(T0)} · แถบแสดงเกรดเฉลี่ยที่ต้องได้ต่อภาคเรียนที่เหลือ (ยิ่งยาว = ยิ่งยาก)</div>
+    <div class="tick"><span>๒.๐๐</span><span>๓.๐๐</span><span>๔.๐๐</span></div>
+    ${hbar("ตอนนี้ (เกรดสะสม)", cu, "now")}${bars}
+    ${plan ? `<h3>ตัวอย่างแผนเกรดรายภาคเรียน</h3><table class="plan"><thead><tr><th>ชั้นที่สอบ</th><th>ถ้าภาคเรียนถัดไปได้ ๔.๐๐ ภาคเรียนที่เหลือต้อง</th><th>ถ้าได้ ๓.๗๕ ต้อง</th><th>ถ้าได้ ๓.๕๐ ต้อง</th></tr></thead><tbody>${plan}</tbody></table>` : ""}
     ${advice(no)}
-    <p class="foot">คำนวณถ่วงน้ำหนักด้วยหน่วยกิต ปัดขึ้น ๒ ตำแหน่ง · ภาคเรียนที่ยังไม่ออกผลถือว่าได้เกรดเท่ากันทุกเทอมที่เหลือ · ผล ม.๕ และ ม.๖ เป็นการคาดการณ์ โดยสมมติว่าเกณฑ์ปีถัดไปเหมือนประกาศปีนี้ · ข้อมูลส่วนบุคคล เปิดเผยเฉพาะผู้ปกครอง</p></div>`;
+    <p class="foot">คำนวณถ่วงน้ำหนักด้วยหน่วยกิต ปัดขึ้น ๒ ตำแหน่ง · ภาคเรียนที่ยังไม่ออกผลถือว่าได้เกรดเท่ากันทุกเทอมที่เหลือ · ผล ม.๕ และ ม.๖ เป็นการคาดการณ์ โดยสมมติว่าเกณฑ์ปีถัดไปเหมือนเอกสารปีนี้ · ฉลามขาวไม่รับ ม.๖ · ข้อมูลส่วนบุคคล เปิดเผยเฉพาะผู้ปกครอง</p></div>`;
+}
+/** ตารางสมมติจากกฎโดยตรง (ใช้ร่วมกับการรวมโครงการ) */
+function whatIfRows2(no, rule){
+  const e = evalRule(no, rule);
+  if (!e.unk || !e.unk.length || e.st === "none") return null;
+  const u1 = e.unk[0], c1 = cred(u1), rest = e.unk.slice(1), Cr = rest.reduce((a, t) => a + cred(t), 0), T = Number(rule.min), tot = e.Ck + e.Cu;
+  return { u1, rest, T, rows: [4, 3.75, 3.5].map(g => ({ g, need: rest.length ? Math.ceil(((T * tot - e.S - g * c1) / Cr) * 100 - 1e-9) / 100 : null, cum: rest.length ? null : Math.round(((e.S + g * c1) / tot) * 100) / 100 })) };
 }
 const printHTML = h => { $("#sheetWrap").innerHTML = `<div class="sheet">${h}</div>`; window.print(); };
 $("#pClass").onclick = () => roster.length ? printHTML(classSheet()) : alert("ยังไม่มีข้อมูล");
