@@ -59,6 +59,13 @@
       (nav.querySelector('a[href="kit.html"]') || dd).after(v);
     }
 
+    /* ลิงก์เกรดและสิทธิ์สอบ — เกรดเฉลี่ยรายห้อง และสิทธิ์สอบโครงการช้างเผือก/ฉลามขาว */
+    if (!nav.querySelector('a[href="gpa.html"]')) {
+      const v = document.createElement("a");
+      v.href = "gpa.html"; v.textContent = "เกรดและสิทธิ์สอบ";
+      (nav.querySelector('a[href="advisor.html"]') || nav.querySelector('a[href="kit.html"]') || dd).after(v);
+    }
+
     const trig = dd.querySelector(".nkdd-t");
     trig.addEventListener("click", e => {
       /* แตะครั้งแรกเปิดเมนู แตะซ้ำไปหน้ารวมโครงการ — ใช้งานบนมือถือได้ */

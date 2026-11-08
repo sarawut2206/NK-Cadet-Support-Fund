@@ -1,0 +1,468 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>เกรดและสิทธิ์สอบ | แผนเตรียมทหาร มัธยมวัดหนองแขม</title>
+<meta name="description" content="แดชบอร์ดเกรดเฉลี่ยนักเรียน ภาพรวมรายห้อง และวิเคราะห์สิทธิ์สอบโครงการช้างเผือก (ทอ.) และฉลามขาว (ทร.) ว่าต้องได้เกรดเท่าไรในภาคเรียนถัดไป">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%230E2A56'/><text y='72' x='50' text-anchor='middle' font-size='62' fill='%23FFC72C'>ก</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&family=Bai+Jamjuree:wght@500;600;700&display=swap">
+<style>
+:root{
+  --navy:#10305F; --navy-2:#1B4A8F; --navy-3:#2C63B0;
+  --gold:#F5B722; --gold-2:#FFD152; --gold-ink:#8A6410; --gold-ghost:rgba(245,183,34,.15);
+  --ground:#EDF4FD; --surface:#FFFFFF; --surface-2:#DCE9F9;
+  --ink:#0F2140; --ink-2:#3D5375; --ink-3:#5F7492;
+  --rule:#C7DCF3; --rule-2:#9CBADF;
+  --ok:#1F7A5A; --ok-bg:rgba(31,122,90,.12);
+  --warn:#B45D12; --warn-bg:rgba(180,93,18,.12);
+  --crit:#A32B2B; --crit-bg:rgba(163,43,43,.11);
+  --idle:#6E7C93; --idle-bg:rgba(110,124,147,.10);
+  --ui:'Bai Jamjuree','Sarabun',system-ui,sans-serif;
+  --body:'Sarabun',system-ui,sans-serif;
+  --doc:'TH SarabunPSK','TH Sarabun New','Sarabun',system-ui,serif;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --ground:#0A1526; --surface:#132034; --surface-2:#1C2B42;
+    --ink:#E6EBF3; --ink-2:#AFBACC; --ink-3:#8391A6;
+    --rule:#26344E; --rule-2:#3E506F;
+    --navy:#0A1830; --navy-2:#22508F; --navy-3:#6EA1E8;
+    --gold:#FFC72C; --gold-2:#FFD766; --gold-ink:#FFC72C; --gold-ghost:rgba(255,199,44,.14);
+    --ok:#5FBF97; --ok-bg:rgba(95,191,151,.16);
+    --warn:#E09550; --warn-bg:rgba(224,149,80,.16);
+    --crit:#E38A8A; --crit-bg:rgba(227,138,138,.16);
+    --idle:#8391A6; --idle-bg:rgba(131,145,166,.13);
+  }
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--body);font-size:15.5px;line-height:1.7;-webkit-font-smoothing:antialiased}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--navy-3);outline-offset:2px;border-radius:5px}
+.wrap{max-width:84rem;margin-inline:auto;padding-inline:clamp(.9rem,3vw,2rem)}
+p{margin:0}
+a{color:var(--navy-3)}
+.top{background:var(--navy);color:#fff;border-bottom:3px solid var(--gold);position:sticky;top:0;z-index:40}
+.top-in{display:flex;align-items:center;gap:.9rem;padding:.6rem clamp(.8rem,2vw,1.4rem);flex-wrap:wrap}
+.mark{width:2.35rem;height:2.35rem;flex:none;background:var(--gold);color:var(--navy);display:grid;place-items:center;font-family:var(--ui);font-weight:700;font-size:.8rem;border-radius:6px}
+.title{line-height:1.25;min-width:0}
+.title b{display:block;font-family:var(--ui);font-weight:600;font-size:.98rem;color:#fff}
+.title span{font-size:.76rem;color:#B6C6E0}
+.top .spacer{margin-inline-start:auto}
+.tabs{display:flex;gap:.25rem;flex-wrap:wrap}
+.tabs a{font-family:var(--ui);font-weight:600;font-size:.83rem;text-decoration:none;color:#C6D4EA;padding:.4rem .8rem;border-radius:5px;border:1px solid transparent}
+.tabs a:hover{background:rgba(255,255,255,.1);color:#fff}
+.tabs a[aria-current]{background:var(--gold);color:var(--navy)}
+.band{background:var(--navy);color:#fff;padding:1.2rem 0 1.5rem}
+.bandgrid{display:grid;gap:1px;background:rgba(255,255,255,.16);grid-template-columns:repeat(auto-fit,minmax(10rem,1fr));border:1px solid rgba(255,255,255,.16);border-radius:10px;overflow:hidden}
+.kpi{background:var(--navy);padding:.9rem 1.05rem}
+.kpi .l{font-family:var(--ui);font-size:.71rem;font-weight:600;letter-spacing:.06em;color:#93A9CC}
+.kpi .v{font-family:var(--ui);font-weight:700;font-size:1.55rem;line-height:1.15;color:var(--gold-2);font-variant-numeric:tabular-nums;margin-top:.1rem}
+.kpi .s{font-size:.78rem;color:#9DB0CE;line-height:1.5}
+section{padding:1.7rem 0}
+section + section{border-top:1px solid var(--rule)}
+.hd{margin-bottom:1rem}
+.hd .eb{font-family:var(--ui);font-size:.72rem;font-weight:600;letter-spacing:.1em;color:var(--gold-ink);margin-bottom:.3rem}
+.hd h2{font-family:var(--ui);font-weight:700;font-size:clamp(1.2rem,2.6vw,1.5rem);margin:0 0 .35rem;line-height:1.3}
+.hd p{font-size:.93rem;color:var(--ink-2);max-width:78ch}
+.panel{background:var(--surface);border:1px solid var(--rule);border-radius:10px;padding:1rem 1.1rem;box-shadow:0 1px 3px rgba(16,48,95,.07)}
+.grid4{display:grid;gap:.65rem .85rem;grid-template-columns:repeat(auto-fit,minmax(10rem,1fr))}
+.field label{display:block;font-family:var(--ui);font-weight:600;font-size:.77rem;color:var(--ink-2);margin-bottom:.18rem}
+.field input,.field select,.field textarea{width:100%;background:var(--ground);border:1px solid var(--rule);border-radius:5px;padding:.38rem .5rem;font-size:.9rem}
+.acts{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.9rem;align-items:center}
+.btn{font-family:var(--ui);font-weight:600;font-size:.85rem;border:1px solid var(--rule-2);background:transparent;color:var(--navy-3);padding:.4rem .9rem;border-radius:5px;cursor:pointer}
+.btn:hover{background:var(--gold-ghost)}
+.btn.gold{background:var(--gold);border-color:var(--gold);color:#10305F}
+.btn.gold:hover{background:var(--gold-2)}
+.btn.xs{font-size:.75rem;padding:.2rem .55rem}
+.btn.on{background:var(--navy);border-color:var(--navy);color:#fff}
+.note{font-size:.84rem;line-height:1.6;color:var(--ink-2);background:var(--warn-bg);border:1px solid var(--rule);border-inline-start:4px solid var(--warn);border-radius:8px;padding:.6rem .85rem;margin-top:.8rem}
+.note b{color:var(--ink)}
+.note.bad{background:var(--crit-bg);border-inline-start-color:var(--crit)}
+.mini{font-size:.81rem;color:var(--ink-3);line-height:1.6;margin-top:.6rem}
+.tblwrap{overflow-x:auto;background:var(--surface);border:1px solid var(--rule);border-radius:10px;box-shadow:0 1px 3px rgba(16,48,95,.07)}
+table.t{border-collapse:collapse;width:100%;font-size:.88rem}
+.t th,.t td{border-bottom:1px solid var(--rule);padding:.35rem .5rem;text-align:center;vertical-align:middle}
+.t thead th{font-family:var(--ui);font-weight:600;font-size:.76rem;background:var(--surface-2);color:var(--ink-2)}
+.t td.nm{text-align:start;min-width:10.5rem}
+.t tr.sel td{background:var(--gold-ghost)}
+.t input.g{width:4.4rem;text-align:center;background:var(--ground);border:1px solid var(--rule);border-radius:5px;padding:.2rem .3rem}
+.t input.sid{width:5.8rem;text-align:center;background:var(--ground);border:1px solid var(--rule);border-radius:5px;padding:.2rem .3rem}
+.t input.thr{width:4.6rem;text-align:center;background:var(--ground);border:1px solid var(--rule);border-radius:5px;padding:.2rem .3rem}
+.chip{display:inline-block;font-family:var(--ui);font-weight:600;font-size:.74rem;padding:.05rem .55rem;border-radius:999px;background:var(--idle-bg);color:var(--idle);white-space:nowrap}
+.chip.ok{background:var(--ok-bg);color:var(--ok)} .chip.warn{background:var(--warn-bg);color:var(--warn)} .chip.bad{background:var(--crit-bg);color:var(--crit)}
+.cells small{display:block;font-size:.7rem;color:var(--ink-3);line-height:1.3;margin-top:.1rem}
+.bars{display:grid;gap:.4rem}
+.bar{display:grid;grid-template-columns:8.5rem 1fr 3rem;align-items:center;gap:.6rem;font-size:.88rem}
+.bar i{display:block;height:1.15rem;border-radius:4px;background:var(--navy-3);min-width:2px}
+.two{display:grid;gap:1rem;grid-template-columns:repeat(auto-fit,minmax(20rem,1fr))}
+.progtabs{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:.8rem}
+.rulegrid{display:grid;gap:.7rem;grid-template-columns:repeat(auto-fit,minmax(21rem,1fr))}
+.rule{border:1px solid var(--rule);border-radius:8px;padding:.7rem .8rem;background:var(--ground)}
+.rule h4{margin:0 0 .4rem;font-family:var(--ui);font-size:.95rem}
+.rule .ck{display:flex;flex-wrap:wrap;gap:.3rem .7rem;font-size:.8rem;margin:.35rem 0}
+.rule .ck label{display:flex;gap:.25rem;align-items:center;cursor:pointer}
+.rule textarea{width:100%;min-height:2.6rem;background:var(--surface);border:1px solid var(--rule);border-radius:5px;padding:.3rem .45rem;font-size:.82rem;resize:vertical}
+
+/* กระดาษพิมพ์ */
+#sheetWrap{display:none}
+@media print{
+  @page{size:A4 portrait;margin:0}
+  body > *:not(#sheetWrap){display:none!important}
+  #sheetWrap{display:block}
+  body{background:#fff}
+}
+.sheet{font-family:var(--doc);color:#000;background:#fff;width:210mm;padding:12mm 16mm 8mm;margin:0 auto;font-size:15pt;line-height:1.3}
+.sheet .page{min-height:276mm;break-after:page;page-break-after:always}
+.sheet .page:last-child{break-after:auto;page-break-after:auto;min-height:0}
+.sheet h1{font-size:22pt;margin:0 0 1mm}
+.sheet .sub{font-size:13pt;color:#333;margin:0 0 4mm}
+.sheet .warnline{border:.6pt solid #000;background:#FFF3C4;padding:1.2mm 3mm;font-size:12pt;margin-bottom:3mm}
+.sheet table{border-collapse:collapse;width:100%;font-size:14pt;margin:2mm 0 4mm}
+.sheet th,.sheet td{border:.6pt solid #000;padding:1mm 2mm;vertical-align:middle}
+.sheet thead th{background:#EDEDED}
+.sheet .big{font-size:40pt;font-weight:700;line-height:1}
+.sheet .row2{display:flex;gap:6mm;margin-bottom:4mm}
+.sheet .card{flex:1;border:.8pt solid #000;padding:2mm 4mm;text-align:center}
+.sheet .card b{display:block;font-size:34pt;line-height:1.05}
+.sheet .bar{display:flex;align-items:center;gap:3mm;margin:1mm 0;font-size:14pt}
+.sheet .bar i{display:block;height:6mm;background:#10305F}
+.sheet h3{font-size:16pt;margin:3mm 0 1mm}
+.sheet .box{border:.8pt solid #000;padding:2mm 4mm;margin:2mm 0 3mm;font-size:14.5pt}
+.sheet .foot{font-size:11pt;color:#333;margin-top:3mm}
+</style>
+</head>
+<body>
+
+<header class="top"><div class="top-in">
+  <span class="mark">นข</span>
+  <span class="title"><b>เกรดและสิทธิ์สอบ</b><span>แผนการเรียนเตรียมทหาร–ตำรวจ · โรงเรียนมัธยมวัดหนองแขม</span></span>
+  <span class="spacer"></span>
+  <nav class="tabs">
+    <a href="index.html">ศูนย์เอกสาร</a>
+    <a href="project.html">ระบบโครงการ</a>
+    <a href="dashboard.html">แดชบอร์ด</a>
+    <a href="ledger.html">ทะเบียนกลาง</a>
+    <a href="tutoring.html">ตารางติว</a>
+    <a href="fitness.html">สมรรถภาพ</a>
+    <a href="gpa.html" aria-current="page">เกรดและสิทธิ์สอบ</a>
+  </nav>
+</div></header>
+
+<div class="band"><div class="wrap"><div class="bandgrid" id="kpis"></div></div></div>
+
+<main class="wrap">
+
+<section>
+  <div class="hd"><div class="eb">ขั้นที่ ๑</div><h2>กรอกเกรดเฉลี่ยรายภาคเรียน</h2>
+    <p>ดึงรายชื่อจากโปรแกรม (เลขที่ตามลำดับรายชื่อ) กรอกเกรดเฉลี่ย (GPA) ของแต่ละภาคเรียนที่ออกผลแล้ว ภาคเรียนที่ยังไม่ออกผลปล่อยว่างไว้ ระบบจะคำนวณว่าต้องได้เท่าไร</p></div>
+  <div class="tblwrap"><table class="t" id="gtab"></table></div>
+  <div class="acts">
+    <button class="btn" id="btnImport" type="button">นำเข้าไฟล์เกรด (.json)</button>
+    <input type="file" id="fileImport" accept="application/json,.json" hidden>
+    <button class="btn" id="btnExport" type="button">ส่งออกข้อมูล (ไฟล์สำรอง)</button>
+    <span class="mini" id="msg" style="margin:0"></span>
+  </div>
+  <p class="mini">หน่วยกิตต่อภาคเรียน (ใช้ถ่วงน้ำหนักเกรดสะสม) ตั้งต้น ๒๐ — แก้ได้ที่แถวหัวตารางด้านล่าง</p>
+  <div class="note"><b>ข้อมูลส่วนบุคคล</b> ชื่อและเกรดของนักเรียนเก็บใน <code>localStorage</code> ของเบราว์เซอร์เครื่องนี้เท่านั้น ไม่ขึ้นเว็บ ควรกด “ส่งออกข้อมูล” เก็บไว้เป็นระยะ และไม่นำไฟล์ไปไว้ที่สาธารณะ</div>
+</section>
+
+<section>
+  <div class="hd"><div class="eb">ขั้นที่ ๒</div><h2>ตั้งเกณฑ์สิทธิ์สอบ</h2>
+    <p>กำหนดเกรดเฉลี่ยขั้นต่ำ และภาคเรียนที่ใช้นับ ของแต่ละโครงการและแต่ละชั้นที่สอบ ค่าตั้งต้นมาจากตัวอย่างที่ครูยกมา (เกณฑ์ ๓.๕๐ นับถึงภาคเรียนที่ ๑ ของชั้นที่สอบ) <b>ต้องแก้ให้ตรงเอกสารหลักเกณฑ์จริงของโครงการช้างเผือกและฉลามขาวก่อนนำเสนอ</b></p></div>
+  <div class="progtabs" id="progTabs"></div>
+  <div class="rulegrid" id="rules"></div>
+  <div class="note bad" id="confNote"></div>
+</section>
+
+<section>
+  <div class="hd"><div class="eb">ขั้นที่ ๓</div><h2>ภาพรวมรายห้อง</h2></div>
+  <div class="two">
+    <div class="panel"><h3 style="margin:0 0 .6rem;font-family:var(--ui);font-size:1rem">การกระจายของเกรดเฉลี่ยสะสมล่าสุด</h3><div class="bars" id="dist"></div></div>
+    <div class="panel"><h3 style="margin:0 0 .6rem;font-family:var(--ui);font-size:1rem">มีสิทธิ์สอบกี่คน — <span id="progName"></span></h3><div class="tblwrap" style="box-shadow:none"><table class="t" id="cnt"></table></div></div>
+  </div>
+</section>
+
+<section>
+  <div class="hd"><div class="eb">ขั้นที่ ๔</div><h2>สิทธิ์สอบรายคน และเกรดที่ต้องได้</h2>
+    <p>ตัวเลข “ต้องได้ ≥” คือเกรดเฉลี่ยเฉลี่ยของภาคเรียนที่เหลือ (ที่ยังไม่ออกผล) ที่ทำให้เกรดสะสมถึงเกณฑ์ คิดถ่วงน้ำหนักด้วยหน่วยกิต ปัดขึ้น ๒ ตำแหน่ง · กดชื่อเพื่อดูตารางสมมติ</p></div>
+  <div class="tblwrap"><table class="t" id="elig"></table></div>
+  <div id="whatif" style="margin-top:1rem"></div>
+</section>
+
+<section>
+  <div class="hd"><div class="eb">ขั้นที่ ๕</div><h2>พิมพ์เพื่อนำเสนอผู้ปกครอง</h2></div>
+  <div class="panel">
+    <div class="acts" style="margin-top:0">
+      <button class="btn gold" id="pClass" type="button">พิมพ์ภาพรวมห้อง (ไม่ระบุชื่อ)</button>
+      <button class="btn" id="pOne" type="button">พิมพ์รายบุคคล: คนที่เลือกอยู่</button>
+      <button class="btn" id="pAll" type="button">พิมพ์รายบุคคล: ทุกคน (คนละ ๑ หน้า)</button>
+    </div>
+    <p class="mini">เอกสารรายบุคคลมีชื่อและเกรด ควรแจกในซองปิดผนึก ภาพรวมห้องไม่มีชื่อ ใช้ฉายหรือแจกในที่ประชุมได้</p>
+  </div>
+</section>
+
+</main>
+<footer style="background:var(--navy);color:#9DB0CE;padding:1.4rem 0 2rem;font-size:.85rem;margin-top:1rem"><div class="wrap"><b style="color:#fff">เกรดและสิทธิ์สอบ</b> · แผนการเรียนเตรียมทหาร–ตำรวจ โรงเรียนมัธยมวัดหนองแขม</div></footer>
+<div id="sheetWrap"></div>
+
+<script>
+"use strict";
+const $ = s => document.querySelector(s);
+const TH = "๐๑๒๓๔๕๖๗๘๙";
+const num = s => String(s == null ? "" : s).replace(/[0-9]/g, d => TH[d]);
+const f2 = x => num((Math.round(x * 100) / 100).toFixed(2));
+const esc = s => String(s == null ? "" : s).replace(/[&<>"]/g, c => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;" }[c]));
+const KEY = "nk_gpa_v1";
+const TERMS = [["m4t1","ม.๔/๑"], ["m4t2","ม.๔/๒"], ["m5t1","ม.๕/๑"], ["m5t2","ม.๕/๒"], ["m6t1","ม.๖/๑"], ["m6t2","ม.๖/๒"]];
+const TNAME = Object.fromEntries(TERMS);
+const PROGS = [["cp", "โครงการช้างเผือก (ทอ.)"], ["ws", "โครงการฉลามขาว (ทร.)"]];
+const YEARS = [["4", "สอบในชั้น ม.๔"], ["5", "สอบในชั้น ม.๕"], ["6", "สอบในชั้น ม.๖"]];
+const DEF_TERMS = { 4: ["m4t1"], 5: ["m4t1","m4t2","m5t1"], 6: ["m4t1","m4t2","m5t1","m5t2","m6t1"] };
+const defRules = () => Object.fromEntries(PROGS.map(([p]) => [p, Object.fromEntries(YEARS.map(([y]) => [y, { min: 3.5, terms: DEF_TERMS[y].slice(), note: "" }]))]));
+
+const D = (() => {
+  let o = null; try { o = JSON.parse(localStorage.getItem(KEY) || "null"); } catch (e) {}
+  o = o && typeof o === "object" ? o : {};
+  const d = Object.assign({ g: {}, sid: {}, cred: {}, rules: defRules(), conf: false, prog: "cp", sel: 1 }, o);
+  PROGS.forEach(([p]) => { d.rules[p] ||= defRules()[p]; YEARS.forEach(([y]) => { d.rules[p][y] ||= defRules()[p][y]; }); });
+  return d;
+})();
+const save = () => { try { localStorage.setItem(KEY, JSON.stringify(D)); } catch (e) { alert("บันทึกไม่สำเร็จ: พื้นที่เก็บข้อมูลเต็ม"); } };
+
+/* ── รายชื่อ ── */
+const readLS = k => { try { return JSON.parse(localStorage.getItem(k) || "null"); } catch (e) { return null; } };
+let roster = [];
+(function loadRoster(){
+  const R = readLS("nk_roster_v1");
+  let list = Array.isArray(R) ? R.filter(x => x && String(x.name || "").trim()).map(x => String(x.name).trim()) : [];
+  if (!list.length){
+    const F = readLS("nk_fit_v1");
+    list = F && Array.isArray(F.students) ? F.students.filter(x => x && String(x.name || "").trim()).map(x => String(x.name).trim()) : [];
+  }
+  /* ถ้ายังไม่มีรายชื่อแต่มีเกรดนำเข้ามาแล้ว ให้แสดงเป็นเลขที่ */
+  const maxNo = Math.max(0, ...Object.values(D.g).flatMap(t => Object.keys(t).map(Number)));
+  roster = list.length ? list : Array.from({ length: maxNo }, (_, i) => "นักเรียนเลขที่ " + (i + 1));
+})();
+
+/* ── คำนวณ ── */
+const cred = t => Number(D.cred[t]) > 0 ? Number(D.cred[t]) : 20;
+const gOf = (no, t) => { const v = (D.g[t] || {})[no]; return typeof v === "number" ? v : null; };
+const cumOf = (no, terms) => {
+  let s = 0, c = 0; terms.forEach(t => { const v = gOf(no, t); if (v != null){ s += v * cred(t); c += cred(t); } });
+  return c ? s / c : null;
+};
+const allTerms = TERMS.map(t => t[0]);
+/** ประเมินสิทธิ์ตามกฎหนึ่งข้อ */
+function evalRule(no, rule){
+  const T = Number(rule.min), terms = rule.terms.filter(t => allTerms.includes(t));
+  if (!terms.length || !isFinite(T)) return { st: "none" };
+  const known = terms.filter(t => gOf(no, t) != null), unk = terms.filter(t => gOf(no, t) == null);
+  if (!known.length && !unk.length) return { st: "none" };
+  const S = known.reduce((a, t) => a + gOf(no, t) * cred(t), 0), Ck = known.reduce((a, t) => a + cred(t), 0);
+  if (!unk.length){
+    const cum = Math.round(S / Ck * 100) / 100;
+    return { st: cum >= T - 1e-9 ? "pass" : "fail", cum, S, Ck, Cu: 0, unk, known };
+  }
+  const Cu = unk.reduce((a, t) => a + cred(t), 0);
+  const r = Math.ceil(((T * (Ck + Cu) - S) / Cu) * 100 - 1e-9) / 100;
+  const st = r <= 2 ? "safe" : r <= 3.5 ? "need" : r <= 4 ? "hard" : "out";
+  return { st, r, S, Ck, Cu, unk, known, T };
+}
+const LAB = { pass: ["✔ ผ่านเกณฑ์", "ok"], safe: ["✔ ปลอดภัย", "ok"], need: ["ต้องขยับ", "warn"], hard: ["ยากมาก", "warn"], out: ["เกินเอื้อม", "bad"], fail: ["✖ ไม่ถึงเกณฑ์", "bad"], none: ["—", ""] };
+const cellHTML = e => {
+  const [t, c] = LAB[e.st];
+  const sub = e.st === "pass" || e.st === "fail" ? `เกรดสะสม ${f2(e.cum)}` : e.st === "none" ? "" :
+    e.st === "out" ? `ต้อง ${f2(e.r)} (เกิน ๔.๐๐)` : `เทอมที่เหลือ ต้องได้ ≥ ${f2(Math.max(e.r, 0))}`;
+  return `<span class="chip ${c}">${t}</span><small>${sub}</small>`;
+};
+const cumLatest = no => cumOf(no, allTerms);
+
+/* ── ส่วนแสดงผล ── */
+function renderKpi(){
+  const vals = roster.map((_, i) => cumLatest(i + 1)).filter(v => v != null);
+  const avg = vals.length ? vals.reduce((a, b) => a + b, 0) / vals.length : null;
+  const r4 = D.rules[D.prog]["4"];
+  const ok4 = roster.filter((_, i) => { const e = evalRule(i + 1, r4); return e.st === "pass"; }).length;
+  const k = (l, v, s) => `<div class="kpi"><div class="l">${l}</div><div class="v">${v}</div><div class="s">${s}</div></div>`;
+  $("#kpis").innerHTML =
+    k("นักเรียนที่มีเกรด", `${num(vals.length)}/${num(roster.length)}`, "คน") +
+    k("เกรดเฉลี่ยห้อง", avg != null ? f2(avg) : "—", "เกรดสะสมล่าสุดของแต่ละคน") +
+    k("สูงสุด / ต่ำสุด", vals.length ? `${f2(Math.max(...vals))} / ${f2(Math.min(...vals))}` : "—", "") +
+    k(`ผ่านเกณฑ์สอบ ม.๔ (≥ ${f2(r4.min)})`, num(ok4), "คน · " + (PROGS.find(p => p[0] === D.prog) || [])[1]) +
+    k("ยังไม่ถึงเกณฑ์ ม.๔", num(roster.filter((_, i) => evalRule(i + 1, r4).st === "fail").length), "คน");
+}
+function renderGrid(){
+  $("#gtab").innerHTML = `<thead><tr><th>เลขที่</th><th>ชื่อ–สกุล</th><th>เลขประจำตัว</th>` +
+    TERMS.map(([k, n]) => `<th>${n}<br><span style="font-weight:400">หน่วยกิต <input class="thr" data-cred="${k}" value="${num(cred(k))}" style="width:3.2rem" inputmode="decimal"></span></th>`).join("") +
+    `<th>เกรดสะสม</th></tr></thead><tbody>` +
+    roster.map((n, i) => { const no = i + 1, cu = cumLatest(no);
+      return `<tr class="${no === D.sel ? "sel" : ""}"><td>${num(no)}</td><td class="nm">${esc(n)}</td>
+        <td><input class="sid" data-sid="${no}" value="${esc(D.sid[no] || "")}" inputmode="numeric" aria-label="เลขประจำตัว ${esc(n)}"></td>` +
+        TERMS.map(([k, tn]) => `<td><input class="g" data-g="${k}|${no}" value="${gOf(no, k) != null ? num(gOf(no, k).toFixed(2)) : ""}" inputmode="decimal" placeholder="—" aria-label="${tn} ${esc(n)}"></td>`).join("") +
+        `<td class="cum" data-no="${no}"><b>${cu != null ? f2(cu) : "—"}</b></td></tr>`; }).join("") + "</tbody>";
+}
+const refreshCum = () => document.querySelectorAll("#gtab td.cum").forEach(td => { const v = cumLatest(+td.dataset.no); td.innerHTML = `<b>${v != null ? f2(v) : "—"}</b>`; });
+const afterEdit = () => { renderKpi(); refreshCum(); renderDist(); renderElig(); };
+$("#gtab").addEventListener("change", e => {
+  const t = e.target;
+  if (t.dataset.g){
+    const [k, no] = t.dataset.g.split("|");
+    const v = parseFloat(String(t.value).replace(/[๐-๙]/g, c => TH.indexOf(c)).replace(",", "."));
+    (D.g[k] ||= {});
+    if (t.value.trim() === "") delete D.g[k][no];
+    else if (isFinite(v) && v >= 0 && v <= 4) D.g[k][no] = Math.round(v * 100) / 100;
+    else { alert("เกรดเฉลี่ยต้องอยู่ระหว่าง ๐.๐๐ ถึง ๔.๐๐"); t.value = gOf(+no, k) != null ? num(gOf(+no, k).toFixed(2)) : ""; return; }
+    save(); afterEdit();
+  } else if (t.dataset.sid){ D.sid[t.dataset.sid] = t.value.trim(); save(); }
+  else if (t.dataset.cred){
+    const v = parseFloat(String(t.value).replace(/[๐-๙]/g, c => TH.indexOf(c)));
+    if (isFinite(v) && v > 0) D.cred[t.dataset.cred] = v; else delete D.cred[t.dataset.cred];
+    save(); afterEdit();
+  }
+});
+
+function renderRules(){
+  $("#progTabs").innerHTML = PROGS.map(([p, n]) => `<button class="btn ${D.prog === p ? "on" : ""}" data-prog="${p}" type="button">${n}</button>`).join("");
+  $("#rules").innerHTML = YEARS.map(([y, yn]) => { const r = D.rules[D.prog][y];
+    return `<div class="rule"><h4>${yn}</h4>
+      <div class="field"><label>เกรดเฉลี่ยขั้นต่ำ</label><input class="thr" data-min="${y}" value="${num(Number(r.min).toFixed(2))}" inputmode="decimal"></div>
+      <div class="ck"><span style="width:100%;font-size:.76rem;color:var(--ink-3)">นับเกรดจากภาคเรียน:</span>${TERMS.map(([k, n]) => `<label><input type="checkbox" data-term="${y}|${k}" ${r.terms.includes(k) ? "checked" : ""}> ${n}</label>`).join("")}</div>
+      <textarea data-note="${y}" placeholder="เงื่อนไขอื่นจากเอกสาร (ถ้ามี) เช่น เกรดวิชาเฉพาะ อายุ ส่วนสูง">${esc(r.note || "")}</textarea></div>`; }).join("");
+  $("#confNote").innerHTML = D.conf ? `<label style="cursor:pointer"><input type="checkbox" id="conf" checked> ตรวจเกณฑ์กับเอกสารหลักเกณฑ์ของโครงการแล้ว</label>`
+    : `<b>ยังเป็นค่าตั้งต้น</b> เกณฑ์ที่เห็นยังไม่ได้ตรวจกับเอกสารหลักเกณฑ์จริง เอกสารที่พิมพ์จะมีข้อความเตือนจนกว่าจะติ๊กช่องนี้ <label style="cursor:pointer;display:block;margin-top:.3rem"><input type="checkbox" id="conf"> ตรวจเกณฑ์กับเอกสารหลักเกณฑ์ของโครงการแล้ว</label>`;
+}
+$("#progTabs").addEventListener("click", e => { const b = e.target.closest("[data-prog]"); if (b){ D.prog = b.dataset.prog; save(); renderAll(); } });
+$("#rules").addEventListener("change", e => {
+  const t = e.target, r = y => D.rules[D.prog][y];
+  if (t.dataset.min){ const v = parseFloat(String(t.value).replace(/[๐-๙]/g, c => TH.indexOf(c))); if (isFinite(v) && v >= 0 && v <= 4) r(t.dataset.min).min = v; }
+  else if (t.dataset.term){ const [y, k] = t.dataset.term.split("|"); const a = r(y).terms; if (t.checked){ if (!a.includes(k)) a.push(k); } else { const i = a.indexOf(k); if (i >= 0) a.splice(i, 1); } }
+  else if (t.dataset.note != null){ r(t.dataset.note).note = t.value; }
+  D.conf = false; save(); renderAll();
+});
+$("#confNote").addEventListener("change", e => { if (e.target.id === "conf"){ D.conf = e.target.checked; save(); renderRules(); } });
+
+const bands = [["≥ ๓.๕๐", v => v >= 3.5], ["๓.๐๐–๓.๔๙", v => v >= 3 && v < 3.5], ["๒.๕๐–๒.๙๙", v => v >= 2.5 && v < 3], ["๒.๐๐–๒.๔๙", v => v >= 2 && v < 2.5], ["ต่ำกว่า ๒.๐๐", v => v < 2]];
+function distRows(){ const vals = roster.map((_, i) => cumLatest(i + 1)).filter(v => v != null).map(v => Math.round(v * 100) / 100);
+  return bands.map(([l, f]) => [l, vals.filter(f).length]); }
+function cntRows(){
+  return YEARS.map(([y, yn]) => { const c = { pass: 0, need: 0, hard: 0, out: 0, fail: 0, none: 0 };
+    roster.forEach((_, i) => { const st = evalRule(i + 1, D.rules[D.prog][y]).st; c[st === "safe" ? "pass" : st]++; });
+    return [yn, y, c, D.rules[D.prog][y]]; });
+}
+function renderDist(){
+  const rows = distRows(), mx = Math.max(1, ...rows.map(r => r[1]));
+  $("#dist").innerHTML = rows.map(([l, n]) => `<div class="bar"><span>${l}</span><i style="width:${n / mx * 100}%"></i><b>${num(n)} คน</b></div>`).join("");
+  $("#progName").textContent = PROGS.find(p => p[0] === D.prog)[1];
+  $("#cnt").innerHTML = `<thead><tr><th>ชั้นที่สอบ</th><th>เกณฑ์</th><th>ผ่าน/ปลอดภัย</th><th>ต้องขยับ</th><th>ยากมาก</th><th>เกินเอื้อม/ไม่ถึง</th></tr></thead><tbody>` +
+    cntRows().map(([yn, , c, r]) => `<tr><td class="nm">${yn}</td><td>≥ ${f2(r.min)}</td><td><b>${num(c.pass)}</b></td><td>${num(c.need)}</td><td>${num(c.hard)}</td><td>${num(c.out + c.fail)}</td></tr>`).join("") + "</tbody>";
+}
+function renderElig(){
+  $("#elig").innerHTML = `<thead><tr><th>เลขที่</th><th>ชื่อ–สกุล</th><th>เกรดสะสม</th>${YEARS.map(([, n]) => `<th>${n}</th>`).join("")}</tr></thead><tbody>` +
+    roster.map((n, i) => { const no = i + 1, cu = cumLatest(no);
+      return `<tr class="${no === D.sel ? "sel" : ""}" data-sel="${no}" style="cursor:pointer"><td>${num(no)}</td><td class="nm">${esc(n)}</td><td><b>${cu != null ? f2(cu) : "—"}</b></td>` +
+        YEARS.map(([y]) => `<td class="cells">${cellHTML(evalRule(no, D.rules[D.prog][y]))}</td>`).join("") + "</tr>"; }).join("") + "</tbody>";
+  renderWhatIf();
+}
+$("#elig").addEventListener("click", e => { const tr = e.target.closest("[data-sel]"); if (tr){ D.sel = +tr.dataset.sel; save(); renderGrid(); renderElig(); } });
+
+/** ตารางสมมติ : ถ้าภาคเรียนถัดไปได้เกรดหนึ่ง ภาคเรียนที่เหลือต้องได้เท่าไร */
+function whatIfRows(no, y){
+  const rule = D.rules[D.prog][y], e = evalRule(no, rule);
+  if (!e.unk || !e.unk.length || e.st === "none") return null;
+  const u1 = e.unk[0], c1 = cred(u1), rest = e.unk.slice(1), Cr = rest.reduce((a, t) => a + cred(t), 0);
+  const T = Number(rule.min), tot = e.Ck + e.Cu;
+  const rows = [4, 3.75, 3.5, 3.25, 3, 2.75, 2.5, 2].map(g => {
+    const need = rest.length ? Math.ceil(((T * tot - e.S - g * c1) / Cr) * 100 - 1e-9) / 100 : null;
+    const cum = rest.length ? null : Math.round(((e.S + g * c1) / tot) * 100) / 100;
+    return { g, need, cum };
+  });
+  return { u1, rest, rows, T, e };
+}
+function renderWhatIf(){
+  const no = D.sel, name = roster[no - 1];
+  if (!name){ $("#whatif").innerHTML = ""; return; }
+  $("#whatif").innerHTML = `<div class="panel"><h3 style="margin:0 0 .6rem;font-family:var(--ui);font-size:1.05rem">ตารางสมมติ · เลขที่ ${num(no)} ${esc(name)}</h3><div class="two">` +
+    YEARS.map(([y, yn]) => { const w = whatIfRows(no, y);
+      if (!w) return `<div><b>${yn}</b><p class="mini">${evalRule(no, D.rules[D.prog][y]).st === "none" ? "ยังไม่ได้ตั้งภาคเรียนที่นับ" : "ภาคเรียนที่นับออกผลครบแล้ว ไม่มีอะไรให้สมมติ"}</p></div>`;
+      const last = w.rest.length === 0;
+      return `<div><b>${yn}</b> <span class="mini">(เกณฑ์ ≥ ${f2(w.T)})</span>
+        <div class="tblwrap" style="box-shadow:none;margin-top:.4rem"><table class="t"><thead><tr><th>ถ้า ${TNAME[w.u1]} ได้</th><th>${last ? "เกรดสะสมที่ได้" : "ภาคเรียนที่เหลือ (" + w.rest.map(t => TNAME[t]).join(", ") + ") ต้องได้ ≥"}</th></tr></thead><tbody>` +
+        w.rows.map(r => { const bad = last ? r.cum < w.T - 1e-9 : r.need > 4 + 1e-9, safe = !last && r.need <= 0;
+          return `<tr><td>${f2(r.g)}</td><td class="${bad ? "" : ""}">${last ? `${f2(r.cum)} ${r.cum >= w.T - 1e-9 ? "✔" : "✖"}` : bad ? "<span class='chip bad'>ทำไม่ได้</span>" : safe ? "<span class='chip ok'>ผ่านแน่นอน</span>" : `<b>${f2(r.need)}</b>`}</td></tr>`; }).join("") +
+        "</tbody></table></div></div>"; }).join("") + "</div></div>";
+}
+
+/* ── พิมพ์ ── */
+const warnLine = () => D.conf ? "" : `<div class="warnline"><b>หมายเหตุ</b> เกณฑ์เกรดขั้นต่ำและภาคเรียนที่นับ ยังเป็นค่าตั้งต้น ยังไม่ได้ตรวจกับเอกสารหลักเกณฑ์ของโครงการ ตัวเลขนี้ใช้ประกอบการวางแผนเท่านั้น</div>`;
+const progLine = () => PROGS.map(([p, n]) => `${n}: ${YEARS.map(([y]) => `ม.${num(y)} ≥ ${f2(D.rules[p][y].min)}`).join(" · ")}`).join("<br>");
+function classSheet(){
+  const vals = roster.map((_, i) => cumLatest(i + 1)).filter(v => v != null), avg = vals.reduce((a, b) => a + b, 0) / (vals.length || 1);
+  const rows = distRows(), mx = Math.max(1, ...rows.map(r => r[1]));
+  const progTbl = PROGS.map(([p, n]) => {
+    const save0 = D.prog; D.prog = p; const rs = cntRows(); D.prog = save0;
+    return `<h3>${n}</h3><table><thead><tr><th>ชั้นที่สอบ</th><th>เกณฑ์</th><th>ผ่าน/ปลอดภัย</th><th>ต้องขยับ</th><th>ยากมาก</th><th>เกินเอื้อม/ไม่ถึง</th></tr></thead><tbody>` +
+      rs.map(([yn, , c, r]) => `<tr><td>${yn}</td><td align="center">≥ ${f2(r.min)}</td><td align="center"><b>${num(c.pass)}</b></td><td align="center">${num(c.need)}</td><td align="center">${num(c.hard)}</td><td align="center">${num(c.out + c.fail)}</td></tr>`).join("") + "</tbody></table>"; }).join("");
+  return `<div class="page"><h1>ภาพรวมผลการเรียนและสิทธิ์สอบ</h1><p class="sub">แผนการเรียนเตรียมทหาร–ตำรวจ · โรงเรียนมัธยมวัดหนองแขม · นักเรียน ${num(roster.length)} คน (ไม่ระบุชื่อ)</p>${warnLine()}
+    <div class="row2"><div class="card">เกรดเฉลี่ยห้อง<b>${f2(avg)}</b></div><div class="card">สูงสุด<b>${f2(Math.max(...vals))}</b></div><div class="card">ต่ำสุด<b>${f2(Math.min(...vals))}</b></div></div>
+    <h3>การกระจายของเกรดเฉลี่ยสะสมล่าสุด</h3>${rows.map(([l, n]) => `<div class="bar"><span style="width:30mm">${l}</span><i style="width:${n / mx * 90}mm"></i><b>${num(n)} คน</b></div>`).join("")}
+    <h3 style="margin-top:5mm">มีสิทธิ์สอบกี่คน (ตามเกณฑ์ที่ตั้งไว้)</h3>${progTbl}
+    <p class="foot">ผ่าน/ปลอดภัย = ถึงเกณฑ์แล้วหรือแทบแน่นอน · ต้องขยับ = ต้องเพิ่มเกรดภาคเรียนที่เหลือ · ยากมาก = ต้องได้เกรดสูงกว่า ๓.๕๐ ต่อเทอมที่เหลือ · เกินเอื้อม = ต้องได้เกิน ๔.๐๐ จึงเป็นไปไม่ได้ · เกณฑ์ที่ใช้:<br>${progLine()}</p></div>`;
+}
+function oneSheet(no){
+  const name = roster[no - 1], cu = cumLatest(no);
+  const hist = TERMS.filter(([k]) => gOf(no, k) != null).map(([k, n]) => `<td align="center"><b>${f2(gOf(no, k))}</b><br><small>${n}</small></td>`).join("");
+  const adv = [];
+  const prog = PROGS.map(([p, pn]) => {
+    const rowsH = YEARS.map(([y, yn]) => { const e = evalRule(no, D.rules[p][y]); const [t] = LAB[e.st];
+      const det = e.st === "pass" || e.st === "fail" ? `เกรดสะสม ${f2(e.cum)}` : e.st === "none" ? "" : e.st === "out" ? `ต้อง ${f2(e.r)} จึงเป็นไปไม่ได้` : `ภาคเรียนที่เหลือ (${e.unk.map(t => TNAME[t]).join(", ")}) ต้องเฉลี่ย ≥ ${f2(Math.max(0, e.r))}`;
+      if (p === D.prog && (e.st === "need" || e.st === "hard")) adv.push(`${yn}: ${det}`);
+      return `<tr><td>${yn}</td><td align="center">≥ ${f2(D.rules[p][y].min)}</td><td align="center"><b>${t}</b></td><td>${det}</td></tr>`; }).join("");
+    return `<h3>${pn}</h3><table><thead><tr><th>ชั้นที่สอบ</th><th>เกณฑ์</th><th>สถานะ</th><th>รายละเอียด</th></tr></thead><tbody>${rowsH}</tbody></table>`; }).join("");
+  return `<div class="page"><h1>${esc(name)}</h1><p class="sub">เลขที่ ${num(no)}${D.sid[no] ? " · เลขประจำตัว " + esc(num(D.sid[no])) : ""} · ผลการเรียนเฉลี่ยและสิทธิ์สอบ · แผนการเรียนเตรียมทหาร–ตำรวจ โรงเรียนมัธยมวัดหนองแขม</p>${warnLine()}
+    <div class="row2"><div class="card">เกรดเฉลี่ยสะสมล่าสุด<b>${cu != null ? f2(cu) : "—"}</b></div><div class="card">เกรดเฉลี่ยห้อง<b>${f2(roster.map((_, i) => cumLatest(i + 1)).filter(v => v != null).reduce((a, b, _, arr) => a + b / arr.length, 0))}</b></div></div>
+    <table><tbody><tr>${hist || "<td>ยังไม่มีเกรด</td>"}</tr></tbody></table>
+    ${prog}
+    ${adv.length ? `<div class="box"><b>เป้าหมายของเรา</b><br>${adv.map(esc).join("<br>")}</div>` : ""}
+    <p class="foot">คำนวณถ่วงน้ำหนักด้วยหน่วยกิต ปัดขึ้น ๒ ตำแหน่ง · ภาคเรียนที่ยังไม่ออกผลถือว่าทำได้เท่ากันทุกเทอมที่เหลือ · ข้อมูลส่วนบุคคล เปิดเผยเฉพาะผู้ปกครอง</p></div>`;
+}
+const printHTML = h => { $("#sheetWrap").innerHTML = `<div class="sheet">${h}</div>`; window.print(); };
+$("#pClass").onclick = () => roster.length ? printHTML(classSheet()) : alert("ยังไม่มีข้อมูล");
+$("#pOne").onclick = () => roster[D.sel - 1] ? printHTML(oneSheet(D.sel)) : alert("ยังไม่ได้เลือกนักเรียน");
+$("#pAll").onclick = () => roster.length ? printHTML(roster.map((_, i) => oneSheet(i + 1)).join("")) : alert("ยังไม่มีข้อมูล");
+
+/* ── นำเข้า / สำรอง ── */
+$("#btnImport").onclick = () => $("#fileImport").click();
+$("#fileImport").onchange = e => {
+  const f = e.target.files[0]; if (!f) return;
+  const rd = new FileReader();
+  rd.onload = () => {
+    try {
+      const o = JSON.parse(rd.result);
+      if (!o || typeof o !== "object" || (!o.g && !o.terms)) throw new Error("ไม่ใช่ไฟล์เกรดของหน้านี้");
+      if (!confirm("นำเข้าเกรดจากไฟล์ แทนที่เกรดภาคเรียนที่มีในไฟล์?")) return;
+      const g = o.g || Object.fromEntries(Object.entries(o.terms).map(([k, t]) => [k, t.gpa]));
+      Object.entries(g).forEach(([k, m]) => { D.g[k] = Object.assign({}, m); });
+      if (o.sid) Object.assign(D.sid, o.sid);
+      if (o.cred) Object.assign(D.cred, o.cred);
+      save(); renderAll(); $("#msg").textContent = "นำเข้าแล้ว";
+    } catch (err){ alert("นำเข้าไม่สำเร็จ: " + err.message); }
+  };
+  rd.readAsText(f); e.target.value = "";
+};
+$("#btnExport").onclick = () => {
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([JSON.stringify({ g: D.g, sid: D.sid, cred: D.cred, rules: D.rules }, null, 2)], { type: "application/json" }));
+  a.download = `สำรอง_เกรดและสิทธิ์สอบ_${new Date().toISOString().slice(0, 10)}.json`;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+};
+
+function renderAll(){ renderKpi(); renderGrid(); renderRules(); renderDist(); renderElig(); }
+renderAll();
+</script>
+<script src="nav.js"></script>
+</body>
+</html>
